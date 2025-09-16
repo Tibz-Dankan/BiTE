@@ -3,7 +3,7 @@ let SERVER_URL: string;
 if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
   SERVER_URL = "http://localhost:3000";
 } else {
-  SERVER_URL = "";
+  SERVER_URL = "https://bite-a70i.onrender.com";
 }
 
 export { SERVER_URL };
