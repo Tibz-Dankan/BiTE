@@ -1,0 +1,31 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap");
+
+@import "tailwindcss";
+
+@plugin 'tailwind-scrollbar' {
+  nocompatible: true;
+}
+
+/* * {
+  margin: 0;
+  padding: 0;
+} */
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+:root {
+  --clr-background: oklch(24.57% 0.014 271.5);
+  --clr-primary: oklch(45.89% 0.103 164.36);
+}
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+html {
+  box-sizing: border-box;
+}

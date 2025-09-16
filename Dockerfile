@@ -1,0 +1,19 @@
+FROM golang:1.25-alpine 
+
+# Install curl for container health check
+RUN apk add --no-cache curl
+
+WORKDIR /app/server
+
+COPY server/go.mod server/go.sum ./
+RUN go mod download && go mod verify
+
+COPY server .
+
+RUN go build -o ./bin/BiTE ./cmd
+
+ENV GO_ENV=production
+
+EXPOSE 3000
+
+ENTRYPOINT ["./bin/BiTE"]
