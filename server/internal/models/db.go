@@ -9,7 +9,6 @@ import (
 	_ "github.com/lib/pq"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
 
 var (
@@ -39,7 +38,7 @@ func Db() *gorm.DB {
 			gormDB, err = gorm.Open(postgres.Open(os.Getenv("BiTE_DEV_DSN")), &gorm.Config{
 				SkipDefaultTransaction: true,
 				PrepareStmt:            true,
-				Logger:                 logger.Default.LogMode(logger.Info),
+				// Logger:                 logger.Default.LogMode(logger.Info),
 			})
 			if err != nil {
 				log.Fatal("Failed to connect to the database: ", err)
@@ -57,7 +56,7 @@ func Db() *gorm.DB {
 
 		log.Println("Connected to postgres successfully")
 
-		err = gormDB.AutoMigrate()
+		err = gormDB.AutoMigrate(&User{}, &OTP{}, &Session{}, &Location{})
 		if err != nil {
 			log.Fatal("Failed to make auto migration", err)
 		}

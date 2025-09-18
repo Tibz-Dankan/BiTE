@@ -5,10 +5,11 @@ import (
 	"log"
 	"os"
 
-	"github.com/Tibz-Dankan/hackernoon-articles/internal/handlers/health"
-	"github.com/Tibz-Dankan/hackernoon-articles/internal/handlers/status"
-	"github.com/Tibz-Dankan/hackernoon-articles/internal/middlewares"
-	"github.com/Tibz-Dankan/hackernoon-articles/internal/pkg"
+	"github.com/Tibz-Dankan/BiTE/internal/handlers/auth"
+	"github.com/Tibz-Dankan/BiTE/internal/handlers/health"
+	"github.com/Tibz-Dankan/BiTE/internal/handlers/status"
+	"github.com/Tibz-Dankan/BiTE/internal/middlewares"
+	"github.com/Tibz-Dankan/BiTE/internal/pkg"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -40,6 +41,21 @@ func main() {
 		}
 		log.Println("Loaded .env var file")
 	}
+
+	// auth
+	userGroup := app.Group("/api/v1/user", func(c *fiber.Ctx) error {
+		return c.Next()
+	})
+	userGroup.Post("/auth/signup", auth.SignUp)
+	userGroup.Post("/auth/signin", auth.SignIn)
+	userGroup.Post("/auth/rt-signin", auth.SignInWithRefreshToken)
+	userGroup.Post("/auth/forgot-password", auth.ForgotPassword)
+	userGroup.Patch("/auth/verify-otp", auth.VerifyOTP)
+	userGroup.Patch("/auth/reset-password/:otp", auth.ResetPassword)
+	userGroup.Patch("/:id/auth/change-password", middlewares.Auth, auth.ChangePassword)
+	userGroup.Patch("/:id/image", middlewares.Auth, auth.UpdateUserImage)
+	userGroup.Patch("/:id", middlewares.Auth, auth.UpdateUser)
+	userGroup.Get("/", middlewares.Auth, middlewares.IsAdmin, auth.GetAllUsers)
 
 	// Status
 	app.Get("/status", status.GetAppStatus)
