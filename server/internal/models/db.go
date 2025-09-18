@@ -57,7 +57,7 @@ func Db() *gorm.DB {
 
 		log.Println("Connected to postgres successfully")
 
-		err = gormDB.AutoMigrate()
+		err = gormDB.AutoMigrate(&User{}, &OTP{}, &Session{}, &Location{})
 		if err != nil {
 			log.Fatal("Failed to make auto migration", err)
 		}

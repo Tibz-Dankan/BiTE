@@ -1,6 +1,6 @@
-module github.com/Tibz-Dankan/hackernoon-articles
+module github.com/Tibz-Dankan/BiTE
 
-go 1.24.1
+go 1.25.0
 
 require github.com/aws/aws-sdk-go-v2 v1.36.6
 
@@ -37,6 +37,7 @@ require (
 	github.com/aws/smithy-go v1.22.4 // indirect
 	github.com/chromedp/chromedp v0.14.0
 	github.com/gofiber/fiber/v2 v2.52.8 // indirect
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
@@ -47,6 +48,7 @@ require (
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/klauspost/compress v1.17.9 // indirect
 	github.com/lib/pq v1.10.9 // indirect
+	github.com/mailjet/mailjet-apiv3-go/v4 v4.0.7
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.16 // indirect
