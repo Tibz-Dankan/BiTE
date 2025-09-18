@@ -17,6 +17,7 @@ var GetAllUsers = func(c *fiber.Ctx) error {
 		filteredUSers[i] = map[string]interface{}{
 			"id":             user.ID,
 			"name":           user.Name,
+			"email":          user.Email,
 			"role":           user.Role,
 			"imageUrl":       user.ImageUrl,
 			"profileBgColor": user.ProfileBgColor,

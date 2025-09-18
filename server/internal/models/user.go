@@ -154,7 +154,7 @@ func (u *User) HashPassword(plainTextPassword string) (string, error) {
 }
 
 func (u *User) ValidRole(role string) bool {
-	roles := []string{"USER", "	ADMIN"}
+	roles := []string{"USER", "ADMIN"}
 
 	for _, r := range roles {
 		if r == role {

@@ -71,6 +71,7 @@ var UpdateUser = func(c *fiber.Ctx) error {
 	updateUserMap := fiber.Map{
 		"id":             updatedUser.ID,
 		"name":           updatedUser.Name,
+		"email":          updatedUser.Email,
 		"role":           updatedUser.Role,
 		"imageUrl":       updatedUser.ImageUrl,
 		"profileBgColor": updatedUser.ProfileBgColor,

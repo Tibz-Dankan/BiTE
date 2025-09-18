@@ -55,7 +55,7 @@ func main() {
 	userGroup.Patch("/:id/auth/change-password", middlewares.Auth, auth.ChangePassword)
 	userGroup.Patch("/:id/image", middlewares.Auth, auth.UpdateUserImage)
 	userGroup.Patch("/:id", middlewares.Auth, auth.UpdateUser)
-	userGroup.Get("/", middlewares.Auth, auth.GetAllUsers)
+	userGroup.Get("/", middlewares.Auth, middlewares.IsAdmin, auth.GetAllUsers)
 
 	// Status
 	app.Get("/status", status.GetAppStatus)
