@@ -31,8 +31,6 @@ func Db() *gorm.DB {
 			log.Println("Loaded .env var file")
 		}
 
-		
-
 		switch env {
 		case "development":
 			gormDB, err = gorm.Open(postgres.Open(os.Getenv("BiTE_DEV_DSN")), &gorm.Config{
