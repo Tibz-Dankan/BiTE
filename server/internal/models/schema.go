@@ -10,11 +10,11 @@ type User struct {
 	Password       string    `gorm:"column:password;not null" json:"password"`
 	Role           string    `gorm:"column:role;default:'user';not null" json:"role"`
 	Email          string    `gorm:"column:email;unique;index" json:"email"`
-	Gender         string    `gorm:"column:gender;default:null" json:"gender"`
+	Gender         string    `gorm:"column:gender;default:null" json:"gender,omitempty"`
 	DateOfBirth    string    `gorm:"column:dateOfBirth;default:null" json:"dateOfBirth,omitempty"`
-	Country        string    `gorm:"column:country;default:null" json:"country"`
+	Country        string    `gorm:"column:country;default:null" json:"country,omitempty"`
 	ImageUrl       string    `gorm:"column:imageUrl;default:null" json:"imageUrl"`
-	ImagePath      string    `gorm:"column:imagePath;default:null" json:"imagePath"`
+	ImagePath      string    `gorm:"column:imagePath;default:null" json:"imagePath,omitempty"`
 	ProfileBgColor string    `gorm:"column:profileBgColor;default:null" json:"profileBgColor"`
 	CreatedAt      time.Time `gorm:"column:createdAt" json:"createdAt"`
 	UpdatedAt      time.Time `gorm:"column:updatedAt" json:"updatedAt"`
