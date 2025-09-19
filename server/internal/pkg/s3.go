@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"path/filepath"
-	"strings"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -14,25 +12,12 @@ import (
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
-	"github.com/google/uuid"
 )
 
-// To resolve acl error when uploading of objects to the storage
 type S3Client struct {
 	client     *s3.Client
 	bucketName string
 	region     string
-}
-
-// Database model for storing file references
-type FileRecord struct {
-	ID           uint      `gorm:"primaryKey" json:"id"`
-	URL          string    `gorm:"not null" json:"url"`
-	Filename     string    `gorm:"not null" json:"filename"`
-	OriginalName string    `json:"original_name"`
-	Size         int64     `json:"size"`
-	ContentType  string    `json:"content_type"`
-	CreatedAt    time.Time `json:"created_at"`
 }
 
 type UploadResponse struct {
@@ -71,15 +56,6 @@ func (s3c *S3Client) NewS3Client(ctx context.Context) (*S3Client, error) {
 }
 
 func (s3c *S3Client) UploadFile(ctx context.Context, file io.Reader, originalFilename string, contentType string, fileSize int64) (*UploadResponse, error) {
-	ext := filepath.Ext(originalFilename)
-
-	if queryIndex := strings.Index(ext, "?"); queryIndex != -1 {
-		ext = ext[:queryIndex]
-	}
-
-	uniqueID := uuid.New().String()
-	filename := fmt.Sprintf("%s%s", uniqueID, ext)
-
 	if contentType == "" {
 		contentType = "application/octet-stream"
 	}
@@ -87,7 +63,7 @@ func (s3c *S3Client) UploadFile(ctx context.Context, file io.Reader, originalFil
 	// Upload parameters
 	input := &s3.PutObjectInput{
 		Bucket:      aws.String(s3c.bucketName),
-		Key:         aws.String(filename),
+		Key:         aws.String(originalFilename),
 		Body:        file,
 		ContentType: aws.String(contentType),
 	}
@@ -99,11 +75,11 @@ func (s3c *S3Client) UploadFile(ctx context.Context, file io.Reader, originalFil
 
 	// Format: https://bucket-name.s3.region.amazonaws.com/filename
 	permanentURL := fmt.Sprintf("https://%s.s3.%s.amazonaws.com/%s",
-		s3c.bucketName, s3c.region, filename)
+		s3c.bucketName, s3c.region, originalFilename)
 
 	return &UploadResponse{
 		URL:         permanentURL,
-		Filename:    filename,
+		Filename:    originalFilename,
 		Size:        fileSize,
 		ContentType: contentType,
 	}, nil

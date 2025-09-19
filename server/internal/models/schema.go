@@ -88,7 +88,7 @@ type Quiz struct {
 	// Relationships
 	PostedByUser     *User              `gorm:"foreignKey:PostedByUserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"postedByUser,omitempty"`
 	Questions        []*Question        `gorm:"foreignKey:QuizID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"questions,omitempty"`
-	Attachments      []*Attachment      `gorm:"foreignKey:QuizID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attachments,omitempty"`
+	Attachments      []*Attachment      `gorm:"foreignKey:QuizID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attachments"`
 	Attempts         []*Attempt         `gorm:"foreignKey:QuizID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attempts,omitempty"`
 	AttemptDurations []*AttemptDuration `gorm:"foreignKey:QuizID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attemptDurations,omitempty"`
 }
@@ -108,7 +108,7 @@ type Question struct {
 	PostedByUser *User         `gorm:"foreignKey:PostedByUserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"postedByUser,omitempty"`
 	Quiz         *Quiz         `gorm:"foreignKey:QuizID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"quiz,omitempty"`
 	Answers      []*Answer     `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"answers,omitempty"`
-	Attachments  []*Attachment `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attachments,omitempty"`
+	Attachments  []*Attachment `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attachments"`
 	Attempts     []*Attempt    `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attempts,omitempty"`
 }
 
@@ -126,7 +126,7 @@ type Answer struct {
 	// Relationships
 	PostedByUser *User         `gorm:"foreignKey:PostedByUserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"postedByUser,omitempty"`
 	Question     *Question     `gorm:"foreignKey:QuestionID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"question,omitempty"`
-	Attachments  []*Attachment `gorm:"foreignKey:AnswerID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attachments,omitempty"`
+	Attachments  []*Attachment `gorm:"foreignKey:AnswerID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attachments"`
 	Attempts     []*Attempt    `gorm:"foreignKey:AnswerID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attempts,omitempty"`
 }
 
@@ -176,17 +176,18 @@ type SiteVisit struct {
 }
 
 type Attachment struct {
-	ID         string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
-	Type       string    `gorm:"column:type;not null;index" json:"type"`
-	UserID     string    `gorm:"column:userID;default:null;index" json:"userID"`
-	QuizID     string    `gorm:"column:quizID;default:null;index" json:"quizID"`
-	QuestionID string    `gorm:"column:questionID;default:null;index" json:"questionID"`
-	AnswerID   string    `gorm:"column:answerID;default:null;index" json:"answerID"`
-	Filename   string    `gorm:"column:filename;not null" json:"filename"`
-	Url        string    `gorm:"column:url;not null" json:"url"`
-	Size       int64     `gorm:"column:size;not null" json:"size"`
-	CreatedAt  time.Time `gorm:"column:createdAt;index" json:"createdAt"`
-	UpdatedAt  time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
+	ID          string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
+	Type        string    `gorm:"column:type;not null;index" json:"type"` //USER, QUIZ, QUESTION, ANSWER
+	UserID      string    `gorm:"column:userID;default:null;index" json:"userID"`
+	QuizID      string    `gorm:"column:quizID;default:null;index" json:"quizID"`
+	QuestionID  string    `gorm:"column:questionID;default:null;index" json:"questionID"`
+	AnswerID    string    `gorm:"column:answerID;default:null;index" json:"answerID"`
+	Filename    string    `gorm:"column:filename;not null" json:"filename"`
+	Url         string    `gorm:"column:url;not null" json:"url"`
+	Size        int64     `gorm:"column:size;not null" json:"size"`
+	ContentType string    `gorm:"column:contentType;not null" json:"contentType"`
+	CreatedAt   time.Time `gorm:"column:createdAt;index" json:"createdAt"`
+	UpdatedAt   time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
 
 	// Relationships
 	User     *User     `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"user,omitempty"`

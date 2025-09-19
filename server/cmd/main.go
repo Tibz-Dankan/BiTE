@@ -7,6 +7,7 @@ import (
 
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/auth"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/health"
+	"github.com/Tibz-Dankan/BiTE/internal/handlers/quiz"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/status"
 	"github.com/Tibz-Dankan/BiTE/internal/middlewares"
 	"github.com/Tibz-Dankan/BiTE/internal/pkg"
@@ -57,6 +58,12 @@ func main() {
 	userGroup.Patch("/:id", middlewares.Auth, auth.UpdateUser)
 	userGroup.Get("/", middlewares.Auth, middlewares.IsAdmin, auth.GetAllUsers)
 
+	// Quiz
+	quizGroup := app.Group("/api/v1/quiz", func(c *fiber.Ctx) error {
+		return c.Next()
+	})
+	quizGroup.Post("/", middlewares.Auth, middlewares.IsAdmin, quiz.PostQuiz)
+
 	// Status
 	app.Get("/status", status.GetAppStatus)
 
@@ -67,7 +74,6 @@ func main() {
 		message := fmt.Sprintf("api route '%s' doesn't exist!", c.Path())
 		return fiber.NewError(fiber.StatusNotFound, message)
 	})
-
 
 	log.Fatal(app.Listen("0.0.0.0:3000"))
 }
