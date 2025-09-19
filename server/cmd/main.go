@@ -63,6 +63,7 @@ func main() {
 		return c.Next()
 	})
 	quizGroup.Post("/", middlewares.Auth, middlewares.IsAdmin, quiz.PostQuiz)
+	quizGroup.Patch("/:id", middlewares.Auth, middlewares.IsAdmin, quiz.UpdateQuiz)
 
 	// Status
 	app.Get("/status", status.GetAppStatus)
