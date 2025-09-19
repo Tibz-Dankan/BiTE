@@ -55,7 +55,7 @@ var PostQuiz = func(c *fiber.Ctx) error {
 	}
 	quiz.StartsAt = parsedStartsAt
 
-	parsedEndsAt, err := time.Parse(time.RFC3339, startsAtStr)
+	parsedEndsAt, err := time.Parse(time.RFC3339, endsAtStr)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, "Invalid endsAt format! Must be an ISO 8601 string.")
 	}
@@ -134,7 +134,7 @@ var PostQuiz = func(c *fiber.Ctx) error {
 		attachment.Url = uploadImageResp.URL
 		attachment.Filename = uploadImageResp.Filename
 
-		quiz.Attachments[0] = &attachment
+		quiz.Attachments = append(quiz.Attachments, &attachment)
 	}
 
 	newQuiz, err := quiz.Create(quiz)
