@@ -178,10 +178,10 @@ type SiteVisit struct {
 type Attachment struct {
 	ID          string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
 	Type        string    `gorm:"column:type;not null;index" json:"type"` //USER, QUIZ, QUESTION, ANSWER
-	UserID      string    `gorm:"column:userID;default:null;index" json:"userID"`
-	QuizID      string    `gorm:"column:quizID;default:null;index" json:"quizID"`
-	QuestionID  string    `gorm:"column:questionID;default:null;index" json:"questionID"`
-	AnswerID    string    `gorm:"column:answerID;default:null;index" json:"answerID"`
+	UserID      string    `gorm:"column:userID;default:null;index" json:"userID,omitempty"`
+	QuizID      string    `gorm:"column:quizID;default:null;index" json:"quizID,omitempty"`
+	QuestionID  string    `gorm:"column:questionID;default:null;index" json:"questionID,omitempty"`
+	AnswerID    string    `gorm:"column:answerID;default:null;index" json:"answerID,omitempty"`
 	Filename    string    `gorm:"column:filename;not null" json:"filename"`
 	Url         string    `gorm:"column:url;not null" json:"url"`
 	Size        int64     `gorm:"column:size;not null" json:"size"`
