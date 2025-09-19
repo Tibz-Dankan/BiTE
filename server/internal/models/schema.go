@@ -78,7 +78,6 @@ type Quiz struct {
 	ID             string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
 	Title          string    `gorm:"column:title;not null;index" json:"title"`
 	PostedByUserID string    `gorm:"column:postedByUserID;not null;index" json:"postedByUserID"`
-	AttachmentID   string    `gorm:"column:attachmentID;default:null" json:"attachmentID"`
 	StartsAt       time.Time `gorm:"column:startsAt;index" json:"startsAt"`
 	EndsAt         time.Time `gorm:"column:endsAt;index" json:"endsAt"`
 	CanBeAttempted bool      `gorm:"column:canBeAttempted;default:false;index" json:"canBeAttempted"`
@@ -98,7 +97,6 @@ type Question struct {
 	Title                     string    `gorm:"column:title;not null;index" json:"title"`
 	PostedByUserID            string    `gorm:"column:postedByUserID;not null;index" json:"postedByUserID"`
 	QuizID                    string    `gorm:"column:quizID;not null;index" json:"quizID"`
-	AttachmentID              string    `gorm:"column:attachmentID;default:null" json:"attachmentID"`
 	SequenceNumber            int64     `gorm:"column:sequenceNumber;not null;index" json:"sequenceNumber"`
 	HasMultipleCorrectAnswers bool      `gorm:"column:hasMultipleCorrectAnswers;default:false;index" json:"hasMultipleCorrectAnswers"`
 	CreatedAt                 time.Time `gorm:"column:createdAt;index" json:"createdAt"`
@@ -117,7 +115,6 @@ type Answer struct {
 	Title          string    `gorm:"column:title;not null;index" json:"title"`
 	PostedByUserID string    `gorm:"column:postedByUserID;not null;index" json:"postedByUserID"`
 	QuestionID     string    `gorm:"column:questionID;not null;index" json:"questionID"`
-	AttachmentID   string    `gorm:"column:attachmentID;default:null" json:"attachmentID"`
 	SequenceNumber int64     `gorm:"column:sequenceNumber;not null;index" json:"sequenceNumber"`
 	IsCorrect      bool      `gorm:"column:isCorrect;default:false;index" json:"isCorrect"`
 	CreatedAt      time.Time `gorm:"column:createdAt;index" json:"createdAt"`
