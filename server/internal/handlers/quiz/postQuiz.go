@@ -91,6 +91,9 @@ var PostQuiz = func(c *fiber.Ctx) error {
 		}
 
 		attachment.Size = fileHeader.Size
+		originalFilename := fileHeader.Filename
+
+		log.Println("originalFilename: ", originalFilename)
 
 		file, err := fileHeader.Open()
 		if err != nil {
@@ -109,23 +112,21 @@ var PostQuiz = func(c *fiber.Ctx) error {
 		contentType, err := imageProcessor.GetContentTypeFromBinary(imgBuf)
 		if err != nil {
 			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
-
 		}
 		log.Println("Content type: ", contentType)
 
-		filename := pkg.GenerateImageFilename()
+		filename := pkg.GenerateImageFilename(originalFilename)
 		imgFile := imageProcessor.BinaryToReader(imgBuf)
 
-		uploadImageResp, err := newS3Client.UploadFile(
+		uploadImageResp, err := newS3Client.AddFile(
 			ctx,
 			imgFile,
 			filename,
 			contentType,
-			attachment.Size,
 		)
 
 		if err != nil {
-			log.Println("Error uploading article image to s3", err)
+			log.Println("Error uploading image to s3", err)
 			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 		}
 
