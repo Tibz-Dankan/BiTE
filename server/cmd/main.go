@@ -65,6 +65,7 @@ func main() {
 	quizGroup.Post("/", middlewares.Auth, middlewares.IsAdmin, quiz.PostQuiz)
 	quizGroup.Patch("/:id", middlewares.Auth, middlewares.IsAdmin, quiz.UpdateQuiz)
 	quizGroup.Get("/:id", middlewares.Auth, quiz.GetQuiz)
+	quizGroup.Get("/", middlewares.Auth, quiz.GetAllQuizzes)
 	quizGroup.Patch("/:id/attachment/:attachmentID", middlewares.Auth, middlewares.IsAdmin, quiz.UpdateQuizAttachment)
 
 	// Status
