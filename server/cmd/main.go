@@ -77,6 +77,7 @@ func main() {
 		return c.Next()
 	})
 	questionGroup.Post("/", middlewares.Auth, middlewares.IsAdmin, question.PostQuestion)
+	questionGroup.Patch("/:id", middlewares.Auth, middlewares.IsAdmin, question.UpdateQuestion)
 
 	// Status
 	app.Get("/status", status.GetAppStatus)
