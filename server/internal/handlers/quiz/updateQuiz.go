@@ -37,6 +37,9 @@ var UpdateQuiz = func(c *fiber.Ctx) error {
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
+	if savedQuiz.ID == "" {
+		return fiber.NewError(fiber.StatusInternalServerError, "Quiz of provided ID doesn't exist!")
+	}
 
 	user, err = user.FindOne(updateQuizInput.PostedByUserID)
 	if err != nil {
