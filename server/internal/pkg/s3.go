@@ -2,6 +2,7 @@ package pkg
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -21,11 +22,9 @@ type S3Client struct {
 }
 
 type UploadResponse struct {
-	ID          uint   `json:"id"`
 	URL         string `json:"url"`
 	Filename    string `json:"filename"`
-	Size        int64  `json:"size"`
-	ContentType string `json:"content_type"`
+	ContentType string `json:"contentType"`
 }
 
 func (s3c *S3Client) NewS3Client(ctx context.Context) (*S3Client, error) {
@@ -55,15 +54,14 @@ func (s3c *S3Client) NewS3Client(ctx context.Context) (*S3Client, error) {
 	}, nil
 }
 
-func (s3c *S3Client) UploadFile(ctx context.Context, file io.Reader, originalFilename string, contentType string, fileSize int64) (*UploadResponse, error) {
+func (s3c *S3Client) AddFile(ctx context.Context, file io.Reader, filename string, contentType string) (*UploadResponse, error) {
 	if contentType == "" {
 		contentType = "application/octet-stream"
 	}
 
-	// Upload parameters
 	input := &s3.PutObjectInput{
 		Bucket:      aws.String(s3c.bucketName),
-		Key:         aws.String(originalFilename),
+		Key:         aws.String(filename),
 		Body:        file,
 		ContentType: aws.String(contentType),
 	}
@@ -75,12 +73,50 @@ func (s3c *S3Client) UploadFile(ctx context.Context, file io.Reader, originalFil
 
 	// Format: https://bucket-name.s3.region.amazonaws.com/filename
 	permanentURL := fmt.Sprintf("https://%s.s3.%s.amazonaws.com/%s",
-		s3c.bucketName, s3c.region, originalFilename)
+		s3c.bucketName, s3c.region, filename)
 
 	return &UploadResponse{
 		URL:         permanentURL,
-		Filename:    originalFilename,
-		Size:        fileSize,
+		Filename:    filename,
+		ContentType: contentType,
+	}, nil
+}
+
+func (s3c *S3Client) UpdateFile(ctx context.Context, file io.Reader, newFilename string, oldFilename string, contentType string) (*UploadResponse, error) {
+	if contentType == "" {
+		contentType = "application/octet-stream"
+	}
+
+	input := &s3.PutObjectInput{
+		Bucket:      aws.String(s3c.bucketName),
+		Key:         aws.String(newFilename),
+		Body:        file,
+		ContentType: aws.String(contentType),
+	}
+
+	_, err := s3c.client.PutObject(ctx, input)
+	if err != nil {
+		return nil, fmt.Errorf("failed to upload file to S3: %v", err)
+	}
+
+	exists, err := s3c.FileExists(ctx, oldFilename)
+	if err != nil {
+		return nil, fmt.Errorf("error checking file existence in s3: %v", err)
+	}
+
+	if exists {
+		if err := s3c.DeleteFile(ctx, oldFilename); err != nil {
+			return nil, fmt.Errorf("failed to delete file to S3: %v", err)
+		}
+	}
+
+	// Format: https://bucket-name.s3.region.amazonaws.com/filename
+	permanentURL := fmt.Sprintf("https://%s.s3.%s.amazonaws.com/%s",
+		s3c.bucketName, s3c.region, newFilename)
+
+	return &UploadResponse{
+		URL:         permanentURL,
+		Filename:    newFilename,
 		ContentType: contentType,
 	}, nil
 }
@@ -98,6 +134,22 @@ func (s3c *S3Client) DeleteFile(ctx context.Context, filename string) error {
 	return nil
 }
 
+// func (s3c *S3Client) FileExists(ctx context.Context, filename string) (bool, error) {
+// 	input := &s3.HeadObjectInput{
+// 		Bucket: aws.String(s3c.bucketName),
+// 		Key:    aws.String(filename),
+// 	}
+
+// 	_, err := s3c.client.HeadObject(ctx, input)
+// 	if err != nil {
+// 		if err := err.(*types.NotFound); err != nil {
+// 			return false, nil
+// 		}
+// 		return false, err
+// 	}
+// 	return true, nil
+// }
+
 func (s3c *S3Client) FileExists(ctx context.Context, filename string) (bool, error) {
 	input := &s3.HeadObjectInput{
 		Bucket: aws.String(s3c.bucketName),
@@ -106,10 +158,18 @@ func (s3c *S3Client) FileExists(ctx context.Context, filename string) (bool, err
 
 	_, err := s3c.client.HeadObject(ctx, input)
 	if err != nil {
-		// var notFound *types.NotFound
-		if err := err.(*types.NotFound); err != nil {
+		// // Use safe type assertion with comma ok idiom
+		// if _, ok := err.(*types.NotFound); ok {
+		// 	return false, nil
+		// }
+
+		// Alternative approach using error checking methods
+		var notFound *types.NotFound
+		if errors.As(err, &notFound) {
 			return false, nil
 		}
+
+		// For any other error, return it
 		return false, err
 	}
 	return true, nil

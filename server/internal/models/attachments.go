@@ -112,9 +112,33 @@ func (a *Attachment) FindAllByAnswer(answerID string, limit float64, cursor stri
 }
 
 func (a *Attachment) Update() (Attachment, error) {
-	db.Save(&a)
+	if err := db.Save(&a).Error; err != nil {
+		return Attachment{}, err
+	}
 
 	return *a, nil
+}
+
+func (a *Attachment) UpdateFileDetails(attachment Attachment) (Attachment, error) {
+
+	if err := db.Model(&Attachment{}).
+		Where("id = ?", attachment.ID).
+		Updates(map[string]interface{}{
+			"type":        attachment.Type,
+			"url":         attachment.Url,
+			"filename":    attachment.Filename,
+			"size":        attachment.Size,
+			"contentType": attachment.ContentType,
+		}).Error; err != nil {
+		return attachment, err
+	}
+
+	attachment, err := a.FindOne(attachment.ID)
+	if err != nil {
+		return attachment, err
+	}
+
+	return attachment, nil
 }
 
 func (a *Attachment) Delete(id string) error {
