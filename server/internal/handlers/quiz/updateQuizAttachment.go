@@ -30,7 +30,7 @@ var UpdateQuizAttachment = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 	if savedQuiz.ID == "" {
-		return fiber.NewError(fiber.StatusInternalServerError, "Quiz of provided ID doesn't exist!")
+		return fiber.NewError(fiber.StatusBadRequest, "Quiz of provided ID doesn't exist!")
 	}
 
 	fileHeader, err := c.FormFile("file")
