@@ -78,6 +78,7 @@ func main() {
 	})
 	questionGroup.Post("/", middlewares.Auth, middlewares.IsAdmin, question.PostQuestion)
 	questionGroup.Patch("/:id", middlewares.Auth, middlewares.IsAdmin, question.UpdateQuestion)
+	questionGroup.Patch("/:id/attachment/:attachmentID", middlewares.Auth, middlewares.IsAdmin, question.UpdateQuestionAttachment)
 
 	// Status
 	app.Get("/status", status.GetAppStatus)
