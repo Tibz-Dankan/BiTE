@@ -38,7 +38,7 @@ var UpdateQuiz = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	user, err = user.FindOne(quiz.PostedByUserID)
+	user, err = user.FindOne(updateQuizInput.PostedByUserID)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
@@ -93,5 +93,5 @@ var UpdateQuiz = func(c *fiber.Ctx) error {
 		"data":    updatedQuiz,
 	}
 
-	return c.Status(fiber.StatusCreated).JSON(response)
+	return c.Status(fiber.StatusOK).JSON(response)
 }
