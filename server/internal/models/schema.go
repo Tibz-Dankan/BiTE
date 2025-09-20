@@ -86,7 +86,7 @@ type Quiz struct {
 
 	// Relationships
 	PostedByUser     *User              `gorm:"foreignKey:PostedByUserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"postedByUser,omitempty"`
-	Questions        []*Question        `gorm:"foreignKey:QuizID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"questions,omitempty"`
+	Questions        []*Question        `gorm:"foreignKey:QuizID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"questions"`
 	Attachments      []*Attachment      `gorm:"foreignKey:QuizID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attachments"`
 	Attempts         []*Attempt         `gorm:"foreignKey:QuizID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attempts,omitempty"`
 	AttemptDurations []*AttemptDuration `gorm:"foreignKey:QuizID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attemptDurations,omitempty"`
@@ -105,7 +105,7 @@ type Question struct {
 	// Relationships
 	PostedByUser *User         `gorm:"foreignKey:PostedByUserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"postedByUser,omitempty"`
 	Quiz         *Quiz         `gorm:"foreignKey:QuizID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"quiz,omitempty"`
-	Answers      []*Answer     `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"answers,omitempty"`
+	Answers      []*Answer     `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"answers"`
 	Attachments  []*Attachment `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attachments"`
 	Attempts     []*Attempt    `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attempts,omitempty"`
 }
