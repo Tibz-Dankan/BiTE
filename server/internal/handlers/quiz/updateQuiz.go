@@ -72,7 +72,6 @@ var UpdateQuiz = func(c *fiber.Ctx) error {
 	}
 
 	savedQuiz.Title = updateQuizInput.Title
-	savedQuiz.PostedByUserID = updateQuizInput.PostedByUserID
 	savedQuiz.EndsAt = parsedEndsAt
 	savedQuiz.StartsAt = parsedStartsAt
 
