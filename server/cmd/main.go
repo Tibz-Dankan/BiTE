@@ -7,6 +7,7 @@ import (
 
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/auth"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/health"
+	"github.com/Tibz-Dankan/BiTE/internal/handlers/question"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/quiz"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/status"
 	"github.com/Tibz-Dankan/BiTE/internal/middlewares"
@@ -70,6 +71,12 @@ func main() {
 	quizGroup.Patch("/:id/attachment/:attachmentID", middlewares.Auth, middlewares.IsAdmin, quiz.UpdateQuizAttachment)
 	quizGroup.Patch("/:id/attemptable", middlewares.Auth, middlewares.IsAdmin, quiz.MakeQuizAttemptable)
 	quizGroup.Patch("/:id/unattemptable", middlewares.Auth, middlewares.IsAdmin, quiz.MakeQuizUnAttemptable)
+
+	// Question
+	questionGroup := app.Group("/api/v1/question", func(c *fiber.Ctx) error {
+		return c.Next()
+	})
+	questionGroup.Post("/", middlewares.Auth, middlewares.IsAdmin, question.PostQuestion)
 
 	// Status
 	app.Get("/status", status.GetAppStatus)
