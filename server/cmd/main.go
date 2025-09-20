@@ -67,6 +67,8 @@ func main() {
 	quizGroup.Get("/:id", middlewares.Auth, quiz.GetQuiz)
 	quizGroup.Get("/", middlewares.Auth, quiz.GetAllQuizzes)
 	quizGroup.Patch("/:id/attachment/:attachmentID", middlewares.Auth, middlewares.IsAdmin, quiz.UpdateQuizAttachment)
+	quizGroup.Patch("/:id/attemptable", middlewares.Auth, middlewares.IsAdmin, quiz.MakeQuizAttemptable)
+	quizGroup.Patch("/:id/unattemptable", middlewares.Auth, middlewares.IsAdmin, quiz.MakeQuizUnAttemptable)
 
 	// Status
 	app.Get("/status", status.GetAppStatus)
