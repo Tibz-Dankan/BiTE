@@ -38,7 +38,7 @@ var UpdateQuiz = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 	if savedQuiz.ID == "" {
-		return fiber.NewError(fiber.StatusInternalServerError, "Quiz of provided ID doesn't exist!")
+		return fiber.NewError(fiber.StatusBadRequest, "Quiz of provided ID doesn't exist!")
 	}
 
 	user, err = user.FindOne(updateQuizInput.PostedByUserID)
@@ -46,7 +46,7 @@ var UpdateQuiz = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 	if user.ID == "" {
-		return fiber.NewError(fiber.StatusInternalServerError, "User of provided ID doesn't exist!")
+		return fiber.NewError(fiber.StatusBadRequest, "User of provided ID doesn't exist!")
 	}
 
 	parsedStartsAt, err := time.Parse(time.RFC3339, updateQuizInput.StartsAt)

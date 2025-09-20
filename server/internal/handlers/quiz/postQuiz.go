@@ -46,7 +46,7 @@ var PostQuiz = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 	if user.ID == "" {
-		return fiber.NewError(fiber.StatusInternalServerError, "User of provided ID doesn't exist!")
+		return fiber.NewError(fiber.StatusBadRequest, "User of provided ID doesn't exist!")
 	}
 
 	parsedStartsAt, err := time.Parse(time.RFC3339, startsAtStr)
