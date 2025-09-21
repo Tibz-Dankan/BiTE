@@ -1,8 +1,6 @@
 package question
 
 import (
-	"log"
-
 	"github.com/Tibz-Dankan/BiTE/internal/models"
 	"github.com/gofiber/fiber/v2"
 )
@@ -12,9 +10,6 @@ var SearchQuestion = func(c *fiber.Ctx) error {
 	quiz := models.Quiz{}
 	quizID := c.Query("quizID")
 	query := c.Query("query")
-
-	log.Println("quizID: ", quizID)
-	log.Println("query: ", query)
 
 	savedQuiz, err := quiz.FindOne(quizID)
 	if err != nil {
