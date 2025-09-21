@@ -7,6 +7,7 @@ import (
 
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/answer"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/attempt"
+	"github.com/Tibz-Dankan/BiTE/internal/handlers/attemptduration"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/auth"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/health"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/question"
@@ -104,6 +105,12 @@ func main() {
 		return c.Next()
 	})
 	attemptGroup.Post("/", middlewares.Auth, attempt.PostAttempt)
+
+	// AttemptDuration
+	attemptDurationGroup := app.Group("/api/v1/attemptduration", func(c *fiber.Ctx) error {
+		return c.Next()
+	})
+	attemptDurationGroup.Patch("/quiz/:quizID", middlewares.Auth, attemptduration.UpdateAttemptDuration)
 
 	// SiteVisit
 	siteVisitGroup := app.Group("/api/v1/sitevisit", func(c *fiber.Ctx) error {
