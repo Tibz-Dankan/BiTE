@@ -7,16 +7,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// ID         string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
-// UserID     string    `gorm:"column:userID;not null;index" json:"userID"`
-// QuizID     string    `gorm:"column:quizID;not null;index" json:"quizID"`
-// QuestionID string    `gorm:"column:questionID;not null;index" json:"questionID"`
-// AnswerID   string    `gorm:"column:answerID;not null;index" json:"answerID"`
-// CreatedAt  time.Time `gorm:"column:createdAt;index" json:"createdAt"`
-// UpdatedAt  time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
-
 var PostAttempt = func(c *fiber.Ctx) error {
 	attempt := models.Attempt{}
+	question := models.Question{}
 
 	if err := c.BodyParser(&attempt); err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
@@ -25,11 +18,12 @@ var PostAttempt = func(c *fiber.Ctx) error {
 	log.Printf("attempt: %+v", attempt)
 
 	if attempt.UserID == "" ||
-		attempt.QuizID == "" ||
+		// attempt.QuizID == "" || // To be reported to fibre core team
 		attempt.QuestionID == "" ||
 		attempt.AnswerID == "" {
 		return fiber.NewError(fiber.StatusBadRequest,
-			"Missing UserID/QuizID/QuestionID/AnswerID!")
+			// "Missing UserID/QuizID/QuestionID/AnswerID!")
+			"Missing UserID/QuestionID/AnswerID!")
 	}
 
 	savedAttempt, err := attempt.FindOneByQuestionAnswerAndUser(attempt.QuestionID,
@@ -41,6 +35,16 @@ var PostAttempt = func(c *fiber.Ctx) error {
 	if savedAttempt.ID != "" {
 		return fiber.NewError(fiber.StatusBadRequest, "You have already attempted this question!")
 	}
+
+	savedQuestion, err := question.FindOne(attempt.QuestionID)
+	if err != nil {
+		log.Printf("Error getting location ID:  %+v", err)
+	}
+
+	if savedQuestion.ID == "" {
+		return fiber.NewError(fiber.StatusBadRequest, "Question of provided ID doesn't exist!")
+	}
+	attempt.QuizID = savedQuestion.QuizID
 
 	newAttempt, err := attempt.Create(attempt)
 	if err != nil {
