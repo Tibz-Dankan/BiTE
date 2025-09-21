@@ -91,6 +91,7 @@ func main() {
 		return c.Next()
 	})
 	answerGroup.Post("/", middlewares.Auth, middlewares.IsAdmin, answer.PostAnswer)
+	answerGroup.Patch("/:id", middlewares.Auth, middlewares.IsAdmin, answer.UpdateAnswer)
 
 	// Status
 	app.Get("/status", status.GetAppStatus)

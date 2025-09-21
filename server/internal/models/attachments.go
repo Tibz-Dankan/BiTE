@@ -31,7 +31,6 @@ func (a *Attachment) FindAllByUser(userID string, limit float64, cursor string) 
 	var Attachments []Attachment
 
 	query := db.Model(&Attachment{}).
-		Preload("Attachments").
 		Order("\"createdAt\" DESC").Limit(int(limit))
 
 	if cursor != "" {
@@ -52,7 +51,6 @@ func (a *Attachment) FindAllByQuiz(quizID string, limit float64, cursor string) 
 	var Attachments []Attachment
 
 	query := db.Model(&Attachment{}).
-		Preload("Attachments").
 		Order("\"createdAt\" DESC").Limit(int(limit))
 
 	if cursor != "" {
@@ -73,7 +71,6 @@ func (a *Attachment) FindAllByQuestion(questionID string, limit float64, cursor 
 	var Attachments []Attachment
 
 	query := db.Model(&Attachment{}).
-		Preload("Attachments").
 		Order("\"createdAt\" DESC").Limit(int(limit))
 
 	if cursor != "" {
@@ -94,7 +91,6 @@ func (a *Attachment) FindAllByAnswer(answerID string, limit float64, cursor stri
 	var Attachments []Attachment
 
 	query := db.Model(&Attachment{}).
-		Preload("Attachments").
 		Order("\"createdAt\" DESC").Limit(int(limit))
 
 	if cursor != "" {
