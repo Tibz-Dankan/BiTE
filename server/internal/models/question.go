@@ -33,7 +33,10 @@ func (q *Question) FindOneAndIncludeAttachments(id string) (Question, error) {
 	db.Model(&Question{}).
 		Preload("Attachments").
 		Preload("Answers.Attachments").
-		Preload("Answers").First(&question, "id = ?", id)
+		Preload("Answers", func(db *gorm.DB) *gorm.DB {
+			return db.Order("\"sequenceNumber\" ASC")
+		}).
+		First(&question, "id = ?", id)
 
 	return question, nil
 }
@@ -44,8 +47,11 @@ func (q *Question) FindAllByQuiz(quizID string, limit float64, cursor string) ([
 	query := db.Model(&Question{}).
 		Preload("Attachments").
 		Preload("Answers.Attachments").
-		Preload("Answers").
-		Order("\"sequenceNumber\" ASC").Limit(int(limit))
+		Preload("Answers", func(db *gorm.DB) *gorm.DB {
+			return db.Order("\"sequenceNumber\" ASC")
+		}).
+		Order("\"sequenceNumber\" ASC").
+		Limit(int(limit))
 
 	if cursor != "" {
 		var lastQuestion Question
@@ -68,7 +74,9 @@ func (q *Question) SearchByQuiz(quizID string, query string) ([]Question, int, e
 	sqlQuery := db.Model(&Question{}).
 		Preload("Attachments").
 		Preload("Answers.Attachments").
-		Preload("Answers").
+		Preload("Answers", func(db *gorm.DB) *gorm.DB {
+			return db.Order("\"sequenceNumber\" ASC")
+		}).
 		Order("\"sequenceNumber\" ASC")
 
 	sqlQuery.Where("\"quizID\" = ? AND \"title\" ILIKE ?",
