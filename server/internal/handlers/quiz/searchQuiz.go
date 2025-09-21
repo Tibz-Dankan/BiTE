@@ -1,8 +1,6 @@
 package quiz
 
 import (
-	"log"
-
 	"github.com/Tibz-Dankan/BiTE/internal/models"
 	"github.com/gofiber/fiber/v2"
 )
@@ -10,8 +8,6 @@ import (
 var SearchQuiz = func(c *fiber.Ctx) error {
 	quiz := models.Quiz{}
 	query := c.Query("query")
-
-	log.Println("query: ", query)
 
 	quizzes, count, err := quiz.Search(query)
 	if err != nil {
