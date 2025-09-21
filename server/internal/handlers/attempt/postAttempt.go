@@ -29,7 +29,7 @@ var PostAttempt = func(c *fiber.Ctx) error {
 	savedAttempt, err := attempt.FindOneByQuestionAnswerAndUser(attempt.QuestionID,
 		attempt.AnswerID, attempt.UserID)
 	if err != nil {
-		log.Printf("Error getting location ID:  %+v", err)
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
 	if savedAttempt.ID != "" {
@@ -38,7 +38,7 @@ var PostAttempt = func(c *fiber.Ctx) error {
 
 	savedQuestion, err := question.FindOne(attempt.QuestionID)
 	if err != nil {
-		log.Printf("Error getting location ID:  %+v", err)
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
 	if savedQuestion.ID == "" {
