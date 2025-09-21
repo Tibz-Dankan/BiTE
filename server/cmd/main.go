@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/answer"
+	"github.com/Tibz-Dankan/BiTE/internal/handlers/attempt"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/auth"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/health"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/question"
@@ -97,6 +98,12 @@ func main() {
 	answerGroup.Delete("/:id", middlewares.Auth, middlewares.IsAdmin, answer.DeleteAnswer)
 	answerGroup.Get("/question/:questionID", middlewares.Auth, answer.GetAllAnswersByQuestion)
 	answerGroup.Patch("/:id/attachment/:attachmentID", middlewares.Auth, middlewares.IsAdmin, answer.UpdateAnswerAttachment)
+
+	// Attempt
+	attemptGroup := app.Group("/api/v1/attempt", func(c *fiber.Ctx) error {
+		return c.Next()
+	})
+	attemptGroup.Post("/", middlewares.Auth, attempt.PostAttempt)
 
 	// SiteVisit
 	siteVisitGroup := app.Group("/api/v1/sitevisit", func(c *fiber.Ctx) error {
