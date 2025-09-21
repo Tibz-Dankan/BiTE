@@ -92,6 +92,7 @@ func main() {
 	})
 	answerGroup.Post("/", middlewares.Auth, middlewares.IsAdmin, answer.PostAnswer)
 	answerGroup.Patch("/:id", middlewares.Auth, middlewares.IsAdmin, answer.UpdateAnswer)
+	answerGroup.Get("/:id", middlewares.Auth, answer.GetAnswer)
 	answerGroup.Get("/question/:questionID", middlewares.Auth, answer.GetAllAnswersByQuestion)
 	answerGroup.Patch("/:id/attachment/:attachmentID", middlewares.Auth, middlewares.IsAdmin, answer.UpdateAnswerAttachment)
 
