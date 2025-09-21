@@ -58,16 +58,16 @@ func (u *User) FindOne(id string) (User, error) {
 	return user, nil
 }
 
-func (u *User) FindByTelNumber(telNumber int) (User, error) {
+func (u *User) FindByEmail(email string) (User, error) {
 	var user User
-	db.First(&user, "\"telNumber\" = ?", telNumber)
+	db.First(&user, "email = ?", email)
 
 	return user, nil
 }
 
-func (u *User) FindByEmail(email string) (User, error) {
+func (u *User) FindUnknown() (User, error) {
 	var user User
-	db.First(&user, "email = ?", email)
+	db.First(&user, "email = ?", "unknownuser@mail.com")
 
 	return user, nil
 }
@@ -111,7 +111,6 @@ func (u *User) Update() (User, error) {
 
 func (u *User) Delete(id string) error {
 	db.Delete(&User{}, id)
-
 
 	return nil
 }
