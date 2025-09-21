@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/Tibz-Dankan/BiTE/internal/handlers/answer"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/auth"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/health"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/question"
@@ -84,6 +85,12 @@ func main() {
 	questionGroup.Delete("/:id", middlewares.Auth, question.DeleteQuestion)
 	questionGroup.Get("/quiz/:quizID", middlewares.Auth, question.GetAllQuestionsByQuiz)
 	questionGroup.Patch("/:id/attachment/:attachmentID", middlewares.Auth, middlewares.IsAdmin, question.UpdateQuestionAttachment)
+
+	// Answer
+	answerGroup := app.Group("/api/v1/answer", func(c *fiber.Ctx) error {
+		return c.Next()
+	})
+	answerGroup.Post("/", middlewares.Auth, middlewares.IsAdmin, answer.PostAnswer)
 
 	// Status
 	app.Get("/status", status.GetAppStatus)
