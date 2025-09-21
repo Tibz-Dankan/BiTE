@@ -82,7 +82,7 @@ func main() {
 	questionGroup.Patch("/:id", middlewares.Auth, middlewares.IsAdmin, question.UpdateQuestion)
 	questionGroup.Get("/search", middlewares.Auth, question.SearchQuestion)
 	questionGroup.Get("/:id", middlewares.Auth, question.GetQuestion)
-	questionGroup.Delete("/:id", middlewares.Auth, question.DeleteQuestion)
+	questionGroup.Delete("/:id", middlewares.Auth, middlewares.IsAdmin, question.DeleteQuestion)
 	questionGroup.Get("/quiz/:quizID", middlewares.Auth, question.GetAllQuestionsByQuiz)
 	questionGroup.Patch("/:id/attachment/:attachmentID", middlewares.Auth, middlewares.IsAdmin, question.UpdateQuestionAttachment)
 
@@ -93,6 +93,7 @@ func main() {
 	answerGroup.Post("/", middlewares.Auth, middlewares.IsAdmin, answer.PostAnswer)
 	answerGroup.Patch("/:id", middlewares.Auth, middlewares.IsAdmin, answer.UpdateAnswer)
 	answerGroup.Get("/:id", middlewares.Auth, answer.GetAnswer)
+	answerGroup.Delete("/:id", middlewares.Auth, middlewares.IsAdmin, answer.DeleteAnswer)
 	answerGroup.Get("/question/:questionID", middlewares.Auth, answer.GetAllAnswersByQuestion)
 	answerGroup.Patch("/:id/attachment/:attachmentID", middlewares.Auth, middlewares.IsAdmin, answer.UpdateAnswerAttachment)
 
