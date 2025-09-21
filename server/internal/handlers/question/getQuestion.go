@@ -1,6 +1,8 @@
 package question
 
 import (
+	"log"
+
 	"github.com/Tibz-Dankan/BiTE/internal/models"
 	"github.com/gofiber/fiber/v2"
 )
@@ -8,6 +10,8 @@ import (
 var GetQuestion = func(c *fiber.Ctx) error {
 	question := models.Question{}
 	questionID := c.Params("id")
+
+	log.Println("questionID: ", questionID)
 
 	savedQuestion, err := question.FindOneAndIncludeAttachments(questionID)
 	if err != nil {
