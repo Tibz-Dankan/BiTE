@@ -81,6 +81,7 @@ func main() {
 	questionGroup.Patch("/:id", middlewares.Auth, middlewares.IsAdmin, question.UpdateQuestion)
 	questionGroup.Get("/search", middlewares.Auth, question.SearchQuestion)
 	questionGroup.Get("/:id", middlewares.Auth, question.GetQuestion)
+	questionGroup.Delete("/:id", middlewares.Auth, question.DeleteQuestion)
 	questionGroup.Get("/quiz/:quizID", middlewares.Auth, question.GetAllQuestionsByQuiz)
 	questionGroup.Patch("/:id/attachment/:attachmentID", middlewares.Auth, middlewares.IsAdmin, question.UpdateQuestionAttachment)
 

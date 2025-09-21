@@ -103,6 +103,8 @@ func (q *Question) Delete(id string) error {
 
 func (q *Question) DeleteByQuiz(quizID string) error {
 
+	// To search all question and delete many
+
 	if err := db.Unscoped().Where("\"quizID\" = ?",
 		quizID).Delete(&Question{}).Error; err != nil {
 		return err
