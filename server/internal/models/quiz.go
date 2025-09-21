@@ -60,8 +60,11 @@ func (q *Quiz) Search(query string) ([]Quiz, int, error) {
 	var quizCount int
 
 	result := db.Model(&Quiz{}).
+		Preload("Attachments").
+		Order("\"createdAt\" DESC").
 		Where("\"title\" ILIKE ?", "%"+query+"%").
-		Order("\"createdAt\" DESC").Find(&Quizzes)
+		Find(&Quizzes)
+
 	if result.Error != nil {
 		return Quizzes, quizCount, result.Error
 	}

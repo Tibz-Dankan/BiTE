@@ -65,6 +65,7 @@ func main() {
 	})
 	quizGroup.Post("/", middlewares.Auth, middlewares.IsAdmin, quiz.PostQuiz)
 	quizGroup.Patch("/:id", middlewares.Auth, middlewares.IsAdmin, quiz.UpdateQuiz)
+	quizGroup.Get("/search", middlewares.Auth, quiz.SearchQuiz)
 	quizGroup.Get("/:id", middlewares.Auth, quiz.GetQuiz)
 	quizGroup.Get("/", middlewares.Auth, quiz.GetAllQuizzes)
 	quizGroup.Delete("/:id", middlewares.Auth, middlewares.IsAdmin, quiz.DeleteQuiz)
