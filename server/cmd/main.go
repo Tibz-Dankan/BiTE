@@ -10,6 +10,7 @@ import (
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/health"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/question"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/quiz"
+	"github.com/Tibz-Dankan/BiTE/internal/handlers/sitevisit"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/status"
 	"github.com/Tibz-Dankan/BiTE/internal/middlewares"
 	"github.com/Tibz-Dankan/BiTE/internal/pkg"
@@ -96,6 +97,12 @@ func main() {
 	answerGroup.Delete("/:id", middlewares.Auth, middlewares.IsAdmin, answer.DeleteAnswer)
 	answerGroup.Get("/question/:questionID", middlewares.Auth, answer.GetAllAnswersByQuestion)
 	answerGroup.Patch("/:id/attachment/:attachmentID", middlewares.Auth, middlewares.IsAdmin, answer.UpdateAnswerAttachment)
+
+	// SiteVisit
+	siteVisitGroup := app.Group("/api/v1/sitevisit", func(c *fiber.Ctx) error {
+		return c.Next()
+	})
+	siteVisitGroup.Post("/", middlewares.SetUserInRequest, sitevisit.PostSiteVisit)
 
 	// Status
 	app.Get("/status", status.GetAppStatus)

@@ -30,7 +30,6 @@ func (sv *SiteVisit) FindAll(limit float64, cursor string) ([]SiteVisit, error) 
 	var siteVisits []SiteVisit
 
 	query := db.Model(&SiteVisit{}).
-		Preload("Attachments").
 		Order("\"createdAt\" DESC").Limit(int(limit))
 
 	if cursor != "" {
