@@ -30,7 +30,10 @@ func (q *Question) FindOne(id string) (Question, error) {
 func (q *Question) FindOneAndIncludeAttachments(id string) (Question, error) {
 	var question Question
 
-	db.Model(&Question{}).Preload("Attachments").First(&question, "id = ?", id)
+	db.Model(&Question{}).
+		Preload("Attachments").
+		Preload("Answers.Attachments").
+		Preload("Answers").First(&question, "id = ?", id)
 
 	return question, nil
 }
