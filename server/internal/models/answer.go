@@ -40,7 +40,7 @@ func (a *Answer) FindAllByQuestion(questionID string, limit float64, cursor stri
 
 	query := db.Model(&Answer{}).
 		Preload("Attachments").
-		Order("\"createdAt\" DESC").Limit(int(limit))
+		Order("\"sequenceNumber\" ASC").Limit(int(limit))
 
 	if cursor != "" {
 		var lastAnswer Answer
