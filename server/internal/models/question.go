@@ -45,7 +45,7 @@ func (q *Question) FindAllByQuiz(quizID string, limit float64, cursor string) ([
 		Preload("Attachments").
 		Preload("Answers.Attachments").
 		Preload("Answers").
-		Order("\"createdAt\" DESC").Limit(int(limit))
+		Order("\"sequenceNumber\" ASC").Limit(int(limit))
 
 	if cursor != "" {
 		var lastQuestion Question
@@ -69,7 +69,7 @@ func (q *Question) SearchByQuiz(quizID string, query string) ([]Question, int, e
 		Preload("Attachments").
 		Preload("Answers.Attachments").
 		Preload("Answers").
-		Order("\"createdAt\" DESC")
+		Order("\"sequenceNumber\" ASC")
 
 	sqlQuery.Where("\"quizID\" = ? AND \"title\" ILIKE ?",
 		quizID, "%"+query+"%").Find(&questions)
