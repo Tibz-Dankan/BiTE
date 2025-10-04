@@ -14,6 +14,6 @@ RUN go build -o ./bin/BiTE ./cmd
 
 ENV GO_ENV=production
 
-EXPOSE 3000
+EXPOSE 5000
 
 ENTRYPOINT ["./bin/BiTE"]
