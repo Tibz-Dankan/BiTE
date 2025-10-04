@@ -155,7 +155,7 @@ services:
       - "9090:9090"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.grafana.rule=Host(`prometheus.bitcoinhighschool.com`)"
+      - "traefik.http.routers.prometheus.rule=Host(`prometheus.bitcoinhighschool.com`)"
 
 networks:
   app-network:
