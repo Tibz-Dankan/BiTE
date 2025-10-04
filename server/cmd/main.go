@@ -10,6 +10,7 @@ import (
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/attemptduration"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/auth"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/health"
+	"github.com/Tibz-Dankan/BiTE/internal/handlers/monitor"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/question"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/quiz"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/sitevisit"
@@ -117,6 +118,9 @@ func main() {
 		return c.Next()
 	})
 	siteVisitGroup.Post("/", middlewares.SetUserInRequest, sitevisit.PostSiteVisit)
+
+	// Metrics
+	app.Get("/metrics", monitor.GetMetrics)
 
 	// Status
 	app.Get("/status", status.GetAppStatus)
