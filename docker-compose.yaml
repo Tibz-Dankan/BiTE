@@ -108,7 +108,7 @@ services:
       - "traefik.http.routers.dashboard.entrypoints=websecure"
       - "traefik.http.services.dashboard.loadbalancer.server.port=8080"
       # Expose Prometheus metrics endpoint
-      - "traefik.http.routers.metrics.rule=Host(`traefik.tuliime.com`) && PathPrefix(`/metrics`)"
+      - "traefik.http.routers.metrics.rule=Host(`traefik.bitcoinhighschool.com`) && PathPrefix(`/metrics`)"
       - "traefik.http.routers.metrics.service=prometheus@internal"
       - "traefik.http.routers.metrics.entrypoints=websecure"
     volumes:
