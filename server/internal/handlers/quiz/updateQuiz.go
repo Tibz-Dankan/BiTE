@@ -12,6 +12,7 @@ type UpdateQuizInput struct {
 	PostedByUserID string `json:"postedByUserID"`
 	StartsAt       string `json:"startsAt"`
 	EndsAt         string `json:"endsAt"`
+	Instructions   string `json:"instructions"`
 }
 
 var UpdateQuiz = func(c *fiber.Ctx) error {
@@ -59,21 +60,22 @@ var UpdateQuiz = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "Invalid endsAt format! Must be an ISO 8601 string.")
 	}
 
-	now := time.Now()
+	// now := time.Now()
 
 	if parsedEndsAt.Before(parsedStartsAt) || parsedEndsAt.Equal(parsedStartsAt) {
 		return fiber.NewError(fiber.StatusBadRequest,
 			"endsAt can't be less or equal to startsAt!")
 	}
 
-	if parsedStartsAt.Before(now) || parsedEndsAt.Before(now) {
-		return fiber.NewError(fiber.StatusBadRequest,
-			"Provided startsAt/endsAt can't be less than current time!")
-	}
+	// if parsedStartsAt.Before(now) || parsedEndsAt.Before(now) {
+	// 	return fiber.NewError(fiber.StatusBadRequest,
+	// 		"Provided startsAt/endsAt can't be less than current time!")
+	// }
 
 	savedQuiz.Title = updateQuizInput.Title
 	savedQuiz.EndsAt = parsedEndsAt
 	savedQuiz.StartsAt = parsedStartsAt
+	savedQuiz.Instructions = updateQuizInput.Instructions
 
 	updatedQuiz, err := savedQuiz.Update()
 	if err != nil {

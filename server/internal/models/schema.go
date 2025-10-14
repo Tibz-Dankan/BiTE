@@ -77,6 +77,7 @@ type Location struct {
 type Quiz struct {
 	ID             string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
 	Title          string    `gorm:"column:title;not null;index" json:"title"`
+	Instructions   string    `gorm:"column:instructions;default:null" json:"instructions"`
 	PostedByUserID string    `gorm:"column:postedByUserID;not null;index" json:"postedByUserID"`
 	StartsAt       time.Time `gorm:"column:startsAt;index" json:"startsAt"`
 	EndsAt         time.Time `gorm:"column:endsAt;index" json:"endsAt"`
