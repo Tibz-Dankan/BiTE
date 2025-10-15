@@ -8,8 +8,8 @@ import type { Auth, SigninInPut } from "../../../types/auth";
 import { useAuthStore } from "../../../stores/auth";
 import { useNotificationStore } from "../../../stores/notification";
 import { InputField } from "../../ui/InputField";
-import { Button } from "../../ui/button";
 import { authAPI } from "../../../api/auth";
+import { Button } from "../../ui/Btn";
 
 export const Signin: React.FC = () => {
   const navigate = useNavigate();
@@ -82,14 +82,25 @@ export const Signin: React.FC = () => {
   });
 
   return (
-    <div className="flex flex-1 items-center justify-center p-4">
-      <div className="w-full max-w-md px-8 py-10 bg-white rounded-lg shadow-xl">
+    <div
+      className="min-w-[100vw] min-h-[100vh] flex flex-1 items-center
+      justify-center p-4"
+    >
+      <div
+        className="w-full max-w-md px-8 py-10 bg-white rounded-lg
+        shadow-sm"
+      >
         <div className="flex justify-center mb-8">
-          <span>BiTE</span>
+          <img
+            src="/images/bite-logo.png"
+            alt="BiTE Logo"
+            width={100}
+            height={100}
+          />
         </div>
 
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">
-          Bitcoin High School
+        <h2 className="text-xl font-semibold text-center text-gray-800 mb-8">
+          Sign In to Your Account
         </h2>
 
         <form onSubmit={formik.handleSubmit} className="space-y-6">
@@ -109,7 +120,7 @@ export const Signin: React.FC = () => {
             formik={formik}
             required={true}
           />
-          <Button type="submit" className="w-full" disabled={isPending}>
+          <Button type="submit" className="w-full mt-4" disabled={isPending}>
             {isPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

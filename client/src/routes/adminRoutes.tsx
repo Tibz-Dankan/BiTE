@@ -43,7 +43,6 @@ export const AdminRoutes: React.FC = () => {
       {
         title: "Page Not Found",
         icon: <LayoutDashboard className="h-5 w-5" />,
-        // path: "/a/*",
         path: "/*",
         showInSidebar: true,
         element: <PageNotFound />,

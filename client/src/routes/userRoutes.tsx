@@ -43,7 +43,6 @@ export const UserRoutes: React.FC = () => {
       {
         title: "Page Not Found",
         icon: <LayoutDashboard className="h-5 w-5" />,
-        // path: "/u/*",
         path: "/*",
         showInSidebar: true,
         element: <PageNotFound />,
