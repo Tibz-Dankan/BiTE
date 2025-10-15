@@ -41,7 +41,7 @@ export const InputField: React.FC<InputFieldProps> = (props) => {
             className={`text-sm first-letter:uppercase mb-1
              font-[450] text-gray-800`}
           >
-            {label} {isRequired && <span className=" text-red-700">*</span>}
+            {label} {isRequired && <span className="text-red-700">*</span>}
           </label>
         )}
         <div className="w-full relative">
@@ -55,23 +55,21 @@ export const InputField: React.FC<InputFieldProps> = (props) => {
             placeholder={placeholder}
             className={twMerge(
               `p-2 outline-none rounded-md border-[1px]
-               focus:border-primary text-gray-50 bg-[rgba(8,127,91,0.15)]
-               transition-all text-base w-full focus:outline-none
-                focus:border-(--clr-primary)  bg-(--clr-background)s ${
-                  hasError ? "border-red-400" : "border-[rgba(73,80,87,0.6)]"
-                }`,
+              focus:border-(--primary) focus:ring-1 ring-(--primary) 
+              transition-all text-sm w-full focus:outline-none
+              ${hasError ? "border-red-500" : "border-gray-400"}`,
               props.className
             )}
           />
 
           {isPasswordField && (
-            <div className="inline-block absolute right-2 top-[7px]">
+            <div className="inline-block absolute right-2 top-[9px]">
               {!showPassword && (
                 <span
                   className="cursor-pointer"
                   onClick={() => showPasswordHandler()}
                 >
-                  <Eye className="text-[#868e96]" />
+                  <Eye className="text-[#868e96] w-4 h-4" />
                 </span>
               )}
               {showPassword && (
@@ -79,7 +77,7 @@ export const InputField: React.FC<InputFieldProps> = (props) => {
                   className="cursor-pointer"
                   onClick={() => showPasswordHandler()}
                 >
-                  <EyeOff className="text-[#868e96]" />
+                  <EyeOff className="text-[#868e96] w-4 h-4" />
                 </span>
               )}
             </div>
@@ -88,10 +86,12 @@ export const InputField: React.FC<InputFieldProps> = (props) => {
         {hasError && (
           <p
             className="absolute bottom-0 left-0 text-sms text-red-500
-             first-letter:uppercase text-[12px] flex items-center gap-1"
+             first-letter:uppercase text-[12px] flex gap-1"
           >
             <AlertCircle className="text-inherit w-4 h-4" />
-            <span>{formik.errors[`${name}`]}</span>
+            <span className="first-letter:uppercase">
+              {formik.errors[`${name}`]}
+            </span>
           </p>
         )}
       </div>
