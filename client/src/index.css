@@ -20,6 +20,55 @@
 :root {
   --clr-background: oklch(97.69% 0.003 106.48);
   --clr-primary: oklch(74.93% 0.154 70.67);
+  --radius: 0.5rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.178 0.048 258.338);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.178 0.048 258.338);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.178 0.048 258.338);
+  --primary: oklch(0.749 0.154 70.67);
+  --primary-hover: oklch(0.65 0.154 70.67);
+  --primary-foreground: oklch(0.985 0.004 258.338);
+  --secondary: oklch(0.961 0.004 258.338);
+  --secondary-foreground: oklch(0.285 0.026 258.338);
+  --muted: oklch(0.961 0.004 258.338);
+  --muted-foreground: oklch(0.556 0.016 258.338);
+  --accent: oklch(0.85 0.154 70.67);
+  --accent-foreground: oklch(0.3 0.1 70.67);
+  --destructive: oklch(0.627 0.257 29.2);
+  --destructive-foreground: oklch(0.985 0.004 258.338);
+  --border: oklch(0.914 0.013 258.338);
+  --input: oklch(0.914 0.013 258.338);
+  --ring: oklch(0.749 0.154 70.67);
+  --chart-1: oklch(0.749 0.154 70.67);
+  --chart-2: oklch(0.65 0.154 70.67);
+  --chart-3: oklch(0.8 0.1 70.67);
+  --chart-4: oklch(0.7 0.13 70.67);
+  --chart-5: oklch(0.72 0.12 60);
+  --chart-6: oklch(0.68 0.15 80);
+
+  --font-geist-sans: "GeistSans", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  --font-geist-mono: "GeistMono", "Fira Code", "Cascadia Code", "SF Mono",
+    Consolas, "Liberation Mono", Menlo, monospace;
+
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.178 0.048 258.338);
+  --sidebar-primary: oklch(0.749 0.154 70.67);
+  --sidebar-primary-foreground: oklch(0.985 0.004 258.338);
+  --sidebar-accent: oklch(0.961 0.004 258.338);
+  --sidebar-accent-foreground: oklch(0.178 0.048 258.338);
+  --sidebar-border: oklch(0.914 0.013 258.338);
+  --sidebar-ring: oklch(0.749 0.154 70.67);
+  --success: oklch(0.73 0.13 142);
+  --error: oklch(0.58 0.15 27);
+  --info: oklch(0.73 0.09 216);
+  --warning: oklch(0.75 0.11 75);
+  --success-bg: oklch(0.73 0.13 142 / 0.2);
+  --error-bg: oklch(0.58 0.15 27 / 0.2);
+  --info-bg: oklch(0.73 0.09 216 / 0.2);
+  --warning-bg: oklch(0.75 0.11 75 / 0.2);
 }
 
 body {
