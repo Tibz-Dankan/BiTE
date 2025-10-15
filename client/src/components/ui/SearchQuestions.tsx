@@ -3,8 +3,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import { Search, Loader2 } from "lucide-react";
-import { Button } from "./Button";
-import { useNavigate, useSearchParams } from "react-router";
+import { Button } from "./Btn";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 interface SearchQuestionsProps {
   onSuccess: (result: any) => void;
