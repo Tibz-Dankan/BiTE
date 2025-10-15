@@ -12,7 +12,7 @@ export const AuthRoutes: React.FC = () => {
     title: "auth",
     pages: [
       {
-        title: "Log In",
+        title: "Sign In",
         icon: "icon",
         path: "/auth/signin",
         showInSidebar: false,
@@ -22,7 +22,6 @@ export const AuthRoutes: React.FC = () => {
       {
         title: "Page Not Found",
         icon: <LayoutDashboard className="h-5 w-5" />,
-        // path: "/auth/*",
         path: "/*",
         showInSidebar: false,
         element: <PageNotFound />,
