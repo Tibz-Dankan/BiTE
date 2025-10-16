@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
-import { Outlet, Routes } from "react-router-dom";
-import { LayoutDashboard, Users } from "lucide-react";
+import { Routes } from "react-router-dom";
+import { FileQuestion, LayoutDashboard, Settings, XCircle } from "lucide-react";
 
 import type { TRoute } from "../types/routes";
 import { renderRoutes } from "./renderRoutes";
@@ -13,36 +13,30 @@ export const AdminRoutes: React.FC = () => {
     pages: [
       {
         title: "Dashboard",
-        icon: <LayoutDashboard className="h-5 w-5" />,
+        icon: <LayoutDashboard className="h-4 w-4" />,
         path: "/a/dashboard",
         showInSidebar: true,
         element: <div>Admin Dashboard content</div>,
       },
       {
-        title: "Staff Management",
-        icon: <Users className="h-5 w-5" />,
-        path: "/a/dashboard/children-route",
+        title: "Quizzes",
+        icon: <FileQuestion className="h-4 w-4" />,
+        path: "/a/quizzes",
         showInSidebar: true,
-        element: (
-          <div className="w-full flex items-center justify-center">
-            <Outlet />
-          </div>
-        ),
-        children: [
-          {
-            title: "Children route here",
-            icon: <Users className="h-5 w-5" />,
-            path: "/a/dashboard/children-route/1",
-            showInSidebar: true,
-            element: <div>Child admin route here</div>,
-          },
-        ],
+        element: <div>Admin Quiz view</div>,
+      },
+      {
+        title: "Settings",
+        icon: <Settings className="h-4 w-4" />,
+        path: "/a/settings",
+        showInSidebar: true,
+        element: <div>Admin Settings</div>,
       },
 
       // Page Not Found - Wildcard Route
       {
         title: "Page Not Found",
-        icon: <LayoutDashboard className="h-5 w-5" />,
+        icon: <XCircle className="h-4 w-4" />,
         path: "/*",
         showInSidebar: false,
         element: <PageNotFound />,

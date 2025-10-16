@@ -1,0 +1,334 @@
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
+import { ChevronDown, PanelLeft } from "lucide-react";
+
+import type { TPage, TRoute } from "../../types/routes";
+import { cn } from "../../utils/classname";
+import { useAuthStore } from "../../stores/auth";
+import { getFirstWord } from "../../utils/getFirstWord";
+import { truncateString } from "../../utils/truncateString";
+
+interface DashboardSidebarProps {
+  routes: TRoute;
+}
+
+export function DashboardSidebar(props: DashboardSidebarProps) {
+  const { pathname } = useLocation();
+  const [openSubmenus, setOpenSubmenus] = useState<string[]>([]);
+  const auth = useAuthStore((state) => state.auth);
+  const clearAuth = useAuthStore((state) => state.clearAuth);
+  const navigate = useNavigate();
+  const pages: TPage[] = props.routes.pages;
+
+  const isAdminAccount = auth.user.role === "ADMIN";
+
+  const isSubmenuActive = (items: TPage[]): boolean => {
+    return items.some((item) => {
+      if (item.path !== "#" && pathname === item.path) {
+        return true;
+      }
+      if (item.children) {
+        return isSubmenuActive(item.children);
+      }
+      return false;
+    });
+  };
+
+  // const getActiveMenuPath = (items: TPage[], parentKey = ""): string[] => {
+  //   const activePath: string[] = [];
+  //   for (const item of items) {
+  //     const currentKey = parentKey ? `${parentKey}-${item.title}` : item.title;
+  //     if (item.path !== "#" && pathname === item.path) {
+  //       activePath.push(currentKey);
+  //       return activePath;
+  //     }
+  //     if (item.children) {
+  //       const childPath = getActiveMenuPath(item.children, currentKey);
+  //       if (childPath.length > 0) {
+  //         activePath.push(currentKey);
+  //         activePath.push(...childPath);
+  //         return activePath;
+  //       }
+  //     }
+  //   }
+  //   return activePath;
+  // };
+
+  const toggleSubmenu = (title: string) => {
+    setOpenSubmenus((prev) =>
+      prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title]
+    );
+  };
+
+  const renderSubmenu = (items: TPage[], parentTitle: string) => {
+    const submenuItems = [];
+    for (let subindex = 0; subindex < items.length; subindex++) {
+      const subitem = items[subindex];
+      const submenuKey = `${parentTitle}-${subitem.title}`;
+      const isActive = pathname === subitem.path;
+      const hasActiveChild = subitem.children
+        ? isSubmenuActive(subitem.children)
+        : false;
+      const shouldHighlight =
+        isActive || hasActiveChild || openSubmenus.includes(submenuKey);
+      const hasChildren = !!subitem.children && subitem.children?.length > 0;
+
+      if (!subitem.showInSidebar) {
+        continue;
+      }
+
+      if (hasChildren) {
+        submenuItems.push(
+          <div key={subindex}>
+            <button
+              onClick={() => toggleSubmenu(submenuKey)}
+              className={cn(
+                `flex w-full items-center justify-between rounded-md px-3
+                 py-2 text-sm font-medium transition-colors`,
+                shouldHighlight
+                  ? "bg-primary/10 text-(--primary) font-semibold"
+                  : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+              )}
+            >
+              <div className="flex items-center">
+                <span
+                  className={cn(
+                    "mr-3",
+                    shouldHighlight ? "text-(--primary)" : "text-gray-500"
+                  )}
+                >
+                  {subitem.icon}
+                </span>
+                <span>{subitem.title}</span>
+              </div>
+              <ChevronDown
+                className={cn(
+                  "h-4 w-4 transition-transform",
+                  openSubmenus.includes(submenuKey) && "rotate-180",
+                  shouldHighlight ? "text-(--primary)" : "text-gray-500"
+                )}
+              />
+            </button>
+            {openSubmenus.includes(submenuKey) &&
+              renderSubmenu(subitem.children!, submenuKey)}
+          </div>
+        );
+      }
+
+      if (!hasChildren) {
+        submenuItems.push(
+          <Link
+            key={subindex}
+            to={subitem.path}
+            className={cn(
+              `flex items-center rounded-md px-3 py-2 text-sm font-medium
+               transition-colors`,
+              isActive
+                ? "bg-primary/10 text-(--primary) font-semibold"
+                : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+            )}
+          >
+            <span
+              className={cn(
+                "mr-3",
+                isActive ? "text-(--primary)" : "text-gray-500"
+              )}
+            >
+              {subitem.icon}
+            </span>
+            <span>{subitem.title}</span>
+          </Link>
+        );
+      }
+    }
+
+    return <div className="mt-1 ml-6 space-y-1">{submenuItems}</div>;
+  };
+
+  const logOutHandler = () => {
+    clearAuth();
+    navigate("/auth/signin", { replace: true });
+  };
+
+  return (
+    <div className="fixed top-0 left-0 h-screen w-64 p-3">
+      <div
+        className="w-full h-full flex flex-col
+        bg-white z-50 rounded-xl shadow-sm"
+      >
+        <div className="w-full p-3 flex items-center gap-2 justify-between">
+          <div className="flex items-center gap-2">
+            <img
+              src="/images/bite-logo.png"
+              alt="BiTE Logo"
+              width={40}
+              height={40}
+              className="rounded"
+            />
+          </div>
+          <div>
+            <span>
+              <PanelLeft className="w-4 h-4 text-gray-700" />
+            </span>
+          </div>
+        </div>
+
+        {/* User Account first name */}
+        <div className="w-full relative z-10 px-3">
+          <div
+            className="flex items-center gap-3 px-3 py-3 bg-gray-800/5
+            rounded-md border-b-[2px] border-orange-300"
+          >
+            <div
+              className="flex-shrink-0 h-6 w-6 rounded-md bg-orange-300
+             flex items-center justify-center pt-1"
+            >
+              {
+                <span className="text-[12px] font-medium text-orange-600">
+                  {auth.user.name.charAt(0).toUpperCase()}
+                </span>
+              }
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-800">
+                {getFirstWord(auth.user.name)}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="w-full relative z-10 flex-1 overflow-y-auto py-4 px-3
+          my-scrollbar scrollbar-thin scrollbar-thumb-gray-300
+          scrollbar-track-transparent hover:scrollbar-thumb-gray-600"
+        >
+          <nav className="space-y-1">
+            {pages.map((item, index) => {
+              const submenuKey = item.title;
+              const isActive = pathname === item.path;
+              const hasActiveChild = item.children
+                ? isSubmenuActive(item.children)
+                : false;
+              const shouldHighlight =
+                isActive || hasActiveChild || openSubmenus.includes(submenuKey);
+
+              return (
+                <div key={index}>
+                  {item.children && item.showInSidebar && (
+                    <div>
+                      <button
+                        onClick={() => toggleSubmenu(submenuKey)}
+                        className={cn(
+                          `flex w-full items-center justify-between rounded-md px-3 
+                           py-3 text-sm font-normal transition-colors`,
+                          shouldHighlight
+                            ? "bg-primary/20 text-(--primary) font-normal"
+                            : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+                        )}
+                      >
+                        <div className="flex items-center">
+                          <span
+                            className={cn(
+                              "mr-3",
+                              shouldHighlight
+                                ? "text-(--primary)"
+                                : "text-gray-500"
+                            )}
+                          >
+                            {item.icon}
+                          </span>
+                          <span>{item.title}</span>
+                        </div>
+                        <ChevronDown
+                          className={cn(
+                            "h-4 w-4 transition-transform",
+                            openSubmenus.includes(submenuKey) && "rotate-180",
+                            shouldHighlight
+                              ? "text-(--primary)"
+                              : "text-gray-500"
+                          )}
+                        />
+                      </button>
+                      {openSubmenus.includes(submenuKey) &&
+                        renderSubmenu(item.children!, submenuKey)}
+                    </div>
+                  )}
+
+                  {!item.children && item.showInSidebar && (
+                    <Link
+                      key={index}
+                      to={item.path}
+                      className={cn(
+                        `flex items-center rounded-md px-3 py-2 text-sm font-normal 
+                         transition-colors`,
+                        isActive
+                          ? "bg-(--primary)/15 text-(--primary) font-normal"
+                          : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+                      )}
+                    >
+                      <span
+                        className={cn(
+                          "mr-3",
+                          isActive ? "text-(--primary)" : "text-gray-500"
+                        )}
+                      >
+                        {item.icon}
+                      </span>
+                      <span>{item.title}</span>
+                    </Link>
+                  )}
+                </div>
+              );
+            })}
+          </nav>
+        </div>
+
+        <div className="relative z-10 p-4 space-y-2">
+          {/* <button
+          onClick={() => logOutHandler()}
+          className="flex items-center text-sm font-medium text-gray-600
+           hover:text-gray-900 w-full"
+        >
+          <LogOut className="mr-2 h-5 w-5" />
+          Logout
+        </button> */}
+
+          {isAdminAccount && (
+            <div
+              className="w-full text-center border-[1px] border-gray-400
+            rounded-md px-2 py-1 pb-2"
+            >
+              <span className="text-[12px] text-gray-700 font-semibold">
+                Admin Account
+              </span>
+            </div>
+          )}
+          <div className="relative z-10 bg-orange-50s">
+            <div className="flex items-center gap-2">
+              <div
+                className="flex-shrink-0 h-8 w-8 rounded-full flex 
+              items-center justify-center"
+                style={{ backgroundColor: auth.user.profileBgColor }}
+              >
+                {
+                  <span className="font-medium text-white">
+                    {auth.user.name.charAt(0).toUpperCase()}
+                  </span>
+                }
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-800">
+                  {truncateString(auth.user.name, 18)}
+                </p>
+                <p className="text-[10px] text-gray-500 flex items-center gap-1">
+                  {truncateString(auth.user.email, 24)}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
