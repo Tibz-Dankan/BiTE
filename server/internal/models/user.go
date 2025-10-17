@@ -65,6 +65,13 @@ func (u *User) FindByEmail(email string) (User, error) {
 	return user, nil
 }
 
+func (u *User) FindByRole(role string) ([]User, error) {
+	var users []User
+	db.Find(&users, "role = ?", role)
+
+	return users, nil
+}
+
 func (u *User) FindUnknown() (User, error) {
 	var user User
 	db.First(&user, "email = ?", "unknownuser@mail.com")
