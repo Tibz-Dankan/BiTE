@@ -1,17 +1,28 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import { ChevronDown, PanelLeft } from "lucide-react";
+import { ChevronDown, LogOut, PanelLeft, Settings } from "lucide-react";
 
 import type { TPage, TRoute } from "../../types/routes";
 import { cn } from "../../utils/classname";
 import { useAuthStore } from "../../stores/auth";
 import { getFirstWord } from "../../utils/getFirstWord";
 import { truncateString } from "../../utils/truncateString";
+import {
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+  Transition,
+} from "@headlessui/react";
 
 interface DashboardSidebarProps {
   routes: TRoute;
 }
+
+const classNames = (...classes: any[]) => {
+  return classes.filter(Boolean).join(" ");
+};
 
 export function DashboardSidebar(props: DashboardSidebarProps) {
   const { pathname } = useLocation();
@@ -285,48 +296,154 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
         </div>
 
         <div className="relative z-10 p-4 space-y-2">
-          {/* <button
-          onClick={() => logOutHandler()}
-          className="flex items-center text-sm font-medium text-gray-600
-           hover:text-gray-900 w-full"
-        >
-          <LogOut className="mr-2 h-5 w-5" />
-          Logout
-        </button> */}
-
           {isAdminAccount && (
             <div
-              className="w-full text-center border-[1px] border-gray-400
+              className="w-full text-center border-[1px] border-gray-300
             rounded-md px-2 py-1 pb-2"
             >
-              <span className="text-[12px] text-gray-700 font-semibold">
-                Admin Account
-              </span>
+              <span className="text-[12px] text-gray-500">Admin Account</span>
             </div>
           )}
-          <div className="relative z-10 bg-orange-50s">
-            <div className="flex items-center gap-2">
-              <div
-                className="flex-shrink-0 h-8 w-8 rounded-full flex 
-              items-center justify-center"
-                style={{ backgroundColor: auth.user.profileBgColor }}
+
+          <Menu as="div" className="relative inline-block text-left">
+            <div>
+              <MenuButton
+                className="inline-flex w-full justify-center items-center gap-x-1.5 
+                rounded-md bg-transparent text-sm font-semibold
+                text-color-text-primary relative"
               >
-                {
-                  <span className="font-medium text-white">
-                    {auth.user.name.charAt(0).toUpperCase()}
-                  </span>
-                }
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-800">
-                  {truncateString(auth.user.name, 18)}
-                </p>
-                <p className="text-[10px] text-gray-500 flex items-center gap-1">
-                  {truncateString(auth.user.email, 24)}
-                </p>
-              </div>
+                <button className="w-full relative z-10 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="flex-shrink-0 h-8 w-8 rounded-full flex 
+                      items-center justify-center"
+                      style={{ backgroundColor: auth.user.profileBgColor }}
+                    >
+                      {
+                        <span className="font-medium text-white">
+                          {auth.user.name.charAt(0).toUpperCase()}
+                        </span>
+                      }
+                    </div>
+                    <div>
+                      <p className="text-sm text-start font-medium text-gray-800">
+                        {truncateString(auth.user.name, 18)}
+                      </p>
+                      <p className="text-[10px] text-start text-gray-500 flex items-center gap-1">
+                        {truncateString(auth.user.email, 24)}
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    <ChevronDown className="w-4 h-4 text-gray-500" />
+                  </div>
+                </button>
+              </MenuButton>
             </div>
-          </div>
+
+            <Transition
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <MenuItems
+                className="absolute bottom-10 -left-1 z-10 mt-2 w-52
+                divide-y divide-gray-200 rounded-md bg-white shadow-lg 
+                focus:outline-none border-[1px] border-gray-200"
+              >
+                <div className="py-1">
+                  <MenuItem>
+                    {({ focus }) => (
+                      <Link
+                        to="/a/dashboard"
+                        className={classNames(
+                          focus ? "bg-gray-200" : "",
+                          "block px-4 py-2 text-sm text-gray-500"
+                        )}
+                      >
+                        <div className="w-full">
+                          <div className="flex items-center gap-2">
+                            <div
+                              className="flex-shrink-0 h-8 w-8 rounded-full flex 
+                              items-center justify-center"
+                              style={{
+                                backgroundColor: auth.user.profileBgColor,
+                              }}
+                            >
+                              {
+                                <span className="font-medium text-white">
+                                  {auth.user.name.charAt(0).toUpperCase()}
+                                </span>
+                              }
+                            </div>
+                            <div>
+                              <p className="text-sm text-start font-medium text-gray-800">
+                                {truncateString(auth.user.name, 18)}
+                              </p>
+                              <p
+                                className="text-[10px] text-start text-gray-500 flex 
+                                items-center gap-1"
+                              >
+                                {truncateString(auth.user.role, 10)}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="w-full">
+                            <p
+                              className="text-[12px] text-start text-gray-500
+                              flex items-center gap-1"
+                            >
+                              {truncateString(auth.user.email, 24)}
+                            </p>
+                          </div>
+                        </div>
+                      </Link>
+                    )}
+                  </MenuItem>
+                </div>
+                <div className="py-1">
+                  <MenuItem>
+                    {({ focus }) => (
+                      <Link
+                        to="/a/settings"
+                        className={classNames(
+                          focus ? "bg-gray-200" : "",
+                          "block px-4 py-2 text-sm text-gray-500 hover:text-gray-800"
+                        )}
+                      >
+                        <div className="flex items-center justify-start gap-2">
+                          <span>
+                            <Settings className="h-4 w-4" />
+                          </span>
+                          <span>Account settings</span>
+                        </div>
+                      </Link>
+                    )}
+                  </MenuItem>
+                </div>
+                <div className="py-1">
+                  <MenuItem>
+                    {({ focus }) => (
+                      <button
+                        onClick={() => logOutHandler()}
+                        className={classNames(
+                          focus ? "bg-gray-200" : "",
+                          `flex items-center gap-2 text-sm font-medium text-gray-500
+                           hover:text-gray-800 w-full px-4 py-2 cursor-pointer`
+                        )}
+                      >
+                        <LogOut className="h-4 w-4" />
+                        <span>Logout</span>
+                      </button>
+                    )}
+                  </MenuItem>
+                </div>
+              </MenuItems>
+            </Transition>
+          </Menu>
         </div>
       </div>
     </div>
