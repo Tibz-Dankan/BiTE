@@ -344,7 +344,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
                         className="text-[10px] text-start text-gray-500 flex items-center 
                         gap-1 font-normal"
                       >
-                        {truncateString(auth.user.email, 24)}
+                        {truncateString(auth.user.email, 25)}
                       </p>
                     </div>
                   </div>
@@ -410,7 +410,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
                               className="text-[12px] text-start text-gray-500
                               flex items-center gap-1"
                             >
-                              {truncateString(auth.user.email, 24)}
+                              {truncateString(auth.user.email, 25)}
                             </p>
                           </div>
                         </div>
