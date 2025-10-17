@@ -33,6 +33,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
   const pages: TPage[] = props.routes.pages;
 
   const isAdminAccount = auth.user.role === "ADMIN";
+  const isUserAccount = auth.user.role === "USER";
 
   const isSubmenuActive = (items: TPage[]): boolean => {
     return items.some((item) => {
@@ -160,6 +161,16 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
   const logOutHandler = () => {
     clearAuth();
     navigate("/auth/signin", { replace: true });
+  };
+
+  const buildDropdownLink = (path: string) => {
+    if (isAdminAccount) {
+      return `/a/${path}`;
+    }
+    if (isUserAccount) {
+      return `/u/${path}`;
+    }
+    return `/${path}`;
   };
 
   return (
@@ -299,13 +310,13 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
           {isAdminAccount && (
             <div
               className="w-full text-center border-[1px] border-gray-300
-            rounded-md px-2 py-1 pb-2"
+              rounded-md px-2 py-1 pb-2"
             >
               <span className="text-[12px] text-gray-500">Admin Account</span>
             </div>
           )}
 
-          <Menu as="div" className="relative inline-block text-left">
+          <Menu as="div" className="w-full relative inline-block text-left">
             <div>
               <MenuButton
                 className="inline-flex w-full justify-center items-center gap-x-1.5 
@@ -329,7 +340,10 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
                       <p className="text-sm text-start font-medium text-gray-800">
                         {truncateString(auth.user.name, 18)}
                       </p>
-                      <p className="text-[10px] text-start text-gray-500 flex items-center gap-1">
+                      <p
+                        className="text-[10px] text-start text-gray-500 flex items-center 
+                        gap-1 font-normal"
+                      >
                         {truncateString(auth.user.email, 24)}
                       </p>
                     </div>
@@ -358,7 +372,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
                   <MenuItem>
                     {({ focus }) => (
                       <Link
-                        to="/a/dashboard"
+                        to={buildDropdownLink("dashboard")}
                         className={classNames(
                           focus ? "bg-gray-200" : "",
                           "block px-4 py-2 text-sm text-gray-500"
@@ -408,7 +422,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
                   <MenuItem>
                     {({ focus }) => (
                       <Link
-                        to="/a/settings"
+                        to={buildDropdownLink("settings")}
                         className={classNames(
                           focus ? "bg-gray-200" : "",
                           "block px-4 py-2 text-sm text-gray-500 hover:text-gray-800"
