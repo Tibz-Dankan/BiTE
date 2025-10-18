@@ -15,6 +15,8 @@ import {
   MenuItems,
   Transition,
 } from "@headlessui/react";
+import { useSidebarStore } from "../../stores/sidebar";
+import { useGetWindowWidth } from "../../hooks/useGetWindowWidth";
 
 interface DashboardSidebarProps {
   routes: TRoute;
@@ -30,7 +32,11 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
   const auth = useAuthStore((state) => state.auth);
   const clearAuth = useAuthStore((state) => state.clearAuth);
   const navigate = useNavigate();
+  const isOpenSidebar = useSidebarStore((state) => state.isOpen);
+  const closeSidebar = useSidebarStore((state) => state.closeSidebar);
   const pages: TPage[] = props.routes.pages;
+
+  const { width } = useGetWindowWidth();
 
   const isAdminAccount = auth.user.role === "ADMIN";
   const isUserAccount = auth.user.role === "USER";
@@ -45,6 +51,12 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
       }
       return false;
     });
+  };
+
+  const closeSidebarOnMobile = () => {
+    if (width < 1024) {
+      closeSidebar();
+    }
   };
 
   // const getActiveMenuPath = (items: TPage[], parentKey = ""): string[] => {
@@ -140,6 +152,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
                 ? "bg-primary/10 text-(--primary) font-semibold"
                 : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
             )}
+            onClick={() => closeSidebarOnMobile()}
           >
             <span
               className={cn(
@@ -174,12 +187,20 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
   };
 
   return (
-    <div className="fixed top-0 left-0 h-screen w-64 p-3">
+    <aside
+      className={`fixed z-[120] top-14 lg:top-0 left-0 h-[calc(100vh-64px)] lg:h-screen
+         w-screen lg:w-64 p-3 transition-transform  duration-300 lg:translate-x-0
+       ${
+         isOpenSidebar
+           ? "translate-x-0"
+           : "-translate-x-[100vw] lg:-translate-x-64"
+       }`}
+    >
       <div
         className="w-full h-full flex flex-col
         bg-white z-50 rounded-xl shadow-sm"
       >
-        <div className="w-full p-3 flex items-center gap-2 justify-between">
+        <div className="w-full p-3 hidden lg:flex items-center gap-2 justify-between">
           <div className="flex items-center gap-2">
             <img
               src="/images/bite-logo.png"
@@ -197,7 +218,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
         </div>
 
         {/* User Account first name */}
-        <div className="w-full relative z-10 px-3">
+        <div className="w-full relative z-10 px-3 pt-3 lg:pt-0">
           <div
             className="flex items-center gap-3 px-3 py-3 bg-gray-800/5
             rounded-md border-b-[2px] border-orange-300"
@@ -288,6 +309,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
                           ? "bg-(--primary)/15 text-(--primary) font-normal"
                           : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
                       )}
+                      onClick={() => closeSidebarOnMobile()}
                     >
                       <span
                         className={cn(
@@ -323,7 +345,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
                 rounded-md bg-transparent text-sm font-semibold
                 text-color-text-primary relative"
               >
-                <button className="w-full relative z-10 flex items-center justify-between">
+                <div className="w-full relative z-10 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <div
                       className="flex-shrink-0 h-8 w-8 rounded-full flex 
@@ -351,7 +373,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
                   <div>
                     <ChevronDown className="w-4 h-4 text-gray-500" />
                   </div>
-                </button>
+                </div>
               </MenuButton>
             </div>
 
@@ -460,6 +482,6 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
           </Menu>
         </div>
       </div>
-    </div>
+    </aside>
   );
 }
