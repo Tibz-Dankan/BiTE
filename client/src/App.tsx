@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { NotificationInitializer } from "./components/ui/NotificationInitializer";
 import { useAuthStore } from "./stores/auth";
@@ -31,6 +31,10 @@ export const App: React.FC = () => {
           <Fragment>
             <Routes>
               <Route path="/*" element={<UserRoutes />} />
+              <Route
+                path="/"
+                element={<Navigate to="/u/dashboard" replace />}
+              />
             </Routes>
           </Fragment>
         )}
@@ -39,6 +43,10 @@ export const App: React.FC = () => {
           <Fragment>
             <Routes>
               <Route path="/*" element={<AdminRoutes />} />
+              <Route
+                path="/"
+                element={<Navigate to="/a/dashboard" replace />}
+              />
             </Routes>
           </Fragment>
         )}
