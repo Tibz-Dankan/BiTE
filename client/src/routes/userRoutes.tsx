@@ -21,14 +21,14 @@ export const UserRoutes: React.FC = () => {
       {
         title: "Quizzes",
         icon: <FileQuestion className="h-4 w-4" />,
-        path: "/a/quizzes",
+        path: "/u/quizzes",
         showInSidebar: true,
         element: <div>User Quiz view</div>,
       },
       {
         title: "Settings",
         icon: <Settings className="h-4 w-4" />,
-        path: "/a/settings",
+        path: "/u/settings",
         showInSidebar: true,
         element: <div>User Settings</div>,
       },
