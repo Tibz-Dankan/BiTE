@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect, type ReactNode } from "react";
 // import { FilePicker } from "./file-picker";
 // import { truncateString } from "@/utils/truncate-string";
 import { Upload, FileText } from "lucide-react";
-import { truncateString } from "../../utils/truncateString";
+import { truncateString } from "../../../utils/truncateString";
 import { FilePicker } from "./FilePicker";
 
 interface InputFilePickerProps {

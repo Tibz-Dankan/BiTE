@@ -3,8 +3,8 @@ import React from "react";
 import { quizAPI } from "../../../api/quiz";
 import type { Quiz } from "../../../types/quiz";
 import { Loader2 } from "lucide-react";
-import { AlertCard } from "../../ui/AlertCard";
-import { QuizCard } from "../../ui/QuizCard";
+import { AlertCard } from "../../ui/shared/AlertCard";
+import { QuizCard } from "../../ui/quiz/QuizCard";
 
 export const AdminQuizView: React.FC = () => {
   const { isPending, isError, data, error } = useQuery({

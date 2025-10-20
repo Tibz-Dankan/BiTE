@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { quizAPI } from "../../../api/quiz";
 import type { Quiz } from "../../../types/quiz";
 import { Loader2 } from "lucide-react";
-import { AlertCard } from "../../ui/AlertCard";
+import { AlertCard } from "../../ui/shared/AlertCard";
 
 export const AdminQuizUpdate: React.FC = () => {
   const { quizID } = useParams();
