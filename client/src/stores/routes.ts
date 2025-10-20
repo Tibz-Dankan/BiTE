@@ -16,7 +16,15 @@ export const useRouteStore = create<TCurrentPage & TCurrentPageAction>()(
     (set) => ({
       currentPage: initialPageValues,
       updateCurrentPage: (currentPage) =>
-        set(() => ({ currentPage: currentPage })),
+        set(() => ({
+          currentPage: {
+            ...currentPage,
+            // Store everything except React elements
+            children: [],
+            icon: "",
+            element: "",
+          },
+        })),
       clearCurrentPage: () => set(() => ({ currentPage: initialPageValues })),
     }),
     {
