@@ -3,7 +3,7 @@ import type { TRoute } from "../../types/routes";
 import { HelpCircle, Menu, X } from "lucide-react";
 import { useSidebarStore } from "../../stores/sidebar";
 import { removeColonsFromPath } from "../../utils/removeColonsFromPath";
-import { useRouteStore } from "../../stores/route";
+import { useRouteStore } from "../../stores/routes";
 
 interface DashboardSidebarProps {
   routes: TRoute;
@@ -50,6 +50,7 @@ export function DashboardHeader(props: DashboardSidebarProps) {
             hidden lg:inline-block"
           >
             {getPageTitle()}
+            {/* {currentPage.title} */}
           </h1>
         </div>
         <div className="flex items-center justify-end gap-4">

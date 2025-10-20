@@ -6,6 +6,7 @@ import { elapsedTime } from "../../utils/elapseTime";
 import { AppDate } from "../../utils/appDate";
 import { truncateString } from "../../utils/truncateString";
 import { Link } from "react-router-dom";
+import { useRouteStore } from "../../stores/routes";
 
 type QuizCardProps = {
   quiz: Quiz;
@@ -14,6 +15,7 @@ type QuizCardProps = {
 export const QuizCard: React.FC<QuizCardProps> = (props) => {
   const quiz = props.quiz;
   const hasAttachment = isArrayWithElements(quiz.attachments);
+  const updateCurrentPage = useRouteStore((state) => state.updateCurrentPage);
 
   const getQuizStatusColor = (quiz: Quiz) => {
     const status = getQuizStatus(quiz.startsAt, quiz.endsAt);
@@ -48,6 +50,18 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
     }
   };
 
+  const updateAdminQuizEditPage = () => {
+    updateCurrentPage({
+      title: "Edit Quiz",
+      icon: undefined,
+      path: "/a/quizzes/:quizID",
+      showInSidebar: false,
+      element: undefined,
+    });
+
+    console.log("Updated the admin quiz edit page in  the store");
+  };
+
   return (
     <div
       className="w-full border-[1px] border-gray-300 rounded-lg
@@ -76,6 +90,7 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
       <Link
         to={`/a/quizzes/${quiz.id}`}
         className="flex flex-1 flex-col justify-between gap-2 h-20 p-3"
+        onClick={() => updateAdminQuizEditPage()}
       >
         <div className="flex items-center gap-2 text-[12px] text-gray-500">
           <span className="first-letter:uppercase">

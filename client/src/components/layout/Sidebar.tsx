@@ -17,7 +17,7 @@ import {
 } from "@headlessui/react";
 import { useSidebarStore } from "../../stores/sidebar";
 import { useGetWindowWidth } from "../../hooks/useGetWindowWidth";
-import { useRouteStore } from "../../stores/route";
+import { useRouteStore } from "../../stores/routes";
 
 interface DashboardSidebarProps {
   routes: TRoute;
@@ -59,6 +59,11 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
     if (width < 1024) {
       closeSidebar();
     }
+  };
+
+  const onNavigateHandler = (currentPage: TPage) => {
+    closeSidebarOnMobile();
+    updateCurrentPage(currentPage);
   };
 
   const toggleSubmenu = (title: string) => {
@@ -135,7 +140,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
                 : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
             )}
             onClick={() => {
-              closeSidebarOnMobile(), updateCurrentPage(subitem);
+              onNavigateHandler(subitem);
             }}
           >
             <span
@@ -294,7 +299,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
                           : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
                       )}
                       onClick={() => {
-                        closeSidebarOnMobile(), updateCurrentPage(item);
+                        onNavigateHandler(item);
                       }}
                     >
                       <span
