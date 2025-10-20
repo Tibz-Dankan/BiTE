@@ -59,26 +59,6 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
     }
   };
 
-  // const getActiveMenuPath = (items: TPage[], parentKey = ""): string[] => {
-  //   const activePath: string[] = [];
-  //   for (const item of items) {
-  //     const currentKey = parentKey ? `${parentKey}-${item.title}` : item.title;
-  //     if (item.path !== "#" && pathname === item.path) {
-  //       activePath.push(currentKey);
-  //       return activePath;
-  //     }
-  //     if (item.children) {
-  //       const childPath = getActiveMenuPath(item.children, currentKey);
-  //       if (childPath.length > 0) {
-  //         activePath.push(currentKey);
-  //         activePath.push(...childPath);
-  //         return activePath;
-  //       }
-  //     }
-  //   }
-  //   return activePath;
-  // };
-
   const toggleSubmenu = (title: string) => {
     setOpenSubmenus((prev) =>
       prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title]
@@ -188,7 +168,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
 
   return (
     <aside
-      className={`fixed z-[120] top-14 lg:top-0 left-0 h-[calc(100vh-64px)] lg:h-screen
+      className={`fixed z-[120] top-12 lg:top-0 left-0 h-[calc(100vh-64px)] lg:h-screen
          w-screen lg:w-64 p-3 transition-transform  duration-300 lg:translate-x-0
        ${
          isOpenSidebar
@@ -198,7 +178,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
     >
       <div
         className="w-full h-full flex flex-col
-        bg-white z-50 rounded-xl shadow-sm"
+        bg-white z-50 rounded-xl shadow-sm lg:shadow-sm"
       >
         <div className="w-full p-3 hidden lg:flex items-center gap-2 justify-between">
           <div className="flex items-center gap-2">
