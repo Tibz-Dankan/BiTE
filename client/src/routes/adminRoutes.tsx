@@ -7,6 +7,7 @@ import { renderRoutes } from "./renderRoutes";
 import { DashboardLayout } from "../components/layout/Dashboard";
 import { PageNotFound } from "../components/pages/common/PageNotFound";
 import { AdminQuizView } from "../components/pages/quiz/AdminQuizView";
+import { AdminQuizUpdate } from "../components/pages/quiz/AdminQuizUpdate";
 
 export const AdminRoutes: React.FC = () => {
   const routes: TRoute = {
@@ -25,6 +26,13 @@ export const AdminRoutes: React.FC = () => {
         path: "/a/quizzes",
         showInSidebar: true,
         element: <AdminQuizView />,
+      },
+      {
+        title: "Edit Quiz",
+        icon: <FileQuestion className="h-4 w-4" />,
+        path: "/a/quizzes/:quizID",
+        showInSidebar: false,
+        element: <AdminQuizUpdate />,
       },
       {
         title: "Settings",
