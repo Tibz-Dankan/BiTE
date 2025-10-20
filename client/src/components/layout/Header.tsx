@@ -2,6 +2,8 @@ import { useLocation } from "react-router-dom";
 import type { TRoute } from "../../types/routes";
 import { HelpCircle, Menu, X } from "lucide-react";
 import { useSidebarStore } from "../../stores/sidebar";
+import { removeColonsFromPath } from "../../utils/removeColonsFromPath";
+import { useRouteStore } from "../../stores/route";
 
 interface DashboardSidebarProps {
   routes: TRoute;
@@ -10,16 +12,21 @@ interface DashboardSidebarProps {
 export function DashboardHeader(props: DashboardSidebarProps) {
   const { pathname } = useLocation();
   const pages = props.routes.pages;
+  const currentPageFromStore = useRouteStore((state) => state.currentPage);
 
   const isOpenSidebar = useSidebarStore((state) => state.isOpen);
   const OpenSidebar = useSidebarStore((state) => state.openSidebar);
   const closeSidebar = useSidebarStore((state) => state.closeSidebar);
 
   const getPageTitle = () => {
-    const currentPage = pages.find((page) => page.path === pathname);
-    console.log({ currentPage });
+    const currentPage = pages.find(
+      (page) => removeColonsFromPath(page.path) === pathname
+    );
 
-    return currentPage ? currentPage.title : "";
+    const hasCurrentPageFromRoutes = !!currentPage?.title;
+    return hasCurrentPageFromRoutes
+      ? currentPage?.title
+      : currentPageFromStore.title;
   };
 
   return (

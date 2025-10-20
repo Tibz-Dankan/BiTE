@@ -17,6 +17,7 @@ import {
 } from "@headlessui/react";
 import { useSidebarStore } from "../../stores/sidebar";
 import { useGetWindowWidth } from "../../hooks/useGetWindowWidth";
+import { useRouteStore } from "../../stores/route";
 
 interface DashboardSidebarProps {
   routes: TRoute;
@@ -35,6 +36,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
   const isOpenSidebar = useSidebarStore((state) => state.isOpen);
   const closeSidebar = useSidebarStore((state) => state.closeSidebar);
   const pages: TPage[] = props.routes.pages;
+  const updateCurrentPage = useRouteStore((state) => state.updateCurrentPage);
 
   const { width } = useGetWindowWidth();
 
@@ -132,7 +134,9 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
                 ? "bg-primary/10 text-(--primary) font-semibold"
                 : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
             )}
-            onClick={() => closeSidebarOnMobile()}
+            onClick={() => {
+              closeSidebarOnMobile(), updateCurrentPage(subitem);
+            }}
           >
             <span
               className={cn(
@@ -289,7 +293,9 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
                           ? "bg-(--primary)/15 text-(--primary) font-normal"
                           : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
                       )}
-                      onClick={() => closeSidebarOnMobile()}
+                      onClick={() => {
+                        closeSidebarOnMobile(), updateCurrentPage(item);
+                      }}
                     >
                       <span
                         className={cn(

@@ -13,3 +13,12 @@ export type TRoute = {
   title?: string;
   pages: TPage[];
 };
+
+export type TCurrentPage = {
+  currentPage: TPage;
+};
+
+export type TCurrentPageAction = {
+  updateCurrentPage: (page: TPage) => void;
+  clearCurrentPage: () => void;
+};
