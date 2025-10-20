@@ -7,9 +7,9 @@ import { useNavigate } from "react-router-dom";
 import type { Auth, SigninInPut } from "../../../types/auth";
 import { useAuthStore } from "../../../stores/auth";
 import { useNotificationStore } from "../../../stores/notification";
-import { InputField } from "../../ui/InputField";
+import { InputField } from "../../ui/shared/InputField";
 import { authAPI } from "../../../api/auth";
-import { Button } from "../../ui/Btn";
+import { Button } from "../../ui/shared/Btn";
 
 export const Signin: React.FC = () => {
   const navigate = useNavigate();

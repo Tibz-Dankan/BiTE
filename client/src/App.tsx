@@ -1,12 +1,12 @@
 import React, { Fragment } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
-import { NotificationInitializer } from "./components/ui/NotificationInitializer";
+import { NotificationInitializer } from "./components/ui/shared/NotificationInitializer";
 import { useAuthStore } from "./stores/auth";
 import { AuthRoutes } from "./routes/authRoutes";
 import { UserRoutes } from "./routes/userRoutes";
 import { AdminRoutes } from "./routes/adminRoutes";
-import { Home } from "./components/ui/Home";
+import { Home } from "./components/ui/shared/Home";
 import { useGlobalRequestInterceptor } from "./hooks/use-global-request-interceptor";
 
 export const App: React.FC = () => {

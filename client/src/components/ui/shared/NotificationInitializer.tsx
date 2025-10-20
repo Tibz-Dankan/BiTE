@@ -1,5 +1,5 @@
 import React from "react";
-import { useNotificationStore } from "../../stores/notification";
+import { useNotificationStore } from "../../../stores/notification";
 import { NotificationCard } from "./NotificationCard";
 
 export const NotificationInitializer: React.FC = () => {

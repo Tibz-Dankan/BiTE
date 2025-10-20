@@ -1,12 +1,12 @@
 import React from "react";
-import type { Quiz } from "../../types/quiz";
-import { isArrayWithElements } from "../../utils/isArrayWithElements";
-import { getQuizStatus } from "../../utils/getQuizStatus";
-import { elapsedTime } from "../../utils/elapseTime";
-import { AppDate } from "../../utils/appDate";
-import { truncateString } from "../../utils/truncateString";
+import type { Quiz } from "../../../types/quiz";
+import { isArrayWithElements } from "../../../utils/isArrayWithElements";
+import { getQuizStatus } from "../../../utils/getQuizStatus";
+import { elapsedTime } from "../../../utils/elapseTime";
+import { AppDate } from "../../../utils/appDate";
+import { truncateString } from "../../../utils/truncateString";
 import { Link } from "react-router-dom";
-import { useRouteStore } from "../../stores/routes";
+import { useRouteStore } from "../../../stores/routes";
 
 type QuizCardProps = {
   quiz: Quiz;

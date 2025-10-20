@@ -50,7 +50,6 @@ export function DashboardHeader(props: DashboardSidebarProps) {
             hidden lg:inline-block"
           >
             {getPageTitle()}
-            {/* {currentPage.title} */}
           </h1>
         </div>
         <div className="flex items-center justify-end gap-4">

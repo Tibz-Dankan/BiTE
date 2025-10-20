@@ -1,5 +1,5 @@
 import React, { Fragment, type ReactNode, useEffect, useState } from "react";
-import { isArrayWithElements } from "../../utils/isArrayWithElements";
+import { isArrayWithElements } from "../../../utils/isArrayWithElements";
 import {
   Select,
   SelectContent,
