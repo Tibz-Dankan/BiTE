@@ -1,5 +1,5 @@
 import { SERVER_URL } from "../constants/urls";
-import type { UpdateQuiz, UpdateQuizAttachment } from "../types/quiz";
+import type { TUpdateQuiz, TUpdateQuizAttachment } from "../types/quiz";
 
 class QuizAPI {
   post = async ({ formData }: { formData: FormData }) => {
@@ -25,7 +25,7 @@ class QuizAPI {
     startsAt,
     endsAt,
     instructions,
-  }: UpdateQuiz) => {
+  }: TUpdateQuiz) => {
     const response = await fetch(`${SERVER_URL}/quiz/${id}`, {
       method: "PATCH",
       body: JSON.stringify({
@@ -35,6 +35,9 @@ class QuizAPI {
         endsAt,
         instructions,
       }),
+      headers: {
+        "Content-type": "application/json",
+      },
     });
 
     if (!response.ok) {
@@ -48,7 +51,7 @@ class QuizAPI {
     quizID,
     attachmentID,
     formData,
-  }: UpdateQuizAttachment) => {
+  }: TUpdateQuizAttachment) => {
     const response = await fetch(
       `${SERVER_URL}/quiz/${quizID}/attachment/${attachmentID}`,
       {

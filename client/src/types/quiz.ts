@@ -1,6 +1,6 @@
 import type { Attachment } from "./attachment";
 
-export type Quiz = {
+export type TQuiz = {
   id: string;
   title: string;
   instructions: string;
@@ -14,18 +14,18 @@ export type Quiz = {
   attachments: Prettify<Attachment[]>;
 };
 
-export type Pagination = {
+export type TPagination = {
   limit: number;
   prevCursor: string;
 };
 
-export type QuizResponse = {
-  data: Quiz[];
-  pagination: Pagination;
+export type TQuizResponse = {
+  data: TQuiz[];
+  pagination: TPagination;
   status: string;
 };
 
-export type UpdateQuiz = {
+export type TUpdateQuiz = {
   id: string;
   title: string;
   postedByUserID: string;
@@ -34,7 +34,7 @@ export type UpdateQuiz = {
   instructions: string;
 };
 
-export type UpdateQuizAttachment = {
+export type TUpdateQuizAttachment = {
   quizID: string;
   attachmentID: string;
   formData: FormData;
