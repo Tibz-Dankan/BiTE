@@ -77,28 +77,26 @@ export const DatePicker: React.FC<DatePickerProps> = (props) => {
           {/* Custom styled display */}
           <div
             className={`
-              relative p-2 rounded-md border-[1px] 
-              bg-[rgba(8,127,91,0.15)] text-gray-50
-              transition-all text-base w-full min-w-40
-              flex items-center justify-between
-              cursor-pointer min-h-[42px]
+              relative p-2 rounded-md border-[1px]
+              focus:border-(--primary) focus:ring-1 ring-(--primary) 
+              transition-all text-sm w-full focus:outline-none
+               min-w-40 text-gray-700
+              flex items-center justify-between cursor-pointer 
               ${hasError ? "border-red-400" : "border-[rgba(73,80,87,0.6)]"}
               hover:border-opacity-80
               focus-within:border-primary
               ${props.className || ""}
             `}
           >
-            <span
-              className={`${currentValue ? "text-gray-50" : "text-gray-400"}`}
-            >
+            <span className="text-gray-700">
               {currentValue ? formatDateForDisplay(currentValue) : placeholder}
             </span>
 
             <Calendar
-              size={18}
+              size={16}
               className={`
                 ml-2 flex-shrink-0 transition-colors
-                ${hasError ? "text-red-400" : "text-gray-400"}
+                ${hasError ? "text-red-400" : "text-gray-600"}
               `}
             />
           </div>

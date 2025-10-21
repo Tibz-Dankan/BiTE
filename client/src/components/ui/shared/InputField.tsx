@@ -56,7 +56,7 @@ export const InputField: React.FC<InputFieldProps> = (props) => {
             className={twMerge(
               `p-2 outline-none rounded-md border-[1px]
               focus:border-(--primary) focus:ring-1 ring-(--primary) 
-              transition-all text-sm w-full focus:outline-none
+              transition-all text-sm w-full focus:outline-none text-gray-700
               ${hasError ? "border-red-500" : "border-gray-400"}`,
               props.className
             )}
