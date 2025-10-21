@@ -102,27 +102,24 @@ export const SearchQuestions: React.FC<SearchQuestionsProps> = (props) => {
             text-gray-50 bg-(--clr-background)s appearance-none"
           />
           <Button
-            label={
-              <>
-                {!isPending && (
-                  <Search
-                    size={20}
-                    className={`${
-                      hasSearchQuery ? "text-gray-200" : "text-[#868e96]"
-                    }`}
-                  />
-                )}
-                {isPending && (
-                  <Loader2 size={20} className="text-gray-200 animate-spin" />
-                )}
-              </>
-            }
             type="submit"
             disabled={isPending}
             className={`px-2 py-[6px] h-auto absolute top-[5px] right-1
               flex items-center justify-center
              ${hasSearchQuery ? "bg-(--clr-primary)" : ""}`}
-          />
+          >
+            {!isPending && (
+              <Search
+                size={20}
+                className={`${
+                  hasSearchQuery ? "text-gray-200" : "text-[#868e96]"
+                }`}
+              />
+            )}
+            {isPending && (
+              <Loader2 size={20} className="text-gray-200 animate-spin" />
+            )}
+          </Button>
         </form>
       </div>
     </div>
