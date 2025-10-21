@@ -2,9 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { useParams } from "react-router-dom";
 import { quizAPI } from "../../../api/quiz";
-import type { Quiz } from "../../../types/quiz";
+import type { TQuiz } from "../../../types/quiz";
 import { Loader2 } from "lucide-react";
 import { AlertCard } from "../../ui/shared/AlertCard";
+import { UpdateQuiz } from "../../ui/quiz/UpdateQuiz";
 
 export const AdminQuizUpdate: React.FC = () => {
   const { quizID } = useParams();
@@ -14,7 +15,7 @@ export const AdminQuizUpdate: React.FC = () => {
     queryFn: () => quizAPI.getByID({ id: quizID! }),
   });
 
-  const quiz: Quiz = data?.data ?? {};
+  const quiz: TQuiz = data?.data ?? {};
 
   console.log("quiz: ", quiz);
 
@@ -37,6 +38,14 @@ export const AdminQuizUpdate: React.FC = () => {
     );
   }
 
-  // Make api call to fetch quiz details here
-  return <div>AdminQuizUpdate</div>;
+  return (
+    <div className="w-full">
+      <div>
+        <div>{/* Update attachment form */}</div>
+        <div>
+          <UpdateQuiz quiz={quiz} />
+        </div>
+      </div>
+    </div>
+  );
 };

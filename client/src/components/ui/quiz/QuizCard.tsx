@@ -1,5 +1,5 @@
 import React from "react";
-import type { Quiz } from "../../../types/quiz";
+import type { TQuiz } from "../../../types/quiz";
 import { isArrayWithElements } from "../../../utils/isArrayWithElements";
 import { getQuizStatus } from "../../../utils/getQuizStatus";
 import { elapsedTime } from "../../../utils/elapseTime";
@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { useRouteStore } from "../../../stores/routes";
 
 type QuizCardProps = {
-  quiz: Quiz;
+  quiz: TQuiz;
 };
 
 export const QuizCard: React.FC<QuizCardProps> = (props) => {
@@ -17,7 +17,7 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
   const hasAttachment = isArrayWithElements(quiz.attachments);
   const updateCurrentPage = useRouteStore((state) => state.updateCurrentPage);
 
-  const getQuizStatusColor = (quiz: Quiz) => {
+  const getQuizStatusColor = (quiz: TQuiz) => {
     const status = getQuizStatus(quiz.startsAt, quiz.endsAt);
 
     if (status === "upcoming") return "bg-blue-500";
@@ -25,7 +25,7 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
     if (status === "expired") return "bg-gray-500";
   };
 
-  const getQuizElapseTime = (quiz: Quiz) => {
+  const getQuizElapseTime = (quiz: TQuiz) => {
     const status = getQuizStatus(quiz.startsAt, quiz.endsAt);
 
     if (status === "upcoming") {

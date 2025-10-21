@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { quizAPI } from "../../../api/quiz";
-import type { Quiz } from "../../../types/quiz";
+import type { TQuiz } from "../../../types/quiz";
 import { Loader2 } from "lucide-react";
 import { AlertCard } from "../../ui/shared/AlertCard";
 import { QuizCard } from "../../ui/quiz/QuizCard";
@@ -12,7 +12,7 @@ export const AdminQuizView: React.FC = () => {
     queryFn: () => quizAPI.getAll(),
   });
 
-  const quizzes: Quiz[] = data?.data ?? [];
+  const quizzes: TQuiz[] = data?.data ?? [];
 
   if (isPending) {
     return (
