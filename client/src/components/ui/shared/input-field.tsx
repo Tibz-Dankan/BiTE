@@ -1,4 +1,4 @@
-import React, { Fragment, ReactNode, useState } from "react";
+import React, { Fragment, type ReactNode, useState } from "react";
 import { Eye, EyeOff, AlertCircle } from "lucide-react";
 
 interface InputFieldProps extends React.HTMLAttributes<HTMLInputElement> {
