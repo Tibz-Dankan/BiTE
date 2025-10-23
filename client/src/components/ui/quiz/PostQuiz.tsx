@@ -196,7 +196,10 @@ export const PostQuiz: React.FC = () => {
           formik={formik}
           required={true}
         />
-        <div className="w-full flex items-center justify-center gap-4">
+        <div
+          className="w-full flex flex-col sm:flex-row items-center justify-center 
+          gap-4"
+        >
           {/* Starts At */}
           <div className="w-full">
             <h3 className="text-gray-500 text-[12px]">Starts At</h3>
