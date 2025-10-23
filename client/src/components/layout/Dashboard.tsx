@@ -11,7 +11,7 @@ export function DashboardLayout(props: DashboardLayoutProps) {
   return (
     <>
       <DashboardSidebar routes={props.routes} />
-      <div className="w-full lg:ml-64 lg:w-[calc(100vw-288px)] min-h-screen">
+      <div className="w-full lg:ml-64 lg:w-[calc(100vw-280px)] min-h-screen">
         <DashboardHeader routes={props.routes} />
         <main className="w-full px-4 md:px-6 mx-auto">{props.children}</main>
       </div>
