@@ -1,14 +1,14 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import type { AuthActions, AuthState } from "../types/auth";
+import type { Auth, AuthActions, AuthState } from "../types/auth";
 
 export type AuthStore = AuthState & AuthActions;
 
-const initialAuthValues = {
+const initialAuthValues: Auth = {
   user: {
-    id: 0,
+    id: "",
     name: "",
-    role: "",
+    role: "USER",
     email: "",
     imageUrl: "",
     profileBgColor: "",
