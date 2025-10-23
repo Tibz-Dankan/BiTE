@@ -25,6 +25,15 @@ export type TQuizResponse = {
   status: string;
 };
 
+export type TPostQuiz = {
+  title: string;
+  postedByUserID: string;
+  startsAt: string;
+  endsAt: string;
+  instructions: string;
+  file: any;
+};
+
 export type TUpdateQuiz = {
   id: string;
   title: string;

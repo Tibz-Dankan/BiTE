@@ -38,10 +38,10 @@ export type LoginWithRefreshTokenInPut = {
 };
 
 export type User = {
-  id: number;
+  id: string;
   name: string;
   email: string;
-  role: string;
+  role: "USER" | "ADMIN";
   imageUrl: string;
   profileBgColor: string;
   createdAt: string;
