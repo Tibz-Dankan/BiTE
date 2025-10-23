@@ -116,8 +116,8 @@ export const PostQuiz: React.FC = () => {
     },
   });
   return (
-    <div className="w-full mb-16">
-      <form onSubmit={formik.handleSubmit} className="space-y-6">
+    <div className="w-full sm:max-w-140 flex items-center justify-center mb-16">
+      <form onSubmit={formik.handleSubmit} className="w-full space-y-6">
         {/* Title Input field */}
         <InputField
           name="title"
