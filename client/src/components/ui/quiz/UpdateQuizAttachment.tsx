@@ -10,6 +10,7 @@ import {
   Plus,
   Upload,
   UploadCloud,
+  X,
 } from "lucide-react";
 import { FilePicker } from "../shared/FilePicker";
 import { Modal } from "../shared/Modal";
@@ -26,7 +27,7 @@ interface UpdateQuizAttachmentProps {
 export const UpdateQuizAttachment: React.FC<UpdateQuizAttachmentProps> = (
   props
 ) => {
-  const [showDocumentPreview, setShowDocumentPreview] = useState(false);
+  const [showImagePreview, setShowImagePreview] = useState(false);
   const [fileError, setFileError] = useState("");
   const [file, setFile] = useState<ArrayBuffer>();
 
@@ -42,7 +43,7 @@ export const UpdateQuizAttachment: React.FC<UpdateQuizAttachmentProps> = (
     mutationFn: quizAPI.updateQuizAttachment,
     onSuccess: async (response: any) => {
       console.log("response", response);
-      setShowDocumentPreview(() => false);
+      setShowImagePreview(() => false);
       setFile(() => null as any);
       showCardNotification({
         type: "success",
@@ -72,18 +73,21 @@ export const UpdateQuizAttachment: React.FC<UpdateQuizAttachmentProps> = (
   };
 
   const onSaveHandler = (file: any) => {
-    console.log("picked file", file);
     setFileError(() => "");
-    setShowDocumentPreview(() => true);
+    setShowImagePreview(() => true);
     setFile(() => file);
   };
 
   const onErrorHandler = (errorList: any) => {
     const error = errorList[0]?.reason.toLowerCase();
-    console.log("file pick error", error);
     setFileError(() => error);
-    setShowDocumentPreview(() => false);
+    setShowImagePreview(() => false);
     setFile(() => null as any);
+  };
+
+  const closeImagePreviewHandler = () => {
+    setShowImagePreview(() => false);
+    setFile(() => undefined);
   };
 
   const getImageURL = (file: any) => {
@@ -146,17 +150,24 @@ export const UpdateQuizAttachment: React.FC<UpdateQuizAttachmentProps> = (
             </div>
           )}
 
-          {showDocumentPreview && (
-            <div className="">
+          {showImagePreview && (
+            <div className="relative">
               <img
                 src={getImageURL(file)}
                 alt={"preview"}
                 className="object-cover object-center rounded-md"
               />
+              <span
+                className="absolute top-2 right-2 bg-gray-50/80 rounded-full p-2
+                cursor-pointer hover:text-(--primary) shadow-sm"
+                onClick={() => closeImagePreviewHandler()}
+              >
+                <X className="w-4 h-4 text-gray-800 hover:text-inherit" />
+              </span>
             </div>
           )}
 
-          {!showDocumentPreview && (
+          {!showImagePreview && (
             <div className="w-full h-full flex flex-col justify-center items-center gap-8">
               <p className="w-full flex items-center justify-center gap-2 text-gray-500 text-sm">
                 <Paperclip className="w-4 h-4 text-gray-500" />
@@ -187,24 +198,26 @@ export const UpdateQuizAttachment: React.FC<UpdateQuizAttachmentProps> = (
           )}
 
           {file && !fileError && (
-            <Button
-              type="button"
-              onClick={() => uploadFileHandler(file)}
-              className="w-full lg:w-40 mt-4"
-              disabled={isPending}
-            >
-              {isPending ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Uploading...
-                </>
-              ) : (
-                <>
-                  <UploadCloud className="mr-2 h-4 w-4" />
-                  Upload
-                </>
-              )}
-            </Button>
+            <div className="w-full flex items-center justify-center sm:justify-end">
+              <Button
+                type="button"
+                onClick={() => uploadFileHandler(file)}
+                className="w-full sm:w-40"
+                disabled={isPending}
+              >
+                {isPending ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Uploading...
+                  </>
+                ) : (
+                  <>
+                    <UploadCloud className="mr-2 h-4 w-4" />
+                    Upload
+                  </>
+                )}
+              </Button>
+            </div>
           )}
         </div>
       </Modal>
