@@ -54,7 +54,7 @@ export const FilePicker: React.FC<FilePickerProps> = (props) => {
       props.onSave(file);
     };
     saveHandler();
-  }, [file, filename]);
+  }, [file, filename, props]);
 
   useEffect(() => {
     const fileErrorHandler = () => {

@@ -6,6 +6,7 @@ import type { TQuiz } from "../../../types/quiz";
 import { Loader2 } from "lucide-react";
 import { AlertCard } from "../../ui/shared/AlertCard";
 import { UpdateQuiz } from "../../ui/quiz/UpdateQuiz";
+import { UpdateQuizAttachment } from "../../ui/quiz/UpdateQuizAttachment";
 
 export const AdminQuizUpdate: React.FC = () => {
   const { quizID } = useParams();
@@ -40,9 +41,16 @@ export const AdminQuizUpdate: React.FC = () => {
 
   return (
     <div className="w-full">
-      <div>
-        <div>{/* Update attachment form */}</div>
-        <div>
+      <div className="w-full flex items-start justify-start gap-6">
+        <div className="w-148s flex items-center">
+          <UpdateQuizAttachment
+            quizID={quiz.id}
+            attachmentID={quiz.attachments[0]?.id ?? ""}
+            attachmentURL={quiz.attachments[0]?.url ?? ""}
+            quizTitle={quiz.title}
+          />
+        </div>
+        <div className="w-full">
           <UpdateQuiz quiz={quiz} />
         </div>
       </div>
