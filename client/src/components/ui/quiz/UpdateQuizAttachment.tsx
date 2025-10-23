@@ -101,14 +101,14 @@ export const UpdateQuizAttachment: React.FC<UpdateQuizAttachmentProps> = (
             </label>
             {props.attachmentURL && (
               <div
-                className="w-full flex items-center justify-center gap-2 relative
+                className="w-80 min-h-32 flex items-center justify-center gap-2 relative
                 border-[1px] border-gray-300 rounded-md cursor-pointer
                 mt-3"
               >
                 <img
                   src={props.attachmentURL}
                   alt="quiz-img-display"
-                  className="w-148 object-cover object-center rounded-md"
+                  className="w-full object-cover object-center rounded-md"
                 />
                 <span
                   className="z-10 p-2 rounded-full absolute bottom-4 right-4
@@ -120,11 +120,11 @@ export const UpdateQuizAttachment: React.FC<UpdateQuizAttachmentProps> = (
             )}
             {!props.attachmentURL && (
               <div
-                className="w-full flex items-center justify-centers gap-2 relative
+                className="w-80 min-h-32 flex items-center justify-centers gap-2 relative
                 border-[1px] border-gray-300 rounded-md cursor-pointer
                 bg-gray-400 mt-3"
               >
-                <div className="w-fulls w-80 aspect-4/2 object-cover" />
+                <div className="w-full aspect-4/2 object-cover" />
                 <span
                   className="z-10 p-2 rounded-full absolute bottom-4 right-4
                   bg-(--primary)"
