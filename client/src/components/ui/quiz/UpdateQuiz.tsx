@@ -88,7 +88,7 @@ export const UpdateQuiz: React.FC<UpdateQuizProps> = (props) => {
     },
   });
   return (
-    <div>
+    <div className="w-full">
       <form onSubmit={formik.handleSubmit} className="space-y-6">
         <InputField
           name="title"
@@ -156,10 +156,10 @@ export const UpdateQuiz: React.FC<UpdateQuizProps> = (props) => {
             </div>
           </div>
         </div>
-        <div className="w-full flex items-center justify-center lg:justify-end">
+        <div className="w-full flex items-center justify-center md:justify-end">
           <Button
             type="submit"
-            className="w-full lg:w-40 mt-4"
+            className="w-full md:w-40 mt-4"
             disabled={isPending}
           >
             {isPending ? (

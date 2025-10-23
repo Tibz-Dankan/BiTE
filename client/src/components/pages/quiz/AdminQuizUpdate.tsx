@@ -40,9 +40,9 @@ export const AdminQuizUpdate: React.FC = () => {
   }
 
   return (
-    <div className="w-full">
-      <div className="w-full flex items-start justify-start gap-6">
-        <div className="w-148s flex items-center">
+    <div className="w-full mb-16">
+      <div className="w-full flex flex-col md:flex-row items-start justify-start gap-6">
+        <div className="flex items-center">
           <UpdateQuizAttachment
             quizID={quiz.id}
             attachmentID={quiz.attachments[0]?.id ?? ""}
