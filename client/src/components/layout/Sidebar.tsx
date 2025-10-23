@@ -177,7 +177,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
 
   return (
     <aside
-      className={`fixed z-[120] top-12 lg:top-0 left-0 h-[calc(100vh-64px)] lg:h-screen
+      className={`fixed z-[50] top-12 lg:top-0 left-0 h-[calc(100vh-64px)] lg:h-screen
          w-screen lg:w-64 p-3 transition-transform  duration-300 lg:translate-x-0
        ${
          isOpenSidebar
