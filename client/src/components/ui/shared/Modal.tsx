@@ -40,7 +40,7 @@ const ModalContent: React.FC<ModalContentProps> = (props) => {
       )}
     >
       <span
-        className="absolute right-4 top-1 z-[2000] cursor-pointer"
+        className="absolute right-2 top-2 z-[2000] cursor-pointer"
         onClick={props.onClose}
       >
         <X className="text-[#868e96] w-4 h-4" />
