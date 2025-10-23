@@ -95,7 +95,7 @@ export const UpdateQuizAttachment: React.FC<UpdateQuizAttachmentProps> = (
     <div className="w-full flex items-center justify-center">
       <Modal
         openModalElement={
-          <div className="w-full bg-green-400s">
+          <div className="w-full">
             <label className="text-sm font-[450] text-gray-800">
               Attachment(Image)
             </label>

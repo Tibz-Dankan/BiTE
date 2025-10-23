@@ -73,7 +73,8 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
           <img
             src={quiz.attachments[0].url}
             alt={quiz.attachments[0].filename}
-            className="w-full h-full rounded-l-lg bg-cover bg-center bg-gray-500"
+            className="w-full h-full rounded-l-lg object-cover object-center
+             bg-gray-500"
           />
         )}
         {!hasAttachment && (
