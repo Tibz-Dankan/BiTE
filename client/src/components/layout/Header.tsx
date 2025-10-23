@@ -1,9 +1,11 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import type { TRoute } from "../../types/routes";
-import { HelpCircle, Menu, X } from "lucide-react";
+import { HelpCircle, Menu, Plus, X } from "lucide-react";
 import { useSidebarStore } from "../../stores/sidebar";
 import { removeColonsFromPath } from "../../utils/removeColonsFromPath";
 import { useRouteStore } from "../../stores/routes";
+import { Button } from "../ui/shared/Btn";
+import { useAuthStore } from "../../stores/auth";
 
 interface DashboardSidebarProps {
   routes: TRoute;
@@ -11,12 +13,16 @@ interface DashboardSidebarProps {
 
 export function DashboardHeader(props: DashboardSidebarProps) {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const pages = props.routes.pages;
   const currentPageFromStore = useRouteStore((state) => state.currentPage);
+  const auth = useAuthStore((state) => state.auth);
 
   const isOpenSidebar = useSidebarStore((state) => state.isOpen);
   const OpenSidebar = useSidebarStore((state) => state.openSidebar);
   const closeSidebar = useSidebarStore((state) => state.closeSidebar);
+
+  const isAdmin = auth.user.role === "ADMIN";
 
   const getPageTitle = () => {
     const currentPage = pages.find(
@@ -27,6 +33,10 @@ export function DashboardHeader(props: DashboardSidebarProps) {
     return hasCurrentPageFromRoutes
       ? currentPage?.title
       : currentPageFromStore.title;
+  };
+
+  const navigateToNewQuizPage = () => {
+    navigate("/a/quizzes/new");
   };
 
   return (
@@ -53,6 +63,18 @@ export function DashboardHeader(props: DashboardSidebarProps) {
           </h1>
         </div>
         <div className="flex items-center justify-end gap-4">
+          {isAdmin && (
+            <div className="w-full flex items-center justify-end">
+              <Button
+                type="button"
+                className="bg-(--primary) text-[12px] h-auto px-3 py-[6px]"
+                onClick={() => navigateToNewQuizPage()}
+              >
+                <Plus className="w-4 h-4 text-gray-50 -ml-[2px] mr-1" />
+                <span className="text-gray-50 font-semibold">New Quiz</span>
+              </Button>
+            </div>
+          )}
           <div
             className="flex items-center gap-2 border-[1.5px] border-gray-700
             rounded-md p-1 cursor-pointer"

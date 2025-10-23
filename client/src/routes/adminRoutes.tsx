@@ -8,6 +8,8 @@ import { DashboardLayout } from "../components/layout/Dashboard";
 import { PageNotFound } from "../components/pages/common/PageNotFound";
 import { AdminQuizView } from "../components/pages/quiz/AdminQuizView";
 import { AdminQuizUpdate } from "../components/pages/quiz/AdminQuizUpdate";
+import { AdminPostQuiz } from "../components/pages/quiz/AdminPostQuiz";
+import { AdminPostQuestion } from "../components/pages/question/AdminPostQuestion";
 
 export const AdminRoutes: React.FC = () => {
   const routes: TRoute = {
@@ -28,11 +30,25 @@ export const AdminRoutes: React.FC = () => {
         element: <AdminQuizView />,
       },
       {
+        title: "New Quiz",
+        icon: <FileQuestion className="h-4 w-4" />,
+        path: "/a/quizzes/new",
+        showInSidebar: false,
+        element: <AdminPostQuiz />,
+      },
+      {
         title: "Edit Quiz",
         icon: <FileQuestion className="h-4 w-4" />,
         path: "/a/quizzes/:quizID",
         showInSidebar: false,
         element: <AdminQuizUpdate />,
+      },
+      {
+        title: "New Question",
+        icon: <FileQuestion className="h-4 w-4" />,
+        path: "/a/quizzes/:quizID/questions/new",
+        showInSidebar: false,
+        element: <AdminPostQuestion />,
       },
       {
         title: "Settings",
