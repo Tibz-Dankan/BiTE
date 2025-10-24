@@ -10,6 +10,7 @@ import { AdminQuizView } from "../components/pages/quiz/AdminQuizView";
 import { AdminQuizUpdate } from "../components/pages/quiz/AdminQuizUpdate";
 import { AdminPostQuiz } from "../components/pages/quiz/AdminPostQuiz";
 import { AdminPostQuestion } from "../components/pages/question/AdminPostQuestion";
+import { AdminViewQuestions } from "../components/pages/question/AdminViewQuestions";
 
 export const AdminRoutes: React.FC = () => {
   const routes: TRoute = {
@@ -42,6 +43,13 @@ export const AdminRoutes: React.FC = () => {
         path: "/a/quizzes/:quizID",
         showInSidebar: false,
         element: <AdminQuizUpdate />,
+      },
+      {
+        title: "Questions",
+        icon: <FileQuestion className="h-4 w-4" />,
+        path: "/a/quizzes/:quizID/questions",
+        showInSidebar: false,
+        element: <AdminViewQuestions />,
       },
       {
         title: "New Question",
