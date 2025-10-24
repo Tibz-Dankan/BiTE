@@ -5,8 +5,9 @@ import { getQuizStatus } from "../../../utils/getQuizStatus";
 import { elapsedTime } from "../../../utils/elapseTime";
 import { AppDate } from "../../../utils/appDate";
 import { truncateString } from "../../../utils/truncateString";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRouteStore } from "../../../stores/routes";
+import { Button } from "../shared/Btn";
 
 type QuizCardProps = {
   quiz: TQuiz;
@@ -16,6 +17,7 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
   const quiz = props.quiz;
   const hasAttachment = isArrayWithElements(quiz.attachments);
   const updateCurrentPage = useRouteStore((state) => state.updateCurrentPage);
+  const navigate = useNavigate();
 
   const getQuizStatusColor = (quiz: TQuiz) => {
     const status = getQuizStatus(quiz.startsAt, quiz.endsAt);
@@ -62,6 +64,17 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
     console.log("Updated the admin quiz edit page in  the store");
   };
 
+  const navigateToQuestionsPage = () => {
+    navigate(`/a/quizzes/${quiz.id}/questions`);
+    updateCurrentPage({
+      title: "Questions",
+      icon: undefined,
+      path: `/a/quizzes/${quiz.id}/questions`,
+      showInSidebar: false,
+      element: undefined,
+    });
+  };
+
   return (
     <div
       className="w-full border-[1px] border-gray-300 rounded-lg
@@ -90,7 +103,8 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
       </div>
       <Link
         to={`/a/quizzes/${quiz.id}`}
-        className="flex flex-1 flex-col justify-between gap-2 h-20 p-3"
+        className="flex flex-1 flex-col justify-between gap-2 h-20 p-3
+        z-10 relative"
         onClick={() => updateAdminQuizEditPage()}
       >
         <div className="flex items-center gap-2 text-[12px] text-gray-500">
@@ -100,10 +114,19 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
           <span className="w-1 h-1 bg-gray-500 rounded-full" />
           <span>{getQuizElapseTime(quiz)}</span>
         </div>
-        <div>
+        <div className="w-full">
           <h2>{quiz.title}</h2>
         </div>
       </Link>
+      <div>
+        <Button
+          type="button"
+          onClick={() => navigateToQuestionsPage()}
+          className="bg-transparent text-gray-700 text-sm z-50 hover:text-(--primary)"
+        >
+          <span>Questions</span>
+        </Button>
+      </div>
       <div className={`h-20 w-2 ${getQuizStatusColor(quiz)} rounded-r-lg`} />
     </div>
   );
