@@ -7,6 +7,7 @@ import { Loader2 } from "lucide-react";
 import { AlertCard } from "../../ui/shared/AlertCard";
 import { UpdateQuiz } from "../../ui/quiz/UpdateQuiz";
 import { UpdateQuizAttachment } from "../../ui/quiz/UpdateQuizAttachment";
+import { UpdateQuizFormHeading } from "../../ui/quiz/UpdateQuizFormHeading";
 
 export const AdminQuizUpdate: React.FC = () => {
   const { quizID } = useParams();
@@ -40,7 +41,8 @@ export const AdminQuizUpdate: React.FC = () => {
   }
 
   return (
-    <div className="w-full mb-16">
+    <div className="w-full mb-16 space-y-8 mt-8">
+      <UpdateQuizFormHeading />
       <div className="w-full flex flex-col md:flex-row items-start justify-start gap-6">
         <div className="flex items-center">
           <UpdateQuizAttachment
