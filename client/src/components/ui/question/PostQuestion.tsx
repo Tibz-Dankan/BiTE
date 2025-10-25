@@ -13,6 +13,7 @@ import { Loader2, Upload, X } from "lucide-react";
 import { Button } from "../shared/Btn";
 import { InputCheckbox } from "../shared/InputCheckbox";
 import { questionAPI } from "../../../api/question";
+import { PostQuestionHeading } from "./PostQuestionHeading";
 
 interface PostQuestionProps {
   quiz: TQuiz;
@@ -117,12 +118,10 @@ export const PostQuestion: React.FC<PostQuestionProps> = (props) => {
 
   return (
     <div
-      className="w-full sm:max-w-140 flex flex-col items-center justify-center
-      gap-2 mb-16"
+      className="w-full sm:max-w-140 flex flex-col items-center
+       justify-center gap-8 mb-16"
     >
-      <div className="w-full text-gray-800 font-semibold">
-        <h2 className="text-lg">{quiz.title}</h2>
-      </div>
+      <PostQuestionHeading quizTitle={quiz.title} />
       <form onSubmit={formik.handleSubmit} className="w-full space-y-6">
         {/* Question number (sequence number) input field */}
         <InputField
