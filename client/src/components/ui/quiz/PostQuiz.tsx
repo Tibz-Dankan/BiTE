@@ -14,6 +14,7 @@ import { useAuthStore } from "../../../stores/auth";
 import { AlertCard } from "../shared/AlertCard";
 import { FilePicker } from "../shared/FilePicker";
 import { useNavigate } from "react-router-dom";
+import { useRouteStore } from "../../../stores/routes";
 
 export const PostQuiz: React.FC = () => {
   const navigate = useNavigate();
@@ -32,9 +33,17 @@ export const PostQuiz: React.FC = () => {
   );
 
   const user = useAuthStore((state) => state.auth.user);
+  const updateCurrentPage = useRouteStore((state) => state.updateCurrentPage);
 
   const navigateToNewQuestionPage = (quiz: TQuiz) => {
     navigate(`/a/quizzes/${quiz.id}/questions/new`);
+    updateCurrentPage({
+      title: "New Question",
+      icon: undefined,
+      path: `/a/quizzes/${quiz.id}/questions/new`,
+      showInSidebar: false,
+      element: undefined,
+    });
   };
 
   const { isPending, mutate } = useMutation({
