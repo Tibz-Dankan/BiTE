@@ -12,7 +12,7 @@ func GenerateImageFilename(originalFilename string) string {
 	now := time.Now()
 	ext := filepath.Ext(originalFilename)
 	if ext == "" {
-		ext = "webp"
+		ext = ".webp"
 	}
 
 	filename := fmt.Sprintf("IMG_%04d%02d%02d_%02d%02d%02d_%03d_BiTE%s",
