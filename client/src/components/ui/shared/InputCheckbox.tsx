@@ -33,7 +33,8 @@ export const InputCheckbox: React.FC<InputCheckboxProps> = (props) => {
           <Checkbox
             id={name}
             className="data-[state=checked]:border-(--primary)
-             data-[state=checked]:bg-(--primary) data-[state=checked]:text-white"
+             data-[state=checked]:bg-(--primary) data-[state=checked]:text-white
+             cursor-pointer"
             checked={checked}
             onCheckedChange={onCheckedChangeHandler}
           />
