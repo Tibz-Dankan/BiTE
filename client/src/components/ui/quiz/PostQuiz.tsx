@@ -15,6 +15,7 @@ import { AlertCard } from "../shared/AlertCard";
 import { FilePicker } from "../shared/FilePicker";
 import { useNavigate } from "react-router-dom";
 import { useRouteStore } from "../../../stores/routes";
+import { QuizFormHeading } from "./PostQuizHeading";
 
 export const PostQuiz: React.FC = () => {
   const navigate = useNavigate();
@@ -125,7 +126,11 @@ export const PostQuiz: React.FC = () => {
     },
   });
   return (
-    <div className="w-full sm:max-w-140 flex items-center justify-center mb-16">
+    <div
+      className="w-full sm:max-w-140 flex flex-col items-center 
+      justify-center gap-4 mb-16"
+    >
+      <QuizFormHeading />
       <form onSubmit={formik.handleSubmit} className="w-full space-y-6">
         {/* Title Input field */}
         <InputField

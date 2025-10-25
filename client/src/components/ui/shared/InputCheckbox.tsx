@@ -27,7 +27,7 @@ export const InputCheckbox: React.FC<InputCheckboxProps> = (props) => {
     <Fragment>
       <div
         className="relative pb-5 flex flex-col items-start
-        justify-center gap-1 w-full text-color-text-primary mb-1"
+        justify-center gap-1 w-full mb-1"
       >
         <div className="w-full flex items-center justify-start gap-2 relative">
           <Checkbox
