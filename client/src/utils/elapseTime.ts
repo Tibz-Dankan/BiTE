@@ -68,8 +68,8 @@ export const elapsedTime = (dateStr: string) => {
   }
 
   if (millSecDiffWithOutMinusChar < ONE_WEEK_MILL_SEC) {
-    if (days(millSecDiff) === 1) return "1 day";
-    return `${days(millSecDiff)} days`;
+    if (removeMinusCharPrefix(days(millSecDiff)) === 1) return "1 day";
+    return `${removeMinusCharPrefix(days(millSecDiff))} days`;
   }
 
   if (millSecDiffWithOutMinusChar < ONE_MONTH_MILL_SEC) {
