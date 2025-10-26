@@ -126,7 +126,7 @@ export const UpdateQuiz: React.FC<UpdateQuizProps> = (props) => {
                   onChange={(event) => setStartTime(() => event.target.value)}
                   className="w-full rounded-md border-[1px] border-gray-400
                   focus:border-(--primary) focus:ring-1 ring-(--primary) 
-                  transition-all  focus:outline-none p-2 text-sm text-gray-700
+                  transition-all focus:outline-none p-2 text-sm text-gray-700
                   self-start"
                 />
               </div>
