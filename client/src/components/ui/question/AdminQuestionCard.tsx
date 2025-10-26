@@ -2,7 +2,7 @@ import React from "react";
 import type { TQuestion } from "../../../types/question";
 import { truncateString } from "../../../utils/truncateString";
 import { isArrayWithElements } from "../../../utils/isArrayWithElements";
-import { AdminAnswerCard } from "../answer/AnswerCard";
+import { AdminAnswerCard } from "../answer/AdminAnswerCard";
 import { Plus } from "lucide-react";
 import { Button } from "../shared/Btn";
 
