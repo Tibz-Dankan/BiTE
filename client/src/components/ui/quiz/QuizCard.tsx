@@ -125,7 +125,7 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
           onClick={() => updateAdminQuizEditPage()}
           className="bg-transparent text-gray-700 text-sm z-50 hover:text-(--primary)"
         >
-          <span>Edit Questions</span>
+          <span>Edit Quiz</span>
         </Button>
       </div>
       <div className={`h-20 w-2 ${getQuizStatusColor(quiz)} rounded-r-lg`} />

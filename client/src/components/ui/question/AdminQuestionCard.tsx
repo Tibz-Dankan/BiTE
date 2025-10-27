@@ -3,10 +3,21 @@ import type { TQuestion } from "../../../types/question";
 import { truncateString } from "../../../utils/truncateString";
 import { isArrayWithElements } from "../../../utils/isArrayWithElements";
 import { AdminAnswerCard } from "../answer/AdminAnswerCard";
-import { Plus } from "lucide-react";
+import { MoreVertical, Plus } from "lucide-react";
 import { Button } from "../shared/Btn";
 import { Modal } from "../shared/Modal";
 import { PostAnswer } from "../answer/PostAnswer";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  // DropdownMenuLabel,
+  // DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../shared/dropdown-menu";
+import { useNavigate } from "react-router-dom";
+import { SCNButton } from "../shared/button";
+import { useRouteStore } from "../../../stores/routes";
 
 interface QuestionCardProps {
   question: TQuestion;
@@ -14,12 +25,38 @@ interface QuestionCardProps {
 
 export const AdminQuestionCard: React.FC<QuestionCardProps> = (props) => {
   const question = props.question;
+  const navigate = useNavigate();
+  const updateCurrentPage = useRouteStore((state) => state.updateCurrentPage);
 
   const attachments = question.attachments;
   const hasAttachment = isArrayWithElements(attachments);
 
   const answers = question.answers;
   const hasAnswers = isArrayWithElements(answers);
+
+  // const updateAdminQuizEditPage = (question: TQuestion) => {
+  //   navigate(`/a/quizzes/${question.quizID}/questions/${question.id}/edit`);
+  //   updateCurrentPage({
+  //     title: "Edit Question",
+  //     icon: undefined,
+  //     path: "/a/quizzes/:quizID/questions/:questionID/edit",
+  //     showInSidebar: false,
+  //     element: undefined,
+  //   });
+  // };
+
+  const navigateToEditQuestionPage = (question: TQuestion) => {
+    // navigate(`/a/quizzes/${question.quizID}/questions/${question.id}/edit`);
+    // updateAdminQuizEditPage(question);
+    navigate(`/a/quizzes/${question.quizID}/questions/${question.id}/edit`);
+    updateCurrentPage({
+      title: "Edit Question",
+      icon: undefined,
+      path: "/a/quizzes/:quizID/questions/:questionID/edit",
+      showInSidebar: false,
+      element: undefined,
+    });
+  };
 
   return (
     <div className="w-full space-y-4 border-1 border-gray-800/30 p-8 rounded-2xl">
@@ -29,6 +66,35 @@ export const AdminQuestionCard: React.FC<QuestionCardProps> = (props) => {
             <span>Question</span>
             <span>{question.sequenceNumber}</span>
           </p>
+          {/* Question actions drop down */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <SCNButton className="p-1 py-0">
+                <MoreVertical className="w-5 h-5 text-gray-800" />
+              </SCNButton>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {/* <DropdownMenuLabel>{auth.user.name}</DropdownMenuLabel> */}
+              {/* <DropdownMenuSeparator /> */}
+              <DropdownMenuItem
+                onClick={() => navigateToEditQuestionPage(question)}
+              >
+                Edit Question
+              </DropdownMenuItem>
+              {/* <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <div className="w-full">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => logOutHandler()}
+                  >
+                    Log out
+                  </Button>
+                </div>
+              </DropdownMenuItem> */}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         <div className="w-full flex items-start justify-center gap-4">
           <div
