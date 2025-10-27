@@ -87,7 +87,7 @@ export const PostAnswer: React.FC<PostAnswerProps> = (props) => {
     validationSchema: Yup.object({
       title: Yup.string().max(255).required("Title is required"),
       sequenceNumber: Yup.number().required(),
-      hasMultipleCorrectAnswers: Yup.boolean().optional(),
+      isCorrect: Yup.boolean().optional(),
     }),
 
     onSubmit: async (values: any, helpers: any) => {
