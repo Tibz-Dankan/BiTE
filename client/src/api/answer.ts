@@ -47,7 +47,7 @@ class AnswerAPI {
     return await response.json();
   };
 
-  updateQuestionAttachment = async ({
+  updateAnswerAttachment = async ({
     answerID,
     attachmentID,
     formData,

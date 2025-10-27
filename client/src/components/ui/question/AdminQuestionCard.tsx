@@ -34,20 +34,7 @@ export const AdminQuestionCard: React.FC<QuestionCardProps> = (props) => {
   const answers = question.answers;
   const hasAnswers = isArrayWithElements(answers);
 
-  // const updateAdminQuizEditPage = (question: TQuestion) => {
-  //   navigate(`/a/quizzes/${question.quizID}/questions/${question.id}/edit`);
-  //   updateCurrentPage({
-  //     title: "Edit Question",
-  //     icon: undefined,
-  //     path: "/a/quizzes/:quizID/questions/:questionID/edit",
-  //     showInSidebar: false,
-  //     element: undefined,
-  //   });
-  // };
-
   const navigateToEditQuestionPage = (question: TQuestion) => {
-    // navigate(`/a/quizzes/${question.quizID}/questions/${question.id}/edit`);
-    // updateAdminQuizEditPage(question);
     navigate(`/a/quizzes/${question.quizID}/questions/${question.id}/edit`);
     updateCurrentPage({
       title: "Edit Question",
@@ -73,26 +60,12 @@ export const AdminQuestionCard: React.FC<QuestionCardProps> = (props) => {
                 <MoreVertical className="w-5 h-5 text-gray-800" />
               </SCNButton>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {/* <DropdownMenuLabel>{auth.user.name}</DropdownMenuLabel> */}
-              {/* <DropdownMenuSeparator /> */}
+            <DropdownMenuContent align="center">
               <DropdownMenuItem
                 onClick={() => navigateToEditQuestionPage(question)}
               >
                 Edit Question
               </DropdownMenuItem>
-              {/* <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <div className="w-full">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => logOutHandler()}
-                  >
-                    Log out
-                  </Button>
-                </div>
-              </DropdownMenuItem> */}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
