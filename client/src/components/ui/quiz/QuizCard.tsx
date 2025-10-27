@@ -102,7 +102,7 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
         )}
       </div>
       <Link
-        to={`/a/quizzes/${quiz.id}`}
+        to={`/a/quizzes/${quiz.id}/questions`}
         className="flex flex-1 flex-col justify-between gap-2 h-20 p-3
         z-10 relative"
         onClick={() => updateAdminQuizEditPage()}
