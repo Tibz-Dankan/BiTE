@@ -53,6 +53,7 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
   };
 
   const updateAdminQuizEditPage = () => {
+    navigate(`/a/quizzes/${quiz.id}`);
     updateCurrentPage({
       title: "Edit Quiz",
       icon: undefined,
@@ -105,7 +106,7 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
         to={`/a/quizzes/${quiz.id}/questions`}
         className="flex flex-1 flex-col justify-between gap-2 h-20 p-3
         z-10 relative"
-        onClick={() => updateAdminQuizEditPage()}
+        onClick={() => navigateToQuestionsPage()}
       >
         <div className="flex items-center gap-2 text-[12px] text-gray-500">
           <span className="first-letter:uppercase">
@@ -121,10 +122,10 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
       <div>
         <Button
           type="button"
-          onClick={() => navigateToQuestionsPage()}
+          onClick={() => updateAdminQuizEditPage()}
           className="bg-transparent text-gray-700 text-sm z-50 hover:text-(--primary)"
         >
-          <span>Questions</span>
+          <span>Edit Questions</span>
         </Button>
       </div>
       <div className={`h-20 w-2 ${getQuizStatusColor(quiz)} rounded-r-lg`} />

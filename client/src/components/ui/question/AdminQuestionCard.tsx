@@ -5,6 +5,8 @@ import { isArrayWithElements } from "../../../utils/isArrayWithElements";
 import { AdminAnswerCard } from "../answer/AdminAnswerCard";
 import { Plus } from "lucide-react";
 import { Button } from "../shared/Btn";
+import { Modal } from "../shared/Modal";
+import { PostAnswer } from "../answer/PostAnswer";
 
 interface QuestionCardProps {
   question: TQuestion;
@@ -58,13 +60,26 @@ export const AdminQuestionCard: React.FC<QuestionCardProps> = (props) => {
       </div>
       <div className="w-full flex items-center justify-between gap-4">
         <span>Answers</span>
-        <Button
-          type="button"
-          className="flex items-center justify-center gap-1 h-auto py-1 px-3"
+        <Modal
+          openModalElement={
+            <div>
+              <Button
+                type="button"
+                className="flex items-center justify-center gap-1 h-auto py-1 px-3"
+              >
+                <Plus className="w-4 h-4 text-gray-50" />
+                <span className="text-sm">Answer</span>
+              </Button>
+            </div>
+          }
         >
-          <Plus className="w-4 h-4 text-gray-50" />
-          <span className="text-sm">Answer</span>
-        </Button>
+          <div
+            className="w-full sm:w-[50vw] min-h-[50vh] h-auto max-h-[80vh] bg-gray-50
+            rounded-md p-4 flex items-start justify-center overflow-x-hidden"
+          >
+            <PostAnswer question={question} />
+          </div>
+        </Modal>
       </div>
       <div className="w-full space-y-4">
         {hasAnswers &&
