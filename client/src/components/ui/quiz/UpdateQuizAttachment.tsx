@@ -140,9 +140,13 @@ export const UpdateQuizAttachment: React.FC<UpdateQuizAttachmentProps> = (
           </div>
         }
       >
-        <div
+        {/* <div
           className="w-[50vw] min-h-[50vh] flex flex-col items-center
            p-8 space-y-8 bg-gray-50 rounded-md"
+        > */}
+        <div
+          className="w-[90vw] sm:w-[50vw] min-h-[50vh] max-h-[80vh] flex flex-col
+           items-center justify-start p-8 space-y-8 bg-gray-50 rounded-md"
         >
           {fileError && (
             <div className="w-full">
