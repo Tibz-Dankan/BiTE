@@ -7,7 +7,15 @@ import { AppDate } from "../../../utils/appDate";
 import { truncateString } from "../../../utils/truncateString";
 import { Link, useNavigate } from "react-router-dom";
 import { useRouteStore } from "../../../stores/routes";
-import { Button } from "../shared/Btn";
+// import { Button } from "../shared/Btn";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../shared/dropdown-menu";
+import { SCNButton } from "../shared/button";
+import { Edit, MoreVertical } from "lucide-react";
 
 type QuizCardProps = {
   quiz: TQuiz;
@@ -120,13 +128,21 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
         </div>
       </Link>
       <div>
-        <Button
-          type="button"
-          onClick={() => updateAdminQuizEditPage()}
-          className="bg-transparent text-gray-700 text-sm z-50 hover:text-(--primary)"
-        >
-          <span>Edit Quiz</span>
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <SCNButton className="p-1 py-0">
+              <MoreVertical className="w-5 h-5 text-gray-800" />
+            </SCNButton>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="center" className="bg-gray-50">
+            <DropdownMenuItem onClick={() => updateAdminQuizEditPage()}>
+              <span className="flex items-center gap-2 cursor-pointer">
+                <Edit className="w-4 h-4 text-gray-800" />
+                Edit Question
+              </span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       <div className={`h-20 w-2 ${getQuizStatusColor(quiz)} rounded-r-lg`} />
     </div>
