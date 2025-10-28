@@ -24,7 +24,8 @@ export const PostQuestionHeading: React.FC<PostQuestionHeadingProps> = (
         <div className="flex items-center gap-4 mb-3">
           {/* Icon circle */}
           <div
-            className="w-14 h-14 rounded-full flex items-center justify-center shadow-md"
+            className="hidden w-14 h-14 rounded-full sm:flex flex-shrink-0 items-center 
+            justify-center shadow-md"
             style={{ backgroundColor: "oklch(0.749 0.154 70.67)" }}
           >
             <svg
@@ -45,12 +46,12 @@ export const PostQuestionHeading: React.FC<PostQuestionHeadingProps> = (
           {/* Title */}
           <div>
             <h2
-              className="text-4xl font-bold tracking-tight"
+              className="text-2xl sm:text-4xl font-bold tracking-tight"
               style={{ color: "oklch(0.749 0.154 70.67)" }}
             >
               Create Quiz Question
             </h2>
-            <p className="text-gray-500 mt-1 text-sm">
+            <p className="text-gray-500 mt-1 text-[12px] sm:text-sm">
               Craft engaging questions for your learners
             </p>
           </div>
