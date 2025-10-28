@@ -62,7 +62,7 @@ export const AdminAnswerCard: React.FC<AdminAnswerCardProps> = (props) => {
             }
           >
             <div
-              className="w-full sm:w-[50vw] min-h-[50vh] h-auto max-h-[80vh] bg-gray-50
+              className="w-[90vw] sm:w-[80vw] min-h-[50vh] h-auto max-h-[80vh] bg-gray-50
                 rounded-md p-4 flex items-start justify-center overflow-x-hidden"
             >
               <div className="w-full flex flex-col md:flex-row items-start justify-start gap-6">

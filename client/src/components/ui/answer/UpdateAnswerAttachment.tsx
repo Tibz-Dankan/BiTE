@@ -143,8 +143,8 @@ export const UpdateAnswerAttachment: React.FC<UpdateAnswerAttachmentProps> = (
         }
       >
         <div
-          className="w-[50vw] min-h-[50vh] flex flex-col items-center
-           p-8 space-y-8 bg-gray-50 rounded-md"
+          className="w-[90vw] sm:w-[50vw] min-h-[50vh] max-h-[80vh] flex flex-col items-center
+           p-8 space-y-8 bg-gray-50 rounded-md overflow-x-hidden"
         >
           {fileError && (
             <div className="w-full">
