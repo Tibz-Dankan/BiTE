@@ -142,7 +142,7 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
             <DropdownMenuItem onClick={() => updateAdminQuizEditPage()}>
               <span className="flex items-center gap-2 cursor-pointer">
                 <Edit className="w-4 h-4 text-gray-800" />
-                Edit Question
+                Edit Quiz
               </span>
             </DropdownMenuItem>
           </DropdownMenuContent>
