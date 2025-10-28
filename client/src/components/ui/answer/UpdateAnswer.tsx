@@ -78,7 +78,7 @@ export const UpdateAnswer: React.FC<UpdateAnswerProps> = (props) => {
 
   return (
     <div
-      className="w-full h-full sm:max-w-140 flex flex-col items-center
+      className="w-full h-full flex flex-col items-center
        justify-start gap-4 mb-8"
     >
       <div className="w-full">
