@@ -31,6 +31,8 @@ export const UpdateAnswerAttachment: React.FC<UpdateAnswerAttachmentProps> = (
   const [fileError, setFileError] = useState("");
   const [file, setFile] = useState<ArrayBuffer>();
 
+  console.log("props.attachmentID : ", props.attachmentID);
+
   const showCardNotification = useNotificationStore(
     (state) => state.showCardNotification
   );
@@ -67,7 +69,7 @@ export const UpdateAnswerAttachment: React.FC<UpdateAnswerAttachmentProps> = (
 
     mutate({
       answerID: props.answerID,
-      attachmentID: props.attachmentID,
+      attachmentID: props.attachmentID ? props.attachmentID : "undefined",
       formData: formData,
     });
   };
@@ -174,7 +176,6 @@ export const UpdateAnswerAttachment: React.FC<UpdateAnswerAttachmentProps> = (
                 <span className="flex items-center gap-1">
                   <span>Update Question</span>
                   <span className="font-semibold text-gray-800">
-                    {/* {truncateString(props.quizTitle, 6)}{" "} */}
                     {props.answerSequenceNumber}
                   </span>
                   <span>Image Attachment</span>

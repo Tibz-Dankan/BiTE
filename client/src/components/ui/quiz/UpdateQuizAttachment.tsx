@@ -67,7 +67,7 @@ export const UpdateQuizAttachment: React.FC<UpdateQuizAttachmentProps> = (
 
     mutate({
       quizID: props.quizID,
-      attachmentID: props.attachmentID,
+      attachmentID: props.attachmentID ? props.attachmentID : "undefined",
       formData: formData,
     });
   };

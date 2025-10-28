@@ -52,6 +52,8 @@ class AnswerAPI {
     attachmentID,
     formData,
   }: TUpdateAnswerAttachment) => {
+    console.log("answerID: ", answerID);
+    console.log("attachmentID: ", attachmentID);
     const response = await fetch(
       `${SERVER_URL}/answer/${answerID}/attachment/${attachmentID}`,
       {
