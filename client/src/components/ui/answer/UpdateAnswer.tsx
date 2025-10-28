@@ -111,7 +111,7 @@ export const UpdateAnswer: React.FC<UpdateAnswerProps> = (props) => {
           name="isCorrect"
           label="This answer is correct"
           formik={formik}
-          checked={false}
+          checked={answer.isCorrect}
         />
 
         <div className="w-full flex items-center justify-center lg:justify-end">
