@@ -7,7 +7,6 @@ import { AppDate } from "../../../utils/appDate";
 import { truncateString } from "../../../utils/truncateString";
 import { Link, useNavigate } from "react-router-dom";
 import { useRouteStore } from "../../../stores/routes";
-// import { Button } from "../shared/Btn";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -87,22 +86,27 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
   return (
     <div
       className="w-full border-[1px] border-gray-300 rounded-lg
-      flex items-center gap-4s bg-gray-800/5"
+      flex flex-col sm:flex-row items-center  bg-gray-800/5
+      relative"
     >
-      <div className="w-20 h-20 rounded-l-lg flex items-center justify-center">
+      <div
+        className="w-full p-6 pb-0 sm:p-0 sm:w-20 sm:h-20 rounded-lg
+         sm:rounded-none sm:rounded-l-lg flex items-center justify-center"
+      >
         {/* To add big image viewer */}
         {hasAttachment && (
           <img
             src={quiz.attachments[0].url}
             alt={quiz.attachments[0].filename}
-            className="w-full h-full rounded-l-lg object-cover object-center
+            className="w-full h-full rounded-lg sm:rounded-none sm:rounded-l-lg
+             object-cover object-center
              bg-gray-500"
           />
         )}
         {!hasAttachment && (
           <div
-            className="w-full h-full flex items-center justify-center rounded-l-lg
-            bg-gray-500"
+            className="w-full h-full aspect-[2/1] flex items-center justify-center
+             rounded-lg sm:rounded-none sm:rounded-l-lg bg-gray-500"
           >
             <span className="text-gray-100 font-semibold">
               {truncateString(quiz.title, 6)}
@@ -112,22 +116,22 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
       </div>
       <Link
         to={`/a/quizzes/${quiz.id}/questions`}
-        className="flex flex-1 flex-col justify-between gap-2 h-20 p-3
-        z-10 relative"
+        className="w-full px-6 pb-4 sm:pb-0 flex flex-1 flex-col 
+        justify-between gap-2 h-full p-3 z-10 relative"
         onClick={() => navigateToQuestionsPage()}
       >
         <div className="flex items-center gap-2 text-[12px] text-gray-500">
           <span className="first-letter:uppercase">
             {getQuizStatus(quiz.startsAt, quiz.endsAt)}
           </span>
-          <span className="w-1 h-1 bg-gray-500 rounded-full" />
+          <span className="w-1 h-1 bg-gray-500 flex-shrink-0 rounded-full" />
           <span>{getQuizElapseTime(quiz)}</span>
         </div>
         <div className="w-full">
           <h2>{quiz.title}</h2>
         </div>
       </Link>
-      <div>
+      <div className="absolute -top-1 right-0 sm:relative">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SCNButton className="p-1 py-0">
@@ -144,7 +148,11 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className={`h-20 w-2 ${getQuizStatusColor(quiz)} rounded-r-lg`} />
+      <div
+        className={`hidden sm:block h-20 w-2 ${getQuizStatusColor(
+          quiz
+        )} rounded-r-lg`}
+      />
     </div>
   );
 };
