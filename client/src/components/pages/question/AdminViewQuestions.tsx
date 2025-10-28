@@ -60,7 +60,7 @@ export const AdminViewQuestions: React.FC = () => {
         <Button
           type="button"
           onClick={() => navigateToNewQuestionPage()}
-          className="bg-transparent text-gray-700 text-sm z-50 hover:text-(--primary)
+          className="bg-transparent text-gray-700 text-sm hover:text-(--primary)
           border-2 border-gray-600 h-auto py-1 hover:border-(--primary)"
         >
           <Plus className="w-4 h-4 hover:text-inherit -ml-[2px] mr-1" />
