@@ -124,7 +124,7 @@ export const UpdateQuestionAttachment: React.FC<
             )}
             {!props.attachmentURL && (
               <div
-                className="w-full sm:w-80 min-h-32 flex items-center justify-centers gap-2 relative
+                className="w-full sm:w-80 min-h-32 flex items-center gap-2 relative
                 border-[1px] border-gray-300 rounded-md cursor-pointer
                 bg-gray-400 mt-3"
               >
@@ -141,8 +141,8 @@ export const UpdateQuestionAttachment: React.FC<
         }
       >
         <div
-          className="w-[50vw] min-h-[50vh] flex flex-col items-center
-           p-8 space-y-8 bg-gray-50 rounded-md"
+          className="w-[90vw] sm:w-[50vw] min-h-[50vh] max-h-[80vh] flex flex-col
+           items-center justify-start p-8 space-y-8 bg-gray-50 rounded-md"
         >
           {fileError && (
             <div className="w-full">
