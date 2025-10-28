@@ -3,7 +3,7 @@ import type { TQuestion } from "../../../types/question";
 import { truncateString } from "../../../utils/truncateString";
 import { isArrayWithElements } from "../../../utils/isArrayWithElements";
 import { AdminAnswerCard } from "../answer/AdminAnswerCard";
-import { MoreVertical, Plus } from "lucide-react";
+import { Edit, MoreVertical, Plus } from "lucide-react";
 import { Button } from "../shared/Btn";
 import { Modal } from "../shared/Modal";
 import { PostAnswer } from "../answer/PostAnswer";
@@ -60,11 +60,16 @@ export const AdminQuestionCard: React.FC<QuestionCardProps> = (props) => {
                 <MoreVertical className="w-5 h-5 text-gray-800" />
               </SCNButton>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="center">
+
+            <DropdownMenuContent align="center" className="bg-gray-50">
               <DropdownMenuItem
                 onClick={() => navigateToEditQuestionPage(question)}
+                className="cursor-pointer"
               >
-                Edit Question
+                <span className="flex items-center justify-center gap-2">
+                  <Edit className="w-4 h-4 text-gray-800" />
+                  Edit Question
+                </span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

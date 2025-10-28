@@ -105,7 +105,7 @@ export const UpdateQuestionAttachment: React.FC<
             </label>
             {props.attachmentURL && (
               <div
-                className="w-80 min-h-32 flex items-center justify-center gap-2 relative
+                className="w-full sm:w-80 min-h-32 flex items-center justify-center gap-2 relative
                 border-[1px] border-gray-300 rounded-md cursor-pointer
                 mt-3"
               >
@@ -124,7 +124,7 @@ export const UpdateQuestionAttachment: React.FC<
             )}
             {!props.attachmentURL && (
               <div
-                className="w-80 min-h-32 flex items-center justify-centers gap-2 relative
+                className="w-full sm:w-80 min-h-32 flex items-center justify-centers gap-2 relative
                 border-[1px] border-gray-300 rounded-md cursor-pointer
                 bg-gray-400 mt-3"
               >
@@ -174,7 +174,6 @@ export const UpdateQuestionAttachment: React.FC<
                 <span className="flex items-center gap-1">
                   <span>Update Question</span>
                   <span className="font-semibold text-gray-800">
-                    {/* {truncateString(props.quizTitle, 6)}{" "} */}
                     {props.questionSequenceNumber}
                   </span>
                   <span>Image Attachment</span>

@@ -107,7 +107,7 @@ export const UpdateAnswerAttachment: React.FC<UpdateAnswerAttachmentProps> = (
             </label>
             {props.attachmentURL && (
               <div
-                className="w-76 min-h-32 flex items-center justify-center gap-2 relative
+                className="w-full sm:w-76 min-h-32 flex items-center justify-center gap-2 relative
                 border-[1px] border-gray-300 rounded-md cursor-pointer
                 mt-3"
               >
@@ -126,7 +126,7 @@ export const UpdateAnswerAttachment: React.FC<UpdateAnswerAttachmentProps> = (
             )}
             {!props.attachmentURL && (
               <div
-                className="w-76 min-h-32 flex items-center justify-centers gap-2 relative
+                className="w-full sm:w-76 min-h-32 flex items-center justify-centers gap-2 relative
                 border-[1px] border-gray-300 rounded-md cursor-pointer
                 bg-gray-400 mt-3"
               >

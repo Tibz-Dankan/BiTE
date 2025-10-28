@@ -105,8 +105,8 @@ export const UpdateQuizAttachment: React.FC<UpdateQuizAttachmentProps> = (
             </label>
             {props.attachmentURL && (
               <div
-                className="w-80 min-h-32 flex items-center justify-center gap-2 relative
-                border-[1px] border-gray-300 rounded-md cursor-pointer
+                className="w-full sm:w-80 min-h-32 flex items-center justify-center 
+                gap-2 relative border-[1px] border-gray-300 rounded-md cursor-pointer
                 mt-3"
               >
                 <img
@@ -124,7 +124,7 @@ export const UpdateQuizAttachment: React.FC<UpdateQuizAttachmentProps> = (
             )}
             {!props.attachmentURL && (
               <div
-                className="w-80 min-h-32 flex items-center justify-centers gap-2 relative
+                className="w-full sm:w-80 min-h-32 flex items-center justify-centers gap-2 relative
                 border-[1px] border-gray-300 rounded-md cursor-pointer
                 bg-gray-400 mt-3"
               >
