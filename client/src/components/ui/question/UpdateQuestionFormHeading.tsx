@@ -24,7 +24,8 @@ export const UpdateQuestionFormHeading: React.FC<UpdateQuestionHeadingProps> = (
         <div className="flex items-center gap-4 mb-3">
           {/* Icon circle */}
           <div
-            className="w-14 h-14 rounded-full flex items-center justify-center shadow-md"
+            className="hidden w-14 h-14 rounded-full sm:flex items-center 
+            justify-center shadow-md"
             style={{ backgroundColor: "oklch(0.749 0.154 70.67)" }}
           >
             <svg
@@ -45,19 +46,22 @@ export const UpdateQuestionFormHeading: React.FC<UpdateQuestionHeadingProps> = (
           {/* Title */}
           <div>
             <h2
-              className="text-4xl font-bold tracking-tight"
+              className="text-2xl sm:text-4xl font-bold tracking-tight"
               style={{ color: "oklch(0.749 0.154 70.67)" }}
             >
               Edit Question
             </h2>
-            <p className="text-gray-500 mt-1 text-sm">
+            <p className="text-gray-500 mt-1 text-[12px] sm:text-sm">
               Editing question details i.e title, number and attachments.
             </p>
           </div>
         </div>
 
         {/* Quiz Title */}
-        <div className="flex items-center justify-start gap-2 mt-6 pt-4 border-t border-gray-200">
+        <div
+          className="flex items-center justify-start gap-2 mt-6 pt-4 border-t
+          border-gray-200"
+        >
           <p className="text-sm text-gray-600">Quiz:</p>
           <p className="text-lg font-semibold text-gray-800 text-start">
             {truncateString(props.quizTitle, 48)}
