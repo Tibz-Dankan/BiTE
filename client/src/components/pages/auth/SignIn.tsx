@@ -11,7 +11,7 @@ import { InputField } from "../../ui/shared/InputField";
 import { authAPI } from "../../../api/auth";
 import { Button } from "../../ui/shared/Btn";
 
-export const Signin: React.FC = () => {
+export const SignIn: React.FC = () => {
   const navigate = useNavigate();
   const updateAuth = useAuthStore((state) => state.updateAuth);
 
