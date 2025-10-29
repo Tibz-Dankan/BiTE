@@ -3,9 +3,10 @@ import { Routes } from "react-router-dom";
 
 import type { TRoute } from "../types/routes";
 import { renderRoutes } from "./renderRoutes";
-import { Signin } from "../components/pages/auth/Signin";
+import { SignIn } from "../components/pages/auth/SignIn";
 import { LayoutDashboard } from "lucide-react";
 import { PageNotFound } from "../components/pages/common/PageNotFound";
+import { SignUp } from "../components/pages/auth/SignUp";
 
 export const AuthRoutes: React.FC = () => {
   const routes: TRoute = {
@@ -16,7 +17,14 @@ export const AuthRoutes: React.FC = () => {
         icon: "icon",
         path: "/auth/signin",
         showInSidebar: false,
-        element: <Signin />,
+        element: <SignIn />,
+      },
+      {
+        title: "Sign Up",
+        icon: "icon",
+        path: "/auth/signup",
+        showInSidebar: false,
+        element: <SignUp />,
       },
       // Page Not Found - Wildcard Route
       {
