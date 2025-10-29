@@ -35,6 +35,8 @@ var PostAnswer = func(c *fiber.Ctx) error {
 
 	var fileUploaded bool = true
 
+	// TODO: Validate sequence number for uniqueness
+
 	if answer.PostedByUserID == "" ||
 		answer.Title == "" ||
 		answer.QuestionID == "" ||
