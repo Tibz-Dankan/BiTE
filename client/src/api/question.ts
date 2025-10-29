@@ -1,5 +1,6 @@
 import { SERVER_URL } from "../constants/urls";
 import type {
+  TGetAllQuestionsByQuiz,
   TSearchQuestion,
   TUpdateQuestion,
   TUpdateQuestionAttachment,
@@ -89,13 +90,16 @@ class QuestionAPI {
     return await response.json();
   };
 
-  getAllByQuiz = async ({ quizID }: { quizID: string }) => {
-    const response = await fetch(`${SERVER_URL}/question/quiz/${quizID}`, {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-      },
-    });
+  getAllByQuiz = async ({ quizID, limit, cursor }: TGetAllQuestionsByQuiz) => {
+    const response = await fetch(
+      `${SERVER_URL}/question/quiz/${quizID}?limit=${limit}&cursor=${cursor}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
 
     if (!response.ok) {
       const error = await response.json();

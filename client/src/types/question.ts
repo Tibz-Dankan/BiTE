@@ -42,3 +42,9 @@ export type TSearchQuestion = {
   query: string;
   quizID: string;
 };
+
+export type TGetAllQuestionsByQuiz = {
+  quizID: string;
+  limit: number;
+  cursor?: string;
+};

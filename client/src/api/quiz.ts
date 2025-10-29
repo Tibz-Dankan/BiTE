@@ -1,5 +1,9 @@
 import { SERVER_URL } from "../constants/urls";
-import type { TUpdateQuiz, TUpdateQuizAttachment } from "../types/quiz";
+import type {
+  TGetAllQuizzes,
+  TUpdateQuiz,
+  TUpdateQuizAttachment,
+} from "../types/quiz";
 
 class QuizAPI {
   post = async ({ formData }: { formData: FormData }) => {
@@ -85,13 +89,16 @@ class QuizAPI {
     return await response.json();
   };
 
-  getAll = async () => {
-    const response = await fetch(`${SERVER_URL}/quiz`, {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-      },
-    });
+  getAll = async ({ limit, cursor }: TGetAllQuizzes) => {
+    const response = await fetch(
+      `${SERVER_URL}/quiz?limit=${limit}&cursor=${cursor}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
 
     if (!response.ok) {
       const error = await response.json();
