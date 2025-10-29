@@ -43,6 +43,11 @@ export type TUpdateQuiz = {
   instructions: string;
 };
 
+export type TGetAllQuizzes = {
+  limit: number;
+  cursor?: string;
+};
+
 export type TUpdateQuizAttachment = {
   quizID: string;
   attachmentID: string;
