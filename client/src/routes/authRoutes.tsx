@@ -7,6 +7,9 @@ import { SignIn } from "../components/pages/auth/SignIn";
 import { LayoutDashboard } from "lucide-react";
 import { PageNotFound } from "../components/pages/common/PageNotFound";
 import { SignUp } from "../components/pages/auth/SignUp";
+import { ForgotPassword } from "../components/pages/auth/ForgotPassword";
+import { VerifyOTP } from "../components/pages/auth/VerifyOTP";
+import { ResetPassword } from "../components/pages/auth/ResetPassword";
 
 export const AuthRoutes: React.FC = () => {
   const routes: TRoute = {
@@ -25,6 +28,27 @@ export const AuthRoutes: React.FC = () => {
         path: "/auth/signup",
         showInSidebar: false,
         element: <SignUp />,
+      },
+      {
+        title: "Forgot Password",
+        icon: "icon",
+        path: "/auth/forgot-password",
+        showInSidebar: false,
+        element: <ForgotPassword />,
+      },
+      {
+        title: "Verify OTP",
+        icon: "icon",
+        path: "/auth/verify-otp",
+        showInSidebar: false,
+        element: <VerifyOTP />,
+      },
+      {
+        title: "Reset Password",
+        icon: "icon",
+        path: "/auth/reset-password",
+        showInSidebar: false,
+        element: <ResetPassword />,
       },
       // Page Not Found - Wildcard Route
       {

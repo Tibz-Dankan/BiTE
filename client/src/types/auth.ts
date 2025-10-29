@@ -1,44 +1,45 @@
-export type SignInInPut = {
+export type TSignInInPut = {
   email: string;
   password: string;
 };
 
-export type SignUpInPut = {
+export type TSignUpInPut = {
   name: string;
   email: string;
   password: string;
   confirmPassword?: string;
 };
 
-export type ForgotPassword = {
+export type TForgotPassword = {
   email: string;
 };
 
-export type VerifyOTP = {
+export type TVerifyOTP = {
   otp: string;
 };
 
-export type ResetPassword = {
+export type TResetPassword = {
   otp: string;
   password: string;
+  confirmPassword?: string;
 };
 
-export type ChangePassword = {
+export type TChangePassword = {
   userID: string;
   currentPassword: string;
   newPassword: string;
 };
 
-export type UpdateUserImage = {
+export type TUpdateUserImage = {
   userID: string;
   formData: FormData;
 };
 
-export type LoginWithRefreshTokenInPut = {
+export type TLoginWithRefreshTokenInPut = {
   refreshToken: string;
 };
 
-export type User = {
+export type TUser = {
   id: string;
   name: string;
   email: string;
@@ -49,17 +50,17 @@ export type User = {
   updatedAt: string;
 };
 
-export type Auth = {
-  user: User;
+export type TAuth = {
+  user: TUser;
   accessToken: string;
   refreshToken: string;
 };
 
-export type AuthState = {
-  auth: Auth;
+export type TAuthState = {
+  auth: TAuth;
 };
 
-export type AuthActions = {
-  updateAuth: (auth: Auth) => void;
+export type TAuthActions = {
+  updateAuth: (auth: TAuth) => void;
   clearAuth: () => void;
 };

@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import type { Auth, AuthActions, AuthState } from "../types/auth";
+import type { TAuth, TAuthActions, TAuthState } from "../types/auth";
 
-export type AuthStore = AuthState & AuthActions;
+export type AuthStore = TAuthState & TAuthActions;
 
-const initialAuthValues: Auth = {
+const initialAuthValues: TAuth = {
   user: {
     id: "",
     name: "",
@@ -19,13 +19,13 @@ const initialAuthValues: Auth = {
   refreshToken: "",
 };
 
-export const initAuthStore = (): AuthState => {
+export const initAuthStore = (): TAuthState => {
   return {
     auth: initialAuthValues,
   };
 };
 
-export const defaultInitState: AuthState = {
+export const defaultInitState: TAuthState = {
   auth: initialAuthValues,
 };
 
