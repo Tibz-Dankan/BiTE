@@ -3,15 +3,15 @@ import type {
   ChangePassword,
   ForgotPassword,
   ResetPassword,
-  SigninInPut,
-  SignupInPut,
+  SignInInPut,
+  SignUpInPut,
   UpdateUserImage,
   User,
   VerifyOTP,
 } from "../types/auth";
 
 class AuthAPI {
-  signIn = async ({ email, password }: SigninInPut) => {
+  signIn = async ({ email, password }: SignInInPut) => {
     const response = await fetch(`${SERVER_URL}/user/auth/signin`, {
       method: "POST",
       body: JSON.stringify({
@@ -30,7 +30,7 @@ class AuthAPI {
     return await response.json();
   };
 
-  signUp = async ({ name, email, password }: SignupInPut) => {
+  signUp = async ({ name, email, password }: SignUpInPut) => {
     const response = await fetch(`${SERVER_URL}/user/auth/signup`, {
       method: "POST",
       body: JSON.stringify({

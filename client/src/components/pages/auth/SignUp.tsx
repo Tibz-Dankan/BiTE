@@ -4,14 +4,14 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import type { Auth, SignInInPut } from "../../../types/auth";
+import type { Auth, SignUpInPut } from "../../../types/auth";
 import { useAuthStore } from "../../../stores/auth";
 import { useNotificationStore } from "../../../stores/notification";
 import { InputField } from "../../ui/shared/InputField";
 import { authAPI } from "../../../api/auth";
 import { Button } from "../../ui/shared/Btn";
 
-export const SignIn: React.FC = () => {
+export const SignUp: React.FC = () => {
   const navigate = useNavigate();
   const updateAuth = useAuthStore((state) => state.updateAuth);
 
@@ -36,7 +36,7 @@ export const SignIn: React.FC = () => {
   };
 
   const { isPending, mutate } = useMutation({
-    mutationFn: authAPI.signIn,
+    mutationFn: authAPI.signUp,
     onSuccess: async (auth: Auth & { message: string }) => {
       console.log("Login successful:", auth);
       showCardNotification({ type: "success", message: auth.message });
@@ -54,20 +54,28 @@ export const SignIn: React.FC = () => {
     },
   });
 
-  const initialValues: SignInInPut = {
+  const initialValues: SignUpInPut = {
+    name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   };
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: Yup.object({
+      name: Yup.string().max(255).required("Username is required"),
       email: Yup.string().max(255).required("Email is required"),
       password: Yup.string()
         .max(255)
         .min(5)
         .max(30)
         .required("Password is required"),
+      confirmPassword: Yup.string()
+        .max(255)
+        .min(5)
+        .max(30)
+        .required("Confirm Password is required"),
     }),
 
     onSubmit: async (values: any, helpers: any) => {
@@ -84,7 +92,7 @@ export const SignIn: React.FC = () => {
   return (
     <div
       className="min-w-[100vw] min-h-[100vh] flex flex-1 items-center
-      justify-center p-4"
+      justify-center px-4 py-16"
     >
       <div
         className="w-full max-w-md px-8 py-10 bg-white rounded-lg
@@ -100,10 +108,18 @@ export const SignIn: React.FC = () => {
         </div>
 
         <h2 className="text-xl font-semibold text-center text-gray-800 mb-8">
-          Sign In to Your Account
+          Sign Up for an Account
         </h2>
 
         <form onSubmit={formik.handleSubmit} className="space-y-6">
+          <InputField
+            name="name"
+            label="Username"
+            placeholder="Enter your fullname"
+            type="text"
+            formik={formik}
+            required={true}
+          />
           <InputField
             name="email"
             label="Email"
@@ -120,14 +136,22 @@ export const SignIn: React.FC = () => {
             formik={formik}
             required={true}
           />
+          <InputField
+            name="confirmPassword"
+            label="Confirm Password"
+            placeholder="Enter your confirm password"
+            type="password"
+            formik={formik}
+            required={true}
+          />
           <Button type="submit" className="w-full mt-4" disabled={isPending}>
             {isPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Logging in...
+                Signing up...
               </>
             ) : (
-              "Sign In"
+              "Sign Up"
             )}
           </Button>
         </form>

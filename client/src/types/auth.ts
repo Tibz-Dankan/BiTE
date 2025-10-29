@@ -1,12 +1,13 @@
-export type SigninInPut = {
+export type SignInInPut = {
   email: string;
   password: string;
 };
 
-export type SignupInPut = {
+export type SignUpInPut = {
   name: string;
   email: string;
   password: string;
+  confirmPassword?: string;
 };
 
 export type ForgotPassword = {
