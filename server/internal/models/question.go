@@ -55,11 +55,11 @@ func (q *Question) FindAllByQuiz(quizID string, limit float64, cursor string) ([
 
 	if cursor != "" {
 		var lastQuestion Question
-		if err := db.Select("\"createdAt\"").Where("id = ?",
+		if err := db.Select("\"sequenceNumber\"").Where("id = ?",
 			cursor).First(&lastQuestion).Error; err != nil {
 			return questions, err
 		}
-		query = query.Where("\"createdAt\" < ?", lastQuestion.CreatedAt)
+		query = query.Where("\"sequenceNumber\" > ?", lastQuestion.SequenceNumber)
 	}
 
 	query.Where("\"quizID\" = ?", quizID).Find(&questions)
