@@ -20,19 +20,25 @@ var GetAllQuestionsByQuiz = func(c *fiber.Ctx) error {
 		cursorParam = ""
 	}
 
-	allQuestions, err := question.FindAllByQuiz(quizID, limit, cursorParam)
+	allQuestions, err := question.FindAllByQuiz(quizID, limit+1, cursorParam)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	var prevCursor string
-	if len(allQuestions) > 0 {
-		prevCursor = allQuestions[len(allQuestions)-1].ID
+	var nextCursor string = ""
+	var hasNextItems bool = false
+
+	if len(allQuestions) > int(limit) {
+		allQuestions = allQuestions[:len(allQuestions)-1] // Remove last element
+		nextCursor = allQuestions[len(allQuestions)-1].ID
+		hasNextItems = true
 	}
 
 	pagination := map[string]interface{}{
-		"limit":      limit,
-		"prevCursor": prevCursor,
+		"limit":        limit,
+		"nextCursor":   nextCursor,
+		"hasNextItems": hasNextItems,
+		"count":        len(allQuestions),
 	}
 
 	response := fiber.Map{
