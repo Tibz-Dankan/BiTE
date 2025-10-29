@@ -3,15 +3,18 @@ import { Loader2 } from "lucide-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
-import type { TAuth, TSignUpInPut } from "../../../types/auth";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import type { TAuth, TResetPassword } from "../../../types/auth";
 import { useAuthStore } from "../../../stores/auth";
 import { useNotificationStore } from "../../../stores/notification";
 import { InputField } from "../../ui/shared/InputField";
 import { authAPI } from "../../../api/auth";
 import { Button } from "../../ui/shared/Btn";
 
-export const SignUp: React.FC = () => {
+export const ResetPassword: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const otp = searchParams.get("otp")!;
+
   const navigate = useNavigate();
   const updateAuth = useAuthStore((state) => state.updateAuth);
 
@@ -36,7 +39,7 @@ export const SignUp: React.FC = () => {
   };
 
   const { isPending, mutate } = useMutation({
-    mutationFn: authAPI.signUp,
+    mutationFn: authAPI.resetPassword,
     onSuccess: async (auth: TAuth & { message: string }) => {
       console.log("auth response:", auth);
       showCardNotification({ type: "success", message: auth.message });
@@ -54,18 +57,15 @@ export const SignUp: React.FC = () => {
     },
   });
 
-  const initialValues: TSignUpInPut = {
-    name: "",
-    email: "",
+  const initialValues: TResetPassword = {
     password: "",
     confirmPassword: "",
+    otp: otp,
   };
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: Yup.object({
-      name: Yup.string().max(255).required("Username is required"),
-      email: Yup.string().max(255).required("Email is required"),
       password: Yup.string()
         .max(255)
         .min(5)
@@ -75,7 +75,7 @@ export const SignUp: React.FC = () => {
         .max(255)
         .min(5)
         .max(30)
-        .required("Confirm Password is required"),
+        .required("Password is required"),
     }),
 
     onSubmit: async (values: any, helpers: any) => {
@@ -100,7 +100,7 @@ export const SignUp: React.FC = () => {
   return (
     <div
       className="min-w-[100vw] min-h-[100vh] flex flex-1 items-center
-      justify-center px-4 py-16"
+      justify-center p-4"
     >
       <div
         className="w-full max-w-md px-8 py-10 bg-white rounded-lg
@@ -116,26 +116,10 @@ export const SignUp: React.FC = () => {
         </div>
 
         <h2 className="text-xl font-semibold text-center text-gray-800 mb-8">
-          Sign up for an account
+          Reset your account password
         </h2>
 
         <form onSubmit={formik.handleSubmit} className="space-y-6">
-          <InputField
-            name="name"
-            label="Username"
-            placeholder="Enter your fullname"
-            type="text"
-            formik={formik}
-            required={true}
-          />
-          <InputField
-            name="email"
-            label="Email"
-            placeholder="Enter your email"
-            type="email"
-            formik={formik}
-            required={true}
-          />
           <InputField
             name="password"
             label="Password"
@@ -147,7 +131,7 @@ export const SignUp: React.FC = () => {
           <InputField
             name="confirmPassword"
             label="Confirm Password"
-            placeholder="Enter your confirm password"
+            placeholder="Enter confirm password"
             type="password"
             formik={formik}
             required={true}
@@ -156,10 +140,10 @@ export const SignUp: React.FC = () => {
             {isPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Signing up...
+                Logging in...
               </>
             ) : (
-              "Sign Up"
+              "Sign In"
             )}
           </Button>
         </form>

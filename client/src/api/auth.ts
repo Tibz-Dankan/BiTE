@@ -1,17 +1,17 @@
 import { SERVER_URL } from "../constants/urls";
 import type {
-  ChangePassword,
-  ForgotPassword,
-  ResetPassword,
-  SignInInPut,
-  SignUpInPut,
-  UpdateUserImage,
-  User,
-  VerifyOTP,
+  TChangePassword,
+  TForgotPassword,
+  TResetPassword,
+  TSignInInPut,
+  TSignUpInPut,
+  TUpdateUserImage,
+  TUser,
+  TVerifyOTP,
 } from "../types/auth";
 
 class AuthAPI {
-  signIn = async ({ email, password }: SignInInPut) => {
+  signIn = async ({ email, password }: TSignInInPut) => {
     const response = await fetch(`${SERVER_URL}/user/auth/signin`, {
       method: "POST",
       body: JSON.stringify({
@@ -30,7 +30,7 @@ class AuthAPI {
     return await response.json();
   };
 
-  signUp = async ({ name, email, password }: SignUpInPut) => {
+  signUp = async ({ name, email, password }: TSignUpInPut) => {
     const response = await fetch(`${SERVER_URL}/user/auth/signup`, {
       method: "POST",
       body: JSON.stringify({
@@ -50,7 +50,7 @@ class AuthAPI {
     return await response.json();
   };
 
-  forgotPassword = async ({ email }: ForgotPassword) => {
+  forgotPassword = async ({ email }: TForgotPassword) => {
     const response = await fetch(`${SERVER_URL}/user/auth/forgot-password`, {
       method: "POST",
       body: JSON.stringify({
@@ -68,7 +68,7 @@ class AuthAPI {
     return await response.json();
   };
 
-  verifyOTP = async ({ otp }: VerifyOTP) => {
+  verifyOTP = async ({ otp }: TVerifyOTP) => {
     const response = await fetch(`${SERVER_URL}/user/auth/verify-otp`, {
       method: "PATCH",
       body: JSON.stringify({
@@ -86,7 +86,7 @@ class AuthAPI {
     return await response.json();
   };
 
-  resetPassword = async ({ password, otp }: ResetPassword) => {
+  resetPassword = async ({ password, otp }: TResetPassword) => {
     const response = await fetch(
       `${SERVER_URL}/user/auth/reset-password/${otp}`,
       {
@@ -111,7 +111,7 @@ class AuthAPI {
     userID,
     currentPassword,
     newPassword,
-  }: ChangePassword) => {
+  }: TChangePassword) => {
     const response = await fetch(
       `${SERVER_URL}/user/user/${userID}/auth/change-password`,
       {
@@ -133,7 +133,7 @@ class AuthAPI {
     return await response.json();
   };
 
-  updateUserImage = async ({ userID, formData }: UpdateUserImage) => {
+  updateUserImage = async ({ userID, formData }: TUpdateUserImage) => {
     const response = await fetch(`${SERVER_URL}/user/${userID}/image`, {
       method: "PATCH",
       body: formData,
@@ -149,7 +149,7 @@ class AuthAPI {
     return await response.json();
   };
 
-  updateUser = async (user: User) => {
+  updateUser = async (user: TUser) => {
     const response = await fetch(`${SERVER_URL}/user/${user.id}`, {
       method: "PATCH",
       body: JSON.stringify(user),

@@ -4,16 +4,14 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import type { TAuth, TSignInInPut } from "../../../types/auth";
-import { useAuthStore } from "../../../stores/auth";
+import type { TVerifyOTP } from "../../../types/auth";
 import { useNotificationStore } from "../../../stores/notification";
 import { InputField } from "../../ui/shared/InputField";
 import { authAPI } from "../../../api/auth";
 import { Button } from "../../ui/shared/Btn";
 
-export const SignIn: React.FC = () => {
+export const VerifyOTP: React.FC = () => {
   const navigate = useNavigate();
-  const updateAuth = useAuthStore((state) => state.updateAuth);
 
   const showCardNotification = useNotificationStore(
     (state) => state.showCardNotification
@@ -23,28 +21,19 @@ export const SignIn: React.FC = () => {
     (state) => state.hideCardNotification
   );
 
-  const redirectUser = (auth: TAuth) => {
-    if (auth.user.role === "ADMIN") {
-      navigate("/a/dashboard", { replace: true });
-      return;
-    }
-    if (auth.user.role === "USER") {
-      navigate("/u/dashboard", { replace: true });
-      return;
-    }
-    navigate("/auth/login");
+  const redirectUser = (response: any) => {
+    navigate(`/auth/reset-password?otp=${response.otp?.otp}`);
   };
 
   const { isPending, mutate } = useMutation({
-    mutationFn: authAPI.signIn,
-    onSuccess: async (auth: TAuth & { message: string }) => {
-      console.log("Login successful:", auth);
-      showCardNotification({ type: "success", message: auth.message });
+    mutationFn: authAPI.verifyOTP,
+    onSuccess: async (response: any) => {
+      console.log("response:", response);
+      showCardNotification({ type: "success", message: response.message });
       setTimeout(() => {
         hideCardNotification();
       }, 5000);
-      updateAuth(auth);
-      redirectUser(auth);
+      redirectUser(response);
     },
     onError: (error: any) => {
       showCardNotification({ type: "error", message: error.message });
@@ -54,20 +43,14 @@ export const SignIn: React.FC = () => {
     },
   });
 
-  const initialValues: TSignInInPut = {
-    email: "",
-    password: "",
+  const initialValues: TVerifyOTP = {
+    otp: "",
   };
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: Yup.object({
-      email: Yup.string().max(255).required("Email is required"),
-      password: Yup.string()
-        .max(255)
-        .min(5)
-        .max(30)
-        .required("Password is required"),
+      otp: Yup.string().max(255).required("OTP is required"),
     }),
 
     onSubmit: async (values: any, helpers: any) => {
@@ -100,23 +83,15 @@ export const SignIn: React.FC = () => {
         </div>
 
         <h2 className="text-xl font-semibold text-center text-gray-800 mb-8">
-          Sign In to Your Account
+          Verify One Time Passcode(OTP)
         </h2>
 
         <form onSubmit={formik.handleSubmit} className="space-y-6">
           <InputField
-            name="email"
-            label="Email"
-            placeholder="Enter your email"
-            type="email"
-            formik={formik}
-            required={true}
-          />
-          <InputField
-            name="password"
-            label="Password"
-            placeholder="Enter your password"
-            type="password"
+            name="otp"
+            label="OTP"
+            placeholder="Enter otp"
+            type="text"
             formik={formik}
             required={true}
           />
@@ -124,10 +99,10 @@ export const SignIn: React.FC = () => {
             {isPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Signing in...
+                Verifying...
               </>
             ) : (
-              "Sign In"
+              "Verify"
             )}
           </Button>
         </form>
