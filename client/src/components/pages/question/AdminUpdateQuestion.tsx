@@ -10,6 +10,7 @@ import { UpdateQuestionAttachment } from "../../ui/question/UpdateQuestionAttach
 import { questionAPI } from "../../../api/question";
 import type { TQuestion } from "../../../types/question";
 import { UpdateQuestionFormHeading } from "../../ui/question/UpdateQuestionFormHeading";
+import { isArrayWithElements } from "../../../utils/isArrayWithElements";
 
 export const AdminUpdateQuestion: React.FC = () => {
   const { quizID, questionID } = useParams();
@@ -41,6 +42,9 @@ export const AdminUpdateQuestion: React.FC = () => {
   const quiz: TQuiz = QuizData?.data ?? {};
   const question: TQuestion = QuestionData?.data ?? {};
 
+  const attachments = question.attachments;
+  const hasAttachment = isArrayWithElements(attachments);
+
   if (isPending) {
     return (
       <div className="w-full min-h-[80vh] flex items-center justify-center">
@@ -69,8 +73,8 @@ export const AdminUpdateQuestion: React.FC = () => {
         <div className="flex items-center">
           <UpdateQuestionAttachment
             questionID={question.id}
-            attachmentID={question.attachments[0]?.id ?? ""}
-            attachmentURL={question.attachments[0]?.url ?? ""}
+            attachmentID={hasAttachment ? attachments[0]?.id : ""}
+            attachmentURL={hasAttachment ? attachments[0]?.url : ""}
             questionTitle={question.title}
             questionSequenceNumber={question.sequenceNumber}
           />

@@ -47,6 +47,9 @@ importers:
       formik:
         specifier: ^2.4.6
         version: 2.4.6(@types/react@19.1.13)(react@19.1.0)
+      immer:
+        specifier: ^10.2.0
+        version: 10.2.0
       lucide-react:
         specifier: ^0.536.0
         version: 0.536.0(react@19.1.0)
@@ -76,7 +79,7 @@ importers:
         version: 1.7.0
       zustand:
         specifier: 5.0.1
-        version: 5.0.1(@types/react@19.1.13)(react@19.1.0)
+        version: 5.0.1(@types/react@19.1.13)(immer@10.2.0)(react@19.1.0)
     devDependencies:
       '@eslint/js':
         specifier: ^9.30.1
@@ -1616,6 +1619,9 @@ packages:
   ignore@7.0.5:
     resolution: {integrity: sha512-Hs59xBNfUIunMFgWAbGX5cq6893IbWg4KnrjbYwX3tx0ztorVgTDA6B2sxf8ejHJ4wz8BqGUMYlnzNBer5NvGg==}
     engines: {node: '>= 4'}
+
+  immer@10.2.0:
+    resolution: {integrity: sha512-d/+XTN3zfODyjr89gM3mPq1WNX2B8pYsu7eORitdwyA2sBubnTl3laYlBk4sXY5FUa5qTZGBDPJICVbvqzjlbw==}
 
   import-fresh@3.3.1:
     resolution: {integrity: sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ==}
@@ -3616,6 +3622,8 @@ snapshots:
 
   ignore@7.0.5: {}
 
+  immer@10.2.0: {}
+
   import-fresh@3.3.1:
     dependencies:
       parent-module: 1.0.1
@@ -4054,7 +4062,8 @@ snapshots:
       toposort: 2.0.2
       type-fest: 2.19.0
 
-  zustand@5.0.1(@types/react@19.1.13)(react@19.1.0):
+  zustand@5.0.1(@types/react@19.1.13)(immer@10.2.0)(react@19.1.0):
     optionalDependencies:
       '@types/react': 19.1.13
+      immer: 10.2.0
       react: 19.1.0

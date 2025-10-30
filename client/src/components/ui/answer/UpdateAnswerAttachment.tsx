@@ -15,6 +15,7 @@ import { FilePicker } from "../shared/FilePicker";
 import { Modal } from "../shared/Modal";
 import { AlertCard } from "../shared/AlertCard";
 import { answerAPI } from "../../../api/answer";
+import { useQuestionStore } from "../../../stores/question";
 
 interface UpdateAnswerAttachmentProps {
   answerID: string;
@@ -30,8 +31,7 @@ export const UpdateAnswerAttachment: React.FC<UpdateAnswerAttachmentProps> = (
   const [showImagePreview, setShowImagePreview] = useState(false);
   const [fileError, setFileError] = useState("");
   const [file, setFile] = useState<ArrayBuffer>();
-
-  console.log("props.attachmentID : ", props.attachmentID);
+  const [closeModal, setCloseModal] = useState(false);
 
   const showCardNotification = useNotificationStore(
     (state) => state.showCardNotification
@@ -41,12 +41,20 @@ export const UpdateAnswerAttachment: React.FC<UpdateAnswerAttachmentProps> = (
     (state) => state.hideCardNotification
   );
 
+  const updateQuestionAnswer = useQuestionStore(
+    (state) => state.updateQuestionAnswer
+  );
+
   const { isPending, mutate } = useMutation({
     mutationFn: answerAPI.updateAnswerAttachment,
     onSuccess: async (response: any) => {
-      console.log("response", response);
+      updateQuestionAnswer(response.data);
       setShowImagePreview(() => false);
       setFile(() => null as any);
+      setCloseModal(() => true);
+      setTimeout(() => {
+        setCloseModal(() => false);
+      }, 2000);
       showCardNotification({
         type: "success",
         message: response.message,
@@ -141,6 +149,7 @@ export const UpdateAnswerAttachment: React.FC<UpdateAnswerAttachmentProps> = (
             )}
           </div>
         }
+        closed={closeModal}
       >
         <div
           className="w-[90vw] sm:w-[50vw] min-h-[50vh] max-h-[80vh] flex flex-col items-center

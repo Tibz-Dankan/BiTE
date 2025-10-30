@@ -15,6 +15,7 @@ import { FilePicker } from "../shared/FilePicker";
 import { Modal } from "../shared/Modal";
 import { AlertCard } from "../shared/AlertCard";
 import { questionAPI } from "../../../api/question";
+import { useQuestionStore } from "../../../stores/question";
 
 interface UpdateQuestionAttachmentProps {
   questionID: string;
@@ -39,10 +40,12 @@ export const UpdateQuestionAttachment: React.FC<
     (state) => state.hideCardNotification
   );
 
+  const updateQuestion = useQuestionStore((state) => state.updateQuestion);
+
   const { isPending, mutate } = useMutation({
     mutationFn: questionAPI.updateQuestionAttachment,
     onSuccess: async (response: any) => {
-      console.log("response", response);
+      updateQuestion(response.data);
       setShowImagePreview(() => false);
       setFile(() => null as any);
       showCardNotification({

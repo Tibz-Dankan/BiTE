@@ -1,4 +1,4 @@
-import type { Attachment } from "./attachment";
+import type { TAttachment } from "./attachment";
 
 export type TQuiz = {
   id: string;
@@ -11,7 +11,7 @@ export type TQuiz = {
   createdAt: string;
   updatedAt: string;
   questions: null;
-  attachments: Prettify<Attachment[]>;
+  attachments: Prettify<TAttachment[]>;
 };
 
 export type TPagination = {

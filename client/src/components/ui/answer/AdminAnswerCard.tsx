@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import type { TAnswer } from "../../../types/answer";
 import { isArrayWithElements } from "../../../utils/isArrayWithElements";
 import { truncateString } from "../../../utils/truncateString";
@@ -18,6 +18,14 @@ export const AdminAnswerCard: React.FC<AdminAnswerCardProps> = (props) => {
   const answer = props.answer;
   const attachments = answer.attachments;
   const hasAttachment = isArrayWithElements(attachments);
+  const [closeUpdateAnswerModal, setCloseUpdateAnswerModal] = useState(false);
+
+  const onUpdateAnswerSuccess = (succeeded: boolean) => {
+    setCloseUpdateAnswerModal(() => succeeded);
+    setTimeout(() => {
+      setCloseUpdateAnswerModal(() => false);
+    }, 2000);
+  };
 
   return (
     <div className="w-full flex items-center justify-center gap-4">
@@ -60,6 +68,7 @@ export const AdminAnswerCard: React.FC<AdminAnswerCardProps> = (props) => {
                 </Button>
               </div>
             }
+            closed={closeUpdateAnswerModal}
           >
             <div
               className="w-[90vw] sm:w-[80vw] min-h-[50vh] h-auto max-h-[80vh] bg-gray-50
@@ -69,14 +78,17 @@ export const AdminAnswerCard: React.FC<AdminAnswerCardProps> = (props) => {
                 <div className="flex items-center">
                   <UpdateAnswerAttachment
                     answerID={answer.id}
-                    attachmentID={answer.attachments[0]?.id ?? ""}
-                    attachmentURL={answer.attachments[0]?.url ?? ""}
+                    attachmentID={hasAttachment ? attachments[0]?.id : ""}
+                    attachmentURL={hasAttachment ? attachments[0]?.url : ""}
                     questionTitle={answer.title}
                     answerSequenceNumber={answer.sequenceNumber}
                   />
                 </div>
                 <div className="w-full">
-                  <UpdateAnswer answer={answer} />
+                  <UpdateAnswer
+                    answer={answer}
+                    onSuccess={onUpdateAnswerSuccess}
+                  />
                 </div>
               </div>
             </div>

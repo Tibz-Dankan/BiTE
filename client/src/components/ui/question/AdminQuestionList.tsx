@@ -18,6 +18,7 @@ import { Button } from "../shared/Btn";
 import { truncateString } from "../../../utils/truncateString";
 import { useRouteStore } from "../../../stores/routes";
 import type { TPagination } from "../../../types/pagination";
+import { useQuestionStore } from "../../../stores/question";
 
 interface AdminQuestionListProps {
   quiz: TQuiz;
@@ -29,6 +30,12 @@ export const AdminQuestionList: React.FC<AdminQuestionListProps> = (props) => {
   const { quizID } = useParams();
   const cursor = searchParams.get("qtnCursor")!;
   const hasCursor: boolean = !!cursor;
+
+  const questions = useQuestionStore((state) => state.questions);
+  const updateAllQuestions = useQuestionStore(
+    (state) => state.updateAllQuestions
+  );
+  const updatePagination = useQuestionStore((state) => state.updatePagination);
 
   const navigate = useNavigate();
   const updateCurrentPage = useRouteStore((state) => state.updateCurrentPage);
@@ -43,7 +50,6 @@ export const AdminQuestionList: React.FC<AdminQuestionListProps> = (props) => {
       }),
   });
 
-  const questions: TQuestion[] = data?.data ?? {};
   const hasQuestions = isArrayWithElements(questions);
 
   const pagination: TPagination = data?.pagination ?? {};
@@ -70,11 +76,12 @@ export const AdminQuestionList: React.FC<AdminQuestionListProps> = (props) => {
 
   useEffect(() => {
     const updateQuestionsInStore = () => {
-      //  update actins here
-      // setPagination(() => data?.pagination ?? {});
+      const qtns: TQuestion[] = data?.data ?? [];
+      updateAllQuestions(qtns);
+      updatePagination(data?.pagination);
     };
     updateQuestionsInStore();
-  }, [data]);
+  }, [data, updateAllQuestions, updatePagination]);
 
   const navigateToNewQuestionPage = () => {
     navigate(`/a/quizzes/${quiz.id}/questions/new`);

@@ -1,7 +1,10 @@
-export type Attachment = {
+export type TAttachment = {
   id: string;
   type: "USER" | "QUIZ" | "QUESTION" | "ANSWER";
-  quizID: string;
+  userID?: string;
+  quizID?: string;
+  questionID?: string;
+  answerID?: string;
   filename: string;
   url: string;
   size: number;

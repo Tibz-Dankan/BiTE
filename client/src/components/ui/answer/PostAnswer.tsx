@@ -13,13 +13,14 @@ import { useAuthStore } from "../../../stores/auth";
 import { useMutation } from "@tanstack/react-query";
 import { answerAPI } from "../../../api/answer";
 import type { TQuestion } from "../../../types/question";
+import { useQuestionStore } from "../../../stores/question";
 
 interface PostAnswerProps {
   question: TQuestion;
+  onSuccess: (succeeded: boolean) => void;
 }
 
 export const PostAnswer: React.FC<PostAnswerProps> = (props) => {
-  console.log("props.question: ", props.question);
   const [showImagePreview, setShowImagePreview] = useState(false);
   const [fileError, setFileError] = useState("");
   const [file, setFile] = useState<ArrayBuffer>();
@@ -30,13 +31,18 @@ export const PostAnswer: React.FC<PostAnswerProps> = (props) => {
   const hideCardNotification = useNotificationStore(
     (state) => state.hideCardNotification
   );
+  const updateQuestionAnswer = useQuestionStore(
+    (state) => state.updateQuestionAnswer
+  );
 
   const user = useAuthStore((state) => state.auth.user);
 
   const { isPending, mutate } = useMutation({
     mutationFn: answerAPI.post,
     onSuccess: async (response: any) => {
-      console.log("response:", response);
+      console.log("post answer response:", response);
+      updateQuestionAnswer(response.data);
+      props.onSuccess(true);
       showCardNotification({ type: "success", message: response.message });
       setTimeout(() => {
         hideCardNotification();

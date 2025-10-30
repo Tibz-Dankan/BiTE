@@ -10,6 +10,7 @@ import { Loader2 } from "lucide-react";
 import { Button } from "../shared/Btn";
 import { InputCheckbox } from "../shared/InputCheckbox";
 import { questionAPI } from "../../../api/question";
+import { useQuestionStore } from "../../../stores/question";
 
 interface UpdateQuestionProps {
   question: TQuestion;
@@ -24,13 +25,14 @@ export const UpdateQuestion: React.FC<UpdateQuestionProps> = (props) => {
   const hideCardNotification = useNotificationStore(
     (state) => state.hideCardNotification
   );
+  const updateQuestion = useQuestionStore((state) => state.updateQuestion);
 
   const user = useAuthStore((state) => state.auth.user);
 
   const { isPending, mutate } = useMutation({
     mutationFn: questionAPI.update,
     onSuccess: async (response: any) => {
-      console.log("response:", response);
+      updateQuestion(response.data);
       showCardNotification({ type: "success", message: response.message });
       setTimeout(() => {
         hideCardNotification();
