@@ -15,6 +15,7 @@ type UpdateQuestionInput struct {
 
 var UpdateQuestion = func(c *fiber.Ctx) error {
 	question := models.Question{}
+	answer := models.Answer{}
 	attachment := models.Attachment{}
 	updateQuestionInput := UpdateQuestionInput{}
 	questionID := c.Params("id")
@@ -55,6 +56,15 @@ var UpdateQuestion = func(c *fiber.Ctx) error {
 
 	for _, savedAttachment := range savedAttachments {
 		updatedQuestion.Attachments = append(updatedQuestion.Attachments, &savedAttachment)
+	}
+
+	savedAnswers, err := answer.FindAllByQuestion(questionID, 20, "")
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	for _, savedAnswer := range savedAnswers {
+		updatedQuestion.Answers = append(updatedQuestion.Answers, &savedAnswer)
 	}
 
 	response := fiber.Map{
