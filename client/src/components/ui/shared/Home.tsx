@@ -7,11 +7,11 @@ export const Home: React.FC = () => {
       <span>Platform Under development</span>
 
       <div className="fle">
-        <p>
+        {/* <p>
           <Link to="/auth/signup" className="hover:text-(--primary)">
             Sign Up
           </Link>
-        </p>
+        </p> */}
         <p>
           <Link to="auth/signin" className="hover:text-(--primary)">
             Sign In
