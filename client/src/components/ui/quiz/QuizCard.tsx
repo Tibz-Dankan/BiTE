@@ -48,7 +48,7 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
       const timeDuration = elapsedTime(quiz.startsAt);
       const startDate = new AppDate(quiz.startsAt).monthDayYear();
       const endDate = new AppDate(quiz.endsAt).monthDayYear();
-      return `Started ${timeDuration} (${startDate} - ${endDate})`;
+      return `Started ${timeDuration} ago (${startDate} - ${endDate})`;
     }
 
     if (status === "expired") {
