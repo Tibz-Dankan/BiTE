@@ -18,7 +18,7 @@ var DefaultErrorHandler = func(c *fiber.Ctx, err error) error {
 	var e *fiber.Error
 	if errors.As(err, &e) {
 		code = e.Code
-		if strings.HasPrefix(strconv.Itoa(code), "4") {
+		if strings.HasPrefix(strconv.Itoa(code), "4") || strings.HasPrefix(strconv.Itoa(code), "503") {
 			message = err.Error()
 			status = "fail"
 		}
