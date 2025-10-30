@@ -5,10 +5,6 @@ import (
 )
 
 func LockSignUp(c *fiber.Ctx) error {
-
-	response := map[string]interface{}{
-		"status":  "error",
-		"Message": "Sign up is temporarily unavailable. Please try again later.",
-	}
-	return c.Status(fiber.StatusServiceUnavailable).JSON(response)
+	return fiber.NewError(fiber.StatusServiceUnavailable,
+		"Sign up is temporarily unavailable. Please try again later.")
 }
