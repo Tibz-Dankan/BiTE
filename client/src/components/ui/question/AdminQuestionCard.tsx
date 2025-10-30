@@ -82,22 +82,22 @@ export const AdminQuestionCard: React.FC<QuestionCardProps> = (props) => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="w-full flex items-start justify-center gap-4">
+        <div className="w-full flex flex-col sm:flex-row items-start justify-center gap-4">
           <div
-            className="w-68 min-h-28 flex items-center justify-center
+            className="w-full sm:w-80 min-h-32  flex items-center justify-center
             border-1 border-gray-300 rounded-md"
           >
             {hasAttachment && (
               <img
                 src={attachments[0].url}
                 alt={truncateString(question.title, 8)}
-                className="w-full object-cover object-center rounded-md"
+                className="w-full h-full object-cover object-center rounded-md"
               />
             )}
             {!hasAttachment && (
               <div
-                className="w-68a min-h-28s w-full h-28 bg-gray-500 flex
-               items-center justify-center rounded-md"
+                className="w-full h-full aspect-2/1 bg-gray-500 flex
+                items-center justify-center rounded-md"
               >
                 <span className="text-gray-50 font-semibold">
                   {truncateString(question.title, 20)}
