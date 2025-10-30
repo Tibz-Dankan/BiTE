@@ -28,6 +28,7 @@ var PostQuiz = func(c *fiber.Ctx) error {
 
 	quiz.PostedByUserID = c.FormValue("postedByUserID")
 	quiz.Title = c.FormValue("title")
+	quiz.Introduction = c.FormValue("introduction")
 	startsAtStr := c.FormValue("startsAt")
 	endsAtStr := c.FormValue("endsAt")
 	quiz.Instructions = c.FormValue("instructions")
