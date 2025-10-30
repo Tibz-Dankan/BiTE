@@ -1,4 +1,4 @@
-import type { Attachment } from "./attachment";
+import type { TAttachment } from "./attachment";
 
 export type TAnswer = {
   id: string;
@@ -9,7 +9,7 @@ export type TAnswer = {
   isCorrect: boolean;
   createdAt: string;
   updatedAt: string;
-  attachments: Prettify<Attachment[]>;
+  attachments: Prettify<TAttachment[]>;
 };
 
 export type TPostAnswer = {

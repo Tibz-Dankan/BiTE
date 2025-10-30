@@ -1,5 +1,6 @@
 import type { TAnswer } from "./answer";
-import type { Attachment } from "./attachment";
+import type { TAttachment } from "./attachment";
+import type { TPagination } from "./pagination";
 
 export type TQuestion = {
   id: string;
@@ -11,7 +12,7 @@ export type TQuestion = {
   createdAt: string;
   updatedAt: string;
   answers: Prettify<TAnswer[]>;
-  attachments: Prettify<Attachment[]>;
+  attachments: Prettify<TAttachment[]>;
 };
 
 export type TPostQuestion = {
@@ -47,4 +48,19 @@ export type TGetAllQuestionsByQuiz = {
   quizID: string;
   limit: number;
   cursor?: string;
+};
+
+export type TQuestionState = {
+  questions: Prettify<TQuestion[]>;
+  pagination: Prettify<TPagination>;
+};
+
+export type TQuestionsActions = {
+  updateAllQuestions: (questions: TQuestion[]) => void;
+  updateQuestion: (question: TQuestion) => void;
+  updateQuestionAnswer: (answer: TAnswer) => void;
+  updateQuestionAttachment: (attachment: TAttachment) => void;
+  updateQuestionAnswerAttachment: (attachment: TAttachment) => void;
+  updatePagination: (pagination: TPagination) => void;
+  clearAll: () => void;
 };

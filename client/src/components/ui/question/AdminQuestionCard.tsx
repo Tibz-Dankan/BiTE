@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import type { TQuestion } from "../../../types/question";
 import { truncateString } from "../../../utils/truncateString";
 import { isArrayWithElements } from "../../../utils/isArrayWithElements";
@@ -25,6 +25,7 @@ interface QuestionCardProps {
 
 export const AdminQuestionCard: React.FC<QuestionCardProps> = (props) => {
   const question = props.question;
+  const [closePostAnswerModal, setClosePostAnswerModal] = useState(false);
   const navigate = useNavigate();
   const updateCurrentPage = useRouteStore((state) => state.updateCurrentPage);
 
@@ -43,6 +44,13 @@ export const AdminQuestionCard: React.FC<QuestionCardProps> = (props) => {
       showInSidebar: false,
       element: undefined,
     });
+  };
+
+  const onPostAnswerSuccess = (succeeded: boolean) => {
+    setClosePostAnswerModal(() => succeeded);
+    setTimeout(() => {
+      setClosePostAnswerModal(() => false);
+    }, 2000);
   };
 
   return (
@@ -116,12 +124,13 @@ export const AdminQuestionCard: React.FC<QuestionCardProps> = (props) => {
               </Button>
             </div>
           }
+          closed={closePostAnswerModal}
         >
           <div
             className="w-[90vw] sm:w-[50vw] min-h-[50vh] h-auto max-h-[80vh] bg-gray-50
             rounded-md p-4 flex items-start justify-center overflow-x-hidden"
           >
-            <PostAnswer question={question} />
+            <PostAnswer question={question} onSuccess={onPostAnswerSuccess} />
           </div>
         </Modal>
       </div>

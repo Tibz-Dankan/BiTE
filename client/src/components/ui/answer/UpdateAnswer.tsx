@@ -9,9 +9,11 @@ import * as Yup from "yup";
 import { useNotificationStore } from "../../../stores/notification";
 import { useMutation } from "@tanstack/react-query";
 import { answerAPI } from "../../../api/answer";
+import { useQuestionStore } from "../../../stores/question";
 
 interface UpdateAnswerProps {
   answer: TAnswer;
+  onSuccess: (succeeded: boolean) => void;
 }
 
 export const UpdateAnswer: React.FC<UpdateAnswerProps> = (props) => {
@@ -23,11 +25,15 @@ export const UpdateAnswer: React.FC<UpdateAnswerProps> = (props) => {
   const hideCardNotification = useNotificationStore(
     (state) => state.hideCardNotification
   );
+  const updateQuestionAnswer = useQuestionStore(
+    (state) => state.updateQuestionAnswer
+  );
 
   const { isPending, mutate } = useMutation({
     mutationFn: answerAPI.update,
     onSuccess: async (response: any) => {
-      console.log("response:", response);
+      updateQuestionAnswer(response.data);
+      props.onSuccess(true);
       showCardNotification({ type: "success", message: response.message });
       setTimeout(() => {
         hideCardNotification();
