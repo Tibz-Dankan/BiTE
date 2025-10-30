@@ -5,6 +5,7 @@ import type { TPagination } from "./pagination";
 export type TQuestion = {
   id: string;
   title: string;
+  introduction: string;
   postedByUserID: string;
   quizID: string;
   sequenceNumber: number;
@@ -18,6 +19,7 @@ export type TQuestion = {
 export type TPostQuestion = {
   title: string;
   postedByUserID: string;
+  introduction: string;
   quizID: string;
   sequenceNumber: number;
   hasMultipleCorrectAnswers: boolean;
@@ -27,6 +29,7 @@ export type TPostQuestion = {
 export type TUpdateQuestion = {
   id: string;
   title: string;
+  introduction: string;
   postedByUserID: string;
   quizID: string;
   sequenceNumber: number;

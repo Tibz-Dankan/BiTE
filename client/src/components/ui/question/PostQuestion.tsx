@@ -14,6 +14,7 @@ import { Button } from "../shared/Btn";
 import { InputCheckbox } from "../shared/InputCheckbox";
 import { questionAPI } from "../../../api/question";
 import { PostQuestionHeading } from "./PostQuestionHeading";
+import { InputTextArea } from "../shared/InputTextArea";
 
 interface PostQuestionProps {
   quiz: TQuiz;
@@ -77,6 +78,7 @@ export const PostQuestion: React.FC<PostQuestionProps> = (props) => {
 
   const initialValues: TPostQuestion = {
     title: "",
+    introduction: "",
     postedByUserID: user.id,
     quizID: quiz.id,
     sequenceNumber: 0,
@@ -88,6 +90,7 @@ export const PostQuestion: React.FC<PostQuestionProps> = (props) => {
     initialValues: initialValues,
     validationSchema: Yup.object({
       title: Yup.string().max(255).required("Title is required"),
+      introduction: Yup.string().optional(),
       sequenceNumber: Yup.number().required(),
       hasMultipleCorrectAnswers: Yup.boolean().optional(),
     }),
@@ -96,6 +99,7 @@ export const PostQuestion: React.FC<PostQuestionProps> = (props) => {
       try {
         const formData = new FormData();
         formData.append("title", values.title);
+        formData.append("introduction", values.introduction);
         formData.append("postedByUserID", values.postedByUserID);
         formData.append("quizID", values.quizID);
         formData.append("sequenceNumber", values.sequenceNumber);
@@ -140,6 +144,15 @@ export const PostQuestion: React.FC<PostQuestionProps> = (props) => {
           type="text"
           formik={formik}
           required={true}
+        />
+
+        {/* Introduction Input field */}
+        <InputTextArea
+          name="introduction"
+          label="Intro"
+          placeholder="Enter question introduction"
+          formik={formik}
+          required={false}
         />
 
         {/* Image selector*/}

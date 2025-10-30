@@ -68,6 +68,11 @@ export const AdminViewQuestions: React.FC = () => {
         </Button>
       </div>
       <div className="w-full">
+        <p className="text-[12px] text-gray-600 text-start">
+          {quiz.introduction}
+        </p>
+      </div>
+      <div className="w-full">
         <AdminQuestionList quiz={quiz} />
       </div>
     </div>

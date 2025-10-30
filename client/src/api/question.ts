@@ -26,6 +26,7 @@ class QuestionAPI {
   update = async ({
     id,
     title,
+    introduction,
     quizID,
     postedByUserID,
     sequenceNumber,
@@ -35,6 +36,7 @@ class QuestionAPI {
       method: "PATCH",
       body: JSON.stringify({
         title,
+        introduction,
         quizID,
         postedByUserID,
         sequenceNumber,

@@ -10,6 +10,7 @@ import { Button } from "../shared/Btn";
 import { Loader2 } from "lucide-react";
 import { DatePicker } from "../shared/DatePicker";
 import { AppDate } from "../../../utils/appDate";
+import { InputTextArea } from "../shared/InputTextArea";
 
 interface UpdateQuizProps {
   quiz: TQuiz;
@@ -52,6 +53,7 @@ export const UpdateQuiz: React.FC<UpdateQuizProps> = (props) => {
   const initialValues: TUpdateQuiz = {
     id: quiz.id,
     title: quiz.title,
+    introduction: quiz.introduction,
     postedByUserID: quiz.postedByUserID,
     startsAt: quiz.startsAt,
     endsAt: quiz.endsAt,
@@ -63,6 +65,7 @@ export const UpdateQuiz: React.FC<UpdateQuizProps> = (props) => {
     validationSchema: Yup.object({
       title: Yup.string().max(255).required("Title is required"),
       instructions: Yup.string().optional(),
+      introduction: Yup.string().optional(),
     }),
 
     onSubmit: async (values: any, helpers: any) => {
@@ -75,6 +78,7 @@ export const UpdateQuiz: React.FC<UpdateQuizProps> = (props) => {
         mutate({
           id: values.id,
           title: values.title,
+          introduction: values.introduction,
           postedByUserID: values.postedByUserID,
           startsAt: startsAt,
           endsAt: endsAt,
@@ -97,6 +101,13 @@ export const UpdateQuiz: React.FC<UpdateQuizProps> = (props) => {
           type="text"
           formik={formik}
           required={true}
+        />
+        <InputTextArea
+          name="introduction"
+          label="Intro"
+          placeholder="Enter quiz introduction"
+          formik={formik}
+          required={false}
         />
         <InputField
           name="instructions"

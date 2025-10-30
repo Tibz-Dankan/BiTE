@@ -16,6 +16,7 @@ import { FilePicker } from "../shared/FilePicker";
 import { useNavigate } from "react-router-dom";
 import { useRouteStore } from "../../../stores/routes";
 import { QuizFormHeading } from "./PostQuizHeading";
+import { InputTextArea } from "../shared/InputTextArea";
 
 export const PostQuiz: React.FC = () => {
   const navigate = useNavigate();
@@ -90,6 +91,7 @@ export const PostQuiz: React.FC = () => {
 
   const initialValues: TPostQuiz = {
     title: "",
+    introduction: "",
     postedByUserID: user.id,
     startsAt: "",
     endsAt: "",
@@ -101,6 +103,7 @@ export const PostQuiz: React.FC = () => {
     initialValues: initialValues,
     validationSchema: Yup.object({
       title: Yup.string().max(255).required("Title is required"),
+      introduction: Yup.string().optional(),
       instructions: Yup.string().optional(),
     }),
 
@@ -111,6 +114,7 @@ export const PostQuiz: React.FC = () => {
 
         const formData = new FormData();
         formData.append("title", values.title);
+        formData.append("introduction", values.introduction);
         formData.append("postedByUserID", values.postedByUserID);
         formData.append("startsAt", startsAt);
         formData.append("endsAt", endsAt);
@@ -136,10 +140,19 @@ export const PostQuiz: React.FC = () => {
         <InputField
           name="title"
           label="Title"
-          placeholder="Enter your quiz title"
+          placeholder="Enter quiz title"
           type="text"
           formik={formik}
           required={true}
+        />
+
+        {/* Introduction field */}
+        <InputTextArea
+          name="introduction"
+          label="Intro"
+          placeholder="Enter quiz introduction"
+          formik={formik}
+          required={false}
         />
 
         {/* Image selector*/}
