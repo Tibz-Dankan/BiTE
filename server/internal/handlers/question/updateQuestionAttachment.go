@@ -13,6 +13,7 @@ import (
 
 var UpdateQuestionAttachment = func(c *fiber.Ctx) error {
 	question := models.Question{}
+	answer := models.Answer{}
 	attachment := models.Attachment{}
 	imageProcessor := pkg.ImageProcessor{}
 	questionID := c.Params("id")
@@ -124,6 +125,15 @@ var UpdateQuestionAttachment = func(c *fiber.Ctx) error {
 			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 		}
 		savedQuestion.Attachments = append(savedQuestion.Attachments, &newAttachment)
+	}
+
+	savedAnswers, err := answer.FindAllByQuestion(questionID, 20, "")
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	for _, savedAnswer := range savedAnswers {
+		savedQuestion.Answers = append(savedQuestion.Answers, &savedAnswer)
 	}
 
 	response := fiber.Map{
