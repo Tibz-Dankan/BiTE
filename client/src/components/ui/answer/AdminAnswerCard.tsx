@@ -32,17 +32,22 @@ export const AdminAnswerCard: React.FC<AdminAnswerCardProps> = (props) => {
       <div>
         <Circle className="w-4 h-4 text-(--primary)" />
       </div>
-      {hasAttachment && (
-        <div className="w-20 border-1 border-gray-300 rounded-md">
-          <img
-            src={attachments[0].url}
-            alt={truncateString(answer.title, 4)}
-            className="w-full object-cover object-center rounded-md"
-          />
+      <div
+        className="w-full flex flex-col sm:flex-row sm:items-center 
+        sm:justify-center gap-2 sm:gap-4"
+      >
+        {hasAttachment && (
+          <div className="w-20 border-1 border-gray-300 rounded-md">
+            <img
+              src={attachments[0].url}
+              alt={truncateString(answer.title, 4)}
+              className="w-full object-cover object-center rounded-md"
+            />
+          </div>
+        )}
+        <div className="w-full text-sm text-gray-600">
+          <span>{answer.title}</span>
         </div>
-      )}
-      <div className="w-full text-sm text-gray-800">
-        <span>{answer.title}</span>
       </div>
       <div>
         {/* <MoreVertical className="w-5 h-5 text-gray-800" /> */}
