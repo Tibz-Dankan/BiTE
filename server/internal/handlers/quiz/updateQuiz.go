@@ -9,6 +9,7 @@ import (
 
 type UpdateQuizInput struct {
 	Title          string `json:"title"`
+	Introduction   string `json:"introduction"`
 	PostedByUserID string `json:"postedByUserID"`
 	StartsAt       string `json:"startsAt"`
 	EndsAt         string `json:"endsAt"`
@@ -73,6 +74,7 @@ var UpdateQuiz = func(c *fiber.Ctx) error {
 	// }
 
 	savedQuiz.Title = updateQuizInput.Title
+	savedQuiz.Introduction = updateQuizInput.Introduction
 	savedQuiz.EndsAt = parsedEndsAt
 	savedQuiz.StartsAt = parsedStartsAt
 	savedQuiz.Instructions = updateQuizInput.Instructions

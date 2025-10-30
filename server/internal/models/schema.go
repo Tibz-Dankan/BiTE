@@ -78,6 +78,7 @@ type Quiz struct {
 	ID             string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
 	Title          string    `gorm:"column:title;not null;index" json:"title"`
 	Instructions   string    `gorm:"column:instructions;default:null" json:"instructions"`
+	Introduction   string    `gorm:"column:introduction;default:null" json:"introduction"`
 	PostedByUserID string    `gorm:"column:postedByUserID;not null;index" json:"postedByUserID"`
 	StartsAt       time.Time `gorm:"column:startsAt;index" json:"startsAt"`
 	EndsAt         time.Time `gorm:"column:endsAt;index" json:"endsAt"`
@@ -96,6 +97,7 @@ type Quiz struct {
 type Question struct {
 	ID                        string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
 	Title                     string    `gorm:"column:title;not null;index" json:"title"`
+	Introduction              string    `gorm:"column:introduction;default:null" json:"introduction"`
 	PostedByUserID            string    `gorm:"column:postedByUserID;not null;index" json:"postedByUserID"`
 	QuizID                    string    `gorm:"column:quizID;not null;index" json:"quizID"`
 	SequenceNumber            int64     `gorm:"column:sequenceNumber;not null;index" json:"sequenceNumber"`

@@ -7,6 +7,7 @@ import (
 
 type UpdateQuestionInput struct {
 	Title                     string `json:"title"`
+	Introduction              string `json:"introduction"`
 	PostedByUserID            string `json:"postedByUserID"`
 	QuizID                    string `json:"quizID"`
 	SequenceNumber            int64  `json:"sequenceNumber"`
@@ -41,6 +42,7 @@ var UpdateQuestion = func(c *fiber.Ctx) error {
 	}
 
 	savedQuestion.Title = updateQuestionInput.Title
+	savedQuestion.Introduction = updateQuestionInput.Introduction
 	savedQuestion.SequenceNumber = updateQuestionInput.SequenceNumber
 	savedQuestion.HasMultipleCorrectAnswers = updateQuestionInput.HasMultipleCorrectAnswers
 
