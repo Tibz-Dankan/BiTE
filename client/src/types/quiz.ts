@@ -3,6 +3,7 @@ import type { TAttachment } from "./attachment";
 export type TQuiz = {
   id: string;
   title: string;
+  introduction: string;
   instructions: string;
   postedByUserID: string;
   startsAt: string;
@@ -27,6 +28,7 @@ export type TQuizResponse = {
 
 export type TPostQuiz = {
   title: string;
+  introduction: string;
   postedByUserID: string;
   startsAt: string;
   endsAt: string;
@@ -37,6 +39,7 @@ export type TPostQuiz = {
 export type TUpdateQuiz = {
   id: string;
   title: string;
+  introduction: string;
   postedByUserID: string;
   startsAt: string;
   endsAt: string;

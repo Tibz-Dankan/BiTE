@@ -35,6 +35,8 @@ export const AdminQuestionCard: React.FC<QuestionCardProps> = (props) => {
   const answers = question.answers;
   const hasAnswers = isArrayWithElements(answers);
 
+  const hasIntroduction = !!question.introduction;
+
   const navigateToEditQuestionPage = (question: TQuestion) => {
     navigate(`/a/quizzes/${question.quizID}/questions/${question.id}/edit`);
     updateCurrentPage({
@@ -110,6 +112,14 @@ export const AdminQuestionCard: React.FC<QuestionCardProps> = (props) => {
           </div>
         </div>
       </div>
+      {hasIntroduction && (
+        <div className="w-full flex flex-col gap-1">
+          <h1>Intro</h1>
+          <p className="text-gray-600 text-[12px]s text-sm">
+            {question.introduction}
+          </p>
+        </div>
+      )}
       <div className="w-full flex items-center justify-between gap-4">
         <span>Answers</span>
         <Modal
@@ -134,6 +144,10 @@ export const AdminQuestionCard: React.FC<QuestionCardProps> = (props) => {
           </div>
         </Modal>
       </div>
+      {/* <div className="w-full flex flex-col gap-2">
+        <h1>Intro</h1>
+        <p className="text-gray-600 text-[12px]">{question.introduction}</p>
+      </div> */}
       <div className="w-full space-y-4">
         {hasAnswers &&
           answers.map((answer, index) => (
