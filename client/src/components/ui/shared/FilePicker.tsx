@@ -14,6 +14,7 @@ interface FilePickerProps {
   onSave: (file: any, filename?: string) => void;
   onError: (ErrorList: any) => void;
   className?: string;
+  acceptMultipleFiles?: boolean;
 }
 
 export const FilePicker: React.FC<FilePickerProps> = (props) => {
@@ -22,11 +23,13 @@ export const FilePicker: React.FC<FilePickerProps> = (props) => {
 
   const validFileTypeList = props.validFileTypeList;
   const acceptFileType = props.acceptableFileType;
+  const acceptMultipleFiles =
+    props.acceptMultipleFiles !== undefined ? props.acceptMultipleFiles : false;
 
   const { openFilePicker, filesContent, errors } = useFilePicker({
     readAs: "ArrayBuffer",
     accept: acceptFileType,
-    multiple: true,
+    multiple: acceptMultipleFiles,
 
     validators: [
       new FileAmountLimitValidator({ max: 1 }),
