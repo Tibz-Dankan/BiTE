@@ -15,6 +15,8 @@ import { InputCheckbox } from "../shared/InputCheckbox";
 import { questionAPI } from "../../../api/question";
 import { PostQuestionHeading } from "./PostQuestionHeading";
 import { InputTextArea } from "../shared/InputTextArea";
+import { useNavigate } from "react-router-dom";
+import { useRouteStore } from "../../../stores/routes";
 
 interface PostQuestionProps {
   quiz: TQuiz;
@@ -33,8 +35,21 @@ export const PostQuestion: React.FC<PostQuestionProps> = (props) => {
   const hideCardNotification = useNotificationStore(
     (state) => state.hideCardNotification
   );
+  const navigate = useNavigate();
+  const updateCurrentPage = useRouteStore((state) => state.updateCurrentPage);
 
   const user = useAuthStore((state) => state.auth.user);
+
+  const navigateToQuizQuestionPage = (quiz: TQuiz) => {
+    navigate(`/a/quizzes/${quiz.id}/questions`);
+    updateCurrentPage({
+      title: "New Question",
+      icon: undefined,
+      path: `/a/quizzes/${quiz.id}/questions`,
+      showInSidebar: false,
+      element: undefined,
+    });
+  };
 
   const { isPending, mutate } = useMutation({
     mutationFn: questionAPI.post,
@@ -44,6 +59,7 @@ export const PostQuestion: React.FC<PostQuestionProps> = (props) => {
       setTimeout(() => {
         hideCardNotification();
       }, 5000);
+      navigateToQuizQuestionPage(quiz);
     },
     onError: (error: any) => {
       showCardNotification({ type: "error", message: error.message });
