@@ -5,7 +5,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// To be improved
 var DeleteQuiz = func(c *fiber.Ctx) error {
 	quiz := models.Quiz{}
 	quizID := c.Params("id")

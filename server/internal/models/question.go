@@ -67,6 +67,17 @@ func (q *Question) FindAllByQuiz(quizID string, limit float64, cursor string) ([
 	return questions, nil
 }
 
+func (q *Question) FindManyByQuiz(quizID string) ([]Question, error) {
+	var questions []Question
+
+	if err := db.Model(&Question{}).
+		Where("\"quizID\" = ?", quizID).Find(&questions).Error; err != nil {
+		return questions, err
+	}
+
+	return questions, nil
+}
+
 func (q *Question) SearchByQuiz(quizID string, query string) ([]Question, int, error) {
 	var questions []Question
 	var QuestionCount int
@@ -110,12 +121,16 @@ func (q *Question) Delete(id string) error {
 }
 
 func (q *Question) DeleteByQuiz(quizID string) error {
-
-	// To search all question and delete many
-
-	if err := db.Unscoped().Where("\"quizID\" = ?",
-		quizID).Delete(&Question{}).Error; err != nil {
+	questions, err := q.FindManyByQuiz(quizID)
+	if err != nil {
 		return err
 	}
+
+	for _, question := range questions {
+		if err := q.Delete(question.ID); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
