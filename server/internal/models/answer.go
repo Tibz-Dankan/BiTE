@@ -56,6 +56,16 @@ func (a *Answer) FindAllByQuestion(questionID string, limit float64, cursor stri
 	return answers, nil
 }
 
+func (a *Answer) FindManyByQuestion(questionID string) ([]Answer, error) {
+	var answers []Answer
+	if err := db.Model(&Answer{}).Where("\"questionID\" = ?", questionID).
+		Find(&answers).Error; err != nil {
+		return answers, err
+	}
+
+	return answers, nil
+}
+
 func (a *Answer) Update() (Answer, error) {
 	db.Save(&a)
 
@@ -75,10 +85,15 @@ func (a *Answer) Delete(id string) error {
 }
 
 func (a *Answer) DeleteByQuestion(questionID string) error {
-
-	if err := db.Unscoped().Where("\"questionID\" = ?",
-		questionID).Delete(&Answer{}).Error; err != nil {
+	answers, err := a.FindManyByQuestion(questionID)
+	if err != nil {
 		return err
 	}
+	for _, answer := range answers {
+		if err := a.Delete(answer.ID); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
