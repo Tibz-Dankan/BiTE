@@ -119,7 +119,9 @@ export const PostQuiz: React.FC = () => {
         formData.append("startsAt", startsAt);
         formData.append("endsAt", endsAt);
         formData.append("instructions", values.instructions);
-        formData.append("file", new Blob([file!]));
+        if (file) {
+          formData.append("file", new Blob([file!]));
+        }
 
         mutate({ formData: formData });
       } catch (error: any) {
