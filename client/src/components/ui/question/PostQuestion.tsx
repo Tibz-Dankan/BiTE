@@ -172,8 +172,8 @@ export const PostQuestion: React.FC<PostQuestionProps> = (props) => {
         />
 
         {/* Image selector*/}
-        <div className="w-full flex flex-col items-start bg-green-500s rounded-md">
-          <label className="text-sm font-[450] text-gray-800 mb-2">
+        <div className="w-full flex flex-col items-start gap-2 rounded-md">
+          <label className="text-sm font-[450] text-gray-800">
             Attachment(Image)
           </label>
           {fileError && (
