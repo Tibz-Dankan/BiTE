@@ -37,6 +37,8 @@ var PostQuiz = func(c *fiber.Ctx) error {
 	startsAtStr := c.FormValue("startsAt")
 	endsAtStr := c.FormValue("endsAt")
 	quiz.Instructions = c.FormValue("instructions")
+	quiz.InstructionsDelta = c.FormValue("instructionsDelta")
+	quiz.InstructionsHTML = c.FormValue("instructionsHTML")
 
 	var fileUploaded bool = true
 
