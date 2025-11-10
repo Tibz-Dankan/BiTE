@@ -18,6 +18,8 @@ type UpdateQuizInput struct {
 	StartsAt          string `json:"startsAt"`
 	EndsAt            string `json:"endsAt"`
 	Instructions      string `json:"instructions"`
+	InstructionsDelta string `json:"instructionsDelta"`
+	InstructionsHTML  string `json:"instructionsHTML"`
 }
 
 var UpdateQuiz = func(c *fiber.Ctx) error {
@@ -86,6 +88,8 @@ var UpdateQuiz = func(c *fiber.Ctx) error {
 	savedQuiz.EndsAt = parsedEndsAt
 	savedQuiz.StartsAt = parsedStartsAt
 	savedQuiz.Instructions = updateQuizInput.Instructions
+	savedQuiz.InstructionsDelta = updateQuizInput.InstructionsDelta
+	savedQuiz.InstructionsHTML = updateQuizInput.InstructionsHTML
 
 	if !savedQuiz.IsDeltaDefault {
 		savedQuiz.IsDeltaDefault = true

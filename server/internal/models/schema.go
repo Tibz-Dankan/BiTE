@@ -80,6 +80,8 @@ type Quiz struct {
 	TitleDelta        string    `gorm:"column:titleDelta;default:null;index" json:"titleDelta"`
 	TitleHTML         string    `gorm:"column:titleHTML;default:null;index" json:"titleHTML"`
 	Instructions      string    `gorm:"column:instructions;default:null" json:"instructions"`
+	InstructionsDelta string    `gorm:"column:instructionsDelta;default:null" json:"instructionsDelta"`
+	InstructionsHTML  string    `gorm:"column:instructionsHTML;default:null" json:"instructionsHTML"`
 	Introduction      string    `gorm:"column:introduction;default:null" json:"introduction"`
 	IntroductionDelta string    `gorm:"column:introductionDelta;default:null" json:"introductionDelta"`
 	IntroductionHTML  string    `gorm:"column:introductionHTML;default:null" json:"introductionHTML"`
