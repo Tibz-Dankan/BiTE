@@ -25,21 +25,33 @@ class QuizAPI {
   update = async ({
     id,
     title,
+    titleDelta,
+    titleHTML,
     introduction,
+    introductionDelta,
+    introductionHTML,
     postedByUserID,
     startsAt,
     endsAt,
     instructions,
+    instructionsDelta,
+    instructionsHTML,
   }: TUpdateQuiz) => {
     const response = await fetch(`${SERVER_URL}/quiz/${id}`, {
       method: "PATCH",
       body: JSON.stringify({
         title,
+        titleDelta,
+        titleHTML,
         introduction,
+        introductionDelta,
+        introductionHTML,
         postedByUserID,
         startsAt,
         endsAt,
         instructions,
+        instructionsDelta,
+        instructionsHTML,
       }),
       headers: {
         "Content-type": "application/json",

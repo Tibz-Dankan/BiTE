@@ -3,8 +3,15 @@ import type { TAttachment } from "./attachment";
 export type TQuiz = {
   id: string;
   title: string;
+  titleDelta?: string;
+  titleHTML?: string;
   introduction: string;
+  introductionDelta: string;
+  introductionHTML: string;
   instructions: string;
+  instructionsDelta?: string;
+  instructionsHTML?: string;
+  isDeltaDefault: boolean;
   postedByUserID: string;
   startsAt: string;
   endsAt: string;
@@ -28,22 +35,34 @@ export type TQuizResponse = {
 
 export type TPostQuiz = {
   title: string;
+  titleDelta?: string;
+  titleHTML?: string;
   introduction: string;
+  introductionDelta?: string;
+  introductionHTML?: string;
   postedByUserID: string;
   startsAt: string;
   endsAt: string;
   instructions: string;
+  instructionsDelta?: string;
+  instructionsHTML?: string;
   file: any;
 };
 
 export type TUpdateQuiz = {
   id: string;
   title: string;
+  titleDelta?: string;
+  titleHTML?: string;
   introduction: string;
+  introductionDelta?: string;
+  introductionHTML?: string;
   postedByUserID: string;
   startsAt: string;
   endsAt: string;
   instructions: string;
+  instructionsDelta?: string;
+  instructionsHTML?: string;
 };
 
 export type TGetAllQuizzes = {

@@ -5,7 +5,6 @@ import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { quizAPI } from "../../../api/quiz";
-import { InputField } from "../shared/InputField";
 import { Button } from "../shared/Btn";
 import { Loader2, Upload, X } from "lucide-react";
 import { DatePicker } from "../shared/DatePicker";
@@ -16,7 +15,7 @@ import { FilePicker } from "../shared/FilePicker";
 import { useNavigate } from "react-router-dom";
 import { useRouteStore } from "../../../stores/routes";
 import { QuizFormHeading } from "./PostQuizHeading";
-import { InputTextArea } from "../shared/InputTextArea";
+import { QuillEditor } from "../shared/QuillEditor";
 
 export const PostQuiz: React.FC = () => {
   const navigate = useNavigate();
@@ -91,11 +90,17 @@ export const PostQuiz: React.FC = () => {
 
   const initialValues: TPostQuiz = {
     title: "",
+    titleDelta: "",
+    titleHTML: "",
     introduction: "",
+    introductionDelta: "",
+    introductionHTML: "",
     postedByUserID: user.id,
     startsAt: "",
     endsAt: "",
     instructions: "",
+    instructionsDelta: "",
+    instructionsHTML: "",
     file: null,
   };
 
@@ -114,11 +119,17 @@ export const PostQuiz: React.FC = () => {
 
         const formData = new FormData();
         formData.append("title", values.title);
+        formData.append("titleDelta", values.titleDelta);
+        formData.append("titleHTML", values.titleHTML);
         formData.append("introduction", values.introduction);
+        formData.append("introductionDelta", values.introductionDelta);
+        formData.append("introductionHTML", values.introductionHTML);
         formData.append("postedByUserID", values.postedByUserID);
         formData.append("startsAt", startsAt);
         formData.append("endsAt", endsAt);
         formData.append("instructions", values.instructions);
+        formData.append("instructionsDelta", values.instructionsDelta);
+        formData.append("instructionsHTML", values.instructionsHTML);
         if (file) {
           formData.append("file", new Blob([file!]));
         }
@@ -139,22 +150,25 @@ export const PostQuiz: React.FC = () => {
       <QuizFormHeading />
       <form onSubmit={formik.handleSubmit} className="w-full space-y-6">
         {/* Title Input field */}
-        <InputField
-          name="title"
+        <QuillEditor
           label="Title"
           placeholder="Enter quiz title"
-          type="text"
-          formik={formik}
-          required={true}
+          onChange={(values) => {
+            formik.values["title"] = values.plainText;
+            formik.values["titleDelta"] = values.deltaContent;
+            formik.values["titleHTML"] = values.htmlContent;
+          }}
         />
 
         {/* Introduction field */}
-        <InputTextArea
-          name="introduction"
+        <QuillEditor
           label="Intro"
           placeholder="Enter quiz introduction"
-          formik={formik}
-          required={false}
+          onChange={(values) => {
+            formik.values["introduction"] = values.plainText;
+            formik.values["introductionDelta"] = values.deltaContent;
+            formik.values["introductionHTML"] = values.htmlContent;
+          }}
         />
 
         {/* Image selector*/}
@@ -217,13 +231,14 @@ export const PostQuiz: React.FC = () => {
         </div>
 
         {/* Instructions input field */}
-        <InputField
-          name="instructions"
+        <QuillEditor
           label="Instructions"
-          placeholder="Enter your instructions"
-          type="text"
-          formik={formik}
-          required={true}
+          placeholder="Enter quiz instructions"
+          onChange={(values) => {
+            formik.values["instructions"] = values.plainText;
+            formik.values["instructionsDelta"] = values.deltaContent;
+            formik.values["instructionsHTML"] = values.htmlContent;
+          }}
         />
         <div
           className="w-full flex flex-col sm:flex-row items-center justify-center 
