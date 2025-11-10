@@ -2,7 +2,8 @@ name: Deploy BiTE Client to Netlify
 on:
   push:
     branches:
-      - main
+      # - main
+      - dev
 jobs:
   build:
     runs-on: ubuntu-latest

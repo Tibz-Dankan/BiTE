@@ -5,12 +5,12 @@ import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { quizAPI } from "../../../api/quiz";
-import { InputField } from "../shared/InputField";
 import { Button } from "../shared/Btn";
 import { Loader2 } from "lucide-react";
 import { DatePicker } from "../shared/DatePicker";
 import { AppDate } from "../../../utils/appDate";
-import { InputTextArea } from "../shared/InputTextArea";
+import { QuillEditor } from "../shared/QuillEditor";
+import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
 
 interface UpdateQuizProps {
   quiz: TQuiz;
@@ -53,11 +53,23 @@ export const UpdateQuiz: React.FC<UpdateQuizProps> = (props) => {
   const initialValues: TUpdateQuiz = {
     id: quiz.id,
     title: quiz.title,
+    titleDelta: quiz.isDeltaDefault
+      ? quiz.titleDelta!
+      : JSON.stringify(convertPlainTextToDelta(quiz.title)),
+    titleHTML: quiz.titleHTML,
     introduction: quiz.introduction,
+    introductionDelta: quiz.isDeltaDefault
+      ? quiz.introductionDelta!
+      : JSON.stringify(convertPlainTextToDelta(quiz.introduction)),
+    introductionHTML: quiz.introductionHTML,
     postedByUserID: quiz.postedByUserID,
     startsAt: quiz.startsAt,
     endsAt: quiz.endsAt,
     instructions: quiz.instructions,
+    instructionsDelta: quiz.isDeltaDefault
+      ? quiz.instructionsDelta!
+      : JSON.stringify(convertPlainTextToDelta(quiz.instructions)),
+    instructionsHTML: quiz.instructionsHTML,
   };
 
   const formik = useFormik({
@@ -72,17 +84,21 @@ export const UpdateQuiz: React.FC<UpdateQuizProps> = (props) => {
       try {
         const startsAt = new AppDate(values.startsAt).addTimeToDate(startTime);
         const endsAt = new AppDate(values.endsAt).addTimeToDate(endTime);
-        console.log("startsAt: ", startsAt);
-        console.log("endsAt: ", endsAt);
 
         mutate({
           id: values.id,
           title: values.title,
+          titleDelta: values.titleDelta,
+          titleHTML: values.titleHTML,
           introduction: values.introduction,
+          introductionDelta: values.introductionDelta,
+          introductionHTML: values.introductionHTML,
           postedByUserID: values.postedByUserID,
           startsAt: startsAt,
           endsAt: endsAt,
           instructions: values.instructions,
+          instructionsDelta: values.instructionsDelta,
+          instructionsHTML: values.instructionsHTML,
         });
       } catch (error: any) {
         helpers.setStatus({ success: false });
@@ -94,28 +110,35 @@ export const UpdateQuiz: React.FC<UpdateQuizProps> = (props) => {
   return (
     <div className="w-full">
       <form onSubmit={formik.handleSubmit} className="space-y-6">
-        <InputField
-          name="title"
+        <QuillEditor
           label="Title"
-          placeholder="Enter your quiz title"
-          type="text"
-          formik={formik}
-          required={true}
+          placeholder="Enter quiz title"
+          onChange={(values) => {
+            formik.values["title"] = values.plainText;
+            formik.values["titleDelta"] = values.deltaContent;
+            formik.values["titleHTML"] = values.htmlContent;
+          }}
+          defaultDelta={quiz.titleDelta}
         />
-        <InputTextArea
-          name="introduction"
+        <QuillEditor
           label="Intro"
           placeholder="Enter quiz introduction"
-          formik={formik}
-          required={false}
+          onChange={(values) => {
+            formik.values["introduction"] = values.plainText;
+            formik.values["introductionDelta"] = values.deltaContent;
+            formik.values["introductionHTML"] = values.htmlContent;
+          }}
+          defaultDelta={quiz.introductionDelta}
         />
-        <InputField
-          name="instructions"
+        <QuillEditor
           label="Instructions"
-          placeholder="Enter your instructions"
-          type="text"
-          formik={formik}
-          required={true}
+          placeholder="Enter quiz instructions"
+          onChange={(values) => {
+            formik.values["instructions"] = values.plainText;
+            formik.values["instructionsDelta"] = values.deltaContent;
+            formik.values["instructionsHTML"] = values.htmlContent;
+          }}
+          defaultDelta={quiz.instructionsDelta}
         />
         <div
           className="w-full flex flex-col sm:flex-row items-center justify-center 
