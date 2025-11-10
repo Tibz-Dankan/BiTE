@@ -8,12 +8,16 @@ import (
 )
 
 type UpdateQuizInput struct {
-	Title          string `json:"title"`
-	Introduction   string `json:"introduction"`
-	PostedByUserID string `json:"postedByUserID"`
-	StartsAt       string `json:"startsAt"`
-	EndsAt         string `json:"endsAt"`
-	Instructions   string `json:"instructions"`
+	Title             string `json:"title"`
+	TitleDelta        string `json:"titleDelta"`
+	TitleHTML         string `json:"titleHTML"`
+	Introduction      string `json:"introduction"`
+	IntroductionDelta string `json:"introductionDelta"`
+	IntroductionHTML  string `json:"introductionHTML"`
+	PostedByUserID    string `json:"postedByUserID"`
+	StartsAt          string `json:"startsAt"`
+	EndsAt            string `json:"endsAt"`
+	Instructions      string `json:"instructions"`
 }
 
 var UpdateQuiz = func(c *fiber.Ctx) error {
@@ -74,10 +78,18 @@ var UpdateQuiz = func(c *fiber.Ctx) error {
 	// }
 
 	savedQuiz.Title = updateQuizInput.Title
+	savedQuiz.TitleDelta = updateQuizInput.TitleDelta
+	savedQuiz.TitleHTML = updateQuizInput.TitleHTML
 	savedQuiz.Introduction = updateQuizInput.Introduction
+	savedQuiz.IntroductionDelta = updateQuizInput.IntroductionDelta
+	savedQuiz.IntroductionHTML = updateQuizInput.IntroductionHTML
 	savedQuiz.EndsAt = parsedEndsAt
 	savedQuiz.StartsAt = parsedStartsAt
 	savedQuiz.Instructions = updateQuizInput.Instructions
+
+	if !savedQuiz.IsDeltaDefault {
+		savedQuiz.IsDeltaDefault = true
+	}
 
 	updatedQuiz, err := savedQuiz.Update()
 	if err != nil {

@@ -7,7 +7,11 @@ import (
 
 type UpdateQuestionInput struct {
 	Title                     string `json:"title"`
+	TitleDelta                string `json:"titleDelta"`
+	TitleHTML                 string `json:"titleHTML"`
 	Introduction              string `json:"introduction"`
+	IntroductionDelta         string `json:"introductionDelta"`
+	IntroductionHTML          string `json:"IntroductionHTML"`
 	PostedByUserID            string `json:"postedByUserID"`
 	QuizID                    string `json:"quizID"`
 	SequenceNumber            int64  `json:"sequenceNumber"`
@@ -42,9 +46,17 @@ var UpdateQuestion = func(c *fiber.Ctx) error {
 	}
 
 	savedQuestion.Title = updateQuestionInput.Title
+	savedQuestion.TitleDelta = updateQuestionInput.TitleDelta
+	savedQuestion.TitleHTML = updateQuestionInput.TitleHTML
 	savedQuestion.Introduction = updateQuestionInput.Introduction
+	savedQuestion.IntroductionDelta = updateQuestionInput.IntroductionDelta
+	savedQuestion.IntroductionHTML = updateQuestionInput.IntroductionHTML
 	savedQuestion.SequenceNumber = updateQuestionInput.SequenceNumber
 	savedQuestion.HasMultipleCorrectAnswers = updateQuestionInput.HasMultipleCorrectAnswers
+
+	if !savedQuestion.IsDeltaDefault {
+		savedQuestion.IsDeltaDefault = true
+	}
 
 	updatedQuestion, err := savedQuestion.Update()
 	if err != nil {

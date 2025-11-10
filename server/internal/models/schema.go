@@ -75,16 +75,21 @@ type Location struct {
 }
 
 type Quiz struct {
-	ID             string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
-	Title          string    `gorm:"column:title;not null;index" json:"title"`
-	Instructions   string    `gorm:"column:instructions;default:null" json:"instructions"`
-	Introduction   string    `gorm:"column:introduction;default:null" json:"introduction"`
-	PostedByUserID string    `gorm:"column:postedByUserID;not null;index" json:"postedByUserID"`
-	StartsAt       time.Time `gorm:"column:startsAt;index" json:"startsAt"`
-	EndsAt         time.Time `gorm:"column:endsAt;index" json:"endsAt"`
-	CanBeAttempted bool      `gorm:"column:canBeAttempted;default:false;index" json:"canBeAttempted"`
-	CreatedAt      time.Time `gorm:"column:createdAt;index" json:"createdAt"`
-	UpdatedAt      time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
+	ID                string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
+	Title             string    `gorm:"column:title;not null;index" json:"title"`
+	TitleDelta        string    `gorm:"column:titleDelta;default:null;index" json:"titleDelta"`
+	TitleHTML         string    `gorm:"column:titleHTML;default:null;index" json:"titleHTML"`
+	Instructions      string    `gorm:"column:instructions;default:null" json:"instructions"`
+	Introduction      string    `gorm:"column:introduction;default:null" json:"introduction"`
+	IntroductionDelta string    `gorm:"column:introductionDelta;default:null" json:"introductionDelta"`
+	IntroductionHTML  string    `gorm:"column:introductionHTML;default:null" json:"introductionHTML"`
+	IsDeltaDefault    bool      `gorm:"column:isDeltaDefault;default:false;index" json:"isDeltaDefault"`
+	PostedByUserID    string    `gorm:"column:postedByUserID;not null;index" json:"postedByUserID"`
+	StartsAt          time.Time `gorm:"column:startsAt;index" json:"startsAt"`
+	EndsAt            time.Time `gorm:"column:endsAt;index" json:"endsAt"`
+	CanBeAttempted    bool      `gorm:"column:canBeAttempted;default:false;index" json:"canBeAttempted"`
+	CreatedAt         time.Time `gorm:"column:createdAt;index" json:"createdAt"`
+	UpdatedAt         time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
 
 	// Relationships
 	PostedByUser     *User              `gorm:"foreignKey:PostedByUserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"postedByUser,omitempty"`
@@ -97,7 +102,12 @@ type Quiz struct {
 type Question struct {
 	ID                        string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
 	Title                     string    `gorm:"column:title;not null;index" json:"title"`
+	TitleDelta                string    `gorm:"column:titleDelta;default:null;index" json:"titleDelta"`
+	TitleHTML                 string    `gorm:"column:titleHTML;default:null;index" json:"titleHTML"`
 	Introduction              string    `gorm:"column:introduction;default:null" json:"introduction"`
+	IntroductionDelta         string    `gorm:"column:introductionDelta;default:null" json:"introductionDelta"`
+	IntroductionHTML          string    `gorm:"column:introductionHTML;default:null" json:"introductionHTML"`
+	IsDeltaDefault            bool      `gorm:"column:isDeltaDefault;default:false;index" json:"isDeltaDefault"`
 	PostedByUserID            string    `gorm:"column:postedByUserID;not null;index" json:"postedByUserID"`
 	QuizID                    string    `gorm:"column:quizID;not null;index" json:"quizID"`
 	SequenceNumber            int64     `gorm:"column:sequenceNumber;not null;index" json:"sequenceNumber"`
@@ -116,6 +126,9 @@ type Question struct {
 type Answer struct {
 	ID             string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
 	Title          string    `gorm:"column:title;not null;index" json:"title"`
+	TitleDelta     string    `gorm:"column:titleDelta;default:null;index" json:"titleDelta"`
+	TitleHTML      string    `gorm:"column:titleHTML;default:null;index" json:"titleHTML"`
+	IsDeltaDefault bool      `gorm:"column:isDeltaDefault;default:false;index" json:"isDeltaDefault"`
 	PostedByUserID string    `gorm:"column:postedByUserID;not null;index" json:"postedByUserID"`
 	QuestionID     string    `gorm:"column:questionID;not null;index" json:"questionID"`
 	SequenceNumber int64     `gorm:"column:sequenceNumber;not null;index" json:"sequenceNumber"`

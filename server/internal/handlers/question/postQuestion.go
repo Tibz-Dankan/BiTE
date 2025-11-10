@@ -29,7 +29,12 @@ var PostQuestion = func(c *fiber.Ctx) error {
 
 	question.PostedByUserID = c.FormValue("postedByUserID")
 	question.Title = c.FormValue("title")
+	question.TitleDelta = c.FormValue("titleDelta")
+	question.TitleHTML = c.FormValue("titleHTML")
 	question.Introduction = c.FormValue("introduction")
+	question.IntroductionDelta = c.FormValue("introductionDelta")
+	question.IntroductionHTML = c.FormValue("introductionHTML")
+	question.IsDeltaDefault = true
 	question.QuizID = c.FormValue("quizID")
 	sequenceNumberStr := c.FormValue("sequenceNumber")
 	hasMultipleCorrectAnswersStr := c.FormValue("hasMultipleCorrectAnswers")
