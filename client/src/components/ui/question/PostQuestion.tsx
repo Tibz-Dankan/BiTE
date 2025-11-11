@@ -18,6 +18,7 @@ import { PostQuestionHeading } from "./PostQuestionHeading";
 import { useNavigate } from "react-router-dom";
 import { useRouteStore } from "../../../stores/routes";
 import { QuillEditor } from "../shared/QuillEditor";
+import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
 
 interface PostQuestionProps {
   quiz: TQuiz;
@@ -145,12 +146,16 @@ export const PostQuestion: React.FC<PostQuestionProps> = (props) => {
     },
   });
 
+  const quizTitleDelta = quiz.isDeltaDefault
+    ? quiz.titleDelta!
+    : JSON.stringify(convertPlainTextToDelta(quiz.title));
+
   return (
     <div
       className="w-full sm:max-w-140 flex flex-col items-center
        justify-center gap-8 mb-16"
     >
-      <PostQuestionHeading quizTitleDelta={quiz.titleDelta} />
+      <PostQuestionHeading quizTitleDelta={quizTitleDelta} />
       <form onSubmit={formik.handleSubmit} className="w-full space-y-6">
         {/* Question number (sequence number) input field */}
         <InputField
