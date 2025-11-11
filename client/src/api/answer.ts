@@ -21,6 +21,8 @@ class AnswerAPI {
   update = async ({
     id,
     title,
+    titleDelta,
+    titleHTML,
     postedByUserID,
     questionID,
     sequenceNumber,
@@ -30,6 +32,8 @@ class AnswerAPI {
       method: "PATCH",
       body: JSON.stringify({
         title,
+        titleDelta,
+        titleHTML,
         postedByUserID,
         questionID,
         sequenceNumber,

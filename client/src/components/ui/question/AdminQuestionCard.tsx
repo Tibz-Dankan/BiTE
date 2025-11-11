@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { SCNButton } from "../shared/button";
 import { useRouteStore } from "../../../stores/routes";
 import { QuillViewer } from "../shared/QuillViewer";
+import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
 
 interface QuestionCardProps {
   question: TQuestion;
@@ -38,8 +39,13 @@ export const AdminQuestionCard: React.FC<QuestionCardProps> = (props) => {
 
   const hasIntroduction = !!question.introduction;
 
-  const titleDelta = question.titleDelta;
-  const introductionDelta = question.introductionDelta;
+  const titleDelta = question.isDeltaDefault
+    ? question.titleDelta!
+    : JSON.stringify(convertPlainTextToDelta(question.title));
+
+  const introductionDelta = question.isDeltaDefault
+    ? question.introductionDelta!
+    : JSON.stringify(convertPlainTextToDelta(question.introductionDelta));
 
   const navigateToEditQuestionPage = (question: TQuestion) => {
     navigate(`/a/quizzes/${question.quizID}/questions/${question.id}/edit`);
