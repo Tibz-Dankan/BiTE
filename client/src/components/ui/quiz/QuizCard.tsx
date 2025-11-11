@@ -15,6 +15,8 @@ import {
 } from "../shared/dropdown-menu";
 import { SCNButton } from "../shared/button";
 import { Edit, MoreVertical } from "lucide-react";
+import { QuillViewer } from "../shared/QuillViewer";
+import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
 
 type QuizCardProps = {
   quiz: TQuiz;
@@ -83,6 +85,10 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
     });
   };
 
+  const deltaContent = quiz.isDeltaDefault
+    ? quiz.titleDelta!
+    : JSON.stringify(convertPlainTextToDelta(quiz.title));
+
   return (
     <div
       className="w-full border-[1px] border-gray-300 rounded-lg
@@ -128,7 +134,8 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
           <span>{getQuizElapseTime(quiz)}</span>
         </div>
         <div className="w-full">
-          <h2>{quiz.title}</h2>
+          {/* <h2>{quiz.title}</h2> */}
+          <QuillViewer deltaContent={deltaContent} />
         </div>
       </Link>
       <div className="absolute -top-1 right-0 sm:relative">
