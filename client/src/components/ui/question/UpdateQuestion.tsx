@@ -11,7 +11,8 @@ import { Button } from "../shared/Btn";
 import { InputCheckbox } from "../shared/InputCheckbox";
 import { questionAPI } from "../../../api/question";
 import { useQuestionStore } from "../../../stores/question";
-import { InputTextArea } from "../shared/InputTextArea";
+import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
+import { QuillEditor } from "../shared/QuillEditor";
 // import { useNavigate } from "react-router-dom";
 // import { useRouteStore } from "../../../stores/routes";
 
@@ -63,10 +64,22 @@ export const UpdateQuestion: React.FC<UpdateQuestionProps> = (props) => {
     },
   });
 
+  const titleDelta = question.isDeltaDefault
+    ? question.titleDelta!
+    : JSON.stringify(convertPlainTextToDelta(question.title));
+
+  const introductionDelta = question.isDeltaDefault
+    ? question.introductionDelta!
+    : JSON.stringify(convertPlainTextToDelta(question.introduction));
+
   const initialValues: TUpdateQuestion = {
     id: question.id,
     title: question.title,
+    titleDelta: titleDelta,
+    titleHTML: question.titleHTML,
     introduction: question.introduction,
+    introductionDelta: introductionDelta,
+    introductionHTML: question.introductionHTML,
     postedByUserID: user.id,
     quizID: question.quizID,
     sequenceNumber: question.sequenceNumber,
@@ -87,7 +100,11 @@ export const UpdateQuestion: React.FC<UpdateQuestionProps> = (props) => {
         mutate({
           id: values.id,
           title: values.title,
+          titleDelta: values.titleDelta,
+          titleHTML: values.titleHTML,
           introduction: values.introduction,
+          introductionDelta: values.introductionDelta,
+          introductionHTML: values.introductionHTML,
           postedByUserID: values.postedByUserID,
           quizID: values.quizID,
           sequenceNumber: values.sequenceNumber,
@@ -116,23 +133,29 @@ export const UpdateQuestion: React.FC<UpdateQuestionProps> = (props) => {
           formik={formik}
           required={true}
         />
+
         {/* Title Input field */}
-        <InputField
-          name="title"
+        <QuillEditor
           label="Title"
-          placeholder="Enter your quiz title"
-          type="text"
-          formik={formik}
-          required={true}
+          placeholder="Enter quiz title"
+          onChange={(values) => {
+            formik.values["title"] = values.plainText;
+            formik.values["titleDelta"] = values.deltaContent;
+            formik.values["titleHTML"] = values.htmlContent;
+          }}
+          defaultDelta={titleDelta}
         />
 
         {/* Introduction Input field */}
-        <InputTextArea
-          name="introduction"
+        <QuillEditor
           label="Intro"
-          placeholder="Enter question introduction"
-          formik={formik}
-          required={false}
+          placeholder="Enter quiz introduction"
+          onChange={(values) => {
+            formik.values["introduction"] = values.plainText;
+            formik.values["introductionDelta"] = values.deltaContent;
+            formik.values["introductionHTML"] = values.htmlContent;
+          }}
+          defaultDelta={introductionDelta}
         />
 
         {/* hasMultipleCorrectAnswers checkbox */}

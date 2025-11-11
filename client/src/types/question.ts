@@ -5,7 +5,12 @@ import type { TPagination } from "./pagination";
 export type TQuestion = {
   id: string;
   title: string;
+  titleDelta: string;
+  titleHTML: string;
   introduction: string;
+  introductionDelta: string;
+  introductionHTML: string;
+  isDeltaDefault: boolean;
   postedByUserID: string;
   quizID: string;
   sequenceNumber: number;
@@ -18,8 +23,12 @@ export type TQuestion = {
 
 export type TPostQuestion = {
   title: string;
+  titleDelta: string;
+  titleHTML: string;
   postedByUserID: string;
   introduction: string;
+  introductionDelta: string;
+  introductionHTML: string;
   quizID: string;
   sequenceNumber: number;
   hasMultipleCorrectAnswers: boolean;
@@ -29,7 +38,11 @@ export type TPostQuestion = {
 export type TUpdateQuestion = {
   id: string;
   title: string;
+  titleDelta: string;
+  titleHTML: string;
   introduction: string;
+  introductionDelta: string;
+  introductionHTML: string;
   postedByUserID: string;
   quizID: string;
   sequenceNumber: number;

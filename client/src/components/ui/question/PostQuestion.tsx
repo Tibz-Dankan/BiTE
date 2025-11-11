@@ -14,9 +14,10 @@ import { Button } from "../shared/Btn";
 import { InputCheckbox } from "../shared/InputCheckbox";
 import { questionAPI } from "../../../api/question";
 import { PostQuestionHeading } from "./PostQuestionHeading";
-import { InputTextArea } from "../shared/InputTextArea";
+// import { InputTextArea } from "../shared/InputTextArea";
 import { useNavigate } from "react-router-dom";
 import { useRouteStore } from "../../../stores/routes";
+import { QuillEditor } from "../shared/QuillEditor";
 
 interface PostQuestionProps {
   quiz: TQuiz;
@@ -94,7 +95,11 @@ export const PostQuestion: React.FC<PostQuestionProps> = (props) => {
 
   const initialValues: TPostQuestion = {
     title: "",
+    titleDelta: "",
+    titleHTML: "",
     introduction: "",
+    introductionDelta: "",
+    introductionHTML: "",
     postedByUserID: user.id,
     quizID: quiz.id,
     sequenceNumber: 0,
@@ -115,7 +120,11 @@ export const PostQuestion: React.FC<PostQuestionProps> = (props) => {
       try {
         const formData = new FormData();
         formData.append("title", values.title);
+        formData.append("titleDelta", values.titleDelta);
+        formData.append("titleHTML", values.titleHTML);
         formData.append("introduction", values.introduction);
+        formData.append("introductionDelta", values.introductionDelta);
+        formData.append("introductionHTML", values.introductionHTML);
         formData.append("postedByUserID", values.postedByUserID);
         formData.append("quizID", values.quizID);
         formData.append("sequenceNumber", values.sequenceNumber);
@@ -152,23 +161,27 @@ export const PostQuestion: React.FC<PostQuestionProps> = (props) => {
           formik={formik}
           required={true}
         />
-        {/* Title Input field */}
-        <InputField
-          name="title"
+
+        {/* Title field */}
+        <QuillEditor
           label="Title"
-          placeholder="Enter your quiz title"
-          type="text"
-          formik={formik}
-          required={true}
+          placeholder="Enter quiz title"
+          onChange={(values) => {
+            formik.values["title"] = values.plainText;
+            formik.values["titleDelta"] = values.deltaContent;
+            formik.values["titleHTML"] = values.htmlContent;
+          }}
         />
 
-        {/* Introduction Input field */}
-        <InputTextArea
-          name="introduction"
+        {/* Introduction field */}
+        <QuillEditor
           label="Intro"
-          placeholder="Enter question introduction"
-          formik={formik}
-          required={false}
+          placeholder="Enter quiz introduction"
+          onChange={(values) => {
+            formik.values["introduction"] = values.plainText;
+            formik.values["introductionDelta"] = values.deltaContent;
+            formik.values["introductionHTML"] = values.htmlContent;
+          }}
         />
 
         {/* Image selector*/}
