@@ -14,6 +14,7 @@ import { useMutation } from "@tanstack/react-query";
 import { answerAPI } from "../../../api/answer";
 import type { TQuestion } from "../../../types/question";
 import { useQuestionStore } from "../../../stores/question";
+import { QuillEditor } from "../shared/QuillEditor";
 
 interface PostAnswerProps {
   question: TQuestion;
@@ -81,6 +82,8 @@ export const PostAnswer: React.FC<PostAnswerProps> = (props) => {
 
   const initialValues: TPostAnswer = {
     title: "",
+    titleDelta: "",
+    titleHTML: "",
     postedByUserID: user.id,
     questionID: props.question.id,
     sequenceNumber: 0,
@@ -100,6 +103,8 @@ export const PostAnswer: React.FC<PostAnswerProps> = (props) => {
       try {
         const formData = new FormData();
         formData.append("title", values.title);
+        formData.append("titleDelta", values.titleDelta);
+        formData.append("titleHTML", values.titleHTML);
         formData.append("postedByUserID", values.postedByUserID);
         formData.append("questionID", values.questionID);
         formData.append("sequenceNumber", values.sequenceNumber);
@@ -138,17 +143,21 @@ export const PostAnswer: React.FC<PostAnswerProps> = (props) => {
           required={true}
         />
         {/* Title Input field */}
-        <InputField
-          name="title"
+        <QuillEditor
           label="Title"
-          placeholder="Enter your answer title"
-          type="text"
-          formik={formik}
-          required={true}
+          placeholder="Enter answer title"
+          onChange={(values) => {
+            formik.values["title"] = values.plainText;
+            formik.values["titleDelta"] = values.deltaContent;
+            formik.values["titleHTML"] = values.htmlContent;
+          }}
         />
 
         {/* Image selector*/}
-        <div className="w-full flex flex-col items-start rounded-md">
+        <div
+          className="w-full flex flex-col items-start rounded-md mt-14 
+          sm:mt-12 md:mt-14 lg:mt-0"
+        >
           <label className="text-sm font-[450] text-gray-800 mb-2">
             Attachment(Image)
           </label>

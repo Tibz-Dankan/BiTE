@@ -9,6 +9,8 @@ import { Button } from "../shared/Btn";
 import { UpdateAnswerAttachment } from "./UpdateAnswerAttachment";
 import { UpdateAnswer } from "./UpdateAnswer";
 import { AppDropdown } from "../shared/AppDropdown";
+import { QuillViewer } from "../shared/QuillViewer";
+import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
 
 interface AdminAnswerCardProps {
   answer: TAnswer;
@@ -19,6 +21,10 @@ export const AdminAnswerCard: React.FC<AdminAnswerCardProps> = (props) => {
   const attachments = answer.attachments;
   const hasAttachment = isArrayWithElements(attachments);
   const [closeUpdateAnswerModal, setCloseUpdateAnswerModal] = useState(false);
+
+  const titleDelta = answer.isDeltaDefault
+    ? answer.titleDelta!
+    : JSON.stringify(convertPlainTextToDelta(answer.title));
 
   const onUpdateAnswerSuccess = (succeeded: boolean) => {
     setCloseUpdateAnswerModal(() => succeeded);
@@ -46,7 +52,8 @@ export const AdminAnswerCard: React.FC<AdminAnswerCardProps> = (props) => {
           </div>
         )}
         <div className="w-full text-sm text-gray-600">
-          <span>{answer.title}</span>
+          {/* <span>{answer.title}</span> */}
+          <QuillViewer deltaContent={titleDelta} />
         </div>
       </div>
       <div>

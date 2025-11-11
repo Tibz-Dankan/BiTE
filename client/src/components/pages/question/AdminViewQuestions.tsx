@@ -8,6 +8,8 @@ import { AlertCard } from "../../ui/shared/AlertCard";
 import { AdminQuestionList } from "../../ui/question/AdminQuestionList";
 import { Button } from "../../ui/shared/Btn";
 import { useRouteStore } from "../../../stores/routes";
+import { QuillViewer } from "../../ui/shared/QuillViewer";
+import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
 
 export const AdminViewQuestions: React.FC = () => {
   const { quizID } = useParams();
@@ -20,6 +22,14 @@ export const AdminViewQuestions: React.FC = () => {
   });
 
   const quiz: TQuiz = data?.data ?? {};
+
+  const titleDelta = quiz.isDeltaDefault
+    ? quiz.titleDelta!
+    : JSON.stringify(convertPlainTextToDelta(quiz.title));
+
+  const introductionDelta = quiz.isDeltaDefault
+    ? quiz.introductionDelta!
+    : JSON.stringify(convertPlainTextToDelta(quiz.introductionDelta));
 
   const navigateToNewQuestionPage = () => {
     navigate(`/a/quizzes/${quiz.id}/questions/new`);
@@ -55,7 +65,7 @@ export const AdminViewQuestions: React.FC = () => {
     <div className="w-full mt-4 space-y-8 mb-16">
       <div className="w-full flex items-center justify-between gap-4">
         <div>
-          <h2 className="font-semibold">{quiz.title}</h2>
+          <QuillViewer deltaContent={titleDelta} />
         </div>
         <Button
           type="button"
@@ -68,9 +78,7 @@ export const AdminViewQuestions: React.FC = () => {
         </Button>
       </div>
       <div className="w-full">
-        <p className="text-[12px] text-gray-600 text-start">
-          {quiz.introduction}
-        </p>
+        <QuillViewer deltaContent={introductionDelta} />
       </div>
       <div className="w-full">
         <AdminQuestionList quiz={quiz} />

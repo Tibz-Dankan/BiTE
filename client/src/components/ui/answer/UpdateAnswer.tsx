@@ -10,6 +10,8 @@ import { useNotificationStore } from "../../../stores/notification";
 import { useMutation } from "@tanstack/react-query";
 import { answerAPI } from "../../../api/answer";
 import { useQuestionStore } from "../../../stores/question";
+import { QuillEditor } from "../shared/QuillEditor";
+import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
 
 interface UpdateAnswerProps {
   answer: TAnswer;
@@ -47,9 +49,15 @@ export const UpdateAnswer: React.FC<UpdateAnswerProps> = (props) => {
     },
   });
 
+  const titleDelta = answer.isDeltaDefault
+    ? answer.titleDelta!
+    : JSON.stringify(convertPlainTextToDelta(answer.title));
+
   const initialValues: TUpdateAnswer = {
     id: answer.id,
     title: answer.title,
+    titleDelta: titleDelta,
+    titleHTML: answer.titleHTML,
     postedByUserID: answer.postedByUserID,
     questionID: answer.questionID,
     sequenceNumber: answer.sequenceNumber,
@@ -69,6 +77,8 @@ export const UpdateAnswer: React.FC<UpdateAnswerProps> = (props) => {
         mutate({
           id: values.id,
           title: values.title,
+          titleDelta: values.titleDelta,
+          titleHTML: values.titleHTML,
           postedByUserID: values.postedByUserID,
           questionID: values.questionID,
           sequenceNumber: values.sequenceNumber,
@@ -103,22 +113,26 @@ export const UpdateAnswer: React.FC<UpdateAnswerProps> = (props) => {
           required={true}
         />
         {/* Title Input field */}
-        <InputField
-          name="title"
+        <QuillEditor
           label="Title"
-          placeholder="Enter your answer title"
-          type="text"
-          formik={formik}
-          required={true}
+          placeholder="Enter answer title"
+          onChange={(values) => {
+            formik.values["title"] = values.plainText;
+            formik.values["titleDelta"] = values.deltaContent;
+            formik.values["titleHTML"] = values.htmlContent;
+          }}
+          defaultDelta={titleDelta}
         />
 
         {/* Is correct answer checkbox */}
-        <InputCheckbox
-          name="isCorrect"
-          label="This answer is correct"
-          formik={formik}
-          checked={answer.isCorrect}
-        />
+        <div className="w-full mt-14 sm:mt-0 md:mt-14 lg:mt-0">
+          <InputCheckbox
+            name="isCorrect"
+            label="This answer is correct"
+            formik={formik}
+            checked={answer.isCorrect}
+          />
+        </div>
 
         <div className="w-full flex items-center justify-center lg:justify-end">
           <Button

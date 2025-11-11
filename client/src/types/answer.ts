@@ -3,6 +3,9 @@ import type { TAttachment } from "./attachment";
 export type TAnswer = {
   id: string;
   title: string;
+  titleDelta: string;
+  titleHTML: string;
+  isDeltaDefault: boolean;
   postedByUserID: string;
   questionID: string;
   sequenceNumber: number;
@@ -14,6 +17,8 @@ export type TAnswer = {
 
 export type TPostAnswer = {
   title: string;
+  titleDelta: string;
+  titleHTML: string;
   postedByUserID: string;
   questionID: string;
   sequenceNumber: number;
@@ -24,6 +29,8 @@ export type TPostAnswer = {
 export type TUpdateAnswer = {
   id: string;
   title: string;
+  titleDelta: string;
+  titleHTML: string;
   postedByUserID: string;
   questionID: string;
   sequenceNumber: number;

@@ -18,6 +18,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { SCNButton } from "../shared/button";
 import { useRouteStore } from "../../../stores/routes";
+import { QuillViewer } from "../shared/QuillViewer";
+import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
 
 interface QuestionCardProps {
   question: TQuestion;
@@ -36,6 +38,14 @@ export const AdminQuestionCard: React.FC<QuestionCardProps> = (props) => {
   const hasAnswers = isArrayWithElements(answers);
 
   const hasIntroduction = !!question.introduction;
+
+  const titleDelta = question.isDeltaDefault
+    ? question.titleDelta!
+    : JSON.stringify(convertPlainTextToDelta(question.title));
+
+  const introductionDelta = question.isDeltaDefault
+    ? question.introductionDelta!
+    : JSON.stringify(convertPlainTextToDelta(question.introductionDelta));
 
   const navigateToEditQuestionPage = (question: TQuestion) => {
     navigate(`/a/quizzes/${question.quizID}/questions/${question.id}/edit`);
@@ -107,17 +117,15 @@ export const AdminQuestionCard: React.FC<QuestionCardProps> = (props) => {
               </div>
             )}
           </div>
-          <div className="w-full h-auto bg-green-500s text-sm text-gray-600">
-            <p>{question.title}</p>
+          <div className="w-full">
+            <QuillViewer deltaContent={titleDelta} />
           </div>
         </div>
       </div>
       {hasIntroduction && (
         <div className="w-full flex flex-col gap-1">
           <h1>Intro</h1>
-          <p className="text-gray-600 text-[12px]s text-sm">
-            {question.introduction}
-          </p>
+          <QuillViewer deltaContent={introductionDelta} />
         </div>
       )}
       <div className="w-full flex items-center justify-between gap-4">

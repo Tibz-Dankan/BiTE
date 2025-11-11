@@ -11,6 +11,7 @@ import { questionAPI } from "../../../api/question";
 import type { TQuestion } from "../../../types/question";
 import { UpdateQuestionFormHeading } from "../../ui/question/UpdateQuestionFormHeading";
 import { isArrayWithElements } from "../../../utils/isArrayWithElements";
+import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
 
 export const AdminUpdateQuestion: React.FC = () => {
   const { quizID, questionID } = useParams();
@@ -45,6 +46,10 @@ export const AdminUpdateQuestion: React.FC = () => {
   const attachments = question.attachments;
   const hasAttachment = isArrayWithElements(attachments);
 
+  const quizTitleDelta = quiz.isDeltaDefault
+    ? quiz.titleDelta!
+    : JSON.stringify(convertPlainTextToDelta(quiz.title));
+
   if (isPending) {
     return (
       <div className="w-full min-h-[80vh] flex items-center justify-center">
@@ -67,7 +72,7 @@ export const AdminUpdateQuestion: React.FC = () => {
   return (
     <div className="w-full mb-16 space-y-8 mt-8">
       <div className="w-full">
-        <UpdateQuestionFormHeading quizTitle={quiz.title} />
+        <UpdateQuestionFormHeading quizTitleDelta={quizTitleDelta} />
       </div>
       <div className="w-full flex flex-col md:flex-row items-start justify-start gap-6">
         <div className="flex items-center">
