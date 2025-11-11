@@ -125,12 +125,14 @@ export const UpdateAnswer: React.FC<UpdateAnswerProps> = (props) => {
         />
 
         {/* Is correct answer checkbox */}
-        <InputCheckbox
-          name="isCorrect"
-          label="This answer is correct"
-          formik={formik}
-          checked={answer.isCorrect}
-        />
+        <div className="w-full mt-14 sm:mt-0 md:mt-14 lg:mt-0">
+          <InputCheckbox
+            name="isCorrect"
+            label="This answer is correct"
+            formik={formik}
+            checked={answer.isCorrect}
+          />
+        </div>
 
         <div className="w-full flex items-center justify-center lg:justify-end">
           <Button
