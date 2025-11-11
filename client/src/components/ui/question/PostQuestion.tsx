@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { useRouteStore } from "../../../stores/routes";
 import { QuillEditor } from "../shared/QuillEditor";
 import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
+import { isJSON } from "../../../utils/isJson";
 
 interface PostQuestionProps {
   quiz: TQuiz;
@@ -147,7 +148,9 @@ export const PostQuestion: React.FC<PostQuestionProps> = (props) => {
   });
 
   const quizTitleDelta = quiz.isDeltaDefault
-    ? quiz.titleDelta!
+    ? isJSON(quiz.titleDelta!)
+      ? quiz.titleDelta!
+      : JSON.stringify(convertPlainTextToDelta(quiz.title))
     : JSON.stringify(convertPlainTextToDelta(quiz.title));
 
   return (

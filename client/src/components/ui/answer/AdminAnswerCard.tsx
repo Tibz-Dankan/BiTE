@@ -11,6 +11,7 @@ import { UpdateAnswer } from "./UpdateAnswer";
 import { AppDropdown } from "../shared/AppDropdown";
 import { QuillViewer } from "../shared/QuillViewer";
 import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
+import { isJSON } from "../../../utils/isJson";
 
 interface AdminAnswerCardProps {
   answer: TAnswer;
@@ -23,7 +24,9 @@ export const AdminAnswerCard: React.FC<AdminAnswerCardProps> = (props) => {
   const [closeUpdateAnswerModal, setCloseUpdateAnswerModal] = useState(false);
 
   const titleDelta = answer.isDeltaDefault
-    ? answer.titleDelta!
+    ? isJSON(answer.titleDelta!)
+      ? answer.titleDelta!
+      : JSON.stringify(convertPlainTextToDelta(answer.title))
     : JSON.stringify(convertPlainTextToDelta(answer.title));
 
   const onUpdateAnswerSuccess = (succeeded: boolean) => {

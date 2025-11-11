@@ -11,6 +11,7 @@ import { DatePicker } from "../shared/DatePicker";
 import { AppDate } from "../../../utils/appDate";
 import { QuillEditor } from "../shared/QuillEditor";
 import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
+import { isJSON } from "../../../utils/isJson";
 
 interface UpdateQuizProps {
   quiz: TQuiz;
@@ -51,15 +52,21 @@ export const UpdateQuiz: React.FC<UpdateQuizProps> = (props) => {
   });
 
   const titleDelta = quiz.isDeltaDefault
-    ? quiz.titleDelta!
+    ? isJSON(quiz.titleDelta!)
+      ? quiz.titleDelta!
+      : JSON.stringify(convertPlainTextToDelta(quiz.title))
     : JSON.stringify(convertPlainTextToDelta(quiz.title));
 
   const introductionDelta = quiz.isDeltaDefault
-    ? quiz.introductionDelta!
+    ? isJSON(quiz.introductionDelta!)
+      ? quiz.introductionDelta!
+      : JSON.stringify(convertPlainTextToDelta(quiz.introduction))
     : JSON.stringify(convertPlainTextToDelta(quiz.introduction));
 
   const instructionsDelta = quiz.isDeltaDefault
-    ? quiz.instructionsDelta!
+    ? isJSON(quiz.instructionsDelta!)
+      ? quiz.instructionsDelta!
+      : JSON.stringify(convertPlainTextToDelta(quiz.instructions))
     : JSON.stringify(convertPlainTextToDelta(quiz.instructions));
 
   const initialValues: TUpdateQuiz = {

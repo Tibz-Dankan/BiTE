@@ -10,6 +10,7 @@ import { Button } from "../../ui/shared/Btn";
 import { useRouteStore } from "../../../stores/routes";
 import { QuillViewer } from "../../ui/shared/QuillViewer";
 import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
+import { isJSON } from "../../../utils/isJson";
 
 export const AdminViewQuestions: React.FC = () => {
   const { quizID } = useParams();
@@ -24,12 +25,16 @@ export const AdminViewQuestions: React.FC = () => {
   const quiz: TQuiz = data?.data ?? {};
 
   const titleDelta = quiz.isDeltaDefault
-    ? quiz.titleDelta!
+    ? isJSON(quiz.titleDelta)
+      ? quiz.titleDelta
+      : JSON.stringify(convertPlainTextToDelta(quiz.title))
     : JSON.stringify(convertPlainTextToDelta(quiz.title));
 
   const introductionDelta = quiz.isDeltaDefault
-    ? quiz.introductionDelta!
-    : JSON.stringify(convertPlainTextToDelta(quiz.introductionDelta));
+    ? isJSON(quiz.introductionDelta)
+      ? quiz.introductionDelta
+      : JSON.stringify(convertPlainTextToDelta(quiz.introduction))
+    : JSON.stringify(convertPlainTextToDelta(quiz.introduction));
 
   const navigateToNewQuestionPage = () => {
     navigate(`/a/quizzes/${quiz.id}/questions/new`);
