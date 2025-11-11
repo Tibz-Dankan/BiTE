@@ -1,13 +1,17 @@
 import React from "react";
-import { truncateString } from "../../../utils/truncateString";
+// import { truncateString } from "../../../utils/truncateString";
+// import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
+import { QuillViewer } from "../shared/QuillViewer";
 
 interface UpdateQuestionHeadingProps {
-  quizTitle: string;
+  quizTitleDelta: string;
 }
 
 export const UpdateQuestionFormHeading: React.FC<UpdateQuestionHeadingProps> = (
   props
 ) => {
+  const quizTitleDelta = props.quizTitleDelta;
+
   return (
     <div className="w-full relative mb-10s">
       {/* Decorative background gradient */}
@@ -63,9 +67,10 @@ export const UpdateQuestionFormHeading: React.FC<UpdateQuestionHeadingProps> = (
           border-gray-200"
         >
           <p className="text-sm text-gray-600">Quiz:</p>
-          <p className="text-lg font-semibold text-gray-800 text-start">
+          {/* <p className="text-lg font-semibold text-gray-800 text-start">
             {truncateString(props.quizTitle, 48)}
-          </p>
+          </p> */}
+          <QuillViewer deltaContent={quizTitleDelta} />
         </div>
 
         {/* Decorative dots */}

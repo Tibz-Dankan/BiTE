@@ -150,7 +150,7 @@ export const PostQuestion: React.FC<PostQuestionProps> = (props) => {
       className="w-full sm:max-w-140 flex flex-col items-center
        justify-center gap-8 mb-16"
     >
-      <PostQuestionHeading quizTitle={quiz.title} />
+      <PostQuestionHeading quizTitleDelta={quiz.titleDelta} />
       <form onSubmit={formik.handleSubmit} className="w-full space-y-6">
         {/* Question number (sequence number) input field */}
         <InputField

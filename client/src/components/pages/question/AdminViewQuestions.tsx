@@ -65,7 +65,6 @@ export const AdminViewQuestions: React.FC = () => {
     <div className="w-full mt-4 space-y-8 mb-16">
       <div className="w-full flex items-center justify-between gap-4">
         <div>
-          {/* <h2 className="font-semibold">{quiz.title}</h2> */}
           <QuillViewer deltaContent={titleDelta} />
         </div>
         <Button
@@ -79,9 +78,6 @@ export const AdminViewQuestions: React.FC = () => {
         </Button>
       </div>
       <div className="w-full">
-        {/* <p className="text-[12px] text-gray-600 text-start">
-          {quiz.introduction}
-        </p> */}
         <QuillViewer deltaContent={introductionDelta} />
       </div>
       <div className="w-full">
