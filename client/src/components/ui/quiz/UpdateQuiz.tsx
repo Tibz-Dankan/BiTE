@@ -50,25 +50,31 @@ export const UpdateQuiz: React.FC<UpdateQuizProps> = (props) => {
     },
   });
 
+  const titleDelta = quiz.isDeltaDefault
+    ? quiz.titleDelta!
+    : JSON.stringify(convertPlainTextToDelta(quiz.title));
+
+  const introductionDelta = quiz.isDeltaDefault
+    ? quiz.introductionDelta!
+    : JSON.stringify(convertPlainTextToDelta(quiz.introduction));
+
+  const instructionsDelta = quiz.isDeltaDefault
+    ? quiz.instructionsDelta!
+    : JSON.stringify(convertPlainTextToDelta(quiz.instructions));
+
   const initialValues: TUpdateQuiz = {
     id: quiz.id,
     title: quiz.title,
-    titleDelta: quiz.isDeltaDefault
-      ? quiz.titleDelta!
-      : JSON.stringify(convertPlainTextToDelta(quiz.title)),
+    titleDelta: titleDelta,
     titleHTML: quiz.titleHTML,
     introduction: quiz.introduction,
-    introductionDelta: quiz.isDeltaDefault
-      ? quiz.introductionDelta!
-      : JSON.stringify(convertPlainTextToDelta(quiz.introduction)),
+    introductionDelta: introductionDelta,
     introductionHTML: quiz.introductionHTML,
     postedByUserID: quiz.postedByUserID,
     startsAt: quiz.startsAt,
     endsAt: quiz.endsAt,
     instructions: quiz.instructions,
-    instructionsDelta: quiz.isDeltaDefault
-      ? quiz.instructionsDelta!
-      : JSON.stringify(convertPlainTextToDelta(quiz.instructions)),
+    instructionsDelta: instructionsDelta,
     instructionsHTML: quiz.instructionsHTML,
   };
 
@@ -118,7 +124,7 @@ export const UpdateQuiz: React.FC<UpdateQuizProps> = (props) => {
             formik.values["titleDelta"] = values.deltaContent;
             formik.values["titleHTML"] = values.htmlContent;
           }}
-          defaultDelta={quiz.titleDelta}
+          defaultDelta={titleDelta}
         />
         <QuillEditor
           label="Intro"
@@ -128,7 +134,7 @@ export const UpdateQuiz: React.FC<UpdateQuizProps> = (props) => {
             formik.values["introductionDelta"] = values.deltaContent;
             formik.values["introductionHTML"] = values.htmlContent;
           }}
-          defaultDelta={quiz.introductionDelta}
+          defaultDelta={introductionDelta}
         />
         <QuillEditor
           label="Instructions"
@@ -138,7 +144,7 @@ export const UpdateQuiz: React.FC<UpdateQuizProps> = (props) => {
             formik.values["instructionsDelta"] = values.deltaContent;
             formik.values["instructionsHTML"] = values.htmlContent;
           }}
-          defaultDelta={quiz.instructionsDelta}
+          defaultDelta={instructionsDelta}
         />
         <div
           className="w-full flex flex-col sm:flex-row items-center justify-center 
