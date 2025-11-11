@@ -20,6 +20,7 @@ import { SCNButton } from "../shared/button";
 import { useRouteStore } from "../../../stores/routes";
 import { QuillViewer } from "../shared/QuillViewer";
 import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
+import { isJSON } from "../../../utils/isJson";
 
 interface QuestionCardProps {
   question: TQuestion;
@@ -40,12 +41,16 @@ export const AdminQuestionCard: React.FC<QuestionCardProps> = (props) => {
   const hasIntroduction = !!question.introduction;
 
   const titleDelta = question.isDeltaDefault
-    ? question.titleDelta!
+    ? isJSON(question.titleDelta!)
+      ? question.titleDelta!
+      : JSON.stringify(convertPlainTextToDelta(question.title))
     : JSON.stringify(convertPlainTextToDelta(question.title));
 
   const introductionDelta = question.isDeltaDefault
-    ? question.introductionDelta!
-    : JSON.stringify(convertPlainTextToDelta(question.introductionDelta));
+    ? isJSON(question.introductionDelta!)
+      ? question.introductionDelta!
+      : JSON.stringify(convertPlainTextToDelta(question.introduction))
+    : JSON.stringify(convertPlainTextToDelta(question.introduction));
 
   const navigateToEditQuestionPage = (question: TQuestion) => {
     navigate(`/a/quizzes/${question.quizID}/questions/${question.id}/edit`);

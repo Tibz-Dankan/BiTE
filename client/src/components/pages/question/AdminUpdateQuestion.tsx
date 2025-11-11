@@ -12,6 +12,7 @@ import type { TQuestion } from "../../../types/question";
 import { UpdateQuestionFormHeading } from "../../ui/question/UpdateQuestionFormHeading";
 import { isArrayWithElements } from "../../../utils/isArrayWithElements";
 import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
+import { isJSON } from "../../../utils/isJson";
 
 export const AdminUpdateQuestion: React.FC = () => {
   const { quizID, questionID } = useParams();
@@ -47,7 +48,9 @@ export const AdminUpdateQuestion: React.FC = () => {
   const hasAttachment = isArrayWithElements(attachments);
 
   const quizTitleDelta = quiz.isDeltaDefault
-    ? quiz.titleDelta!
+    ? isJSON(quiz.titleDelta!)
+      ? quiz.titleDelta!
+      : JSON.stringify(convertPlainTextToDelta(quiz.title))
     : JSON.stringify(convertPlainTextToDelta(quiz.title));
 
   if (isPending) {

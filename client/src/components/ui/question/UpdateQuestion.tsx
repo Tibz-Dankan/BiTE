@@ -13,6 +13,7 @@ import { questionAPI } from "../../../api/question";
 import { useQuestionStore } from "../../../stores/question";
 import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
 import { QuillEditor } from "../shared/QuillEditor";
+import { isJSON } from "../../../utils/isJson";
 // import { useNavigate } from "react-router-dom";
 // import { useRouteStore } from "../../../stores/routes";
 
@@ -65,11 +66,15 @@ export const UpdateQuestion: React.FC<UpdateQuestionProps> = (props) => {
   });
 
   const titleDelta = question.isDeltaDefault
-    ? question.titleDelta!
+    ? isJSON(question.titleDelta!)
+      ? question.titleDelta!
+      : JSON.stringify(convertPlainTextToDelta(question.title))
     : JSON.stringify(convertPlainTextToDelta(question.title));
 
   const introductionDelta = question.isDeltaDefault
-    ? question.introductionDelta!
+    ? isJSON(question.introductionDelta!)
+      ? question.introductionDelta!
+      : JSON.stringify(convertPlainTextToDelta(question.introduction))
     : JSON.stringify(convertPlainTextToDelta(question.introduction));
 
   const initialValues: TUpdateQuestion = {

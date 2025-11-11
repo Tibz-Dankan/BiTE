@@ -12,6 +12,7 @@ import { answerAPI } from "../../../api/answer";
 import { useQuestionStore } from "../../../stores/question";
 import { QuillEditor } from "../shared/QuillEditor";
 import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
+import { isJSON } from "../../../utils/isJson";
 
 interface UpdateAnswerProps {
   answer: TAnswer;
@@ -50,7 +51,9 @@ export const UpdateAnswer: React.FC<UpdateAnswerProps> = (props) => {
   });
 
   const titleDelta = answer.isDeltaDefault
-    ? answer.titleDelta!
+    ? isJSON(answer.titleDelta!)
+      ? answer.titleDelta!
+      : JSON.stringify(convertPlainTextToDelta(answer.title))
     : JSON.stringify(convertPlainTextToDelta(answer.title));
 
   const initialValues: TUpdateAnswer = {
