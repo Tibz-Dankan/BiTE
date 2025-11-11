@@ -154,7 +154,10 @@ export const PostAnswer: React.FC<PostAnswerProps> = (props) => {
         />
 
         {/* Image selector*/}
-        <div className="w-full flex flex-col items-start rounded-md">
+        <div
+          className="w-full flex flex-col items-start rounded-md mt-14 
+          sm:mt-12 md:mt-14 lg:mt-0"
+        >
           <label className="text-sm font-[450] text-gray-800 mb-2">
             Attachment(Image)
           </label>
