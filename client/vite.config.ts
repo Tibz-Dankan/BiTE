@@ -9,6 +9,19 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      quill: "quill",
     },
+  },
+  optimizeDeps: {
+    include: ["react-quill", "quill"],
+  },
+  build: {
+    commonjsOptions: {
+      include: [/quill/, /react-quill/, /node_modules/],
+      transformMixedEsModules: true,
+    },
+  },
+  define: {
+    global: "globalThis",
   },
 });
