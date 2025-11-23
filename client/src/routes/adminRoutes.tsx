@@ -12,6 +12,7 @@ import { AdminPostQuiz } from "../components/pages/quiz/AdminPostQuiz";
 import { AdminPostQuestion } from "../components/pages/question/AdminPostQuestion";
 import { AdminViewQuestions } from "../components/pages/question/AdminViewQuestions";
 import { AdminUpdateQuestion } from "../components/pages/question/AdminUpdateQuestion";
+import { AdminDashboard } from "../components/pages/quiz/AdminDashboard";
 
 export const AdminRoutes: React.FC = () => {
   const routes: TRoute = {
@@ -22,7 +23,7 @@ export const AdminRoutes: React.FC = () => {
         icon: <LayoutDashboard className="h-4 w-4" />,
         path: "/a/dashboard",
         showInSidebar: true,
-        element: <div>Admin Dashboard content</div>,
+        element: <AdminDashboard />,
       },
       {
         title: "Quizzes",

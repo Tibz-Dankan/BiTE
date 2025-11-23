@@ -75,3 +75,11 @@ export type TUpdateQuizAttachment = {
   attachmentID: string;
   formData: FormData;
 };
+
+export type TQuizAnalytics = {
+  count: {
+    answers: number;
+    questions: number;
+    quizzes: number;
+  };
+};
