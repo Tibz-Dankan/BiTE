@@ -74,6 +74,16 @@ func (q *Quiz) Search(query string) ([]Quiz, int, error) {
 	return Quizzes, quizCount, nil
 }
 
+func (q *Quiz) GetTotalCount() (int64, error) {
+	var count int64
+
+	if err := db.Model(&Quiz{}).Count(&count).Error; err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}
+
 func (q *Quiz) Update() (Quiz, error) {
 	db.Save(&q)
 

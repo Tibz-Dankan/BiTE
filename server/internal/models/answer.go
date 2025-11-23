@@ -66,6 +66,16 @@ func (a *Answer) FindManyByQuestion(questionID string) ([]Answer, error) {
 	return answers, nil
 }
 
+func (a *Answer) GetTotalCount() (int64, error) {
+	var count int64
+
+	if err := db.Model(&Answer{}).Count(&count).Error; err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}
+
 func (a *Answer) Update() (Answer, error) {
 	db.Save(&a)
 

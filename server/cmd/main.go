@@ -77,6 +77,8 @@ func main() {
 	quizGroup.Patch("/:id/attachment/:attachmentID", middlewares.Auth, middlewares.IsAdmin, quiz.UpdateQuizAttachment)
 	quizGroup.Patch("/:id/attemptable", middlewares.Auth, middlewares.IsAdmin, quiz.MakeQuizAttemptable)
 	quizGroup.Patch("/:id/unattemptable", middlewares.Auth, middlewares.IsAdmin, quiz.MakeQuizUnAttemptable)
+	quizGroup.Get("/", middlewares.Auth, quiz.GetAllQuizzes)
+	quizGroup.Get("/analytics/summary", middlewares.Auth, middlewares.IsAdmin, quiz.GetQuizAnalytics)
 
 	// Question
 	questionGroup := app.Group("/api/v1/question", func(c *fiber.Ctx) error {
