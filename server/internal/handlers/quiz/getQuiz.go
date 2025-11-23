@@ -29,7 +29,7 @@ var GetQuiz = func(c *fiber.Ctx) error {
 
 	response := fiber.Map{
 		"status":  "success",
-		"message": "Quiz Attachment Updated successfully!",
+		"message": "Quiz fetched successfully!",
 		"data":    savedQuiz,
 	}
 
