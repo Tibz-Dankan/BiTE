@@ -136,6 +136,21 @@ class QuizAPI {
     return await response.json();
   };
 
+  getAnalytics = async () => {
+    const response = await fetch(`${SERVER_URL}/quiz/analytics/summary`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
   delete = async ({ quizID }: { quizID: string }) => {
     const response = await fetch(`${SERVER_URL}/quiz/${quizID}`, {
       method: "DELETE",
