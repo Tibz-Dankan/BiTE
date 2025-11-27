@@ -13,6 +13,7 @@ import (
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/monitor"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/question"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/quiz"
+	"github.com/Tibz-Dankan/BiTE/internal/handlers/quizcategory"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/sitevisit"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/status"
 	"github.com/Tibz-Dankan/BiTE/internal/middlewares"
@@ -63,6 +64,16 @@ func main() {
 	userGroup.Patch("/:id/image", middlewares.Auth, auth.UpdateUserImage)
 	userGroup.Patch("/:id", middlewares.Auth, auth.UpdateUser)
 	userGroup.Get("/", middlewares.Auth, middlewares.IsAdmin, auth.GetAllUsers)
+
+	// Quiz Category
+	quizCategoryGroup := app.Group("/api/v1/quizcategory", func(c *fiber.Ctx) error {
+		return c.Next()
+	})
+	quizCategoryGroup.Post("/", middlewares.Auth, middlewares.IsAdmin, quizcategory.PostQuizCategory)
+	// quizCategoryGroup.Patch("/:id", middlewares.Auth, middlewares.IsAdmin, updateHandler)
+	// quizCategoryGroup.Get("/:id", middlewares.Auth, getHandler)
+	// quizCategoryGroup.Get("/", middlewares.Auth, getAllHandler)
+	// quizCategoryGroup.Delete("/:id", middlewares.Auth, middlewares.IsAdmin, deleteHandler)
 
 	// Quiz
 	quizGroup := app.Group("/api/v1/quiz", func(c *fiber.Ctx) error {
