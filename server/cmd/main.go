@@ -73,7 +73,7 @@ func main() {
 	quizCategoryGroup.Patch("/:id", middlewares.Auth, middlewares.IsAdmin, quizcategory.UpdateQuizCategory)
 	quizCategoryGroup.Get("/:id", middlewares.Auth, quizcategory.GetQuizCategory)
 	quizCategoryGroup.Get("/", middlewares.Auth, quizcategory.GetAllQuizCategories)
-	// quizCategoryGroup.Delete("/:id", middlewares.Auth, middlewares.IsAdmin, deleteHandler)
+	quizCategoryGroup.Delete("/:id", middlewares.Auth, middlewares.IsAdmin, quizcategory.DeleteQuizCategory)
 
 	// Quiz
 	quizGroup := app.Group("/api/v1/quiz", func(c *fiber.Ctx) error {
