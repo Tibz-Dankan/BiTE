@@ -38,14 +38,23 @@ func (qc *QuizCategory) FindByName(name string) (QuizCategory, error) {
 	return category, nil
 }
 
-func (qc *QuizCategory) FindAll() (QuizCategory, error) {
-	var category QuizCategory
+func (qc *QuizCategory) FindAll(limit float64, cursor string) ([]QuizCategory, error) {
+	var categories []QuizCategory
 
-	if err := db.Find(&category).Error; err != nil {
-		return category, err
+	query := db.Model(&QuizCategory{}).Limit(int(limit))
+
+	if cursor != "" {
+		var lastQuizCategory QuizCategory
+		if err := db.Select("\"createdAt\"").Where("id = ?",
+			cursor).First(&lastQuizCategory).Error; err != nil {
+			return categories, err
+		}
+		query = query.Where("\"createdAt\" < ?", lastQuizCategory.CreatedAt)
 	}
 
-	return category, nil
+	query.Find(&categories)
+
+	return categories, nil
 }
 
 func (a *QuizCategory) Update() (QuizCategory, error) {
