@@ -74,6 +74,16 @@ type Location struct {
 	User *User `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"user,omitempty"`
 }
 
+type QuizCategory struct {
+	ID        string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
+	Name      string    `gorm:"column:name;not null;index" json:"name"`
+	CreatedAt time.Time `gorm:"column:createdAt;index" json:"createdAt"`
+	UpdatedAt time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
+
+	// Relationships
+	Quiz *Quiz `gorm:"foreignKey:QuizCategoryID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"quiz,omitempty"`
+}
+
 type Quiz struct {
 	ID                string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
 	Title             string    `gorm:"column:title;not null;index" json:"title"`
@@ -87,6 +97,7 @@ type Quiz struct {
 	IntroductionHTML  string    `gorm:"column:introductionHTML;default:null" json:"introductionHTML"`
 	IsDeltaDefault    bool      `gorm:"column:isDeltaDefault;default:false;index" json:"isDeltaDefault"`
 	PostedByUserID    string    `gorm:"column:postedByUserID;not null;index" json:"postedByUserID"`
+	QuizCategoryID    string    `gorm:"column:quizCategoryID;default:null;index" json:"quizCategoryID"`
 	StartsAt          time.Time `gorm:"column:startsAt;index" json:"startsAt"`
 	EndsAt            time.Time `gorm:"column:endsAt;index" json:"endsAt"`
 	CanBeAttempted    bool      `gorm:"column:canBeAttempted;default:false;index" json:"canBeAttempted"`
@@ -99,6 +110,7 @@ type Quiz struct {
 	Attachments      []*Attachment      `gorm:"foreignKey:QuizID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attachments"`
 	Attempts         []*Attempt         `gorm:"foreignKey:QuizID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attempts,omitempty"`
 	AttemptDurations []*AttemptDuration `gorm:"foreignKey:QuizID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attemptDurations,omitempty"`
+	QuizCategory     *QuizCategory      `gorm:"foreignKey:QuizCategoryID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"quizCategory,omitempty"`
 }
 
 type Question struct {
