@@ -71,7 +71,7 @@ func main() {
 	})
 	quizCategoryGroup.Post("/", middlewares.Auth, middlewares.IsAdmin, quizcategory.PostQuizCategory)
 	quizCategoryGroup.Patch("/:id", middlewares.Auth, middlewares.IsAdmin, quizcategory.UpdateQuizCategory)
-	// quizCategoryGroup.Get("/:id", middlewares.Auth, getHandler)
+	quizCategoryGroup.Get("/:id", middlewares.Auth, quizcategory.GetQuizCategory)
 	// quizCategoryGroup.Get("/", middlewares.Auth, getAllHandler)
 	// quizCategoryGroup.Delete("/:id", middlewares.Auth, middlewares.IsAdmin, deleteHandler)
 
