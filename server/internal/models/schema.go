@@ -76,7 +76,7 @@ type Location struct {
 
 type QuizCategory struct {
 	ID        string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
-	Name      string    `gorm:"column:name;not null;index" json:"name"`
+	Name      string    `gorm:"column:name;unique;not null;index" json:"name"`
 	CreatedAt time.Time `gorm:"column:createdAt;index" json:"createdAt"`
 	UpdatedAt time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
 
