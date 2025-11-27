@@ -39,5 +39,5 @@ var UpdateQuizCategory = func(c *fiber.Ctx) error {
 		"data":    updatedQuizCategory,
 	}
 
-	return c.Status(fiber.StatusCreated).JSON(response)
+	return c.Status(fiber.StatusOK).JSON(response)
 }
