@@ -15,6 +15,7 @@ type UpdateQuizInput struct {
 	IntroductionDelta string `json:"introductionDelta"`
 	IntroductionHTML  string `json:"introductionHTML"`
 	PostedByUserID    string `json:"postedByUserID"`
+	QuizCategoryID    string `json:"quizCategoryID"`
 	StartsAt          string `json:"startsAt"`
 	EndsAt            string `json:"endsAt"`
 	Instructions      string `json:"instructions"`
@@ -39,6 +40,10 @@ var UpdateQuiz = func(c *fiber.Ctx) error {
 		updateQuizInput.EndsAt == "" {
 		return fiber.NewError(fiber.StatusBadRequest,
 			"Missing postedByUserID/Title/startsAt/endsAt!")
+	}
+
+	if updateQuizInput.QuizCategoryID == "" {
+		return fiber.NewError(fiber.StatusBadRequest, "Missing QuizCategoryID!")
 	}
 
 	savedQuiz, err := quiz.FindOne(quizID)
@@ -85,6 +90,7 @@ var UpdateQuiz = func(c *fiber.Ctx) error {
 	savedQuiz.Introduction = updateQuizInput.Introduction
 	savedQuiz.IntroductionDelta = updateQuizInput.IntroductionDelta
 	savedQuiz.IntroductionHTML = updateQuizInput.IntroductionHTML
+	savedQuiz.QuizCategoryID = updateQuizInput.QuizCategoryID
 	savedQuiz.EndsAt = parsedEndsAt
 	savedQuiz.StartsAt = parsedStartsAt
 	savedQuiz.Instructions = updateQuizInput.Instructions
