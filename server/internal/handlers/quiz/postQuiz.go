@@ -27,6 +27,7 @@ var PostQuiz = func(c *fiber.Ctx) error {
 	}
 
 	quiz.PostedByUserID = c.FormValue("postedByUserID")
+	quiz.QuizCategoryID = c.FormValue("quizCategoryID")
 	quiz.Title = c.FormValue("title")
 	quiz.TitleDelta = c.FormValue("titleDelta")
 	quiz.TitleHTML = c.FormValue("titleHTML")
@@ -48,6 +49,10 @@ var PostQuiz = func(c *fiber.Ctx) error {
 		endsAtStr == "" {
 		return fiber.NewError(fiber.StatusBadRequest,
 			"Missing postedByUserID/Title/startsAt/endsAt!")
+	}
+
+	if quiz.QuizCategoryID == "" {
+		return fiber.NewError(fiber.StatusBadRequest, "Missing QuizCategoryID!")
 	}
 
 	user, err = user.FindOne(quiz.PostedByUserID)
