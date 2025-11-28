@@ -17,6 +17,7 @@ import { SCNButton } from "../shared/button";
 import { Edit, MoreVertical } from "lucide-react";
 import { QuillViewer } from "../shared/QuillViewer";
 import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
+import { isJSON } from "../../../utils/isJson";
 
 type QuizCardProps = {
   quiz: TQuiz;
@@ -86,8 +87,10 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
   };
 
   const deltaContent = quiz.isDeltaDefault
-    ? quiz.titleDelta!
-    : JSON.stringify(convertPlainTextToDelta(quiz.title));
+    ? isJSON(quiz.titleDelta!)
+      ? quiz.titleDelta!
+      : JSON.stringify(convertPlainTextToDelta(quiz.titleDelta))
+    : JSON.stringify(convertPlainTextToDelta(quiz.titleDelta));
 
   return (
     <div
