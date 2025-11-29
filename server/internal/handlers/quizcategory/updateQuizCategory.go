@@ -18,6 +18,10 @@ var UpdateQuizCategory = func(c *fiber.Ctx) error {
 			"Missing name for quiz category!")
 	}
 
+	if quizCategory.Color == "" {
+		return fiber.NewError(fiber.StatusBadRequest, "Missing quiz color!")
+	}
+
 	savedQuizCategory, err := quizCategory.FindOne(quizCategoryID)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
@@ -27,6 +31,7 @@ var UpdateQuizCategory = func(c *fiber.Ctx) error {
 	}
 
 	savedQuizCategory.Name = quizCategory.Name
+	savedQuizCategory.Color = quizCategory.Color
 
 	updatedQuizCategory, err := savedQuizCategory.Update()
 	if err != nil {
