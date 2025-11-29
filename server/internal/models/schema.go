@@ -77,11 +77,13 @@ type Location struct {
 type QuizCategory struct {
 	ID        string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
 	Name      string    `gorm:"column:name;unique;not null;index" json:"name"`
+	Color     string    `gorm:"column:color;default:null;" json:"color"`
 	CreatedAt time.Time `gorm:"column:createdAt;index" json:"createdAt"`
 	UpdatedAt time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
 
 	// Relationships
-	Quiz *Quiz `gorm:"foreignKey:QuizCategoryID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"quiz,omitempty"`
+	Quiz        *Quiz         `gorm:"foreignKey:QuizCategoryID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"quiz,omitempty"`
+	Attachments []*Attachment `gorm:"foreignKey:QuizCategoryID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attachments"`
 }
 
 type Quiz struct {
@@ -203,22 +205,24 @@ type SiteVisit struct {
 }
 
 type Attachment struct {
-	ID          string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
-	Type        string    `gorm:"column:type;not null;index" json:"type"` //USER, QUIZ, QUESTION, ANSWER
-	UserID      string    `gorm:"column:userID;default:null;index" json:"userID,omitempty"`
-	QuizID      string    `gorm:"column:quizID;default:null;index" json:"quizID,omitempty"`
-	QuestionID  string    `gorm:"column:questionID;default:null;index" json:"questionID,omitempty"`
-	AnswerID    string    `gorm:"column:answerID;default:null;index" json:"answerID,omitempty"`
-	Filename    string    `gorm:"column:filename;not null" json:"filename"`
-	Url         string    `gorm:"column:url;not null" json:"url"`
-	Size        int64     `gorm:"column:size;not null" json:"size"`
-	ContentType string    `gorm:"column:contentType;not null" json:"contentType"`
-	CreatedAt   time.Time `gorm:"column:createdAt;index" json:"createdAt"`
-	UpdatedAt   time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
+	ID             string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
+	Type           string    `gorm:"column:type;not null;index" json:"type"` //USER, QUIZ,QUIZCATEGORY, QUESTION, ANSWER
+	UserID         string    `gorm:"column:userID;default:null;index" json:"userID,omitempty"`
+	QuizID         string    `gorm:"column:quizID;default:null;index" json:"quizID,omitempty"`
+	QuizCategoryID string    `gorm:"column:quizCategoryID;default:null;index" json:"quizCategoryID,omitempty"`
+	QuestionID     string    `gorm:"column:questionID;default:null;index" json:"questionID,omitempty"`
+	AnswerID       string    `gorm:"column:answerID;default:null;index" json:"answerID,omitempty"`
+	Filename       string    `gorm:"column:filename;not null" json:"filename"`
+	Url            string    `gorm:"column:url;not null" json:"url"`
+	Size           int64     `gorm:"column:size;not null" json:"size"`
+	ContentType    string    `gorm:"column:contentType;not null" json:"contentType"`
+	CreatedAt      time.Time `gorm:"column:createdAt;index" json:"createdAt"`
+	UpdatedAt      time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
 
 	// Relationships
-	User     *User     `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"user,omitempty"`
-	Quiz     *Quiz     `gorm:"foreignKey:QuizID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"quiz,omitempty"`
-	Question *Question `gorm:"foreignKey:QuestionID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"question,omitempty"`
-	Answer   *Answer   `gorm:"foreignKey:AnswerID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"answer,omitempty"`
+	User         *User         `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"user,omitempty"`
+	Quiz         *Quiz         `gorm:"foreignKey:QuizID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"quiz,omitempty"`
+	QuizCategory *QuizCategory `gorm:"foreignKey:QuizCategoryID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"quizCategory,omitempty"`
+	Question     *Question     `gorm:"foreignKey:QuestionID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"question,omitempty"`
+	Answer       *Answer       `gorm:"foreignKey:AnswerID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"answer,omitempty"`
 }

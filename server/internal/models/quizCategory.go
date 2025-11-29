@@ -27,13 +27,18 @@ func (qc *QuizCategory) FindOne(id string) (QuizCategory, error) {
 	return category, nil
 }
 
+func (qc *QuizCategory) FindOneAndIncludeAttachment(id string) (QuizCategory, error) {
+	var category QuizCategory
+
+	db.Model(&QuizCategory{}).Preload("Attachments").First(&category, "id = ?", id)
+
+	return category, nil
+}
+
 func (qc *QuizCategory) FindByName(name string) (QuizCategory, error) {
 	var category QuizCategory
 
-	// if err := db.First(&category, "name = ?", name).Error; err != nil {
-	// 	return category, err
-	// }
-	db.First(&category, "name = ?", name)
+	db.Model(&QuizCategory{}).Preload("Attachments").First(&category, "name = ?", name)
 
 	return category, nil
 }
@@ -41,7 +46,7 @@ func (qc *QuizCategory) FindByName(name string) (QuizCategory, error) {
 func (qc *QuizCategory) FindAll(limit float64, cursor string) ([]QuizCategory, error) {
 	var categories []QuizCategory
 
-	query := db.Model(&QuizCategory{}).Limit(int(limit))
+	query := db.Model(&QuizCategory{}).Preload("Attachments").Limit(int(limit))
 
 	if cursor != "" {
 		var lastQuizCategory QuizCategory
