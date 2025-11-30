@@ -1,14 +1,11 @@
 import React, { useState } from "react";
-import { AppDropdown } from "../shared/AppDropdown";
-import { SCNButton } from "../shared/button";
-import { Delete, MoreVertical } from "lucide-react";
+import { Trash, Loader2 } from "lucide-react";
 import { Modal } from "../shared/Modal";
 import { Button } from "../shared/Btn";
 import type { TQuizCategory } from "../../../types/quizCategory";
 import { useMutation } from "@tanstack/react-query";
 import { quizCategoryAPI } from "../../../api/quizCategory";
 import { useNotificationStore } from "../../../stores/notification";
-import { Loader2 } from "lucide-react";
 
 interface DeleteQuizCategoryProps {
   quizCategory: TQuizCategory;
@@ -33,8 +30,6 @@ export const DeleteQuizCategory: React.FC<DeleteQuizCategoryProps> = (props) => 
       setTimeout(() => {
         hideCardNotification();
         setCloseDeleteCategoryModal(() => false);
-        // Reload page to refresh the category list
-        window.location.reload();
       }, 2000);
     },
     onError: (error: any) => {
@@ -51,23 +46,15 @@ export const DeleteQuizCategory: React.FC<DeleteQuizCategoryProps> = (props) => 
 
   return (
     <div>
-      <AppDropdown
-        label={
-          <SCNButton className="p-1 py-0 h-6">
-            <MoreVertical className="w-5 h-5 text-gray-800" />
-          </SCNButton>
-        }
-      >
         <Modal
           openModalElement={
             <div>
               <Button
                 type="button"
-                className="flex items-center justify-center gap-2 h-auto py-1
-                   px-3 bg-transparent w-32"
+                className="flex items-center justify-center gap-2 h-auto
+                 p-2 bg-transparent w-auto"
               >
-                <Delete className="w-4 h-4 text-gray-800" />
-                <span className="text-[12px] text-gray-800">Delete</span>
+                <Trash className="w-4 h-4 text-gray-800" />
               </Button>
             </div>
           }
@@ -116,7 +103,6 @@ export const DeleteQuizCategory: React.FC<DeleteQuizCategoryProps> = (props) => 
             </div>
           </div>
         </Modal>
-      </AppDropdown>
     </div>
   );
 };

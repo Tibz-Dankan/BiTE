@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { AppDropdown } from "../shared/AppDropdown";
-import { SCNButton } from "../shared/button";
-import { Edit, MoreVertical } from "lucide-react";
+import { Edit } from "lucide-react";
 import { Modal } from "../shared/Modal";
 import { Button } from "@headlessui/react";
 import { UpdateQuizCategoryForm } from "./UpdateQuizCategoryForm";
@@ -24,23 +22,15 @@ export const UpdateQuizCategory: React.FC<UpdateQuizCategoryProps> = (props) => 
 
   return (
     <div>
-      <AppDropdown
-        label={
-          <SCNButton className="p-1 py-0 h-6 bg-green-500s">
-            <MoreVertical className="w-5 h-5 text-gray-800" />
-          </SCNButton>
-        }
-      >
         <Modal
           openModalElement={
             <div>
               <Button
                 type="button"
-                className="flex items-center justify-center gap-2 h-auto py-1
-                   px-3 bg-transparent w-32"
+                className="flex items-center justify-center gap-2 h-auto
+                 p-2 bg-transparent w-auto"
               >
                 <Edit className="w-4 h-4 text-gray-800" />
-                <span className="text-[12px] text-gray-800">Edit Category</span>
               </Button>
             </div>
           }
@@ -58,7 +48,6 @@ export const UpdateQuizCategory: React.FC<UpdateQuizCategoryProps> = (props) => 
             </div>
           </div>
         </Modal>
-      </AppDropdown>
     </div>
   );
 };
