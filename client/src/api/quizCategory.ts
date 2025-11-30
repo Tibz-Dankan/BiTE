@@ -23,11 +23,12 @@ class QuizCategoryAPI {
     return await response.json();
   };
 
-  update = async ({ id, name }: TUpdateQuizCategory) => {
+  update = async ({ id, name, color }: TUpdateQuizCategory) => {
     const response = await fetch(`${SERVER_URL}/quizcategory/${id}`, {
       method: "PATCH",
       body: JSON.stringify({
         name,
+        color,
       }),
       headers: {
         "Content-type": "application/json",
