@@ -43,29 +43,11 @@ export const QuizCategoryFilter = ({
             }`}
           >
             <span>{category.name}</span>
-            <div>
-              <DeleteQuizCategory
-                quizCategory={{
-                  id: "",
-                  name: "",
-                  color: "",
-                  createdAt: "",
-                  updatedAt: "",
-                  attachments: [],
-                }}
-              />
+            <div className="z-50 mx-2 rounded-md hover:bg-gray-300">
+              <DeleteQuizCategory quizCategory={category} />
             </div>
-            <div>
-              <UpdateQuizCategory
-                quizCategory={{
-                  id: "",
-                  name: "",
-                  color: "",
-                  createdAt: "",
-                  updatedAt: "",
-                  attachments: [],
-                }}
-              />
+            <div className="z-50 rounded-md hover:bg-gray-300">
+              <UpdateQuizCategory quizCategory={category} />
             </div>
           </Button>
         ))}

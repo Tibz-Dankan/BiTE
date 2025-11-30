@@ -1,26 +1,21 @@
 import React from "react";
 import { Button } from "../shared/Btn";
 import { Loader2 } from "lucide-react";
-import { InputCheckbox } from "../shared/InputCheckbox";
 import { InputField } from "../shared/InputField";
-import type { TAnswer, TUpdateAnswer } from "../../../types/answer";
+import type { TQuizCategory, TUpdateQuizCategory } from "../../../types/quizCategory";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNotificationStore } from "../../../stores/notification";
 import { useMutation } from "@tanstack/react-query";
-import { answerAPI } from "../../../api/answer";
-import { useQuestionStore } from "../../../stores/question";
-import { QuillEditor } from "../shared/QuillEditor";
-import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
-import { isJSON } from "../../../utils/isJson";
+import { quizCategoryAPI } from "../../../api/quizCategory";
 
-interface UpdateAnswerProps {
-  quizCategory: TAnswer;
+interface UpdateQuizCategoryFormProps {
+  quizCategory: TQuizCategory;
   onSuccess: (succeeded: boolean) => void;
 }
 
-export const UpdateQuizCategoryForm: React.FC<UpdateAnswerProps> = (props) => {
-  const answer = props.quizCategory;
+export const UpdateQuizCategoryForm: React.FC<UpdateQuizCategoryFormProps> = (props) => {
+  const quizCategory = props.quizCategory;
 
   const showCardNotification = useNotificationStore(
     (state) => state.showCardNotification
@@ -28,14 +23,10 @@ export const UpdateQuizCategoryForm: React.FC<UpdateAnswerProps> = (props) => {
   const hideCardNotification = useNotificationStore(
     (state) => state.hideCardNotification
   );
-  const updateQuestionAnswer = useQuestionStore(
-    (state) => state.updateQuestionAnswer
-  );
 
   const { isPending, mutate } = useMutation({
-    mutationFn: answerAPI.update,
+    mutationFn: quizCategoryAPI.update,
     onSuccess: async (response: any) => {
-      updateQuestionAnswer(response.data);
       props.onSuccess(true);
       showCardNotification({ type: "success", message: response.message });
       setTimeout(() => {
@@ -50,42 +41,22 @@ export const UpdateQuizCategoryForm: React.FC<UpdateAnswerProps> = (props) => {
     },
   });
 
-  const titleDelta = answer.isDeltaDefault
-    ? isJSON(answer.titleDelta!)
-      ? answer.titleDelta!
-      : JSON.stringify(convertPlainTextToDelta(answer.title))
-    : JSON.stringify(convertPlainTextToDelta(answer.title));
-
-  const initialValues: TUpdateAnswer = {
-    id: answer.id,
-    title: answer.title,
-    titleDelta: titleDelta,
-    titleHTML: answer.titleHTML,
-    postedByUserID: answer.postedByUserID,
-    questionID: answer.questionID,
-    sequenceNumber: answer.sequenceNumber,
-    isCorrect: answer.isCorrect,
+  const initialValues: TUpdateQuizCategory = {
+    id: quizCategory.id,
+    name: quizCategory.name,
   };
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: Yup.object({
-      title: Yup.string().max(255).required("Title is required"),
-      sequenceNumber: Yup.number().required(),
-      isCorrect: Yup.boolean().optional(),
+      name: Yup.string().max(255).required("Category name is required"),
     }),
 
     onSubmit: async (values: any, helpers: any) => {
       try {
         mutate({
           id: values.id,
-          title: values.title,
-          titleDelta: values.titleDelta,
-          titleHTML: values.titleHTML,
-          postedByUserID: values.postedByUserID,
-          questionID: values.questionID,
-          sequenceNumber: values.sequenceNumber,
-          isCorrect: values.isCorrect,
+          name: values.name,
         });
       } catch (error: any) {
         helpers.setStatus({ success: false });
@@ -102,40 +73,19 @@ export const UpdateQuizCategoryForm: React.FC<UpdateAnswerProps> = (props) => {
     >
       <div className="w-full">
         <h2 className="text-gray-800 font-semibold">
-          Edit Answer {answer.sequenceNumber}
+          Edit Quiz Category
         </h2>
       </div>
       <form onSubmit={formik.handleSubmit} className="w-full space-y-6">
-        {/* Answer number (sequence number) input field */}
+        {/* Category name input field */}
         <InputField
-          name="sequenceNumber"
-          label="Answer number"
-          placeholder="Enter answer number"
-          type="number"
+          name="name"
+          label="Category Name"
+          placeholder="Enter category name"
+          type="text"
           formik={formik}
           required={true}
         />
-        {/* Title Input field */}
-        <QuillEditor
-          label="Title"
-          placeholder="Enter answer title"
-          onChange={(values) => {
-            formik.values["title"] = values.plainText;
-            formik.values["titleDelta"] = values.deltaContent;
-            formik.values["titleHTML"] = values.htmlContent;
-          }}
-          defaultDelta={titleDelta}
-        />
-
-        {/* Is correct answer checkbox */}
-        <div className="w-full mt-14 sm:mt-0 md:mt-14 lg:mt-0">
-          <InputCheckbox
-            name="isCorrect"
-            label="This answer is correct"
-            formik={formik}
-            checked={answer.isCorrect}
-          />
-        </div>
 
         <div className="w-full flex items-center justify-center lg:justify-end">
           <Button
