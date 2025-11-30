@@ -1,6 +1,7 @@
 import type { TQuizCategory } from "../../../types/quizCategory";
 import { Button } from "../shared/Btn";
-
+import { DeleteQuizCategory } from "./DeleteQuizCategory";
+import { UpdateQuizCategory } from "./UpdateQuizCategory";
 interface QuizCategoryFilterProps {
   categories: TQuizCategory[];
   selectedCategoryId: string | null;
@@ -41,7 +42,31 @@ export const QuizCategoryFilter = ({
                 : "border-1 border-gray-300 text-gray-800 hover:bg-(--primary) hover:text-gray-50"
             }`}
           >
-            {category.name}
+            <span>{category.name}</span>
+            <div>
+              <DeleteQuizCategory
+                quizCategory={{
+                  id: "",
+                  name: "",
+                  color: "",
+                  createdAt: "",
+                  updatedAt: "",
+                  attachments: [],
+                }}
+              />
+            </div>
+            <div>
+              <UpdateQuizCategory
+                quizCategory={{
+                  id: "",
+                  name: "",
+                  color: "",
+                  createdAt: "",
+                  updatedAt: "",
+                  attachments: [],
+                }}
+              />
+            </div>
           </Button>
         ))}
       </div>
