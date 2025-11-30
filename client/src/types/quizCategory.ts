@@ -1,10 +1,13 @@
+import type { TAttachment } from "./attachment";
 import type { TPagination } from "./pagination";
 
 export type TQuizCategory = {
   id: string;
   name: string;
+  color: string;
   createdAt: string;
   updatedAt: string;
+  attachments: TAttachment[];
 };
 
 export type TQuizCategoryResponse = {
