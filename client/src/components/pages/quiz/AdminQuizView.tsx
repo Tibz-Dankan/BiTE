@@ -8,17 +8,25 @@ import { QuizCard } from "../../ui/quiz/QuizCard";
 import type { TPagination } from "../../../types/pagination";
 import { Button } from "../../ui/shared/Btn";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { AdminViewQuizCategory } from "../quizcategory/AdminViewQuizCategory";
 
 export const AdminQuizView: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const cursor = searchParams.get("qzCursor")!;
   const hasCursor: boolean = !!cursor;
+  const quizCategoryID = searchParams.get("qzCategoryID")!;
+  const hasQuizCategoryID: boolean = !!quizCategoryID;
+  console.log("quizCategoryID: ", quizCategoryID);
 
   const { isPending, isError, data, error } = useQuery({
-    queryKey: [`admin-quiz-view-${cursor}`],
+    queryKey: [`admin-quiz-view-${cursor}-${quizCategoryID}`],
     queryFn: () =>
-      quizAPI.getAll({ limit: 20, cursor: hasCursor ? cursor : "" }),
+      quizAPI.getAll({
+        limit: 20,
+        cursor: hasCursor ? cursor : "",
+        quizCategoryID: hasQuizCategoryID ? quizCategoryID : "",
+      }),
   });
 
   const quizzes: TQuiz[] = data?.data ?? [];
@@ -73,6 +81,9 @@ export const AdminQuizView: React.FC = () => {
 
   return (
     <div className="w-full mt-4 mb-16 space-y-8">
+      <div className="w-full flex flex-col gap-4">
+        <AdminViewQuizCategory />
+      </div>
       <div className="w-full flex flex-col gap-4">
         {quizzes.map((quiz) => (
           <div key={quiz.id} className="w-full">

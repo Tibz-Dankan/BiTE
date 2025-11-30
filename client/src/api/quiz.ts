@@ -103,9 +103,9 @@ class QuizAPI {
     return await response.json();
   };
 
-  getAll = async ({ limit, cursor }: TGetAllQuizzes) => {
+  getAll = async ({ limit, cursor, quizCategoryID }: TGetAllQuizzes) => {
     const response = await fetch(
-      `${SERVER_URL}/quiz?limit=${limit}&cursor=${cursor}`,
+      `${SERVER_URL}/quiz?limit=${limit}&cursor=${cursor}&quizCategoryID=${quizCategoryID}`,
       {
         method: "GET",
         headers: {

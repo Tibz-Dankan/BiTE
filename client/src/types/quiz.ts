@@ -13,6 +13,7 @@ export type TQuiz = {
   instructionsHTML: string;
   isDeltaDefault: boolean;
   postedByUserID: string;
+  quizCategoryID: string;
   startsAt: string;
   endsAt: string;
   canBeAttempted: boolean;
@@ -68,6 +69,7 @@ export type TUpdateQuiz = {
 export type TGetAllQuizzes = {
   limit: number;
   cursor?: string;
+  quizCategoryID?: string;
 };
 
 export type TUpdateQuizAttachment = {
