@@ -18,6 +18,8 @@ export type TQuizCategoryResponse = {
 
 export type TPostQuizCategory = {
   name: string;
+  color: string;
+  file: any;
 };
 
 export type TUpdateQuizCategory = {

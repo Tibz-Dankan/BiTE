@@ -1,5 +1,8 @@
 import type { TQuizCategory } from "../../../types/quizCategory";
 import { Button } from "../shared/Btn";
+import { DeleteQuizCategory } from "./DeleteQuizCategory";
+import { UpdateQuizCategory } from "./UpdateQuizCategory";
+import { AddQuizCategoryButton } from "./AddQuizCategoryButton";
 
 interface QuizCategoryFilterProps {
   categories: TQuizCategory[];
@@ -41,10 +44,19 @@ export const QuizCategoryFilter = ({
                 : "border-1 border-gray-300 text-gray-800 hover:bg-(--primary) hover:text-gray-50"
             }`}
           >
-            {category.name}
+            <span>{category.name}</span>
+            <div className="z-50 mx-2 rounded-md hover:bg-gray-300">
+              <DeleteQuizCategory quizCategory={category} />
+            </div>
+            <div className="z-50 rounded-md hover:bg-gray-300">
+              <UpdateQuizCategory quizCategory={category} />
+            </div>
           </Button>
         ))}
+        {/* Add Quiz Category Button */}
+        <AddQuizCategoryButton />
       </div>
     </div>
   );
 };
+

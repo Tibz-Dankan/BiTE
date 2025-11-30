@@ -3,17 +3,17 @@ import { SERVER_URL } from "../constants/urls";
 import type {
   TGetAllQuizCategories,
   TGetQuizCategory,
-  TPostQuizCategory,
   TUpdateQuizCategory,
 } from "../types/quizCategory";
 
 class QuizCategoryAPI {
-  post = async ({ name }: TPostQuizCategory) => {
+  post = async ({ formData }: { formData: FormData }) => {
     const response = await fetch(`${SERVER_URL}/quizcategory`, {
       method: "POST",
-      body: JSON.stringify({
-        name,
-      }),
+      body: formData,
+      headers: {
+        Authorization: "",
+      },
     });
 
     if (!response.ok) {
