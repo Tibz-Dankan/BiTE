@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "../shared/Btn";
 import { Loader2 } from "lucide-react";
 import { InputField } from "../shared/InputField";
+import { CategoryColorSelect } from "../shared/CategoryColorSelect";
 import type { TQuizCategory, TUpdateQuizCategory } from "../../../types/quizCategory";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -44,12 +45,14 @@ export const UpdateQuizCategoryForm: React.FC<UpdateQuizCategoryFormProps> = (pr
   const initialValues: TUpdateQuizCategory = {
     id: quizCategory.id,
     name: quizCategory.name,
+    color: quizCategory.color,
   };
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: Yup.object({
       name: Yup.string().max(255).required("Category name is required"),
+      color: Yup.string().required("Color is required"),
     }),
 
     onSubmit: async (values: any, helpers: any) => {
@@ -57,6 +60,7 @@ export const UpdateQuizCategoryForm: React.FC<UpdateQuizCategoryFormProps> = (pr
         mutate({
           id: values.id,
           name: values.name,
+          color: values.color,
         });
       } catch (error: any) {
         helpers.setStatus({ success: false });
@@ -87,6 +91,14 @@ export const UpdateQuizCategoryForm: React.FC<UpdateQuizCategoryFormProps> = (pr
           required={true}
         />
 
+        {/* Color selector */}
+        <CategoryColorSelect
+          name="color"
+          label="Category Color"
+          formik={formik}
+          required={true}
+        />
+
         <div className="w-full flex items-center justify-center lg:justify-end">
           <Button
             type="submit"
@@ -107,3 +119,4 @@ export const UpdateQuizCategoryForm: React.FC<UpdateQuizCategoryFormProps> = (pr
     </div>
   );
 };
+

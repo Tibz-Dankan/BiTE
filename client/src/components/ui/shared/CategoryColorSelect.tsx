@@ -110,7 +110,7 @@ export const CategoryColorSelect: React.FC<CategoryColorSelectProps> = (
                 </div>
               )}
             </SelectTrigger>
-            <SelectContent className={`max-h-[300px]`}>
+            <SelectContent className="max-h-[300px] z-[9999] bg-white">
               {CATEGORY_COLORS.map((color, index) => (
                 <SelectItem
                   key={index}
@@ -228,7 +228,7 @@ export const CategoryColorSelectWithObject: React.FC<
                 </div>
               )}
             </SelectTrigger>
-            <SelectContent className={`max-h-[300px]`}>
+            <SelectContent className="max-h-[300px] z-[9999] bg-white">
               {CATEGORY_COLORS.map((color, index) => (
                 <SelectItem
                   key={index}
