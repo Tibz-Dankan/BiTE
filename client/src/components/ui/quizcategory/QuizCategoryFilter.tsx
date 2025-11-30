@@ -2,6 +2,8 @@ import type { TQuizCategory } from "../../../types/quizCategory";
 import { Button } from "../shared/Btn";
 import { DeleteQuizCategory } from "./DeleteQuizCategory";
 import { UpdateQuizCategory } from "./UpdateQuizCategory";
+import { AddQuizCategoryButton } from "./AddQuizCategoryButton";
+
 interface QuizCategoryFilterProps {
   categories: TQuizCategory[];
   selectedCategoryId: string | null;
@@ -51,7 +53,10 @@ export const QuizCategoryFilter = ({
             </div>
           </Button>
         ))}
+        {/* Add Quiz Category Button */}
+        <AddQuizCategoryButton />
       </div>
     </div>
   );
 };
+
