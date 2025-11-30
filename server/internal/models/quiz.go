@@ -34,7 +34,7 @@ func (q *Quiz) FindOneAndIncludeAttachments(id string) (Quiz, error) {
 	return quiz, nil
 }
 
-func (q *Quiz) FindAll(limit float64, cursor string) ([]Quiz, error) {
+func (q *Quiz) FindAll(limit float64, cursor string, quizCategoryID string) ([]Quiz, error) {
 	var quizzes []Quiz
 
 	query := db.Model(&Quiz{}).
@@ -48,6 +48,10 @@ func (q *Quiz) FindAll(limit float64, cursor string) ([]Quiz, error) {
 			return quizzes, err
 		}
 		query = query.Where("\"createdAt\" < ?", lastQuiz.CreatedAt)
+	}
+
+	if quizCategoryID != "" {
+		query = query.Where("\"quizCategoryID\" = ?", quizCategoryID)
 	}
 
 	query.Find(&quizzes)

@@ -10,6 +10,7 @@ var GetAllQuizzes = func(c *fiber.Ctx) error {
 	quiz := models.Quiz{}
 	limitParam := c.Query("limit")
 	cursorParam := c.Query("cursor")
+	quizCategoryIDParam := c.Query("quizCategoryID")
 
 	limit, err := pkg.ValidateQueryLimit(limitParam)
 	if err != nil {
@@ -19,7 +20,7 @@ var GetAllQuizzes = func(c *fiber.Ctx) error {
 		cursorParam = ""
 	}
 
-	allQuiz, err := quiz.FindAll(limit+1, cursorParam)
+	allQuiz, err := quiz.FindAll(limit+1, cursorParam, quizCategoryIDParam)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
