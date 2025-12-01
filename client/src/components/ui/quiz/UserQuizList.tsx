@@ -38,7 +38,7 @@ export const UserQuizList: React.FC = () => {
 
   if (isPending) {
     return (
-      <div className="w-full min-h-[30vh] flex items-center justify-center">
+      <div className="w-full min-h-[40vh] flex items-center justify-center">
         <div className="flex items-center justify-center gap-2">
           <Loader2 className="h-4 w-4 animate-spin text-gray-800" />
           <span className="text-gray-800 text-sm">Loading...</span>
@@ -49,7 +49,7 @@ export const UserQuizList: React.FC = () => {
 
   if (isError) {
     return (
-      <div className="w-full min-h-[30vh] flex items-center justify-center">
+      <div className="w-full min-h-[40vh] flex items-center justify-center">
         <AlertCard type={"error"} message={error ? error.message : ""} />
       </div>
     );
