@@ -13,7 +13,7 @@ import { AlertCard } from "../shared/AlertCard";
 export const AdminQuizCategoryFilter: React.FC = () => {
   const [quizCategories, setQuizCategories] = useState<TQuizCategory[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
-  const initialquizCategoryID = searchParams.get("qzCategoryID")!;
+  const initialquizCategoryID = searchParams.get("qzCategoryID") ?? "";
   const [selectedCategoryId, setSelectedCategoryId] = useState(
     initialquizCategoryID
   );

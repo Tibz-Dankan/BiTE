@@ -10,7 +10,7 @@ import { useSearchParams } from "react-router-dom";
 export const UserQuizCategoryFilter: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [quizCategories, setQuizCategories] = useState<TQuizCategory[]>([]);
-  const initialquizCategoryID = searchParams.get("qzCategoryID")!;
+  const initialquizCategoryID = searchParams.get("qzCategoryID") ?? "";
   const [selectedCategoryId, setSelectedCategoryId] = useState(
     initialquizCategoryID
   );

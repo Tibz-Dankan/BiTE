@@ -6,7 +6,7 @@ export const UserQuizView: React.FC = () => {
   return (
     <div
       className="min-h-screen bg-gradient-to-br from-slate-50 via-orange-50 to-amber-50
-      space-y-12"
+      space-y-12 mb-16"
     >
       <UserQuizViewHeader />
       <UserQuizCategoryFilter />
