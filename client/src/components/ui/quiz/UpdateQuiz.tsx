@@ -12,6 +12,7 @@ import { AppDate } from "../../../utils/appDate";
 import { QuillEditor } from "../shared/QuillEditor";
 import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
 import { isJSON } from "../../../utils/isJson";
+import { InputSelectQuizCategory } from "../shared/InputSelectQuizCategory";
 
 interface UpdateQuizProps {
   quiz: TQuiz;
@@ -78,6 +79,7 @@ export const UpdateQuiz: React.FC<UpdateQuizProps> = (props) => {
     introductionDelta: introductionDelta,
     introductionHTML: quiz.introductionHTML,
     postedByUserID: quiz.postedByUserID,
+    quizCategoryID: quiz.quizCategoryID,
     startsAt: quiz.startsAt,
     endsAt: quiz.endsAt,
     instructions: quiz.instructions,
@@ -89,6 +91,7 @@ export const UpdateQuiz: React.FC<UpdateQuizProps> = (props) => {
     initialValues: initialValues,
     validationSchema: Yup.object({
       title: Yup.string().max(255).required("Title is required"),
+      quizCategoryID: Yup.string().required("Quiz category is required"),
       instructions: Yup.string().optional(),
       introduction: Yup.string().optional(),
     }),
@@ -107,6 +110,7 @@ export const UpdateQuiz: React.FC<UpdateQuizProps> = (props) => {
           introductionDelta: values.introductionDelta,
           introductionHTML: values.introductionHTML,
           postedByUserID: values.postedByUserID,
+          quizCategoryID: values.quizCategoryID,
           startsAt: startsAt,
           endsAt: endsAt,
           instructions: values.instructions,
@@ -133,6 +137,15 @@ export const UpdateQuiz: React.FC<UpdateQuizProps> = (props) => {
           }}
           defaultDelta={titleDelta}
         />
+
+        {/* Quiz Category selector */}
+        <InputSelectQuizCategory
+          name="quizCategoryID"
+          label="Quiz Category"
+          formik={formik}
+          required={true}
+        />
+
         <QuillEditor
           label="Intro"
           placeholder="Enter quiz introduction"

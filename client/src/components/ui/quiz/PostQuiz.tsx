@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useRouteStore } from "../../../stores/routes";
 import { QuizFormHeading } from "./PostQuizHeading";
 import { QuillEditor } from "../shared/QuillEditor";
+import { InputSelectQuizCategory } from "../shared/InputSelectQuizCategory";
 
 export const PostQuiz: React.FC = () => {
   const navigate = useNavigate();
@@ -96,6 +97,7 @@ export const PostQuiz: React.FC = () => {
     introductionDelta: "",
     introductionHTML: "",
     postedByUserID: user.id,
+    quizCategoryID: "",
     startsAt: "",
     endsAt: "",
     instructions: "",
@@ -108,6 +110,7 @@ export const PostQuiz: React.FC = () => {
     initialValues: initialValues,
     validationSchema: Yup.object({
       title: Yup.string().max(255).required("Title is required"),
+      quizCategoryID: Yup.string().required("Quiz category is required"),
       introduction: Yup.string().optional(),
       instructions: Yup.string().optional(),
     }),
@@ -125,6 +128,7 @@ export const PostQuiz: React.FC = () => {
         formData.append("introductionDelta", values.introductionDelta);
         formData.append("introductionHTML", values.introductionHTML);
         formData.append("postedByUserID", values.postedByUserID);
+        formData.append("quizCategoryID", values.quizCategoryID);
         formData.append("startsAt", startsAt);
         formData.append("endsAt", endsAt);
         formData.append("instructions", values.instructions);
@@ -158,6 +162,14 @@ export const PostQuiz: React.FC = () => {
             formik.values["titleDelta"] = values.deltaContent;
             formik.values["titleHTML"] = values.htmlContent;
           }}
+        />
+
+        {/* Quiz Category selector */}
+        <InputSelectQuizCategory
+          name="quizCategoryID"
+          label="Quiz Category"
+          formik={formik}
+          required={true}
         />
 
         {/* Introduction field */}
