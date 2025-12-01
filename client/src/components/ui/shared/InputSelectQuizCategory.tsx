@@ -46,7 +46,6 @@ export const InputSelectQuizCategory: React.FC<InputSelectQuizCategoryProps> = (
   }, [hasSelectedValue, quizCategories, hasCategories, formik, name]);
 
   const formikOnChangeHandler = (value: string) => {
-    console.log("selected value: ", value);
     formik.values[`${name}`] = value;
     setValue(() => value);
   };
