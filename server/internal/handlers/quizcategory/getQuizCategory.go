@@ -9,7 +9,7 @@ var GetQuizCategory = func(c *fiber.Ctx) error {
 	quizCategory := models.QuizCategory{}
 	quizCategoryID := c.Params("id")
 
-	savedQuizCategory, err := quizCategory.FindOne(quizCategoryID)
+	savedQuizCategory, err := quizCategory.FindOneAndIncludeAttachment(quizCategoryID)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}

@@ -1,4 +1,14 @@
 import type { TAttachment } from "./attachment";
+import type { TQuizCategory } from "./quizCategory";
+
+export type TUser = {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  imageUrl?: string;
+  profileBgColor?: string;
+};
 
 export type TQuiz = {
   id: string;
@@ -21,6 +31,10 @@ export type TQuiz = {
   updatedAt: string;
   questions: null;
   attachments: Prettify<TAttachment[]>;
+  quizCategory?: TQuizCategory;
+  postedByUser?: TUser;
+  questionCount?: number;
+  attemptCount?: number;
 };
 
 export type TPagination = {
