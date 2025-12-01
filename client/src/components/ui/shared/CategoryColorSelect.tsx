@@ -93,7 +93,9 @@ export const CategoryColorSelect: React.FC<CategoryColorSelectProps> = (
             <SelectTrigger
               className={`border-[1px] ${
                 hasError ? "border-red-500" : "border-gray-300"
-              } ${transparent ? "bg-transparent" : ""}`}
+              } ${
+                transparent ? "bg-transparent" : ""
+              } focus:ring-1 ring-(--primary)`}
             >
               {selectedColor && (
                 <div className="flex items-center gap-3">
@@ -211,7 +213,9 @@ export const CategoryColorSelectWithObject: React.FC<
             <SelectTrigger
               className={`border-[1px] ${
                 hasError ? "border-red-500" : "border-gray-300"
-              } ${transparent ? "bg-transparent" : ""}`}
+              } ${
+                transparent ? "bg-transparent" : ""
+              } focus:ring-1 ring-(--primary)`}
             >
               {selectedColor && (
                 <div className="flex items-center gap-3">
