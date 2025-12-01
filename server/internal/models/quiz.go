@@ -66,6 +66,7 @@ func (q *Quiz) FindAllWithDetails(limit float64, cursor string, quizCategoryID s
 
 	query := db.Model(&Quiz{}).
 		Preload("Attachments").
+		Preload("QuizCategory.Attachments").
 		Preload("QuizCategory").
 		Preload("PostedByUser").
 		Order("\"createdAt\" DESC").Limit(int(limit))
