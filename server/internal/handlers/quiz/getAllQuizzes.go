@@ -20,7 +20,7 @@ var GetAllQuizzes = func(c *fiber.Ctx) error {
 		cursorParam = ""
 	}
 
-	allQuiz, err := quiz.FindAll(limit+1, cursorParam, quizCategoryIDParam)
+	allQuiz, err := quiz.FindAllWithDetails(limit+1, cursorParam, quizCategoryIDParam)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
@@ -30,7 +30,7 @@ var GetAllQuizzes = func(c *fiber.Ctx) error {
 
 	if len(allQuiz) > int(limit) {
 		allQuiz = allQuiz[:len(allQuiz)-1] // Remove last element
-		nextCursor = allQuiz[len(allQuiz)-1].ID
+		nextCursor = allQuiz[len(allQuiz)-1]["id"].(string)
 		hasNextItems = true
 	}
 
