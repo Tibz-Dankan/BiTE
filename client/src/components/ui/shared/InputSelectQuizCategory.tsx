@@ -88,7 +88,9 @@ export const InputSelectQuizCategory: React.FC<InputSelectQuizCategoryProps> = (
             <SelectTrigger
               className={`border-[1px] ${
                 hasError ? "border-red-500" : "border-gray-300"
-              } ${transparent ? "bg-transparent" : ""}`}
+              } ${
+                transparent ? "bg-transparent" : ""
+              } focus:ring-1 ring-(--primary)`}
             >
               {hasCategories && selectedCategory && (
                 <div className="flex items-center gap-3">
