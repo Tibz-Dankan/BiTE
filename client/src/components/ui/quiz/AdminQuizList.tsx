@@ -76,6 +76,18 @@ export const AdminQuizList: React.FC = () => {
             <QuizCard quiz={quiz} />
           </div>
         ))}
+        {/* Empty State */}
+        {quizzes.length === 0 && (
+          <div className="text-center py-16">
+            <div className="text-6xl mb-4">🔍</div>
+            <h3 className="text-2xl font-bold text-slate-800 mb-2">
+              No quizzes found
+            </h3>
+            <p className="text-slate-600">
+              Try adjusting your filters or search term
+            </p>
+          </div>
+        )}
       </div>
       {/* Pagination action */}
       <div className="w-full flex items-center justify-end gap-8">
