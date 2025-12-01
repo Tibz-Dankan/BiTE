@@ -42,6 +42,7 @@ export type TPostQuiz = {
   introductionDelta?: string;
   introductionHTML?: string;
   postedByUserID: string;
+  quizCategoryID: string;
   startsAt: string;
   endsAt: string;
   instructions: string;
@@ -59,6 +60,7 @@ export type TUpdateQuiz = {
   introductionDelta?: string;
   introductionHTML?: string;
   postedByUserID: string;
+  quizCategoryID: string;
   startsAt: string;
   endsAt: string;
   instructions: string;
