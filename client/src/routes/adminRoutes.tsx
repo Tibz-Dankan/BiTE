@@ -8,6 +8,7 @@ import { DashboardLayout } from "../components/layout/Dashboard";
 import { PageNotFound } from "../components/pages/common/PageNotFound";
 import { AdminQuizView } from "../components/pages/quiz/AdminQuizView";
 import { AdminQuizUpdate } from "../components/pages/quiz/AdminQuizUpdate";
+import { AdminQuizAttemptUpdate } from "../components/pages/quiz/AdminQuizAttemptUpdate";
 import { AdminPostQuiz } from "../components/pages/quiz/AdminPostQuiz";
 import { AdminPostQuestion } from "../components/pages/question/AdminPostQuestion";
 import { AdminViewQuestions } from "../components/pages/question/AdminViewQuestions";
@@ -45,6 +46,13 @@ export const AdminRoutes: React.FC = () => {
         path: "/a/quizzes/:quizID",
         showInSidebar: false,
         element: <AdminQuizUpdate />,
+      },
+      {
+        title: "Quiz Attemptability",
+        icon: <FileQuestion className="h-4 w-4" />,
+        path: "/a/quizzes/:quizID/attempt",
+        showInSidebar: false,
+        element: <AdminQuizAttemptUpdate />,
       },
       {
         title: "Questions",
