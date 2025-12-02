@@ -167,6 +167,36 @@ class QuizAPI {
     }
     return await response.json();
   };
+
+  makeQuizAttemptable = async ({ quizID }: { quizID: string }) => {
+    const response = await fetch(`${SERVER_URL}/quiz/${quizID}/attemptable`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  makeQuizUnattemptable = async ({ quizID }: { quizID: string }) => {
+    const response = await fetch(`${SERVER_URL}/quiz/${quizID}/unattemptable`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
 }
 
 export const quizAPI = new QuizAPI();

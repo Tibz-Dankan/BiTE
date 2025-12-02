@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "../shared/dropdown-menu";
 import { SCNButton } from "../shared/button";
-import { Edit, MoreVertical } from "lucide-react";
+import { Edit, MoreVertical, Settings } from "lucide-react";
 import { QuillViewer } from "../shared/QuillViewer";
 import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
 import { isJSON } from "../../../utils/isJson";
@@ -86,6 +86,19 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
     });
   };
 
+  const updateAdminQuizAttemptPage = () => {
+    navigate(`/a/quizzes/${quiz.id}/attempt`);
+    updateCurrentPage({
+      title: "Quiz Attemptability",
+      icon: undefined,
+      path: "/a/quizzes/:quizID/attempt",
+      showInSidebar: false,
+      element: undefined,
+    });
+
+    console.log("Updated the admin quiz attempt page in the store");
+  };
+
   const deltaContent = quiz.isDeltaDefault
     ? isJSON(quiz.titleDelta!)
       ? quiz.titleDelta!
@@ -153,6 +166,12 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
               <span className="flex items-center gap-2 cursor-pointer">
                 <Edit className="w-4 h-4 text-gray-800" />
                 Edit Quiz
+              </span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => updateAdminQuizAttemptPage()}>
+              <span className="flex items-center gap-2 cursor-pointer">
+                <Settings className="w-4 h-4 text-gray-800" />
+                Make Quiz Attemptable
               </span>
             </DropdownMenuItem>
           </DropdownMenuContent>
