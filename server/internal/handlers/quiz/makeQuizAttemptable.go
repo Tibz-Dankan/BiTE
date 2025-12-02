@@ -24,9 +24,8 @@ var MakeQuizAttemptable = func(c *fiber.Ctx) error {
 
 	// TODO: To ensure the quiz, has at least a question
 	// and each question has an at least two answers
-	quiz.CanBeAttempted = true
 
-	updatedQuiz, err := quiz.Update()
+	updatedQuiz, err := quiz.UpdateCanBeAttempted(quizID, true)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
