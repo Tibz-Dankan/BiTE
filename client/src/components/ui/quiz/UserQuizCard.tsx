@@ -5,17 +5,24 @@ import {
   Calendar,
   User as UserIcon,
   BookOpen,
-  CheckCircle,
   ChevronRight,
+  CalendarClock,
+  PlayCircle,
+  StopCircle,
 } from "lucide-react";
+import { getQuizStatus } from "../../../utils/getQuizStatus";
 
 interface UserQuizCardProps {
   quiz: TQuiz;
 }
 
 export const UserQuizCard: React.FC<UserQuizCardProps> = ({ quiz }) => {
-  const category = quiz.quizCategory;
-  const categoryColor = category?.color || "from-gray-500 to-gray-600";
+  const placeHolderQuizCategory = {
+    id: "b4149d00-6fe3-4f6f-b72e-eaca0e69ajdI",
+    name: "Un Categorized",
+    color: "#868e96",
+  };
+  const category = quiz.quizCategory ?? placeHolderQuizCategory;
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -26,31 +33,91 @@ export const UserQuizCard: React.FC<UserQuizCardProps> = ({ quiz }) => {
     });
   };
 
+  const quizStatus = getQuizStatus(quiz.startsAt, quiz.endsAt);
+
+  const getQuizStatusColor = () => {
+    if (quizStatus === "upcoming")
+      return {
+        name: "Upcoming",
+        icon: CalendarClock,
+        color: "#3b82f6",
+        bgColor: "#dbeafe",
+      };
+    if (quizStatus === "running")
+      return {
+        name: "Active",
+        icon: PlayCircle,
+        color: "#22c55e",
+        bgColor: "#dcfce7",
+      };
+    if (quizStatus === "expired")
+      return {
+        name: "Ended",
+        icon: StopCircle,
+        color: "#6b7280",
+        bgColor: "#f3f4f6",
+      };
+  };
+
+  const getQuizCategoryColor = (quiz: TQuiz) => {
+    if (quiz.quizCategory?.color) {
+      return quiz.quizCategory.color;
+    }
+    return "#868e96";
+  };
+
+  const bgColor = getQuizCategoryColor(quiz);
+
   return (
-    <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group hover:-translate-y-2">
+    <div
+      className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all
+       duration-300 overflow-hidden group hover:-translate-y-2"
+    >
       {/* Category Badge Header */}
-      <div className={`h-2 bg-gradient-to-r ${categoryColor}`}></div>
+      <div className="h-2" style={{ backgroundColor: bgColor }}></div>
 
       <div className="p-6">
         {/* Category Tag */}
-        <div className="flex items-center justify-between mb-4">
-          {category && (
-            <span
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-gradient-to-r ${categoryColor} text-white`}
-            >
-              {category.name}
+        <div className="w-full flex items-center justify-between mb-6">
+          <div className="flex items-center gap-2 bg-slate-200 px-3 py-2 rounded-full">
+            <div
+              className="h-5 w-5 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: bgColor }}
+            ></div>
+            <span className="text-xs font-medium text-slate-500">
+              {category?.name}
             </span>
-          )}
-          {quiz.canBeAttempted && (
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-              <CheckCircle size={14} />
-              Active
-            </span>
-          )}
+          </div>
+          <div className="flex items-center gap-2">
+            {(() => {
+              const statusInfo = getQuizStatusColor();
+              if (statusInfo) {
+                const StatusIcon = statusInfo.icon;
+                return (
+                  <div
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full"
+                    style={{ backgroundColor: statusInfo.bgColor }}
+                  >
+                    <StatusIcon size={16} style={{ color: statusInfo.color }} />
+                    <span
+                      className="text-sm font-medium"
+                      style={{ color: statusInfo.color }}
+                    >
+                      {statusInfo.name}
+                    </span>
+                  </div>
+                );
+              }
+              return null;
+            })()}
+          </div>
         </div>
 
         {/* Title */}
-        <h3 className="text-xl font-bold text-slate-800 mb-3 line-clamp-2 group-hover:text-indigo-600 transition-colors">
+        <h3
+          className="text-xl font-bold text-slate-800 mb-3 line-clamp-2
+          group-hover:text-indigo-600 transition-colors"
+        >
           {quiz.title}
         </h3>
 
@@ -62,13 +129,13 @@ export const UserQuizCard: React.FC<UserQuizCardProps> = ({ quiz }) => {
         {/* Quiz Stats */}
         <div className="grid grid-cols-2 gap-3 mb-4 p-3 bg-slate-50 rounded-xl">
           <div className="flex items-center gap-2">
-            <BookOpen size={16} className="text-indigo-600" />
+            <BookOpen size={16} className="text-(--primary)" />
             <span className="text-sm font-medium text-slate-700">
               {quiz.questionCount || 0} Questions
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <UserIcon size={16} className="text-indigo-600" />
+            <UserIcon size={16} className="text-(--primary)" />
             <span className="text-sm font-medium text-slate-700">
               {quiz.attemptCount || 0} Attempts
             </span>
@@ -79,7 +146,8 @@ export const UserQuizCard: React.FC<UserQuizCardProps> = ({ quiz }) => {
         {quiz.postedByUser && (
           <div className="flex items-center gap-2 mb-4 pb-4 border-b border-slate-100">
             <div
-              className="w-8 h-8 rounded-full flex items-center justify-center text-white font-semibold"
+              className="w-8 h-8 rounded-full flex items-center justify-center
+              text-white font-semibold"
               style={{
                 backgroundColor: quiz.postedByUser.profileBgColor || "#6366f1",
               }}
@@ -109,11 +177,13 @@ export const UserQuizCard: React.FC<UserQuizCardProps> = ({ quiz }) => {
 
         {/* Action Button */}
         <button
-          className={`w-full py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 group/btn ${
-            quiz.canBeAttempted
-              ? `bg-gradient-to-r ${categoryColor} text-white hover:shadow-lg`
-              : "bg-slate-200 text-slate-500 cursor-not-allowed"
-          }`}
+          className={`w-full py-3 rounded-xl font-semibold transition-all flex
+           items-center justify-center gap-2 group/btn ${
+             quiz.canBeAttempted
+               ? "text-white hover:shadow-lg"
+               : "text-slate-500 cursor-not-allowed"
+           }`}
+          style={{ backgroundColor: quiz.canBeAttempted ? bgColor : "#e2e8f0" }}
         >
           {quiz.canBeAttempted ? "Start Quiz" : "Coming Soon"}
           {quiz.canBeAttempted && (
