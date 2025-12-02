@@ -165,6 +165,22 @@ func (q *Quiz) Update() (Quiz, error) {
 	return *q, nil
 }
 
+func (q *Quiz) UpdateCanBeAttempted(id string, canBeAttempted bool) (Quiz, error) {
+	var quiz Quiz
+	if err := db.Model(&Quiz{}).Where("id = ?", id).Update("\"canBeAttempted\"", canBeAttempted).Error; err != nil {
+		return quiz, err
+	}
+
+	// Fetch the updated quiz to return it
+	// We use FindOne to get the fresh state
+	quiz, err := q.FindOne(id)
+	if err != nil {
+		return quiz, err
+	}
+
+	return quiz, nil
+}
+
 func (q *Quiz) Delete(id string) error {
 	attachment := Attachment{QuizID: id}
 	question := Question{QuizID: id}

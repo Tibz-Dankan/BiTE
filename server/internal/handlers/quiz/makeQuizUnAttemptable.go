@@ -22,9 +22,7 @@ var MakeQuizUnAttemptable = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "Quiz is already un attemptable!")
 	}
 
-	quiz.CanBeAttempted = false
-
-	updatedQuiz, err := quiz.Update()
+	updatedQuiz, err := quiz.UpdateCanBeAttempted(quizID, false)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
