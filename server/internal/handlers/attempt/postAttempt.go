@@ -44,6 +44,9 @@ var PostAttempt = func(c *fiber.Ctx) error {
 	if savedQuestion.ID == "" {
 		return fiber.NewError(fiber.StatusBadRequest, "Question of provided ID doesn't exist!")
 	}
+	if savedQuestion.RequiresNumericalAnswer && attempt.AnswerInput == "" {
+		return fiber.NewError(fiber.StatusBadRequest, "This question requires a numerical answer!")
+	}
 	attempt.QuizID = savedQuestion.QuizID
 
 	newAttempt, err := attempt.Create(attempt)

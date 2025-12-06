@@ -128,6 +128,7 @@ type Question struct {
 	QuizID                    string    `gorm:"column:quizID;not null;index" json:"quizID"`
 	SequenceNumber            int64     `gorm:"column:sequenceNumber;not null;index" json:"sequenceNumber"`
 	HasMultipleCorrectAnswers bool      `gorm:"column:hasMultipleCorrectAnswers;default:false;index" json:"hasMultipleCorrectAnswers"`
+	RequiresNumericalAnswer   bool      `gorm:"column:requiresNumericalAnswer;default:false;index" json:"requiresNumericalAnswer"`
 	CreatedAt                 time.Time `gorm:"column:createdAt;index" json:"createdAt"`
 	UpdatedAt                 time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
 
@@ -160,13 +161,14 @@ type Answer struct {
 }
 
 type Attempt struct {
-	ID         string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
-	UserID     string    `gorm:"column:userID;not null;index" json:"userID"`
-	QuizID     string    `gorm:"column:quizID;not null;index" json:"quizID"`
-	QuestionID string    `gorm:"column:questionID;not null;index" json:"questionID"`
-	AnswerID   string    `gorm:"column:answerID;not null;index" json:"answerID"`
-	CreatedAt  time.Time `gorm:"column:createdAt;index" json:"createdAt"`
-	UpdatedAt  time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
+	ID          string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
+	UserID      string    `gorm:"column:userID;not null;index" json:"userID"`
+	QuizID      string    `gorm:"column:quizID;not null;index" json:"quizID"`
+	QuestionID  string    `gorm:"column:questionID;not null;index" json:"questionID"`
+	AnswerID    string    `gorm:"column:answerID;not null;index" json:"answerID"`
+	AnswerInput string    `gorm:"column:answerInput;default:null" json:"answerInput"`
+	CreatedAt   time.Time `gorm:"column:createdAt;index" json:"createdAt"`
+	UpdatedAt   time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
 
 	// Relationships
 	User     *User     `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"user,omitempty"`
