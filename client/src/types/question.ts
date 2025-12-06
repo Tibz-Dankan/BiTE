@@ -15,6 +15,7 @@ export type TQuestion = {
   quizID: string;
   sequenceNumber: number;
   hasMultipleCorrectAnswers: boolean;
+  requiresNumericalAnswer: boolean;
   createdAt: string;
   updatedAt: string;
   answers: Prettify<TAnswer[]>;
@@ -32,6 +33,7 @@ export type TPostQuestion = {
   quizID: string;
   sequenceNumber: number;
   hasMultipleCorrectAnswers: boolean;
+  requiresNumericalAnswer: boolean;
   file: any;
 };
 
@@ -47,6 +49,7 @@ export type TUpdateQuestion = {
   quizID: string;
   sequenceNumber: number;
   hasMultipleCorrectAnswers: boolean;
+  requiresNumericalAnswer: boolean;
 };
 
 export type TUpdateQuestionAttachment = {

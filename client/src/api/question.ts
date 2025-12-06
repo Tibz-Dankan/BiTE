@@ -35,6 +35,7 @@ class QuestionAPI {
     postedByUserID,
     sequenceNumber,
     hasMultipleCorrectAnswers,
+    requiresNumericalAnswer,
   }: TUpdateQuestion) => {
     const response = await fetch(`${SERVER_URL}/question/${id}`, {
       method: "PATCH",
@@ -49,6 +50,7 @@ class QuestionAPI {
         postedByUserID,
         sequenceNumber,
         hasMultipleCorrectAnswers,
+        requiresNumericalAnswer,
       }),
       headers: {
         "Content-type": "application/json",
