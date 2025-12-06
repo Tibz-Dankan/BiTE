@@ -90,6 +90,8 @@ func main() {
 	quizGroup.Patch("/:id/attemptable", middlewares.Auth, middlewares.IsAdmin, quiz.MakeQuizAttemptable)
 	quizGroup.Patch("/:id/unattemptable", middlewares.Auth, middlewares.IsAdmin, quiz.MakeQuizUnAttemptable)
 	quizGroup.Get("/", middlewares.Auth, quiz.GetAllQuizzes)
+	// quizGroup.Get("/data-for-attempt/:id", middlewares.Auth, quiz.GetQuizDataForAttempt)
+	quizGroup.Get("/attempt/:id", middlewares.Auth, quiz.GetQuizDataForAttempt)
 	quizGroup.Get("/analytics/summary", middlewares.Auth, middlewares.IsAdmin, quiz.GetQuizAnalytics)
 
 	// Question

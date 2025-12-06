@@ -37,6 +37,18 @@ func (a *Attempt) FindOneByQuestionAnswerAndUser(questionID string, answerID str
 	return attempt, nil
 }
 
+func (a *Attempt) FindLastAttemptByQuizAndUser(quizID string, userID string) (Attempt, error) {
+	var attempt Attempt
+
+	if err := db.Model(&Attempt{}).
+		Where("\"quizID\" = ? AND \"userID\" = ?",
+			quizID, userID).Order("\"createdAt\" DESC").First(&attempt).Error; err != nil {
+		return attempt, err
+	}
+
+	return attempt, nil
+}
+
 func (a *Attempt) Update() (Attempt, error) {
 	db.Save(&a)
 
