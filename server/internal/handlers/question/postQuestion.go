@@ -38,6 +38,7 @@ var PostQuestion = func(c *fiber.Ctx) error {
 	question.QuizID = c.FormValue("quizID")
 	sequenceNumberStr := c.FormValue("sequenceNumber")
 	hasMultipleCorrectAnswersStr := c.FormValue("hasMultipleCorrectAnswers")
+	requiresNumericalAnswerStr := c.FormValue("requiresNumericalAnswer")
 
 	var fileUploaded bool = true
 
@@ -63,6 +64,12 @@ var PostQuestion = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 	question.HasMultipleCorrectAnswers = hasMultipleCorrectAnswers
+
+	requiresNumericalAnswer, err := strconv.ParseBool(requiresNumericalAnswerStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+	question.RequiresNumericalAnswer = requiresNumericalAnswer
 
 	user, err = user.FindOne(question.PostedByUserID)
 	if err != nil {

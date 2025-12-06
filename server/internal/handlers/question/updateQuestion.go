@@ -16,6 +16,7 @@ type UpdateQuestionInput struct {
 	QuizID                    string `json:"quizID"`
 	SequenceNumber            int64  `json:"sequenceNumber"`
 	HasMultipleCorrectAnswers bool   `json:"hasMultipleCorrectAnswers"`
+	RequiresNumericalAnswer   bool   `json:"requiresNumericalAnswer"`
 }
 
 var UpdateQuestion = func(c *fiber.Ctx) error {
@@ -53,6 +54,7 @@ var UpdateQuestion = func(c *fiber.Ctx) error {
 	savedQuestion.IntroductionHTML = updateQuestionInput.IntroductionHTML
 	savedQuestion.SequenceNumber = updateQuestionInput.SequenceNumber
 	savedQuestion.HasMultipleCorrectAnswers = updateQuestionInput.HasMultipleCorrectAnswers
+	savedQuestion.RequiresNumericalAnswer = updateQuestionInput.RequiresNumericalAnswer
 
 	if !savedQuestion.IsDeltaDefault {
 		savedQuestion.IsDeltaDefault = true
