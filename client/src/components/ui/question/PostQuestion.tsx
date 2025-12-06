@@ -106,6 +106,7 @@ export const PostQuestion: React.FC<PostQuestionProps> = (props) => {
     quizID: quiz.id,
     sequenceNumber: 0,
     hasMultipleCorrectAnswers: false,
+    requiresNumericalAnswer: false,
     file: null,
   };
 
@@ -116,6 +117,7 @@ export const PostQuestion: React.FC<PostQuestionProps> = (props) => {
       introduction: Yup.string().optional(),
       sequenceNumber: Yup.number().required(),
       hasMultipleCorrectAnswers: Yup.boolean().optional(),
+      requiresNumericalAnswer: Yup.boolean().optional(),
     }),
 
     onSubmit: async (values: any, helpers: any) => {
@@ -133,6 +135,10 @@ export const PostQuestion: React.FC<PostQuestionProps> = (props) => {
         formData.append(
           "hasMultipleCorrectAnswers",
           values.hasMultipleCorrectAnswers
+        );
+        formData.append(
+          "requiresNumericalAnswer",
+          values.requiresNumericalAnswer
         );
         if (file) {
           formData.append("file", new Blob([file!]));
@@ -255,6 +261,14 @@ export const PostQuestion: React.FC<PostQuestionProps> = (props) => {
         <InputCheckbox
           name="hasMultipleCorrectAnswers"
           label="This Question has multiple correct answers"
+          formik={formik}
+          checked={false}
+        />
+
+        {/* requiresNumericalAnswer checkbox */}
+        <InputCheckbox
+          name="requiresNumericalAnswer"
+          label="This Question requires a numerical answer"
           formik={formik}
           checked={false}
         />

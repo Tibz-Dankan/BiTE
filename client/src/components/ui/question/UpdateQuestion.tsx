@@ -89,6 +89,7 @@ export const UpdateQuestion: React.FC<UpdateQuestionProps> = (props) => {
     quizID: question.quizID,
     sequenceNumber: question.sequenceNumber,
     hasMultipleCorrectAnswers: question.hasMultipleCorrectAnswers,
+    requiresNumericalAnswer: question.requiresNumericalAnswer,
   };
 
   const formik = useFormik({
@@ -98,6 +99,7 @@ export const UpdateQuestion: React.FC<UpdateQuestionProps> = (props) => {
       introduction: Yup.string().optional(),
       sequenceNumber: Yup.number().required("Question number is required"),
       hasMultipleCorrectAnswers: Yup.boolean().optional(),
+      requiresNumericalAnswer: Yup.boolean().optional(),
     }),
 
     onSubmit: async (values: any, helpers: any) => {
@@ -114,6 +116,7 @@ export const UpdateQuestion: React.FC<UpdateQuestionProps> = (props) => {
           quizID: values.quizID,
           sequenceNumber: values.sequenceNumber,
           hasMultipleCorrectAnswers: values.hasMultipleCorrectAnswers,
+          requiresNumericalAnswer: values.requiresNumericalAnswer,
         });
       } catch (error: any) {
         helpers.setStatus({ success: false });
@@ -169,6 +172,14 @@ export const UpdateQuestion: React.FC<UpdateQuestionProps> = (props) => {
           label="This Question has multiple correct answers"
           formik={formik}
           checked={question.hasMultipleCorrectAnswers}
+        />
+
+        {/* requiresNumericalAnswer checkbox */}
+        <InputCheckbox
+          name="requiresNumericalAnswer"
+          label="This Question requires a numerical answer"
+          formik={formik}
+          checked={question.requiresNumericalAnswer}
         />
 
         <div className="w-full flex items-center justify-center lg:justify-end">
