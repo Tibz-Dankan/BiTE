@@ -67,6 +67,32 @@ func (q *Question) FindAllByQuiz(quizID string, limit float64, cursor string) ([
 	return questions, nil
 }
 
+func (q *Question) FindAllByQuizForAttempt(quizID string, limit float64, questionCursor string) ([]Question, error) {
+	var questions []Question
+	// TODO: To remove the answer for questions that have RequiresNumericalAnswer
+	query := db.Model(&Question{}).
+		Preload("Attachments").
+		Preload("Answers.Attachments").
+		Preload("Answers", func(db *gorm.DB) *gorm.DB {
+			return db.Order("\"sequenceNumber\" ASC")
+		}).
+		Order("\"sequenceNumber\" ASC").
+		Limit(int(limit))
+
+	if questionCursor != "" {
+		var lastQuestion Question
+		if err := db.Select("\"sequenceNumber\"").Where("id = ?",
+			questionCursor).First(&lastQuestion).Error; err != nil {
+			return questions, err
+		}
+		query = query.Where("\"sequenceNumber\" > ?", lastQuestion.SequenceNumber)
+	}
+
+	query.Where("\"quizID\" = ?", quizID).Find(&questions)
+
+	return questions, nil
+}
+
 func (q *Question) FindManyByQuiz(quizID string) ([]Question, error) {
 	var questions []Question
 
