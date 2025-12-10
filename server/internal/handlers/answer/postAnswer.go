@@ -77,6 +77,16 @@ var PostAnswer = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "Question of provided ID doesn't exist!")
 	}
 
+	if question.RequiresNumericalAnswer {
+		savedAnswer, err := answer.FindAllByQuestion(answer.QuestionID, 5, "")
+		if err != nil {
+			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		}
+		if len(savedAnswer) > 0 {
+			return fiber.NewError(fiber.StatusBadRequest, "Question of provided ID only allows one answer option!")
+		}
+	}
+
 	fileHeader, err := c.FormFile("file")
 	if err != nil {
 		if err.Error() == constants.NO_FILE_UPLOADED_ERROR {
