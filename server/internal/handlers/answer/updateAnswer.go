@@ -67,7 +67,7 @@ var UpdateAnswer = func(c *fiber.Ctx) error {
 
 	response := fiber.Map{
 		"status":  "success",
-		"message": "Question updated successfully!",
+		"message": "Answer updated successfully!",
 		"data":    updatedAnswer,
 	}
 
