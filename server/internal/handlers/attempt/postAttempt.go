@@ -1,39 +1,67 @@
 package attempt
 
 import (
+	"encoding/json"
 	"log"
 
 	"github.com/Tibz-Dankan/BiTE/internal/models"
 	"github.com/gofiber/fiber/v2"
 )
 
+type PostAttemptInput struct {
+	UserID       string `json:"userID"`
+	QuestionID   string `json:"questionID"`
+	AnswerIDList string `json:"answerIDList"`
+	AnswerInput  string `json:"answerInput"`
+}
+
+// TODO: To validate quiz startDate and End date
 var PostAttempt = func(c *fiber.Ctx) error {
 	attempt := models.Attempt{}
+	postAttemptInput := PostAttemptInput{}
 	question := models.Question{}
 
-	if err := c.BodyParser(&attempt); err != nil {
+	if err := c.BodyParser(&postAttemptInput); err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
+
+	attempt.UserID = postAttemptInput.UserID
+	attempt.QuestionID = postAttemptInput.QuestionID
+	attempt.AnswerInput = postAttemptInput.AnswerInput
 
 	log.Printf("attempt: %+v", attempt)
 
 	if attempt.UserID == "" ||
 		// attempt.QuizID == "" || // To be reported to fibre core team
-		attempt.QuestionID == "" ||
-		attempt.AnswerID == "" {
+		attempt.QuestionID == "" {
 		return fiber.NewError(fiber.StatusBadRequest,
 			// "Missing UserID/QuizID/QuestionID/AnswerID!")
-			"Missing UserID/QuestionID/AnswerID!")
+			"Missing UserID/QuestionID!")
 	}
 
-	savedAttempt, err := attempt.FindOneByQuestionAnswerAndUser(attempt.QuestionID,
-		attempt.AnswerID, attempt.UserID)
+	var attempts []models.Attempt
+	var answerIDList []string
+
+	if postAttemptInput.AnswerIDList == "" {
+		return fiber.NewError(fiber.StatusBadRequest, "Missing AnswerIDList!")
+	}
+
+	err := json.Unmarshal([]byte(postAttemptInput.AnswerIDList), &answerIDList)
 	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid answerIDList format! Must be a JSON stringified array of strings.")
 	}
 
-	if savedAttempt.ID != "" {
-		return fiber.NewError(fiber.StatusBadRequest, "You have already attempted this question!")
+	if len(answerIDList) > 0 {
+		for _, answerID := range answerIDList {
+			savedAttempt, err := attempt.FindOneByQuestionAnswerAndUser(attempt.QuestionID,
+				answerID, attempt.UserID)
+			if err != nil {
+				return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+			}
+			if savedAttempt.ID != "" {
+				return fiber.NewError(fiber.StatusBadRequest, "You have already attempted this question!")
+			}
+		}
 	}
 
 	savedQuestion, err := question.FindOne(attempt.QuestionID)
@@ -49,17 +77,23 @@ var PostAttempt = func(c *fiber.Ctx) error {
 	}
 	attempt.QuizID = savedQuestion.QuizID
 
-	newAttempt, err := attempt.Create(attempt)
-	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	// Save all answerIDs of the attempt
+	if len(answerIDList) > 0 {
+		for _, answerID := range answerIDList {
+			attempts = append(attempts,
+				models.Attempt{QuizID: attempt.QuizID, QuestionID: attempt.QuestionID,
+					AnswerID: answerID, AnswerInput: attempt.AnswerInput, UserID: attempt.UserID})
+		}
+		attempts, err = attempt.CreateMany(attempts)
+		if err != nil {
+			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		}
 	}
-
-	log.Printf("newAttempt: %+v", newAttempt)
 
 	response := map[string]interface{}{
 		"status":  "success",
 		"message": "Attempt created successfully!",
-		"data":    newAttempt,
+		"data":    attempts,
 	}
 
 	return c.Status(fiber.StatusOK).JSON(response)
