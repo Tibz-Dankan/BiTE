@@ -60,6 +60,10 @@ var UpdateQuestion = func(c *fiber.Ctx) error {
 		savedQuestion.IsDeltaDefault = true
 	}
 
+	if updateQuestionInput.RequiresNumericalAnswer {
+		savedQuestion.HasMultipleCorrectAnswers = false
+	}
+
 	updatedQuestion, err := savedQuestion.Update()
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
