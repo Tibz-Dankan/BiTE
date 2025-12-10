@@ -19,6 +19,13 @@ func (a *Attempt) Create(attempt Attempt) (Attempt, error) {
 	return attempt, nil
 }
 
+func (a *Attempt) CreateMany(attempts []Attempt) ([]Attempt, error) {
+	if err := db.Create(&attempts).Error; err != nil {
+		return attempts, err
+	}
+	return attempts, nil
+}
+
 func (a *Attempt) FindOne(id string) (Attempt, error) {
 	var attempt Attempt
 

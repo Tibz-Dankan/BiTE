@@ -1,12 +1,21 @@
 package quiz
 
 import (
+	"log"
+
 	"github.com/Tibz-Dankan/BiTE/internal/constants"
 	"github.com/Tibz-Dankan/BiTE/internal/models"
 	"github.com/Tibz-Dankan/BiTE/internal/pkg"
 	"github.com/gofiber/fiber/v2"
 )
 
+// TODO: add quiz attempt progress for each user
+// TODO: To validate quiz startDate and End date
+// TODO: To remove the answer for questions that have RequiresNumericalAnswer
+// Details
+// For the Quiz's Question that has RequiresNumericalAnswer Field to true,
+//
+//	The answer(s) of that particular question should'nt an empty title value
 var GetQuizDataForAttempt = func(c *fiber.Ctx) error {
 	quiz := models.Quiz{}
 	question := models.Question{}
@@ -38,6 +47,8 @@ var GetQuizDataForAttempt = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "Quiz is not attemptable!")
 	}
 
+	log.Println("BEFORE questionCursor: ", questionCursor)
+
 	if questionCursor == "" {
 		lastAttempt, err := attempt.FindLastAttemptByQuizAndUser(quizID, userID)
 		if err != nil && err.Error() != constants.RECORD_NOT_FOUND_ERROR {
@@ -49,6 +60,8 @@ var GetQuizDataForAttempt = func(c *fiber.Ctx) error {
 			questionCursor = ""
 		}
 	}
+
+	log.Println("AFTER questionCursor: ", questionCursor)
 
 	questions, err := question.FindAllByQuizForAttempt(quizID, limit+1, questionCursor)
 	if err != nil {
