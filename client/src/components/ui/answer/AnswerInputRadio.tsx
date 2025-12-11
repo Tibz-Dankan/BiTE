@@ -1,37 +1,25 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import { AlertCircle } from "lucide-react";
-import { RadioGroup, RadioGroupItem } from "./radio-group";
 import type { TInputRadioOption } from "../../../types/input";
+import { RadioGroup, RadioGroupItem } from "../shared/radio-group";
 
-interface InputRadioProps extends React.HTMLAttributes<HTMLInputElement> {
-  formik?: any;
+interface AnswerInputRadioProps extends React.HTMLAttributes<HTMLInputElement> {
+  formik: any;
   name: string;
-  checked?: boolean;
   options: TInputRadioOption[];
-  onCheckedChange?: (checked: boolean, value?: string) => void;
 }
 
-// TODO: to be implemented properly
-export const InputRadio: React.FC<InputRadioProps> = (props) => {
+export const AnswerInputRadio: React.FC<AnswerInputRadioProps> = (props) => {
   const formik = props.formik;
   const name = props.name;
-  const isChecked = props.checked !== undefined ? props.checked : false;
-  const [checked, setChecked] = useState<boolean>(isChecked);
-
   const options = props.options;
 
   const hasError = formik.errors[`${name}`] && formik.touched[`${name}`];
 
   const onCheckedChangeHandler = (value: string) => {
-    console.log("selected option: ", value);
-    const isCurrentlyChecked = formik.values[`${name}`] === value;
-    setChecked(() => !isCurrentlyChecked);
-
-    if (props.onCheckedChange !== undefined) {
-      props.onCheckedChange(checked, value);
-      return;
-    }
-    formik.values[`${name}`] = value;
+    const answerIDList = [];
+    answerIDList.push(value);
+    formik.setFieldValue(name, answerIDList);
   };
 
   return (
@@ -39,18 +27,20 @@ export const InputRadio: React.FC<InputRadioProps> = (props) => {
       <RadioGroup>
         <div
           className="relative pb-5 flex flex-col items-start
-        justify-center gap-1 w-full mb-1"
+          justify-center gap-1 w-full mb-1"
         >
           {options.map((option) => (
-            <div className="w-full flex items-center justify-start gap-2 relative">
+            <div
+              key={option.name}
+              className="w-full flex items-center justify-start gap-2 relative"
+            >
               <RadioGroupItem
-                id={`${name}`}
+                id={option.name}
                 value={option.value}
                 className="border-(--primary) text-(--primary)
                   data-[state=checked]:border-(--primary)
                   data-[state=checked]:bg-(--primary) 
                   cursor-pointer"
-                checked={checked}
                 onClick={() => onCheckedChangeHandler(option.value)}
               />
               {option.label && (
@@ -65,8 +55,8 @@ export const InputRadio: React.FC<InputRadioProps> = (props) => {
           ))}
           {hasError && (
             <p
-              className="absolute bottom-0 left-0 text-sms text-red-500
-             first-letter:uppercase text-[12px] flex gap-1"
+              className="absolute -bottom-6 left-0 text-sms text-red-500
+              first-letter:uppercase text-[12px] flex gap-1"
             >
               <AlertCircle className="text-inherit w-4 h-4" />
               <span className="first-letter:uppercase">
