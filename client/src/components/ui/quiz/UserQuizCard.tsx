@@ -11,12 +11,14 @@ import {
   StopCircle,
 } from "lucide-react";
 import { getQuizStatus } from "../../../utils/getQuizStatus";
+import { useNavigate } from "react-router-dom";
 
 interface UserQuizCardProps {
   quiz: TQuiz;
 }
 
 export const UserQuizCard: React.FC<UserQuizCardProps> = ({ quiz }) => {
+  const navigate = useNavigate();
   const placeHolderQuizCategory = {
     id: "b4149d00-6fe3-4f6f-b72e-eaca0e69ajdI",
     name: "Un Categorized",
@@ -67,6 +69,10 @@ export const UserQuizCard: React.FC<UserQuizCardProps> = ({ quiz }) => {
   };
 
   const bgColor = getQuizCategoryColor(quiz);
+
+  const navigateToQuizAttempt = (quiz: TQuiz) => {
+    navigate(`/u/quizzes/${quiz.id}/attempt`);
+  };
 
   return (
     <div
@@ -184,6 +190,8 @@ export const UserQuizCard: React.FC<UserQuizCardProps> = ({ quiz }) => {
                : "text-slate-500 cursor-not-allowed"
            }`}
           style={{ backgroundColor: quiz.canBeAttempted ? bgColor : "#e2e8f0" }}
+          onClick={() => navigateToQuizAttempt(quiz)}
+          disabled={!quiz.canBeAttempted}
         >
           {quiz.canBeAttempted ? "Start Quiz" : "Coming Soon"}
           {quiz.canBeAttempted && (

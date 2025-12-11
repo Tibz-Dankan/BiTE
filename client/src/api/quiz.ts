@@ -123,6 +123,32 @@ class QuizAPI {
     return await response.json();
   };
 
+  getQuizDataForAttempt = async ({
+    quizID,
+    limit,
+    questionCursor,
+  }: {
+    quizID: string;
+    limit: number;
+    questionCursor: string;
+  }) => {
+    const response = await fetch(
+      `${SERVER_URL}/quiz/attempt/${quizID}?limit=${limit}&questionCursor=${questionCursor}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
   search = async ({ query }: { query: string }) => {
     const response = await fetch(`${SERVER_URL}/quiz/search?query=${query}`, {
       method: "GET",

@@ -7,12 +7,16 @@ interface InputCheckboxProps extends React.HTMLAttributes<HTMLInputElement> {
   name: string;
   label?: ReactNode;
   checked?: boolean;
+  value?: string;
+  onCheckedChange?: (checked: boolean, value?: string) => void;
 }
 
 export const InputCheckbox: React.FC<InputCheckboxProps> = (props) => {
   const formik = props.formik;
   const name = props.name;
   const label = props.label ? props.label : "";
+  const hasValueProvided = props.value !== undefined;
+  const value = hasValueProvided ? props.value : "";
   const isChecked = props.checked !== undefined ? props.checked : false;
   const [checked, setChecked] = useState<boolean>(isChecked);
 
@@ -20,6 +24,12 @@ export const InputCheckbox: React.FC<InputCheckboxProps> = (props) => {
 
   const onCheckedChangeHandler = (checked: boolean) => {
     setChecked(() => checked);
+
+    if (value && props.onCheckedChange !== undefined) {
+      props.onCheckedChange(checked, value);
+      return;
+    }
+
     formik.values[`${name}`] = checked;
   };
 

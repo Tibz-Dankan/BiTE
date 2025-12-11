@@ -7,6 +7,7 @@ import { renderRoutes } from "./renderRoutes";
 import { DashboardLayout } from "../components/layout/Dashboard";
 import { PageNotFound } from "../components/pages/common/PageNotFound";
 import { UserQuizView } from "../components/pages/quiz/UserQuizView";
+import { UserQuizAttempt } from "../components/pages/quiz/UserQuizAttempt";
 
 export const UserRoutes: React.FC = () => {
   const routes: TRoute = {
@@ -25,6 +26,13 @@ export const UserRoutes: React.FC = () => {
         path: "/u/quizzes",
         showInSidebar: true,
         element: <UserQuizView />,
+      },
+      {
+        title: "Quiz Attempt",
+        icon: <FileQuestion className="h-4 w-4" />,
+        path: "/u/quizzes/:quizID/attempt",
+        showInSidebar: false,
+        element: <UserQuizAttempt />,
       },
       {
         title: "Settings",
