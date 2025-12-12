@@ -69,7 +69,7 @@ func (q *Question) FindAllByQuiz(quizID string, limit float64, cursor string) ([
 
 func (q *Question) FindAllByQuizForAttempt(quizID string, limit float64, questionCursor string) ([]Question, error) {
 	var questions []Question
-	// TODO: To remove the answer for questions that have RequiresNumericalAnswer
+
 	query := db.Model(&Question{}).
 		Preload("Attachments").
 		Preload("Answers.Attachments").
@@ -89,6 +89,17 @@ func (q *Question) FindAllByQuizForAttempt(quizID string, limit float64, questio
 	}
 
 	query.Where("\"quizID\" = ?", quizID).Find(&questions)
+
+	// Process questions to hide correct answer information
+	for i := range questions {
+		for j := range questions[i].Answers {
+			questions[i].Answers[j].IsCorrect = false
+
+			if questions[i].RequiresNumericalAnswer {
+				questions[i].Answers[j].Title = ""
+			}
+		}
+	}
 
 	return questions, nil
 }
