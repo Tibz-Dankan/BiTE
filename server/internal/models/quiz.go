@@ -97,7 +97,7 @@ func (q *Quiz) FindAllWithDetails(limit float64, cursor string, quizCategoryID s
 
 		// Count attempts for this quiz
 		var attemptCount int64
-		db.Model(&Attempt{}).Where("\"quizID\" = ?", quiz.ID).Count(&attemptCount)
+		db.Model(&Attempt{}).Where("\"quizID\" = ?", quiz.ID).Distinct("\"userID\"").Count(&attemptCount)
 
 		quizData := map[string]interface{}{
 			"id":                quiz.ID,
