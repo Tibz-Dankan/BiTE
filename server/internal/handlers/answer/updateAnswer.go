@@ -16,6 +16,7 @@ type UpdateAnswerInput struct {
 }
 
 var UpdateAnswer = func(c *fiber.Ctx) error {
+	question := models.Question{}
 	answer := models.Answer{}
 	attachment := models.Attachment{}
 	updateQuestionInput := UpdateAnswerInput{}
@@ -49,6 +50,29 @@ var UpdateAnswer = func(c *fiber.Ctx) error {
 
 	if !savedAnswer.IsDeltaDefault {
 		savedAnswer.IsDeltaDefault = true
+	}
+
+	if !question.HasMultipleCorrectAnswers {
+		savedQtnAnswers, err := answer.FindAllByQuestion(savedAnswer.QuestionID, 12, "")
+		if err != nil {
+			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		}
+		filteredAnswers := []models.Answer{}
+		for _, savedQtnAnswer := range savedQtnAnswers {
+			if savedQtnAnswer.ID != answerID {
+				filteredAnswers = append(filteredAnswers, savedQtnAnswer)
+			}
+		}
+
+		for _, savedQtnAnswer := range filteredAnswers {
+			if savedQtnAnswer.IsCorrect && savedAnswer.IsCorrect {
+				savedQtnAnswer.IsCorrect = false
+				_, err := savedQtnAnswer.Update()
+				if err != nil {
+					return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+				}
+			}
+		}
 	}
 
 	updatedAnswer, err := savedAnswer.Update()
