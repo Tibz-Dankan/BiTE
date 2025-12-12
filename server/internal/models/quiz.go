@@ -130,6 +130,25 @@ func (q *Quiz) FindAllWithDetails(limit float64, cursor string, quizCategoryID s
 	return result, nil
 }
 
+func (q *Quiz) FindOneWithQuestionsAndAnswers(quizID string) (Quiz, error) {
+	var quiz Quiz
+
+	query := db.Model(&Quiz{}).
+		Preload("Attachments").
+		Preload("Questions", func(db *gorm.DB) *gorm.DB {
+			return db.Order("\"questions\".\"createdAt\" ASC")
+		}).
+		Preload("Questions.Answers", func(db *gorm.DB) *gorm.DB {
+			return db.Order("\"answers\".\"createdAt\" ASC")
+		})
+
+	if err := query.Where("id = ?", quizID).First(&quiz).Error; err != nil {
+		return quiz, err
+	}
+
+	return quiz, nil
+}
+
 func (q *Quiz) Search(query string) ([]Quiz, int, error) {
 	var Quizzes []Quiz
 	var quizCount int
