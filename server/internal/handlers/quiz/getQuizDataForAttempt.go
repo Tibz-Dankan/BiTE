@@ -1,13 +1,14 @@
 package quiz
 
 import (
+	"time"
+
 	"github.com/Tibz-Dankan/BiTE/internal/constants"
 	"github.com/Tibz-Dankan/BiTE/internal/models"
 	"github.com/Tibz-Dankan/BiTE/internal/pkg"
 	"github.com/gofiber/fiber/v2"
 )
 
-// TODO: To validate quiz startDate and End date
 // TODO: To remove the answer for questions that have RequiresNumericalAnswer
 // Details
 // For the Quiz's Question that has RequiresNumericalAnswer Field to true,
@@ -42,6 +43,15 @@ var GetQuizDataForAttempt = func(c *fiber.Ctx) error {
 
 	if !savedQuiz.CanBeAttempted {
 		return fiber.NewError(fiber.StatusBadRequest, "Quiz is not attemptable!")
+	}
+
+	now := time.Now()
+	if savedQuiz.EndsAt.Before(now) {
+		return fiber.NewError(fiber.StatusBadRequest, "Quiz has ended!")
+	}
+
+	if savedQuiz.StartsAt.After(now) {
+		return fiber.NewError(fiber.StatusBadRequest, "Quiz has not started yet!")
 	}
 
 	if questionCursor == "" {
