@@ -8,6 +8,7 @@ import { UserRoutes } from "./routes/userRoutes";
 import { AdminRoutes } from "./routes/adminRoutes";
 import { Home } from "./components/ui/shared/Home";
 import { useGlobalRequestInterceptor } from "./hooks/use-global-request-interceptor";
+import { PageCapturer } from "./components/ui/shared/PageCapturer";
 
 export const App: React.FC = () => {
   const auth = useAuthStore((state) => state.auth);
@@ -21,6 +22,7 @@ export const App: React.FC = () => {
     <div className="bg-(--clr-background)  min-h-screen overflow-x-hidden">
       <BrowserRouter>
         <NotificationInitializer />
+        <PageCapturer />
         {!isLoggedIn && (
           <Fragment>
             <Routes>
