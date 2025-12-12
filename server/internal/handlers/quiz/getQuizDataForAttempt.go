@@ -1,15 +1,12 @@
 package quiz
 
 import (
-	"log"
-
 	"github.com/Tibz-Dankan/BiTE/internal/constants"
 	"github.com/Tibz-Dankan/BiTE/internal/models"
 	"github.com/Tibz-Dankan/BiTE/internal/pkg"
 	"github.com/gofiber/fiber/v2"
 )
 
-// TODO: add quiz attempt progress for each user
 // TODO: To validate quiz startDate and End date
 // TODO: To remove the answer for questions that have RequiresNumericalAnswer
 // Details
@@ -47,8 +44,6 @@ var GetQuizDataForAttempt = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "Quiz is not attemptable!")
 	}
 
-	log.Println("BEFORE questionCursor: ", questionCursor)
-
 	if questionCursor == "" {
 		lastAttempt, err := attempt.FindLastAttemptByQuizAndUser(quizID, userID)
 		if err != nil && err.Error() != constants.RECORD_NOT_FOUND_ERROR {
@@ -60,8 +55,6 @@ var GetQuizDataForAttempt = func(c *fiber.Ctx) error {
 			questionCursor = ""
 		}
 	}
-
-	log.Println("AFTER questionCursor: ", questionCursor)
 
 	questions, err := question.FindAllByQuizForAttempt(quizID, limit+1, questionCursor)
 	if err != nil {
@@ -88,11 +81,23 @@ var GetQuizDataForAttempt = func(c *fiber.Ctx) error {
 		savedQuiz.Questions = append(savedQuiz.Questions, &question)
 	}
 
+	totalQuestions, totalAttemptedQuestions, status, err := attempt.FindProgressByQuizAndUser(quizID, userID)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	progress := map[string]interface{}{
+		"totalQuestions":          totalQuestions,
+		"totalAttemptedQuestions": totalAttemptedQuestions,
+		"status":                  status,
+	}
+
 	response := fiber.Map{
 		"status":     "success",
 		"message":    "Quiz fetched successfully!",
 		"data":       savedQuiz,
 		"pagination": pagination,
+		"progress":   progress,
 	}
 
 	return c.Status(fiber.StatusOK).JSON(response)
