@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/Tibz-Dankan/BiTE/internal/constants"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
@@ -56,6 +57,32 @@ func (a *Attempt) FindLastAttemptByQuizAndUser(quizID string, userID string) (At
 	return attempt, nil
 }
 
+// FindProgressByQuizAndUser returns the progress of a user's attempt for a specific quiz.
+// Returns total questions, total attempts, and status
+func (a *Attempt) FindProgressByQuizAndUser(quizID string, userID string) (int64, int64, string, error) {
+	var totalQuestions, totalAttemptedQuestions int64
+	var status string
+
+	if err := db.Model(&Question{}).Where("\"quizID\" = ?", quizID).
+		Count(&totalQuestions).Error; err != nil && err.Error() != constants.RECORD_NOT_FOUND_ERROR {
+		return totalQuestions, totalAttemptedQuestions, status, err
+	}
+
+	if err := db.Model(&Attempt{}).Where("\"quizID\" = ? AND \"userID\" = ?",
+		quizID, userID).Distinct("\"questionID\"").Count(&totalAttemptedQuestions).Error; err != nil && err.Error() != constants.RECORD_NOT_FOUND_ERROR {
+		return totalQuestions, totalAttemptedQuestions, status, err
+	}
+
+	if totalAttemptedQuestions == totalQuestions {
+		status = "COMPLETED"
+	} else {
+		status = "IN_PROGRESS"
+	}
+
+	return totalQuestions, totalAttemptedQuestions, status, nil
+}
+
+// Update updates an attempt
 func (a *Attempt) Update() (Attempt, error) {
 	db.Save(&a)
 
