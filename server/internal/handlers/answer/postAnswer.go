@@ -78,12 +78,24 @@ var PostAnswer = func(c *fiber.Ctx) error {
 	}
 
 	if question.RequiresNumericalAnswer {
-		savedAnswer, err := answer.FindAllByQuestion(answer.QuestionID, 5, "")
+		savedQtnAnswers, err := answer.FindAllByQuestion(answer.QuestionID, 5, "")
 		if err != nil {
 			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 		}
-		if len(savedAnswer) > 0 {
+		if len(savedQtnAnswers) > 0 {
 			return fiber.NewError(fiber.StatusBadRequest, "Question of provided ID only allows one answer option!")
+		}
+	}
+
+	if !question.HasMultipleCorrectAnswers {
+		savedQtnAnswers, err := answer.FindAllByQuestion(answer.QuestionID, 12, "")
+		if err != nil {
+			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		}
+		for _, savedQtnAnswer := range savedQtnAnswers {
+			if savedQtnAnswer.IsCorrect && answer.IsCorrect {
+				return fiber.NewError(fiber.StatusBadRequest, "Question of provided ID already has a correct answer option!")
+			}
 		}
 	}
 
