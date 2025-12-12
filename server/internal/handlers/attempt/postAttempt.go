@@ -15,7 +15,6 @@ type PostAttemptInput struct {
 	AnswerInput  string `json:"answerInput"`
 }
 
-// TODO: To validate quiz startDate and End date
 var PostAttempt = func(c *fiber.Ctx) error {
 	attempt := models.Attempt{}
 	postAttemptInput := PostAttemptInput{}

@@ -9,11 +9,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// TODO: To remove the answer for questions that have RequiresNumericalAnswer
-// Details
-// For the Quiz's Question that has RequiresNumericalAnswer Field to true,
-//
-//	The answer(s) of that particular question should'nt an empty title value
 var GetQuizDataForAttempt = func(c *fiber.Ctx) error {
 	quiz := models.Quiz{}
 	question := models.Question{}
