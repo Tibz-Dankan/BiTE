@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { SERVER_URL } from "../constants/urls";
 import { useAuthStore } from "../stores/auth";
+import { getDeviceInfo } from "../utils/getDeviceInfo";
 
 export const useGlobalRequestInterceptor = () => {
   const auth = useAuthStore((state) => state.auth);
@@ -16,12 +17,12 @@ export const useGlobalRequestInterceptor = () => {
           return await originalFetch(...args);
         }
 
-        console.log("auth.accessToken :", auth.accessToken);
-
         const headers: any = args[1]?.headers;
         if (!headers.Authorization) {
           headers.Authorization = `Bearer ${auth.accessToken}`;
         }
+
+        headers["X-Device"] = getDeviceInfo();
 
         args[1]!["headers"] = headers;
 
