@@ -107,3 +107,47 @@ func (a *Answer) DeleteByQuestion(questionID string) error {
 
 	return nil
 }
+
+// AutoCorrectSequenceNumbers reorders all answers for a question to have consecutive sequence numbers
+// Example: 1, 2, 3, 5, 6, 7 becomes 1, 2, 3, 4, 5, 6
+func (a *Answer) AutoCorrectSequenceNumbers(questionID string) error {
+	var answers []Answer
+
+	// Fetch all answers for the question ordered by current sequence number
+	if err := db.Model(&Answer{}).
+		Where("\"questionID\" = ?", questionID).
+		Order("\"sequenceNumber\" ASC").
+		Find(&answers).Error; err != nil {
+		return err
+	}
+
+	// Renumber answers starting from 1
+	for i, answer := range answers {
+		newSequenceNumber := int64(i + 1)
+		if answer.SequenceNumber != newSequenceNumber {
+			if err := db.Model(&Answer{}).
+				Where("id = ?", answer.ID).
+				Update("\"sequenceNumber\"", newSequenceNumber).Error; err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
+}
+
+// GetNextSequenceNumber returns the next available sequence number for a new answer in the given question
+func (a *Answer) GetNextSequenceNumber(questionID string) (int64, error) {
+	var maxSequenceNumber int64
+
+	err := db.Model(&Answer{}).
+		Where("\"questionID\" = ?", questionID).
+		Select("COALESCE(MAX(\"sequenceNumber\"), 0)").
+		Scan(&maxSequenceNumber).Error
+
+	if err != nil {
+		return 0, err
+	}
+
+	return maxSequenceNumber + 1, nil
+}
