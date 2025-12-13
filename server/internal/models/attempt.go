@@ -82,6 +82,33 @@ func (a *Attempt) FindProgressByQuizAndUser(quizID string, userID string) (int64
 	return totalQuestions, totalAttemptedQuestions, status, nil
 }
 
+// FindAllByUserAndQuestion returns all attempts for a specific user and question
+func (a *Attempt) FindAllByUserAndQuestion(userID string, questionID string) ([]Attempt, error) {
+	var attempts []Attempt
+
+	if err := db.Model(&Attempt{}).
+		Where("\"userID\" = ? AND \"questionID\" = ?", userID, questionID).
+		Find(&attempts).Error; err != nil {
+		return attempts, err
+	}
+
+	return attempts, nil
+}
+
+// CountDistinctQuestionsByUser counts unique questionIDs for a user (for TotalAttempts calculation)
+func (a *Attempt) CountDistinctQuestionsByUser(userID string) (int64, error) {
+	var count int64
+
+	if err := db.Model(&Attempt{}).
+		Where("\"userID\" = ?", userID).
+		Distinct("\"questionID\"").
+		Count(&count).Error; err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}
+
 // Update updates an attempt
 func (a *Attempt) Update() (Attempt, error) {
 	db.Save(&a)

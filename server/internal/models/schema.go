@@ -133,11 +133,12 @@ type Question struct {
 	UpdatedAt                 time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
 
 	// Relationships
-	PostedByUser *User         `gorm:"foreignKey:PostedByUserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"postedByUser,omitempty"`
-	Quiz         *Quiz         `gorm:"foreignKey:QuizID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"quiz,omitempty"`
-	Answers      []*Answer     `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"answers"`
-	Attachments  []*Attachment `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attachments"`
-	Attempts     []*Attempt    `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attempts,omitempty"`
+	PostedByUser    *User            `gorm:"foreignKey:PostedByUserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"postedByUser,omitempty"`
+	Quiz            *Quiz            `gorm:"foreignKey:QuizID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"quiz,omitempty"`
+	Answers         []*Answer        `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"answers"`
+	Attachments     []*Attachment    `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attachments"`
+	Attempts        []*Attempt       `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attempts,omitempty"`
+	AttemptStatuses []*AttemptStatus `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attemptStatuses,omitempty"`
 }
 
 type Answer struct {
@@ -171,10 +172,26 @@ type Attempt struct {
 	UpdatedAt   time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
 
 	// Relationships
+	User          *User          `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"user,omitempty"`
+	Quiz          *Quiz          `gorm:"foreignKey:QuizID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"quiz,omitempty"`
+	Question      *Question      `gorm:"foreignKey:QuestionID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"question,omitempty"`
+	Answer        *Answer        `gorm:"foreignKey:AnswerID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"answer,omitempty"`
+	AttemptStatus *AttemptStatus `gorm:"foreignKey:AttemptID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attemptStatus,omitempty"`
+}
+
+type AttemptStatus struct {
+	ID         string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
+	UserID     string    `gorm:"column:userID;not null;index" json:"userID"`
+	AttemptID  string    `gorm:"column:attemptID;not null;index" json:"attemptID"`
+	QuestionID string    `gorm:"column:questionID;not null;index" json:"questionID"`
+	IsCorrect  bool      `gorm:"column:IsCorrect;not null;default:false;index" json:"IsCorrect"`
+	CreatedAt  time.Time `gorm:"column:createdAt;index" json:"createdAt"`
+	UpdatedAt  time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
+
+	// Relationships
 	User     *User     `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"user,omitempty"`
-	Quiz     *Quiz     `gorm:"foreignKey:QuizID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"quiz,omitempty"`
+	Attempt  *Attempt  `gorm:"foreignKey:AttemptID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attempt,omitempty"`
 	Question *Question `gorm:"foreignKey:QuestionID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"question,omitempty"`
-	Answer   *Answer   `gorm:"foreignKey:AnswerID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"answer,omitempty"`
 }
 
 type AttemptDuration struct {
@@ -188,6 +205,20 @@ type AttemptDuration struct {
 	// Relationships
 	User *User `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"user,omitempty"`
 	Quiz *Quiz `gorm:"foreignKey:QuizID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"quiz,omitempty"`
+}
+
+type Ranking struct {
+	ID                   string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
+	UserID               string    `gorm:"column:userID;not null;index" json:"userID"`
+	TotalDuration        int64     `gorm:"column:totalDuration;not null;index" json:"totalDuration"` // Duration in seconds
+	TotalAttempts        int64     `gorm:"column:totalAttempts;not null;index" json:"totalAttempts"`
+	TotalCorrectAttempts int64     `gorm:"column:totalCorrectAttempts;not null;index" json:"totalCorrectAttempts"`
+	Rank                 int64     `gorm:"column:rank;not null;index" json:"rank"`
+	CreatedAt            time.Time `gorm:"column:createdAt;index" json:"createdAt"`
+	UpdatedAt            time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
+
+	// Relationships
+	User *User `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"user,omitempty"`
 }
 
 type SiteVisit struct {

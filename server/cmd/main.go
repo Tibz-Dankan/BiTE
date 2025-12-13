@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/Tibz-Dankan/BiTE/internal/events/subscribers"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/answer"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/attempt"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/attemptduration"
@@ -150,6 +151,9 @@ func main() {
 		message := fmt.Sprintf("api route '%s' doesn't exist!", c.Path())
 		return fiber.NewError(fiber.StatusNotFound, message)
 	})
+
+	// Initialize event subscribers
+	subscribers.InitEventSubscribers()
 
 	log.Fatal(app.Listen("0.0.0.0:5000"))
 }
