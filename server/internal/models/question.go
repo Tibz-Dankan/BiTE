@@ -104,6 +104,35 @@ func (q *Question) FindAllByQuizForAttempt(quizID string, limit float64, questio
 	return questions, nil
 }
 
+// FindAllByQuizForAttemptedData returns questions with user-specific attempt data
+func (q *Question) FindAllByQuizForAttemptedData(quizID string, userID string, limit float64, questionCursor string) ([]Question, error) {
+	var questions []Question
+
+	query := db.Model(&Question{}).
+		Preload("Attachments").
+		Preload("Answers.Attachments").
+		Preload("Answers", func(db *gorm.DB) *gorm.DB {
+			return db.Order("\"sequenceNumber\" ASC")
+		}).
+		Preload("Attempts", "\"userID\" = ?", userID).
+		Preload("AttemptStatuses", "\"userID\" = ?", userID).
+		Order("\"sequenceNumber\" ASC").
+		Limit(int(limit))
+
+	if questionCursor != "" {
+		var lastQuestion Question
+		if err := db.Select("\"sequenceNumber\"").Where("id = ?",
+			questionCursor).First(&lastQuestion).Error; err != nil {
+			return questions, err
+		}
+		query = query.Where("\"sequenceNumber\" > ?", lastQuestion.SequenceNumber)
+	}
+
+	query.Where("\"quizID\" = ?", quizID).Find(&questions)
+
+	return questions, nil
+}
+
 func (q *Question) FindManyByQuiz(quizID string) ([]Question, error) {
 	var questions []Question
 

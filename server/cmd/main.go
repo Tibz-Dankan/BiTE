@@ -93,6 +93,7 @@ func main() {
 	quizGroup.Get("/", middlewares.Auth, quiz.GetAllQuizzes)
 	// quizGroup.Get("/data-for-attempt/:id", middlewares.Auth, quiz.GetQuizDataForAttempt)
 	quizGroup.Get("/attempt/:id", middlewares.Auth, quiz.GetQuizDataForAttempt)
+	quizGroup.Get("/attempted-data/:id", middlewares.Auth, quiz.GetQuizAttemptedData)
 	quizGroup.Get("/analytics/summary", middlewares.Auth, middlewares.IsAdmin, quiz.GetQuizAnalytics)
 
 	// Question
