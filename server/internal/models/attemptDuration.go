@@ -43,6 +43,20 @@ func (a *AttemptDuration) Update() (AttemptDuration, error) {
 	return *a, nil
 }
 
+// GetTotalDurationByUser sums all durations for a user
+func (a *AttemptDuration) GetTotalDurationByUser(userID string) (int64, error) {
+	var totalDuration int64
+
+	if err := db.Model(&AttemptDuration{}).
+		Where("\"userID\" = ?", userID).
+		Select("COALESCE(SUM(\"duration\"), 0)").
+		Scan(&totalDuration).Error; err != nil {
+		return 0, err
+	}
+
+	return totalDuration, nil
+}
+
 func (a *AttemptDuration) Delete(id string) error {
 
 	if err := db.Unscoped().Where("id = ?", id).Delete(&AttemptDuration{}).Error; err != nil {

@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"log"
 
+	"github.com/Tibz-Dankan/BiTE/internal/events"
 	"github.com/Tibz-Dankan/BiTE/internal/models"
+	"github.com/Tibz-Dankan/BiTE/internal/types"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -88,6 +90,13 @@ var PostAttempt = func(c *fiber.Ctx) error {
 			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 		}
 	}
+
+	// Publish an event to create attempt status
+	eventData := types.AttemptStatusEventData{
+		UserID:     attempt.UserID,
+		QuestionID: attempt.QuestionID,
+	}
+	events.EB.Publish("CREATE_ATTEMPT_STATUS", eventData)
 
 	response := map[string]interface{}{
 		"status":  "success",
