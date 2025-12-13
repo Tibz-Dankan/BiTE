@@ -109,6 +109,20 @@ func (a *Attempt) CountDistinctQuestionsByUser(userID string) (int64, error) {
 	return count, nil
 }
 
+// FindUniqueAttemptsByUser returns a list of attempts with unique QuestionIDs for a specific user
+func (a *Attempt) FindUniqueAttemptsByUser(userID string) ([]Attempt, error) {
+	var attempts []Attempt
+
+	if err := db.Model(&Attempt{}).
+		Where("\"userID\" = ?", userID).
+		Distinct("\"questionID\"").
+		Find(&attempts).Error; err != nil {
+		return attempts, err
+	}
+
+	return attempts, nil
+}
+
 // Update updates an attempt
 func (a *Attempt) Update() (Attempt, error) {
 	db.Save(&a)
