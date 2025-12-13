@@ -181,3 +181,47 @@ func (q *Question) DeleteByQuiz(quizID string) error {
 
 	return nil
 }
+
+// AutoCorrectSequenceNumbers reorders all questions for a quiz to have consecutive sequence numbers
+// Example: 1, 2, 3, 5, 6, 7 becomes 1, 2, 3, 4, 5, 6
+func (q *Question) AutoCorrectSequenceNumbers(quizID string) error {
+	var questions []Question
+
+	// Fetch all questions for the quiz ordered by current sequence number
+	if err := db.Model(&Question{}).
+		Where("\"quizID\" = ?", quizID).
+		Order("\"sequenceNumber\" ASC").
+		Find(&questions).Error; err != nil {
+		return err
+	}
+
+	// Renumber questions starting from 1
+	for i, question := range questions {
+		newSequenceNumber := int64(i + 1)
+		if question.SequenceNumber != newSequenceNumber {
+			if err := db.Model(&Question{}).
+				Where("id = ?", question.ID).
+				Update("\"sequenceNumber\"", newSequenceNumber).Error; err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
+}
+
+// GetNextSequenceNumber returns the next available sequence number for a new question in the given quiz
+func (q *Question) GetNextSequenceNumber(quizID string) (int64, error) {
+	var maxSequenceNumber int64
+
+	err := db.Model(&Question{}).
+		Where("\"quizID\" = ?", quizID).
+		Select("COALESCE(MAX(\"sequenceNumber\"), 0)").
+		Scan(&maxSequenceNumber).Error
+
+	if err != nil {
+		return 0, err
+	}
+
+	return maxSequenceNumber + 1, nil
+}
