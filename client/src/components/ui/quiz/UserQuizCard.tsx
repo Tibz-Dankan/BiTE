@@ -71,11 +71,13 @@ export const UserQuizCard: React.FC<UserQuizCardProps> = ({ quiz }) => {
   const bgColor = getQuizCategoryColor(quiz);
 
   const navigateToQuizAttempt = (quiz: TQuiz) => {
+    console.log("inside navigation to attempt quiz: ", quiz);
     navigate(`/u/quizzes/${quiz.id}/attempt`);
   };
 
-  const disableBtn =
-    !quiz.canBeAttempted || quiz.userProgress?.status !== "COMPLETED";
+  // const disableBtn =
+  //   !quiz.canBeAttempted || quiz.userProgress?.status !== "COMPLETED";
+  const disableBtn = !quiz.canBeAttempted || quiz.questions === null;
 
   return (
     <div

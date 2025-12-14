@@ -21,12 +21,14 @@ interface UserAnswerCardProps {
   question: TQuestion;
   quizID: string;
   pagination: TQuizAttemptData["pagination"];
+  onQuizCompleted?: (completed: boolean) => void;
 }
 
 export const UserAnswerCard: React.FC<UserAnswerCardProps> = ({
   question,
   quizID,
   pagination,
+  onQuizCompleted,
 }) => {
   const navigate = useNavigate();
   const auth = useAuthStore((state) => state.auth);
@@ -57,6 +59,8 @@ export const UserAnswerCard: React.FC<UserAnswerCardProps> = ({
         navigate(`/u/quizzes/${quizID}/attempt?limit=1&cursor=${nextCursor}`, {
           replace: true,
         });
+      } else {
+        onQuizCompleted?.(true);
       }
     },
     onError: (error: any) => {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import type { TQuestion } from "../../../types/question";
 import type { TQuizAttemptData } from "../../../types/attempt";
 import { truncateString } from "../../../utils/truncateString";
@@ -7,6 +7,7 @@ import { QuillViewer } from "../shared/QuillViewer";
 import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
 import { isJSON } from "../../../utils/isJson";
 import { UserAnswerCard } from "../answer/UserAnswerCard";
+import { QuizCompletionCard } from "../quiz/QuizCompletionCard";
 
 interface UserQuestionCardProps {
   quizData: TQuizAttemptData["data"];
@@ -21,6 +22,7 @@ export const UserQuestionCard: React.FC<UserQuestionCardProps> = ({
   quizID,
   pagination,
 }) => {
+  const [isQuizCompleted, setIsQuizCompleted] = useState(false);
   const quizAttachments = quizData.attachments;
   const hasQuizAttachment = isArrayWithElements(quizAttachments);
 
@@ -46,6 +48,14 @@ export const UserQuestionCard: React.FC<UserQuestionCardProps> = ({
       ? question.introductionDelta!
       : JSON.stringify(convertPlainTextToDelta(question.introduction))
     : JSON.stringify(convertPlainTextToDelta(question.introduction));
+
+  const onQuizCompletedHandler = (completed: boolean) => {
+    setIsQuizCompleted(() => completed);
+  };
+
+  if (isQuizCompleted) {
+    return <QuizCompletionCard quizID={quizID} />;
+  }
 
   return (
     <div className="w-full space-y-4 border-1 border-gray-800/30 p-8 rounded-2xl">
@@ -134,6 +144,7 @@ export const UserQuestionCard: React.FC<UserQuestionCardProps> = ({
         question={question}
         quizID={quizID}
         pagination={pagination}
+        onQuizCompleted={onQuizCompletedHandler}
       />
     </div>
   );
