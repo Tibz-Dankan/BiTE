@@ -35,6 +35,13 @@ export type TQuiz = {
   postedByUser?: TUser;
   questionCount?: number;
   attemptCount?: number;
+  userProgress?: TUserProgress;
+};
+
+export type TUserProgress = {
+  status: "IN_PROGRESS" | "COMPLETED";
+  totalAttemptedQuestions: number;
+  totalQuestions: number;
 };
 
 export type TPagination = {
