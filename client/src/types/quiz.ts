@@ -108,3 +108,33 @@ export type TQuizAnalytics = {
     quizzes: number;
   };
 };
+
+export type TAdminAnalytics = {
+  status: string;
+  message: string;
+  data: {
+    averageCorrectScore: number;
+    averageCorrectScorePerQuiz: number;
+    totalAnswers: number;
+    totalAttemptDuration: number;
+    totalAttempts: number;
+    totalQuestions: number;
+    totalQuizzes: number;
+    totalSiteVisits: number;
+    totalUserSessions: number;
+    totalUsers: number;
+  };
+};
+
+export type TUserAnalytics = {
+  status: string;
+  message: string;
+  data: {
+    averageAttemptDuration: number;
+    averageCorrectScore: number;
+    rank: number;
+    totalAttemptDuration: number;
+    totalAttempts: number;
+    totalQuizzesAttempted: number;
+  };
+};

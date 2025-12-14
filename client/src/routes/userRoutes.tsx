@@ -9,6 +9,7 @@ import { PageNotFound } from "../components/pages/common/PageNotFound";
 import { UserQuizView } from "../components/pages/quiz/UserQuizView";
 import { UserQuizAttempt } from "../components/pages/quiz/UserQuizAttempt";
 import { UserQuizResultPage } from "../components/pages/quiz/UserQuizResultPage";
+import { UserDashboard } from "../components/pages/quiz/UserDashboard";
 
 export const UserRoutes: React.FC = () => {
   const routes: TRoute = {
@@ -19,7 +20,7 @@ export const UserRoutes: React.FC = () => {
         icon: <LayoutDashboard className="h-5 w-5" />,
         path: "/u/dashboard",
         showInSidebar: true,
-        element: <div>User Dashboard content</div>,
+        element: <UserDashboard />,
       },
       {
         title: "Quizzes",
