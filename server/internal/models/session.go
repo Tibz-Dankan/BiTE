@@ -93,3 +93,13 @@ func (s *Session) Update() (Session, error) {
 
 	return session, nil
 }
+
+func (s *Session) GetTotalCount() (int64, error) {
+	var count int64
+
+	if err := db.Model(&Session{}).Count(&count).Error; err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}

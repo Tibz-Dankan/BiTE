@@ -79,3 +79,43 @@ func (a *AttemptStatus) Delete(id string) error {
 	}
 	return nil
 }
+
+func (a *AttemptStatus) GetAverageCorrectScore() (float64, error) {
+	var totalQuestionsAttempted int64
+	var totalCorrectAnswers int64
+
+	if err := db.Model(&AttemptStatus{}).Count(&totalQuestionsAttempted).Error; err != nil {
+		return 0, err
+	}
+
+	if totalQuestionsAttempted == 0 {
+		return 0, nil
+	}
+
+	if err := db.Model(&AttemptStatus{}).Where("\"IsCorrect\" = ?", true).Count(&totalCorrectAnswers).Error; err != nil {
+		return 0, err
+	}
+
+	return (float64(totalCorrectAnswers) / float64(totalQuestionsAttempted)) * 100, nil
+}
+
+func (a *AttemptStatus) GetAverageCorrectScoreByUser(userID string) (float64, error) {
+	var totalQuestionsAttempted int64
+	var totalCorrectAnswers int64
+
+	if err := db.Model(&AttemptStatus{}).Where("\"userID\" = ?", userID).Count(&totalQuestionsAttempted).Error; err != nil {
+		return 0, err
+	}
+
+	if totalQuestionsAttempted == 0 {
+		return 0, nil
+	}
+
+	if err := db.Model(&AttemptStatus{}).
+		Where("\"userID\" = ? AND \"IsCorrect\" = ?", userID, true).
+		Count(&totalCorrectAnswers).Error; err != nil {
+		return 0, err
+	}
+
+	return (float64(totalCorrectAnswers) / float64(totalQuestionsAttempted)) * 100, nil
+}

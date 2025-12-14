@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/Tibz-Dankan/BiTE/internal/events/subscribers"
+	"github.com/Tibz-Dankan/BiTE/internal/handlers/analytics"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/answer"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/attempt"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/attemptduration"
@@ -140,6 +141,13 @@ func main() {
 		return c.Next()
 	})
 	siteVisitGroup.Post("/", middlewares.SetUserInRequest, sitevisit.PostSiteVisit)
+
+	// Analytics
+	analyticsGroup := app.Group("/api/v1/analytics", func(c *fiber.Ctx) error {
+		return c.Next()
+	})
+	analyticsGroup.Get("/admin", middlewares.Auth, middlewares.IsAdmin, analytics.GetAdminAnalytics)
+	analyticsGroup.Get("/user", middlewares.Auth, analytics.GetUserAnalytics)
 
 	// Metrics
 	app.Get("/metrics", monitor.GetMetrics)
