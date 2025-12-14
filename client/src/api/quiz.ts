@@ -149,6 +149,24 @@ class QuizAPI {
     return await response.json();
   };
 
+  getQuizAttemptedData = async ({ quizID }: { quizID: string }) => {
+    const response = await fetch(
+      `${SERVER_URL}/quiz/attempted-data/${quizID}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
   search = async ({ query }: { query: string }) => {
     const response = await fetch(`${SERVER_URL}/quiz/search?query=${query}`, {
       method: "GET",

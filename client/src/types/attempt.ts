@@ -26,6 +26,21 @@ export type TPostAttempt = {
   answerInput: string;
 };
 
+export type TAttemptStatus = {
+  id: string;
+  userID: string;
+  attemptID: string;
+  questionID: string;
+  IsCorrect: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TQuestionWithAttempts = TQuestion & {
+  attempts: Attempt[];
+  attemptStatuses: TAttemptStatus[];
+};
+
 export type TQuizAttemptData = {
   data: {
     id: string;
@@ -46,14 +61,20 @@ export type TQuizAttemptData = {
     canBeAttempted: boolean;
     createdAt: string;
     updatedAt: string;
-    questions: TQuestion[];
+    questions: TQuestionWithAttempts[];
     attachments: any[];
+    quizCategory?: any;
   };
   message: string;
   pagination: TPagination & {
     count: number;
     hasNextItems: boolean;
     nextCursor: string;
+  };
+  progress: {
+    status: "IN_PROGRESS" | "COMPLETED";
+    totalAttemptedQuestions: number;
+    totalQuestions: number;
   };
   status: string;
 };

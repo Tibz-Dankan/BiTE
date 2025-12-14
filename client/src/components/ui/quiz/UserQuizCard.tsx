@@ -74,6 +74,9 @@ export const UserQuizCard: React.FC<UserQuizCardProps> = ({ quiz }) => {
     navigate(`/u/quizzes/${quiz.id}/attempt`);
   };
 
+  const disableBtn =
+    !quiz.canBeAttempted || quiz.userProgress?.status !== "COMPLETED";
+
   return (
     <div
       className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all
@@ -181,20 +184,73 @@ export const UserQuizCard: React.FC<UserQuizCardProps> = ({ quiz }) => {
           </div>
         </div>
 
+        {/* User Progress */}
+        {quiz.userProgress && (
+          <div className="mb-4 p-3 bg-orange-50 rounded-xl border border-orange-100">
+            <p className="text-xs font-semibold text-orange-600 mb-1">
+              Your Progress
+            </p>
+            <div className="flex items-center justify-between text-sm text-orange-800">
+              <span>
+                Status:{" "}
+                {quiz.userProgress.status === "IN_PROGRESS"
+                  ? "In Progress"
+                  : "Completed"}
+              </span>
+              <span>
+                {quiz.userProgress.totalAttemptedQuestions} /{" "}
+                {quiz.userProgress.totalQuestions}
+              </span>
+            </div>
+            {/* Progress Bar */}
+            <div className="w-full bg-orange-200 rounded-full h-1.5 mt-2">
+              <div
+                className="bg-orange-500 h-1.5 rounded-full"
+                style={{
+                  width: `${
+                    (quiz.userProgress.totalAttemptedQuestions /
+                      quiz.userProgress.totalQuestions) *
+                    100
+                  }%`,
+                }}
+              ></div>
+            </div>
+          </div>
+        )}
+
         {/* Action Button */}
         <button
           className={`w-full py-3 rounded-xl font-semibold transition-all flex
            items-center justify-center gap-2 group/btn ${
-             quiz.canBeAttempted
+             quiz.canBeAttempted || quiz.userProgress?.status === "COMPLETED"
                ? "text-white hover:shadow-lg"
                : "text-slate-500 cursor-not-allowed"
            }`}
-          style={{ backgroundColor: quiz.canBeAttempted ? bgColor : "#e2e8f0" }}
-          onClick={() => navigateToQuizAttempt(quiz)}
-          disabled={!quiz.canBeAttempted}
+          style={{
+            backgroundColor:
+              quiz.canBeAttempted || quiz.userProgress ? bgColor : "#e2e8f0",
+          }}
+          onClick={() => {
+            if (quiz.userProgress?.status === "COMPLETED") {
+              navigate(`/u/quizzes/${quiz.id}/results`);
+            } else {
+              navigateToQuizAttempt(quiz);
+            }
+          }}
+          disabled={disableBtn}
         >
-          {quiz.canBeAttempted ? "Start Quiz" : "Coming Soon"}
-          {quiz.canBeAttempted && (
+          {quiz.userProgress?.status === "COMPLETED"
+            ? "View Results"
+            : quiz.userProgress?.status === "IN_PROGRESS"
+            ? quiz.userProgress.totalAttemptedQuestions === 0
+              ? "Start Quiz"
+              : "Continue Attempt"
+            : quiz.canBeAttempted
+            ? "Start Quiz"
+            : "Coming Soon"}
+
+          {(quiz.canBeAttempted ||
+            quiz.userProgress?.status === "COMPLETED") && (
             <ChevronRight
               size={18}
               className="group-hover/btn:translate-x-1 transition-transform"
