@@ -62,7 +62,7 @@ func (q *Quiz) FindAll(limit float64, cursor string, quizCategoryID string) ([]Q
 
 // FindAllWithDetails returns quizzes with additional metadata for user side
 // Includes question count, attempt count, and preloaded relationships
-func (q *Quiz) FindAllWithDetails(limit float64, cursor string, quizCategoryID string) ([]map[string]interface{}, error) {
+func (q *Quiz) FindAllWithDetails(limit float64, cursor string, quizCategoryID string, userID string) ([]map[string]interface{}, error) {
 	var quizzes []Quiz
 
 	query := db.Model(&Quiz{}).
@@ -100,6 +100,20 @@ func (q *Quiz) FindAllWithDetails(limit float64, cursor string, quizCategoryID s
 		var attemptCount int64
 		db.Model(&Attempt{}).Where("\"quizID\" = ?", quiz.ID).Distinct("\"userID\"").Count(&attemptCount)
 
+		// Get user progress
+		var attempt Attempt
+		_, totalAttemptedQuestions, status, err := attempt.FindProgressByQuizAndUser(quiz.ID, userID)
+		if err != nil {
+			totalAttemptedQuestions = 0
+			status = "IN_PROGRESS"
+		}
+
+		userProgress := map[string]interface{}{
+			"totalQuestions":          questionCount,
+			"totalAttemptedQuestions": totalAttemptedQuestions,
+			"status":                  status,
+		}
+
 		quizData := map[string]interface{}{
 			"id":                quiz.ID,
 			"title":             quiz.Title,
@@ -124,6 +138,7 @@ func (q *Quiz) FindAllWithDetails(limit float64, cursor string, quizCategoryID s
 			"postedByUser":      quiz.PostedByUser,
 			"questionCount":     questionCount,
 			"attemptCount":      attemptCount,
+			"userProgress":      userProgress,
 		}
 		result = append(result, quizData)
 	}

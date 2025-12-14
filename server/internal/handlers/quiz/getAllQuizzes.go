@@ -20,7 +20,12 @@ var GetAllQuizzes = func(c *fiber.Ctx) error {
 		cursorParam = ""
 	}
 
-	allQuiz, err := quiz.FindAllWithDetails(limit+1, cursorParam, quizCategoryIDParam)
+	var userID string
+	if c.Locals("userID") != nil {
+		userID = c.Locals("userID").(string)
+	}
+
+	allQuiz, err := quiz.FindAllWithDetails(limit+1, cursorParam, quizCategoryIDParam, userID)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
