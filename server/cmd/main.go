@@ -82,6 +82,7 @@ func main() {
 		return c.Next()
 	})
 	quizGroup.Post("/", middlewares.Auth, middlewares.IsAdmin, quiz.PostQuiz)
+	quizGroup.Post("/:id/duplicate", middlewares.Auth, middlewares.IsAdmin, quiz.DuplicateQuiz)
 	quizGroup.Patch("/:id", middlewares.Auth, middlewares.IsAdmin, quiz.UpdateQuiz)
 	quizGroup.Get("/search", middlewares.Auth, quiz.SearchQuiz)
 	quizGroup.Get("/:id", middlewares.Auth, quiz.GetQuiz)

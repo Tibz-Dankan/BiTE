@@ -103,6 +103,7 @@ type Quiz struct {
 	StartsAt          time.Time `gorm:"column:startsAt;index" json:"startsAt"`
 	EndsAt            time.Time `gorm:"column:endsAt;index" json:"endsAt"`
 	CanBeAttempted    bool      `gorm:"column:canBeAttempted;default:false;index" json:"canBeAttempted"`
+	IsDuplicate       bool      `gorm:"column:isDuplicate;default:false;index" json:"isDuplicate"`
 	CreatedAt         time.Time `gorm:"column:createdAt;index" json:"createdAt"`
 	UpdatedAt         time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
 
@@ -113,6 +114,20 @@ type Quiz struct {
 	Attempts         []*Attempt         `gorm:"foreignKey:QuizID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attempts,omitempty"`
 	AttemptDurations []*AttemptDuration `gorm:"foreignKey:QuizID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attemptDurations,omitempty"`
 	QuizCategory     *QuizCategory      `gorm:"foreignKey:QuizCategoryID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"quizCategory,omitempty"`
+}
+
+type QuizDuplicate struct {
+	ID                   string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
+	DuplicatedByUserID   string    `gorm:"column:duplicatedByUserID;not null;index" json:"duplicatedByUserID"`
+	DuplicatedFromQuizID string    `gorm:"column:duplicatedFromQuizID;not null;index" json:"duplicatedFromQuizID"`
+	DuplicatedQuizID     string    `gorm:"column:duplicatedQuizID;not null;index" json:"duplicatedQuizID"`
+	CreatedAt            time.Time `gorm:"column:createdAt;index" json:"createdAt"`
+	UpdatedAt            time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
+
+	// Relationships
+	DuplicatedByUser   *User `gorm:"foreignKey:DuplicatedByUserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"duplicatedByUser,omitempty"`
+	DuplicatedFromQuiz *Quiz `gorm:"foreignKey:DuplicatedFromQuizID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"duplicatedFromQuiz,omitempty"`
+	DuplicatedQuiz     *Quiz `gorm:"foreignKey:DuplicatedQuizID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"duplicatedQuiz,omitempty"`
 }
 
 type Question struct {
