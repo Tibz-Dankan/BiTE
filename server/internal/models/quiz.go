@@ -149,6 +149,27 @@ func (q *Quiz) FindOneWithQuestionsAndAnswers(quizID string) (Quiz, error) {
 	return quiz, nil
 }
 
+func (q *Quiz) FindOneWithDetailsForDuplication(quizID string) (Quiz, error) {
+	var quiz Quiz
+
+	query := db.Model(&Quiz{}).
+		Preload("Attachments").
+		Preload("Questions", func(db *gorm.DB) *gorm.DB {
+			return db.Order("\"questions\".\"sequenceNumber\" ASC")
+		}).
+		Preload("Questions.Attachments").
+		Preload("Questions.Answers", func(db *gorm.DB) *gorm.DB {
+			return db.Order("\"answers\".\"sequenceNumber\" ASC")
+		}).
+		Preload("Questions.Answers.Attachments")
+
+	if err := query.Where("id = ?", quizID).First(&quiz).Error; err != nil {
+		return quiz, err
+	}
+
+	return quiz, nil
+}
+
 func (q *Quiz) Search(query string) ([]Quiz, int, error) {
 	var Quizzes []Quiz
 	var quizCount int
