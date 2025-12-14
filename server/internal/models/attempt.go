@@ -137,3 +137,17 @@ func (a *Attempt) Delete(id string) error {
 	}
 	return nil
 }
+
+// GetTotalQuizzesAttemptedByUser counts the number of distinct quizzes a user has attempted
+func (a *Attempt) GetTotalQuizzesAttemptedByUser(userID string) (int64, error) {
+	var count int64
+
+	if err := db.Model(&Attempt{}).
+		Where("\"userID\" = ?", userID).
+		Distinct("\"quizID\"").
+		Count(&count).Error; err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}

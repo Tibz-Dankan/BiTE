@@ -59,3 +59,13 @@ func (sv *SiteVisit) Delete(id string) error {
 	}
 	return nil
 }
+
+func (sv *SiteVisit) GetTotalCount() (int64, error) {
+	var count int64
+
+	if err := db.Model(&SiteVisit{}).Count(&count).Error; err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}

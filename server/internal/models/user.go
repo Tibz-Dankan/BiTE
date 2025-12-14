@@ -181,3 +181,13 @@ func (u *User) SetRole(role string) error {
 	u.Role = role
 	return nil
 }
+
+func (u *User) GetTotalCount() (int64, error) {
+	var count int64
+
+	if err := db.Model(&User{}).Count(&count).Error; err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}

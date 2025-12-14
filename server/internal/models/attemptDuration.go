@@ -64,3 +64,25 @@ func (a *AttemptDuration) Delete(id string) error {
 	}
 	return nil
 }
+
+func (a *AttemptDuration) GetTotalCount() (int64, error) {
+	var count int64
+
+	if err := db.Model(&AttemptDuration{}).Count(&count).Error; err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}
+
+func (a *AttemptDuration) GetTotalDuration() (int64, error) {
+	var totalDuration int64
+
+	if err := db.Model(&AttemptDuration{}).
+		Select("COALESCE(SUM(\"duration\"), 0)").
+		Scan(&totalDuration).Error; err != nil {
+		return 0, err
+	}
+
+	return totalDuration, nil
+}
