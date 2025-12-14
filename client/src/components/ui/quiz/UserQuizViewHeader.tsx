@@ -1,11 +1,11 @@
-import { Search } from "lucide-react";
-import React, { useState } from "react";
+// import { Search } from "lucide-react";
+import React from "react";
 
 export const UserQuizViewHeader: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  // const [searchTerm, setSearchTerm] = useState("");
   return (
     <div
-      className="text-white"
+      className="text-white rounded-2xl"
       style={{
         background:
           "linear-gradient(135deg, oklch(74.93% 0.154 70.67) 0%, oklch(65% 0.18 60) 100%)",
@@ -22,7 +22,7 @@ export const UserQuizViewHeader: React.FC = () => {
           </p>
 
           {/* Search Bar */}
-          <div className="max-w-2xl mx-auto relative">
+          {/* <div className="max-w-2xl mx-auto relative">
             <Search
               className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400"
               size={20}
@@ -34,7 +34,7 @@ export const UserQuizViewHeader: React.FC = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-12 pr-4 py-4 rounded-2xl text-slate-800 shadow-2xl focus:outline-none focus:ring-4 focus:ring-white/30 transition-all"
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

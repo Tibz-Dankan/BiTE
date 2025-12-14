@@ -6,6 +6,8 @@ import { removeColonsFromPath } from "../../utils/removeColonsFromPath";
 import { useRouteStore } from "../../stores/routes";
 import { Button } from "../ui/shared/Btn";
 import { useAuthStore } from "../../stores/auth";
+import { matchPath } from "react-router-dom";
+import { QuizTimer } from "../ui/quiz/QuizTimer";
 
 interface DashboardSidebarProps {
   routes: TRoute;
@@ -63,6 +65,13 @@ export function DashboardHeader(props: DashboardSidebarProps) {
           </h1>
         </div>
         <div className="flex items-center justify-end gap-4">
+          {(() => {
+            const match = matchPath("/u/quizzes/:quizID/attempt", pathname);
+            if (match && match.params.quizID) {
+              return <QuizTimer quizID={match.params.quizID} />;
+            }
+            return null;
+          })()}
           {isAdmin && (
             <div className="w-full flex items-center justify-end">
               <Button
