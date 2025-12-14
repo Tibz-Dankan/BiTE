@@ -133,6 +133,7 @@ func main() {
 		return c.Next()
 	})
 	attemptDurationGroup.Patch("/quiz/:quizID", middlewares.Auth, attemptduration.UpdateAttemptDuration)
+	attemptDurationGroup.Get("/quiz/:quizID", middlewares.Auth, attemptduration.GetAttemptDuration)
 
 	// SiteVisit
 	siteVisitGroup := app.Group("/api/v1/sitevisit", func(c *fiber.Ctx) error {
