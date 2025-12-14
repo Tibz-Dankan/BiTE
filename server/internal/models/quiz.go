@@ -29,7 +29,8 @@ func (q *Quiz) FindOne(id string) (Quiz, error) {
 func (q *Quiz) FindOneAndIncludeAttachments(id string) (Quiz, error) {
 	var quiz Quiz
 
-	db.Model(&Quiz{}).Preload("Attachments").First(&quiz, "id = ?", id)
+	db.Model(&Quiz{}).Preload("Attachments").
+		Preload("QuizCategory").First(&quiz, "id = ?", id)
 
 	return quiz, nil
 }
