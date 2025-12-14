@@ -107,9 +107,7 @@ export const PostQuizCategoryForm: React.FC<PostQuizCategoryFormProps> = (
        justify-start gap-4 mb-8"
     >
       <div className="w-full">
-        <h2 className="text-gray-800 font-semibold">
-          Add Quiz Category
-        </h2>
+        <h2 className="text-gray-800 font-semibold">Add Quiz Category</h2>
       </div>
       <form onSubmit={formik.handleSubmit} className="w-full space-y-6">
         {/* Category name input field */}
@@ -131,8 +129,9 @@ export const PostQuizCategoryForm: React.FC<PostQuizCategoryFormProps> = (
         />
 
         {/* Image selector */}
+        {/* Image select to be made visible in the future */}
         <div
-          className="w-full flex flex-col items-start rounded-md mt-14 
+          className="hidden w-full flex flex-col items-start rounded-md mt-14 
           sm:mt-12 md:mt-14 lg:mt-0"
         >
           <label className="text-sm font-[450] text-gray-800 mb-2">
@@ -212,4 +211,3 @@ export const PostQuizCategoryForm: React.FC<PostQuizCategoryFormProps> = (
     </div>
   );
 };
-
