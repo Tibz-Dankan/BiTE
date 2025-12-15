@@ -212,6 +212,21 @@ class QuizAPI {
     return await response.json();
   };
 
+  duplicate = async ({ quizID }: { quizID: string }) => {
+    const response = await fetch(`${SERVER_URL}/quiz/${quizID}/duplicate`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
   makeQuizAttemptable = async ({ quizID }: { quizID: string }) => {
     const response = await fetch(`${SERVER_URL}/quiz/${quizID}/attemptable`, {
       method: "PATCH",

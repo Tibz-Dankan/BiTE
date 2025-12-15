@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "../shared/dropdown-menu";
 import { SCNButton } from "../shared/button";
-import { Edit, MoreVertical, Settings, Trash2 } from "lucide-react";
+import { Copy, Edit, MoreVertical, Settings, Trash2 } from "lucide-react";
 import { QuillViewer } from "../shared/QuillViewer";
 import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
 import { isJSON } from "../../../utils/isJson";
@@ -175,9 +175,17 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
               </span>
             </DropdownMenuItem>
             <DropdownMenuItem
+              onClick={() => navigate(`/a/quizzes/${quiz.id}/duplicate`)}
+            >
+              <span className="flex items-center gap-2 cursor-pointer text-gray-800">
+                <Copy className="w-4 h-4 text-inherit" />
+                Duplicate Quiz
+              </span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
               onClick={() => navigate(`/a/quizzes/${quiz.id}/delete`)}
             >
-              <span className="flex items-center gap-2 cursor-pointer text-red-500">
+              <span className="flex items-center gap-2 cursor-pointer text-gray-800">
                 <Trash2 className="w-4 h-4 text-inherit" />
                 Delete Quiz
               </span>
