@@ -93,6 +93,7 @@ var UpdateQuestionAttachment = func(c *fiber.Ctx) error {
 		savedAttachment.ContentType = contentType
 		savedAttachment.Url = uploadImageResp.URL
 		savedAttachment.Filename = uploadImageResp.Filename
+		savedAttachment.Size = attachment.Size
 
 		updatedAttachment, err := savedAttachment.UpdateFileDetails(savedAttachment)
 		if err != nil {
