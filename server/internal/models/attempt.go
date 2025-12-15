@@ -151,3 +151,29 @@ func (a *Attempt) GetTotalQuizzesAttemptedByUser(userID string) (int64, error) {
 
 	return count, nil
 }
+
+// GetTotalDistinctQuestionsAttempted counts the total number of distinct questions attempted by all users
+func (a *Attempt) GetTotalDistinctQuestionsAttempted() (int64, error) {
+	var count int64
+
+	if err := db.Model(&Attempt{}).
+		Distinct("\"questionID\"").
+		Count(&count).Error; err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}
+
+// GetTotalDistinctQuizzesAttempted counts the total number of distinct quizzes attempted by all users
+func (a *Attempt) GetTotalDistinctQuizzesAttempted() (int64, error) {
+	var count int64
+
+	if err := db.Model(&Attempt{}).
+		Distinct("\"quizID\"").
+		Count(&count).Error; err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}

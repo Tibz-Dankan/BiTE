@@ -11,6 +11,7 @@ var GetAdminAnalytics = func(c *fiber.Ctx) error {
 	answer := models.Answer{}
 	attemptDuration := models.AttemptDuration{}
 	attemptStatus := models.AttemptStatus{}
+	attempt := models.Attempt{}
 	siteVisit := models.SiteVisit{}
 	session := models.Session{}
 	user := models.User{}
@@ -35,7 +36,12 @@ var GetAdminAnalytics = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	totalAttempts, err := attemptDuration.GetTotalCount()
+	totalQuizzesAttempted, err := attempt.GetTotalDistinctQuizzesAttempted()
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	totalQuestionsAttempted, err := attempt.GetTotalDistinctQuestionsAttempted()
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
@@ -61,12 +67,13 @@ var GetAdminAnalytics = func(c *fiber.Ctx) error {
 	}
 
 	analytics := fiber.Map{
-		"totalQuizzes":               quizCount,
-		"totalQuestions":             questionCount,
-		"totalAnswers":               answerCount,
-		"totalAttemptDuration":       totalAttemptDuration,
-		"totalAttempts":              totalAttempts,
-		"averageCorrectScore":        avgCorrectScore, // Global average score %
+		"totalQuizzes":            quizCount,
+		"totalQuestions":          questionCount,
+		"totalAnswers":            answerCount,
+		"totalAttemptDuration":    totalAttemptDuration,
+		"totalQuizzesAttempted":   totalQuizzesAttempted,
+		"totalQuestionsAttempted": totalQuestionsAttempted,
+		// "averageCorrectScore":        avgCorrectScore, // Global average score % REMOVED
 		"averageCorrectScorePerQuiz": avgCorrectScore, // Assuming global average for now as per plan
 		"totalSiteVisits":            siteVisitCount,
 		"totalUserSessions":          sessionCount, // Logins/Signups

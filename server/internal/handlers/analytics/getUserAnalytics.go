@@ -54,15 +54,15 @@ var GetUserAnalytics = func(c *fiber.Ctx) error {
 
 	// Round to 2 decimal places
 	avgCorrectScore = math.Round(avgCorrectScore*100) / 100
-	avgAttemptDuration = math.Round(avgAttemptDuration*100) / 100
+	avgAttemptDuration = math.Round(avgAttemptDuration)
 
 	analytics := fiber.Map{
-		"totalQuizzesAttempted":  totalQuizzesAttempted,
-		"totalAttemptDuration":   totalDuration,
-		"totalAttempts":          totalAttempts, // Total questions attempted (distinct)
-		"rank":                   userRanking.Rank,
-		"averageCorrectScore":    avgCorrectScore,
-		"averageAttemptDuration": avgAttemptDuration,
+		"totalQuizzesAttempted":   totalQuizzesAttempted,
+		"totalAttemptDuration":    totalDuration,
+		"totalQuestionsAttempted": totalAttempts, // Total questions attempted (distinct)
+		"rank":                    userRanking.Rank,
+		"averageCorrectScore":     avgCorrectScore,
+		"averageAttemptDuration":  avgAttemptDuration,
 	}
 
 	response := fiber.Map{
