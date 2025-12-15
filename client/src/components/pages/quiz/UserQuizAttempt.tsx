@@ -5,6 +5,7 @@ import { Loader2 } from "lucide-react";
 import { quizAPI } from "../../../api/quiz";
 import { UserQuestionCard } from "../../ui/question/UserQuestionCard";
 import type { TQuizAttemptData } from "../../../types/attempt";
+// import { QuizAttemptProgressBar } from "../../ui/quiz/QuizAttemptProgressBar";
 
 export const UserQuizAttempt: React.FC = () => {
   const { quizID } = useParams<{ quizID: string }>();
@@ -58,7 +59,8 @@ export const UserQuizAttempt: React.FC = () => {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4">
+    <div className="w-full max-w-4xl mx-auto p-4 space-y-8">
+      {/* <QuizAttemptProgressBar quizProgress={quizAttemptData.progress} /> */}
       <UserQuestionCard
         quizData={quizAttemptData.data}
         question={currentQuestion}
