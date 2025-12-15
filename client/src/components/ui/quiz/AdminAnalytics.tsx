@@ -28,7 +28,8 @@ export const AdminAnalytics: React.FC = () => {
     averageCorrectScorePerQuiz: 0,
     totalAnswers: 0,
     totalAttemptDuration: 0,
-    totalAttempts: 0,
+    totalQuizzesAttempted: 0,
+    totalQuestionsAttempted: 0,
     totalQuestions: 0,
     totalQuizzes: 0,
     totalSiteVisits: 0,
@@ -36,7 +37,11 @@ export const AdminAnalytics: React.FC = () => {
     totalUsers: 0,
   };
 
+  console.log("analyticsData: ", analyticsData);
+
   const getValue = (valueInt: number) => {
+    console.log("valueInt", valueInt);
+    if (!valueInt) return "";
     return addCommasToNumber(valueInt);
   };
 
@@ -86,19 +91,24 @@ export const AdminAnalytics: React.FC = () => {
       value: getValue(analyticsData.totalAnswers),
       icon: <MessageSquare className="text-primary w-5 h-5 text-(--primary)" />,
     },
-    {
-      label: "Global Avg Score",
-      value: `${analyticsData.averageCorrectScore.toFixed(1)}%`,
-      icon: <Trophy className="text-primary w-5 h-5 text-(--primary)" />,
-    },
+    // {
+    //   label: "Global Avg Score",
+    //   value: `${analyticsData.averageCorrectScore.toFixed(1)}%`,
+    //   icon: <Trophy className="text-primary w-5 h-5 text-(--primary)" />,
+    // },
     {
       label: "Avg Score / Quiz",
       value: `${analyticsData.averageCorrectScorePerQuiz.toFixed(1)}%`,
       icon: <Trophy className="text-primary w-5 h-5 text-(--primary)" />,
     },
     {
-      label: "Total Attempts",
-      value: getValue(analyticsData.totalAttempts),
+      label: "Quizzes Attempted",
+      value: getValue(analyticsData.totalQuizzesAttempted),
+      icon: <MonitorPlay className="text-primary w-5 h-5 text-(--primary)" />,
+    },
+    {
+      label: "Questions Attempted",
+      value: getValue(analyticsData.totalQuestionsAttempted),
       icon: <MonitorPlay className="text-primary w-5 h-5 text-(--primary)" />,
     },
     {

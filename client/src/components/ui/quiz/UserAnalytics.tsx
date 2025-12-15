@@ -24,11 +24,12 @@ export const UserAnalytics: React.FC = () => {
     averageCorrectScore: 0,
     rank: 0,
     totalAttemptDuration: 0,
-    totalAttempts: 0,
+    totalQuestionsAttempted: 0,
     totalQuizzesAttempted: 0,
   };
 
   const getValue = (valueInt: number) => {
+    if (!valueInt) return "";
     return addCommasToNumber(valueInt);
   };
 
@@ -69,8 +70,8 @@ export const UserAnalytics: React.FC = () => {
       icon: <FileText className="text-primary w-5 h-5 text-(--primary)" />,
     },
     {
-      label: "Total Attempts",
-      value: getValue(analyticsData.totalAttempts),
+      label: "Total Questions Attempted",
+      value: getValue(analyticsData.totalQuestionsAttempted),
       icon: <MonitorPlay className="text-primary w-5 h-5 text-(--primary)" />,
     },
     {

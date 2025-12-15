@@ -113,11 +113,12 @@ export type TAdminAnalytics = {
   status: string;
   message: string;
   data: {
-    averageCorrectScore: number;
+    // averageCorrectScore: number; // REMOVED
     averageCorrectScorePerQuiz: number;
     totalAnswers: number;
     totalAttemptDuration: number;
-    totalAttempts: number;
+    totalQuizzesAttempted: number;
+    totalQuestionsAttempted: number;
     totalQuestions: number;
     totalQuizzes: number;
     totalSiteVisits: number;
@@ -134,7 +135,8 @@ export type TUserAnalytics = {
     averageCorrectScore: number;
     rank: number;
     totalAttemptDuration: number;
-    totalAttempts: number;
+    totalAttempts: number; // This is now total questions attempted (distinct) but mapped from backend "totalQuestionsAttempted"
+    totalQuestionsAttempted: number;
     totalQuizzesAttempted: number;
   };
 };
