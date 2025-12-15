@@ -137,6 +137,21 @@ class QuestionAPI {
     }
     return await response.json();
   };
+
+  delete = async ({ id }: { id: string }) => {
+    const response = await fetch(`${SERVER_URL}/question/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
 }
 
 export const questionAPI = new QuestionAPI();

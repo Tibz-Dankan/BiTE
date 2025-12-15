@@ -3,7 +3,7 @@ import type { TQuestion } from "../../../types/question";
 import { truncateString } from "../../../utils/truncateString";
 import { isArrayWithElements } from "../../../utils/isArrayWithElements";
 import { AdminAnswerCard } from "../answer/AdminAnswerCard";
-import { Edit, MoreVertical, Plus } from "lucide-react";
+import { Edit, MoreVertical, Plus, Trash2 } from "lucide-react";
 import { Button } from "../shared/Btn";
 import { Modal } from "../shared/Modal";
 import { PostAnswer } from "../answer/PostAnswer";
@@ -94,6 +94,19 @@ export const AdminQuestionCard: React.FC<QuestionCardProps> = (props) => {
                 <span className="flex items-center justify-center gap-2">
                   <Edit className="w-4 h-4 text-gray-800" />
                   Edit Question
+                </span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() =>
+                  navigate(
+                    `/a/quizzes/${question.quizID}/questions/${question.id}/delete`
+                  )
+                }
+                className="cursor-pointer"
+              >
+                <span className="flex items-center justify-center gap-2 text-red-500">
+                  <Trash2 className="w-4 h-4 text-inherit" />
+                  Delete Question
                 </span>
               </DropdownMenuItem>
             </DropdownMenuContent>

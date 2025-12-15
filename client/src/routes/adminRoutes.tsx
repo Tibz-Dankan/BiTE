@@ -14,6 +14,8 @@ import { AdminPostQuestion } from "../components/pages/question/AdminPostQuestio
 import { AdminViewQuestions } from "../components/pages/question/AdminViewQuestions";
 import { AdminUpdateQuestion } from "../components/pages/question/AdminUpdateQuestion";
 import { AdminDashboard } from "../components/pages/quiz/AdminDashboard";
+import { AdminDeleteQuiz } from "../components/pages/quiz/AdminDeleteQuiz";
+import { AdminDeleteQuestion } from "../components/pages/question/AdminDeleteQuestion";
 
 export const AdminRoutes: React.FC = () => {
   const routes: TRoute = {
@@ -74,6 +76,20 @@ export const AdminRoutes: React.FC = () => {
         path: "/a/quizzes/:quizID/questions/:questionID/edit",
         showInSidebar: false,
         element: <AdminUpdateQuestion />,
+      },
+      {
+        title: "Delete Question",
+        icon: <FileQuestion className="h-4 w-4" />,
+        path: "/a/quizzes/:quizID/questions/:questionID/delete",
+        showInSidebar: false,
+        element: <AdminDeleteQuestion />,
+      },
+      {
+        title: "Delete Quiz",
+        icon: <FileQuestion className="h-4 w-4" />,
+        path: "/a/quizzes/:quizID/delete",
+        showInSidebar: false,
+        element: <AdminDeleteQuiz />,
       },
       {
         title: "Settings",

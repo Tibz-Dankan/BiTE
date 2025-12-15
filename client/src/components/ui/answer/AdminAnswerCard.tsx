@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import type { TAnswer } from "../../../types/answer";
 import { isArrayWithElements } from "../../../utils/isArrayWithElements";
 import { truncateString } from "../../../utils/truncateString";
-import { Circle, Edit, MoreVertical } from "lucide-react";
+import { Circle, Edit, MoreVertical, Trash2 } from "lucide-react";
 import { SCNButton } from "../shared/button";
 import { Modal } from "../shared/Modal";
 import { Button } from "../shared/Btn";
@@ -12,6 +12,7 @@ import { AppDropdown } from "../shared/AppDropdown";
 import { QuillViewer } from "../shared/QuillViewer";
 import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
 import { isJSON } from "../../../utils/isJson";
+import { DeleteAnswer } from "./DeleteAnswer";
 
 interface AdminAnswerCardProps {
   answer: TAnswer;
@@ -22,6 +23,7 @@ export const AdminAnswerCard: React.FC<AdminAnswerCardProps> = (props) => {
   const attachments = answer.attachments;
   const hasAttachment = isArrayWithElements(attachments);
   const [closeUpdateAnswerModal, setCloseUpdateAnswerModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const titleDelta = answer.isDeltaDefault
     ? isJSON(answer.titleDelta!)
@@ -70,44 +72,80 @@ export const AdminAnswerCard: React.FC<AdminAnswerCardProps> = (props) => {
             </SCNButton>
           }
         >
-          <Modal
-            openModalElement={
-              <div>
-                <Button
-                  type="button"
-                  className="flex items-center justify-center gap-2 h-auto py-1
-                   px-3 bg-transparent w-32"
-                >
-                  <Edit className="w-4 h-4 text-gray-800" />
-                  <span className="text-[12px] text-gray-800">Edit Answer</span>
-                </Button>
-              </div>
-            }
-            closed={closeUpdateAnswerModal}
-          >
-            <div
-              className="w-[90vw] sm:w-[80vw] min-h-[50vh] h-auto max-h-[80vh] bg-gray-50
-                rounded-md p-4 flex items-start justify-center overflow-x-hidden"
+          <div className="flex flex-col items-start gap-1 w-36">
+            <Modal
+              openModalElement={
+                <div>
+                  <Button
+                    type="button"
+                    className="flex items-center justify-center gap-2 h-auto py-1
+                   px-3 bg-transparent w-full"
+                  >
+                    <Edit className="w-4 h-4 text-gray-800" />
+                    <span className="text-[12px] text-gray-800">
+                      Edit Answer
+                    </span>
+                  </Button>
+                </div>
+              }
+              closed={closeUpdateAnswerModal}
             >
-              <div className="w-full flex flex-col md:flex-row items-start justify-start gap-6">
-                <div className="flex items-center">
-                  <UpdateAnswerAttachment
-                    answerID={answer.id}
-                    attachmentID={hasAttachment ? attachments[0]?.id : ""}
-                    attachmentURL={hasAttachment ? attachments[0]?.url : ""}
-                    questionTitle={answer.title}
-                    answerSequenceNumber={answer.sequenceNumber}
-                  />
-                </div>
-                <div className="w-full">
-                  <UpdateAnswer
-                    answer={answer}
-                    onSuccess={onUpdateAnswerSuccess}
-                  />
+              <div
+                className="w-[90vw] sm:w-[80vw] min-h-[50vh] h-auto max-h-[80vh] bg-gray-50
+                rounded-md p-4 flex items-start justify-center overflow-x-hidden"
+              >
+                <div className="w-full flex flex-col md:flex-row items-start justify-start gap-6">
+                  <div className="flex items-center">
+                    <UpdateAnswerAttachment
+                      answerID={answer.id}
+                      attachmentID={hasAttachment ? attachments[0]?.id : ""}
+                      attachmentURL={hasAttachment ? attachments[0]?.url : ""}
+                      questionTitle={answer.title}
+                      answerSequenceNumber={answer.sequenceNumber}
+                    />
+                  </div>
+                  <div className="w-full">
+                    <UpdateAnswer
+                      answer={answer}
+                      onSuccess={onUpdateAnswerSuccess}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-          </Modal>
+            </Modal>
+
+            {/* Delete Modal */}
+            <Modal
+              closed={!showDeleteModal}
+              openModalElement={
+                <div>
+                  <Button
+                    type="button"
+                    className="flex items-center justify-center gap-2 h-auto 
+                    py-1 px-3 bg-transparent w-full"
+                    onClick={() => setShowDeleteModal(true)}
+                  >
+                    <Trash2 className="w-4 h-4 text-red-500" />
+                    <span className="text-[12px] text-red-500">
+                      Delete Answer
+                    </span>
+                  </Button>
+                </div>
+              }
+            >
+              <div
+                className="w-[90vw] sm:w-[30vw] min-h-[20vh] h-auto bg-white
+                rounded-md p-4 flex items-center justify-center overflow-x-hidden"
+              >
+                <DeleteAnswer
+                  answerID={answer.id}
+                  answerTitle={truncateString(answer.title, 20)}
+                  onSuccess={() => setShowDeleteModal(false)}
+                  onCancel={() => setShowDeleteModal(false)}
+                />
+              </div>
+            </Modal>
+          </div>
         </AppDropdown>
       </div>
     </div>
