@@ -16,6 +16,7 @@ import { AdminUpdateQuestion } from "../components/pages/question/AdminUpdateQue
 import { AdminDashboard } from "../components/pages/quiz/AdminDashboard";
 import { AdminDeleteQuiz } from "../components/pages/quiz/AdminDeleteQuiz";
 import { AdminDeleteQuestion } from "../components/pages/question/AdminDeleteQuestion";
+import { AdminDuplicateQuiz } from "../components/pages/quiz/AdminDuplicateQuiz";
 
 export const AdminRoutes: React.FC = () => {
   const routes: TRoute = {
@@ -90,6 +91,13 @@ export const AdminRoutes: React.FC = () => {
         path: "/a/quizzes/:quizID/delete",
         showInSidebar: false,
         element: <AdminDeleteQuiz />,
+      },
+      {
+        title: "Duplicate Quiz",
+        icon: <FileQuestion className="h-4 w-4" />,
+        path: "/a/quizzes/:quizID/duplicate",
+        showInSidebar: false,
+        element: <AdminDuplicateQuiz />,
       },
       {
         title: "Settings",
