@@ -9,8 +9,14 @@ import (
 
 var UpdateAttemptDuration = func(c *fiber.Ctx) error {
 	attemptDuration := models.AttemptDuration{}
+	attempt := models.Attempt{}
 	quiz := models.Quiz{}
 	quizID := c.Params("quizID")
+
+	userID, ok := c.Locals("userID").(string)
+	if !ok {
+		return fiber.NewError(fiber.StatusInternalServerError, "User ID not found!")
+	}
 
 	if err := c.BodyParser(&attemptDuration); err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
@@ -64,10 +70,22 @@ var UpdateAttemptDuration = func(c *fiber.Ctx) error {
 
 	log.Printf("Attempt Duration: %+v", attemptDuration)
 
+	totalQuestions, totalAttemptedQuestions, status, err := attempt.FindProgressByQuizAndUser(quizID, userID)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	progress := map[string]interface{}{
+		"totalQuestions":          totalQuestions,
+		"totalAttemptedQuestions": totalAttemptedQuestions,
+		"status":                  status,
+	}
+
 	response := map[string]interface{}{
-		"status":  "success",
-		"message": "Attempt Duration updated successfully!",
-		"data":    attemptDuration,
+		"status":   "success",
+		"message":  "Attempt Duration updated successfully!",
+		"data":     attemptDuration,
+		"progress": progress,
 	}
 
 	return c.Status(fiber.StatusOK).JSON(response)
