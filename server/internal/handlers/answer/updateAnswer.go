@@ -42,6 +42,8 @@ var UpdateAnswer = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "Answer of provided ID doesn't exist!")
 	}
 
+	originalSequenceNumber := savedAnswer.SequenceNumber
+
 	savedAnswer.Title = updateQuestionInput.Title
 	savedAnswer.TitleDelta = updateQuestionInput.TitleDelta
 	savedAnswer.TitleHTML = updateQuestionInput.TitleHTML
@@ -50,6 +52,30 @@ var UpdateAnswer = func(c *fiber.Ctx) error {
 
 	if !savedAnswer.IsDeltaDefault {
 		savedAnswer.IsDeltaDefault = true
+	}
+
+	totalAnswers, err := answer.GetTotalCountByQuestion(savedAnswer.QuestionID)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	// Validation
+	if updateQuestionInput.SequenceNumber < 1 || updateQuestionInput.SequenceNumber > totalAnswers {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid Sequence Number!")
+	}
+
+	if originalSequenceNumber != updateQuestionInput.SequenceNumber {
+		if updateQuestionInput.SequenceNumber < originalSequenceNumber {
+			// Moving Up
+			if err := answer.ShiftSequencesUp(savedAnswer.QuestionID, updateQuestionInput.SequenceNumber, originalSequenceNumber); err != nil {
+				return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+			}
+		} else {
+			// Moving Down
+			if err := answer.ShiftSequencesDown(savedAnswer.QuestionID, originalSequenceNumber, updateQuestionInput.SequenceNumber); err != nil {
+				return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+			}
+		}
 	}
 
 	question, err = question.FindOne(savedAnswer.QuestionID)
