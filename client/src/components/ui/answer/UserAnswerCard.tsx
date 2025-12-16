@@ -16,6 +16,7 @@ import type { TInputRadioOption } from "../../../types/input";
 import { AnswerItemCard } from "./AnswerItemCard";
 import { InputCheckbox } from "../shared/InputCheckbox";
 import { AnswerInputRadio } from "./AnswerInputRadio";
+import { useQuizAttemptStore } from "../../../stores/quizAttempt";
 
 interface UserAnswerCardProps {
   question: TQuestion;
@@ -37,6 +38,9 @@ export const UserAnswerCard: React.FC<UserAnswerCardProps> = ({
   );
   const hideCardNotification = useNotificationStore(
     (state) => state.hideCardNotification
+  );
+  const updateProgressStatus = useQuizAttemptStore(
+    (state) => state.updateProgressStatus
   );
 
   const answers = question.answers || [];
@@ -61,6 +65,8 @@ export const UserAnswerCard: React.FC<UserAnswerCardProps> = ({
         });
       } else {
         onQuizCompleted?.(true);
+        // Trigger stopping of the quiz timer here
+        updateProgressStatus("COMPLETED");
       }
     },
     onError: (error: any) => {

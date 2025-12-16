@@ -2,11 +2,16 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { attemptDurationAPI } from "../api/attemptDuration";
 import { useAuthStore } from "../stores/auth";
+import { useQuizAttemptStore } from "../stores/quizAttempt";
 
 export const useQuizTimer = (quizID: string | undefined) => {
   const [duration, setDuration] = useState(0);
   const auth = useAuthStore((state) => state.auth);
   const userID = auth.user.id;
+  const quizAttemptData = useQuizAttemptStore((state) => state.data);
+
+  // Check if quiz is completed
+  const isCompleted = quizAttemptData?.progress?.status === "COMPLETED";
 
   // Ref to keep track of duration for setInterval closure
   const durationRef = useRef(duration);
@@ -49,18 +54,18 @@ export const useQuizTimer = (quizID: string | undefined) => {
 
   // Timer interval (1s)
   useEffect(() => {
-    if (!quizID) return;
+    if (!quizID || isCompleted) return;
 
     const timer = setInterval(() => {
       setDuration((prev) => prev + 1);
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [quizID]);
+  }, [quizID, isCompleted]);
 
   // Sync interval (10s)
   useEffect(() => {
-    if (!quizID || !userID) return;
+    if (!quizID || !userID || isCompleted) return;
 
     const syncTimer = setInterval(() => {
       // Use ref to get latest duration inside closure
@@ -68,7 +73,14 @@ export const useQuizTimer = (quizID: string | undefined) => {
     }, 10000);
 
     return () => clearInterval(syncTimer);
-  }, [quizID, userID, updateDuration]);
+  }, [quizID, userID, updateDuration, isCompleted]);
+
+  // Send final update when completed
+  useEffect(() => {
+    if (isCompleted && quizID && userID) {
+      updateDuration(durationRef.current);
+    }
+  }, [isCompleted, quizID, userID, updateDuration]);
 
   const formatDuration = (seconds: number) => {
     const h = Math.floor(seconds / 3600);
