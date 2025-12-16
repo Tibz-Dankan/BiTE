@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { TQuiz } from "../../../types/quiz";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNotificationStore } from "../../../stores/notification";
 import { useAuthStore } from "../../../stores/auth";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type { TPostQuestion } from "../../../types/question";
 import { InputField } from "../shared/InputField";
 import { AlertCard } from "../shared/AlertCard";
@@ -70,6 +70,12 @@ export const PostQuestion: React.FC<PostQuestionProps> = (props) => {
         hideCardNotification();
       }, 7000);
     },
+  });
+
+  const { data: nextSequenceData } = useQuery({
+    queryKey: ["next-question-sequence", quiz.id],
+    queryFn: () => questionAPI.getNextSequenceNumber({ quizID: quiz.id }),
+    enabled: !!quiz.id,
   });
 
   const onSaveHandler = (file: any) => {
@@ -152,6 +158,15 @@ export const PostQuestion: React.FC<PostQuestionProps> = (props) => {
       }
     },
   });
+
+  useEffect(() => {
+    if (nextSequenceData?.data?.nextSequenceNumber) {
+      formik.setFieldValue(
+        "sequenceNumber",
+        nextSequenceData.data.nextSequenceNumber
+      );
+    }
+  }, [nextSequenceData, formik]);
 
   const quizTitleDelta = quiz.isDeltaDefault
     ? isJSON(quiz.titleDelta!)

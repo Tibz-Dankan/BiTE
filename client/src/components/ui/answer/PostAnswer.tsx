@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "../shared/Btn";
 import { Loader2, Upload, X } from "lucide-react";
 import { InputCheckbox } from "../shared/InputCheckbox";
@@ -10,7 +10,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNotificationStore } from "../../../stores/notification";
 import { useAuthStore } from "../../../stores/auth";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { answerAPI } from "../../../api/answer";
 import type { TQuestion } from "../../../types/question";
 import { useQuestionStore } from "../../../stores/question";
@@ -55,6 +55,13 @@ export const PostAnswer: React.FC<PostAnswerProps> = (props) => {
         hideCardNotification();
       }, 7000);
     },
+  });
+
+  const { data: nextSequenceData } = useQuery({
+    queryKey: ["next-answer-sequence", props.question.id],
+    queryFn: () =>
+      answerAPI.getNextSequenceNumber({ questionID: props.question.id }),
+    enabled: !!props.question.id,
   });
 
   const onSaveHandler = (file: any) => {
@@ -121,6 +128,15 @@ export const PostAnswer: React.FC<PostAnswerProps> = (props) => {
       }
     },
   });
+
+  useEffect(() => {
+    if (nextSequenceData?.data?.nextSequenceNumber) {
+      formik.setFieldValue(
+        "sequenceNumber",
+        nextSequenceData.data.nextSequenceNumber
+      );
+    }
+  }, [nextSequenceData, formik]);
 
   return (
     <div
