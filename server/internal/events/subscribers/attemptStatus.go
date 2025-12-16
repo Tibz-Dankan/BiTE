@@ -2,10 +2,12 @@ package subscribers
 
 import (
 	"log"
+	"strings"
 
 	"github.com/Tibz-Dankan/BiTE/internal/events"
 	"github.com/Tibz-Dankan/BiTE/internal/models"
 	"github.com/Tibz-Dankan/BiTE/internal/types"
+	"gorm.io/gorm"
 )
 
 // PostAttemptStatus subscribes to CREATE_ATTEMPT_STATUS event and creates AttemptStatus records
@@ -24,7 +26,6 @@ func PostAttemptStatus() {
 
 			log.Printf("Processing CREATE_ATTEMPT_STATUS event for userID: %s, questionID: %s", eventData.UserID, eventData.QuestionID)
 
-			// Fetch the question with its answers
 			question := models.Question{}
 			savedQuestion, err := question.FindOneAndIncludeAttachments(eventData.QuestionID)
 			if err != nil || savedQuestion.ID == "" {
@@ -32,7 +33,6 @@ func PostAttemptStatus() {
 				continue
 			}
 
-			// Fetch all attempts for this user and question
 			attempt := models.Attempt{}
 			attempts, err := attempt.FindAllByUserAndQuestion(eventData.UserID, eventData.QuestionID)
 			if err != nil {
@@ -45,7 +45,6 @@ func PostAttemptStatus() {
 				continue
 			}
 
-			// Get correct answers from the question
 			var correctAnswers []models.Answer
 			for _, answer := range savedQuestion.Answers {
 				if answer.IsCorrect {
@@ -53,15 +52,16 @@ func PostAttemptStatus() {
 				}
 			}
 
-			// Determine if the attempt is correct
 			isCorrect := false
 
 			if savedQuestion.RequiresNumericalAnswer {
 				// For numerical answers, check if AnswerInput matches the Title of correct answer
-				if len(correctAnswers) > 0 && attempts[0].AnswerInput == correctAnswers[0].Title {
+				if len(correctAnswers) > 0 && strings.TrimSpace(attempts[0].AnswerInput) == strings.TrimSpace(correctAnswers[0].Title) {
 					isCorrect = true
 				}
-			} else if savedQuestion.HasMultipleCorrectAnswers {
+			}
+
+			if savedQuestion.HasMultipleCorrectAnswers {
 				// For multiple correct answers, all attempt answerIDs must match all correct answer IDs
 				correctAnswerIDs := make(map[string]bool)
 				for _, correctAns := range correctAnswers {
@@ -84,7 +84,9 @@ func PostAttemptStatus() {
 					}
 					isCorrect = allMatch
 				}
-			} else {
+			}
+
+			if !savedQuestion.HasMultipleCorrectAnswers && !savedQuestion.RequiresNumericalAnswer {
 				// For single correct answer, check if any attempt answerID matches the correct answer ID
 				if len(correctAnswers) > 0 {
 					correctAnswerID := correctAnswers[0].ID
@@ -100,29 +102,44 @@ func PostAttemptStatus() {
 			// Check if attempt status already exists for this user and question
 			attemptStatusModel := models.AttemptStatus{}
 			existingStatus, err := attemptStatusModel.FindByUserAndQuestion(eventData.UserID, eventData.QuestionID)
-			if err == nil && existingStatus.ID != "" {
-				log.Printf("Attempt status already exists for userID: %s, questionID: %s. Skipping creation.", eventData.UserID, eventData.QuestionID)
+
+			if err != nil && err.Error() != gorm.ErrRecordNotFound.Error() {
+				log.Printf("Error finding attempt status by user and question: %+v", err)
 				continue
 			}
 
-			// Create a single AttemptStatus record for the question
-			// We use the first attempt's ID as the reference AttemptID
-			// The QuestionID is now explicitly stored in the AttemptStatus record
-			attemptStatus := models.AttemptStatus{
-				UserID:     eventData.UserID,
-				AttemptID:  attempts[0].ID,
-				QuestionID: eventData.QuestionID,
-				IsCorrect:  isCorrect,
+			if existingStatus.ID == "" {
+				// Create a single AttemptStatus record for the question
+				// We use the first attempt's ID as the reference AttemptID
+				// The QuestionID is now explicitly stored in the AttemptStatus record
+				attemptStatus := models.AttemptStatus{
+					UserID:     eventData.UserID,
+					AttemptID:  attempts[0].ID,
+					QuestionID: eventData.QuestionID,
+					IsCorrect:  isCorrect,
+				}
+				_, err = attemptStatusModel.Create(attemptStatus)
+				if err != nil {
+					log.Printf("Error creating attempt status: %+v", err)
+					continue
+				}
+
+				log.Printf("Successfully created attempt status record for userID: %s, questionID: %s, isCorrect: %v",
+					eventData.UserID, eventData.QuestionID, isCorrect)
 			}
 
-			_, err = attemptStatusModel.Create(attemptStatus)
-			if err != nil {
-				log.Printf("Error creating attempt status: %+v", err)
-				continue
-			}
+			if existingStatus.ID != "" {
+				// update the existing attempt status record
+				existingStatus.IsCorrect = isCorrect
+				_, err = existingStatus.Update()
+				if err != nil {
+					log.Printf("Error updating attempt status: %+v", err)
+					continue
+				}
 
-			log.Printf("Successfully created attempt status record for userID: %s, questionID: %s, isCorrect: %v",
-				eventData.UserID, eventData.QuestionID, isCorrect)
+				log.Printf("Successfully updated attempt status record for userID: %s, questionID: %s, isCorrect: %v",
+					eventData.UserID, eventData.QuestionID, isCorrect)
+			}
 
 			// Publish UPDATE_RANKING event
 			rankingEventData := types.RankingEventData{
