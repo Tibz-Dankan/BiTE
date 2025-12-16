@@ -29,7 +29,6 @@ func BackfillAttemptStatuses() {
 		}
 
 		for _, attempt := range attempts {
-			// Publish an event to create attempt status
 			eventData := types.AttemptStatusEventData{
 				UserID:     user.ID,
 				QuestionID: attempt.QuestionID,
