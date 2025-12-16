@@ -82,10 +82,10 @@ var UpdateAttemptDuration = func(c *fiber.Ctx) error {
 	}
 
 	response := map[string]interface{}{
-		"status":   "success",
-		"message":  "Attempt Duration updated successfully!",
-		"data":     attemptDuration,
-		"progress": progress,
+		"status":       "success",
+		"message":      "Attempt Duration updated successfully!",
+		"data":         attemptDuration,
+		"userProgress": progress,
 	}
 
 	return c.Status(fiber.StatusOK).JSON(response)
