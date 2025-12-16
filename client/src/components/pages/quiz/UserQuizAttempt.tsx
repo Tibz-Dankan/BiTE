@@ -7,6 +7,8 @@ import { UserQuestionCard } from "../../ui/question/UserQuestionCard";
 import type { TQuizAttemptData } from "../../../types/attempt";
 // import { QuizAttemptProgressBar } from "../../ui/quiz/QuizAttemptProgressBar";
 
+import { useQuizAttemptStore } from "../../../stores/quizAttempt";
+
 export const UserQuizAttempt: React.FC = () => {
   const { quizID } = useParams<{ quizID: string }>();
   const [searchParams] = useSearchParams();
@@ -29,6 +31,14 @@ export const UserQuizAttempt: React.FC = () => {
       }),
     enabled: !!quizID,
   });
+
+  const setQuizAttempt = useQuizAttemptStore((state) => state.setQuizAttempt);
+
+  React.useEffect(() => {
+    if (quizAttemptData) {
+      setQuizAttempt(quizAttemptData);
+    }
+  }, [quizAttemptData, setQuizAttempt]);
 
   if (isLoading) {
     return (
