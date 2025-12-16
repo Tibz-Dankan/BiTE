@@ -76,6 +76,16 @@ func (a *Answer) GetTotalCount() (int64, error) {
 	return count, nil
 }
 
+func (a *Answer) GetTotalCountByQuestion(questionID string) (int64, error) {
+	var count int64
+
+	if err := db.Model(&Answer{}).Where("\"questionID\" = ?", questionID).Count(&count).Error; err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}
+
 func (a *Answer) Update() (Answer, error) {
 	db.Save(&a)
 
@@ -134,6 +144,20 @@ func (a *Answer) AutoCorrectSequenceNumbers(questionID string) error {
 	}
 
 	return nil
+}
+
+// ShiftSequencesUp increments sequence numbers for answers in the range [start, end)
+func (a *Answer) ShiftSequencesUp(questionID string, start, end int64) error {
+	return db.Model(&Answer{}).
+		Where("\"questionID\" = ? AND \"sequenceNumber\" >= ? AND \"sequenceNumber\" < ?", questionID, start, end).
+		Update("\"sequenceNumber\"", gorm.Expr("\"sequenceNumber\" + ?", 1)).Error
+}
+
+// ShiftSequencesDown decrements sequence numbers for answers in the range (start, end]
+func (a *Answer) ShiftSequencesDown(questionID string, start, end int64) error {
+	return db.Model(&Answer{}).
+		Where("\"questionID\" = ? AND \"sequenceNumber\" > ? AND \"sequenceNumber\" <= ?", questionID, start, end).
+		Update("\"sequenceNumber\"", gorm.Expr("\"sequenceNumber\" - ?", 1)).Error
 }
 
 // GetNextSequenceNumber returns the next available sequence number for a new answer in the given question

@@ -46,6 +46,9 @@ var UpdateQuestion = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "Question of provided ID doesn't exist!")
 	}
 
+	// Capture original SequenceNumber before overwriting it
+	originalSequenceNumber := savedQuestion.SequenceNumber
+
 	savedQuestion.Title = updateQuestionInput.Title
 	savedQuestion.TitleDelta = updateQuestionInput.TitleDelta
 	savedQuestion.TitleHTML = updateQuestionInput.TitleHTML
@@ -62,6 +65,31 @@ var UpdateQuestion = func(c *fiber.Ctx) error {
 
 	if updateQuestionInput.RequiresNumericalAnswer {
 		savedQuestion.HasMultipleCorrectAnswers = false
+	}
+
+	totalQuestions, err := question.GetTotalCountByQuiz(savedQuestion.QuizID)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	// Validation: Check if sequence number is valid
+	// Note: totalQuestions includes the current question being updated
+	if updateQuestionInput.SequenceNumber < 1 || updateQuestionInput.SequenceNumber > totalQuestions {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid Sequence Number!")
+	}
+
+	if originalSequenceNumber != updateQuestionInput.SequenceNumber {
+		if updateQuestionInput.SequenceNumber < originalSequenceNumber {
+			// Moving Up (e.g., 5 -> 3): Shift items in [new, old) UP (+1)
+			if err := question.ShiftSequencesUp(savedQuestion.QuizID, updateQuestionInput.SequenceNumber, originalSequenceNumber); err != nil {
+				return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+			}
+		} else {
+			// Moving Down (e.g., 2 -> 4): Shift items in (old, new] DOWN (-1)
+			if err := question.ShiftSequencesDown(savedQuestion.QuizID, originalSequenceNumber, updateQuestionInput.SequenceNumber); err != nil {
+				return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+			}
+		}
 	}
 
 	updatedQuestion, err := savedQuestion.Update()
