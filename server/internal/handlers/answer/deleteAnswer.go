@@ -22,6 +22,12 @@ var DeleteAnswer = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
+	// Rearrange Sequence Numbers
+	// Shift all answers with sequence > deletedSequence DOWN by 1
+	if err := answer.ShiftSequencesDown(savedAnswer.QuestionID, savedAnswer.SequenceNumber, 1000000); err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
 	response := fiber.Map{
 		"status":  "success",
 		"message": "Answer deleted successfully!",
