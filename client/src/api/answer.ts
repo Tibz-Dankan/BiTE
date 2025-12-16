@@ -109,6 +109,24 @@ class AnswerAPI {
     return await response.json();
   };
 
+  getNextSequenceNumber = async ({ questionID }: { questionID: string }) => {
+    const response = await fetch(
+      `${SERVER_URL}/answer/next-sequence?questionID=${questionID}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
   delete = async ({ id }: { id: string }) => {
     const response = await fetch(`${SERVER_URL}/answer/${id}`, {
       method: "DELETE",
