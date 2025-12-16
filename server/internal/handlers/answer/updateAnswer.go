@@ -52,6 +52,14 @@ var UpdateAnswer = func(c *fiber.Ctx) error {
 		savedAnswer.IsDeltaDefault = true
 	}
 
+	question, err = question.FindOne(savedAnswer.QuestionID)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+	if question.ID == "" {
+		return fiber.NewError(fiber.StatusBadRequest, "Question of provided ID doesn't exist!")
+	}
+
 	if !question.HasMultipleCorrectAnswers {
 		savedQtnAnswers, err := answer.FindAllByQuestion(savedAnswer.QuestionID, 12, "")
 		if err != nil {
