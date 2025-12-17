@@ -70,7 +70,6 @@ export const UserQuestionCard: React.FC<UserQuestionCardProps> = ({
       <div className="w-full space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-semibold tracking-wide uppercase text-gray-500">
-            {/* Quiz Details */}
             Quiz
           </h3>
           {quizData.quizCategory && (

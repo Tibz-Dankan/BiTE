@@ -147,8 +147,8 @@ export const UserAnswerCard: React.FC<UserAnswerCardProps> = ({
     <form onSubmit={formik.handleSubmit} className="space-y-6 mt-6">
       <div className="w-full flex items-center justify-center gap-4">
         <div
-          className="w-full flex flex-col sm:flex-row sm:items-center 
-            sm:justify-center gap-2 sm:gap-4"
+          className="w-full flex flex-col sm:flex-row sm:items-end 
+            sm:justify-center gap-2 sm:gap-4 bg-purple-500s"
         >
           <div className="w-full">
             {showTextInput && (
@@ -201,4 +201,3 @@ export const UserAnswerCard: React.FC<UserAnswerCardProps> = ({
     </form>
   );
 };
-// };
