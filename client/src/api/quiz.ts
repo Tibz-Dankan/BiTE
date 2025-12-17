@@ -256,6 +256,36 @@ class QuizAPI {
     }
     return await response.json();
   };
+
+  showQuiz = async ({ quizID }: { quizID: string }) => {
+    const response = await fetch(`${SERVER_URL}/quiz/${quizID}/show`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  hideQuiz = async ({ quizID }: { quizID: string }) => {
+    const response = await fetch(`${SERVER_URL}/quiz/${quizID}/hide`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
 }
 
 export const quizAPI = new QuizAPI();
