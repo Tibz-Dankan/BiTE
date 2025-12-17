@@ -1,7 +1,14 @@
 import React, { useEffect, type ReactNode } from "react";
 import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css";
+import katex from "katex";
+import "katex/dist/katex.min.css";
 import type { QuillOnChangeValues } from "../../../types/quillEditor";
+
+// Configure katex for Quill
+if (typeof window !== "undefined") {
+  (window as any).katex = katex;
+}
 
 interface QuillEditorProps {
   placeholder?: string;
@@ -12,7 +19,38 @@ interface QuillEditorProps {
 
 export const QuillEditor: React.FC<QuillEditorProps> = (props) => {
   const label = props.label ? props.label : "";
-  const { quill, quillRef } = useQuill();
+  const { quill, quillRef } = useQuill({
+    modules: {
+      formula: true,
+      toolbar: [
+        ["bold", "italic", "underline", "strike"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        [{ script: "sub" }, { script: "super" }],
+        ["code-block"],
+        ["link", "image", "formula"], // Added formula here
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        [{ color: [] }, { background: [] }],
+        [{ align: [] }],
+        ["clean"],
+      ],
+    },
+    formats: [
+      "bold",
+      "italic",
+      "underline",
+      "strike",
+      "list",
+      "script",
+      "code-block",
+      "link",
+      "image",
+      "formula", // Ensure formula format is allowed
+      "header",
+      "color",
+      "background",
+      "align",
+    ],
+  });
 
   // Set default value when quill is ready
   useEffect(() => {
