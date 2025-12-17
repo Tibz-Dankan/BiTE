@@ -52,6 +52,10 @@ var PostAttempt = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "Invalid answerIDList format! Must be a JSON stringified array of strings.")
 	}
 
+	if len(answerIDList) == 0 {
+		return fiber.NewError(fiber.StatusBadRequest, "Please provide an answer!")
+	}
+
 	if len(answerIDList) > 0 {
 		for _, answerID := range answerIDList {
 			savedAttempt, err := attempt.FindOneByQuestionAnswerAndUser(attempt.QuestionID,
