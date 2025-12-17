@@ -1,4 +1,4 @@
-import React, { useEffect, type ReactNode } from "react";
+import React, { useEffect, useRef, type ReactNode } from "react";
 import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css";
 import katex from "katex";
@@ -64,6 +64,12 @@ export const QuillEditor: React.FC<QuillEditorProps> = (props) => {
     }
   }, [quill, props.defaultDelta]);
 
+  // Use a ref to access the latest onChange prop without re-running the effect
+  const onChangeRef = useRef(props.onChange);
+  useEffect(() => {
+    onChangeRef.current = props.onChange;
+  }, [props.onChange]);
+
   useEffect(() => {
     if (quill) {
       // Set Custom styles for Editor toolbar
@@ -75,27 +81,30 @@ export const QuillEditor: React.FC<QuillEditorProps> = (props) => {
         toolbar.style.borderTopRightRadius = "8px";
       }
 
-      // Capture Editor Input Changes
-      // quill.on("text-change", (delta, oldDelta, source) => {
-      quill.on("text-change", (_, __, source) => {
+      // Handler for text changes
+      const handleTextChange = (_: any, __: any, source: string) => {
         if (source === "user") {
           const deltaContent = JSON.stringify(quill.getContents());
           const htmlContent = quill.root.innerHTML;
           const plainText = quill.getText();
 
-          console.log("Delta:", deltaContent);
-          console.log("HTML:", htmlContent);
-          console.log("Plain Text:", plainText);
-
-          props.onChange({
+          onChangeRef.current({
             deltaContent: deltaContent,
             htmlContent: htmlContent,
             plainText: plainText,
           });
         }
-      });
+      };
+
+      // Capture Editor Input Changes
+      quill.on("text-change", handleTextChange);
+
+      // Cleanup listener on unmount
+      return () => {
+        quill.off("text-change", handleTextChange);
+      };
     }
-  }, [quill, props, quillRef]);
+  }, [quill, quillRef]);
 
   return (
     <div
