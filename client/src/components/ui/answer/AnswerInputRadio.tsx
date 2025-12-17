@@ -27,7 +27,7 @@ export const AnswerInputRadio: React.FC<AnswerInputRadioProps> = (props) => {
       <RadioGroup>
         <div
           className="relative pb-5 flex flex-col items-start
-          justify-center gap-1 w-full mb-1"
+          justify-center gap-6 w-full mb-1"
         >
           {options.map((option) => (
             <div
