@@ -27,14 +27,14 @@ var GetAllQuizzes = func(c *fiber.Ctx) error {
 		userID = c.Locals("userID").(string)
 	}
 
-	user, ok := c.Locals("user").(*models.User)
+	user, ok := c.Locals("user").(models.User)
 	if !ok {
 		log.Println("Invalid user type")
-		user = nil
+		user = models.User{}
 	}
 
 	var userRole string
-	if user != nil {
+	if user.ID != "" {
 		userRole = user.Role
 	}
 
