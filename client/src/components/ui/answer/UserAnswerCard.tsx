@@ -201,4 +201,3 @@ export const UserAnswerCard: React.FC<UserAnswerCardProps> = ({
     </form>
   );
 };
-// };
