@@ -6,3 +6,4 @@ build
 *.env
 # Local Netlify folder
 .netlify
+.VSCodeCounter
