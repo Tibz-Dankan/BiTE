@@ -1,0 +1,65 @@
+import React from "react";
+import { SCNButton } from "../../../ui/shared/button";
+import { Link } from "react-router-dom";
+
+export const LandingNavbar: React.FC = () => {
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+      <div className="container mx-auto px-4 max-w-6xl h-16 flex items-center justify-between">
+        {/* Logo & Brand */}
+        <Link to="/" className="flex items-center gap-2 group">
+          <img
+            src="/images/bite-logo.png"
+            alt="BiTE Logo"
+            className="h-8 w-auto drop-shadow-sm group-hover:scale-105 transition-transform"
+          />
+          <span className="text-xl font-bold bg-gradient-to-r from-[oklch(0.749_0.154_70.67)] to-purple-600 bg-clip-text text-transparent tracking-tight">
+            BiTE
+          </span>
+        </Link>
+
+        {/* Desktop Navigation Links */}
+        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+          <Link to="/" className="hover:text-purple-600 transition-colors">
+            Overview
+          </Link>
+          <a
+            href="#features"
+            className="hover:text-purple-600 transition-colors"
+          >
+            Features
+          </a>
+          <a
+            href="#mission"
+            className="hover:text-purple-600 transition-colors"
+          >
+            Mission
+          </a>
+          <a
+            href="#curriculum"
+            className="hover:text-purple-600 transition-colors"
+          >
+            Curriculum
+          </a>
+        </div>
+
+        {/* Auth Buttons */}
+        <div className="flex items-center gap-3">
+          <Link
+            to="/auth/signin"
+            className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors hidden sm:block"
+          >
+            Sign In
+          </Link>
+          <SCNButton
+            asChild
+            size="sm"
+            className="rounded-full shadow-md shadow-purple-100"
+          >
+            <Link to="/auth/signup">Get Started</Link>
+          </SCNButton>
+        </div>
+      </div>
+    </nav>
+  );
+};

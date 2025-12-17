@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export const HeroSection: React.FC = () => {
   return (
-    <div className="relative overflow-hidden bg-white min-h-screen flex items-center justify-center pt-16">
+    <div className="relative overflow-hidden bg-white min-h-screen flex items-center justify-center pt-8 sm:pt-2">
       {/* Background Gradients */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-200/40 rounded-full blur-[120px] animate-float" />
