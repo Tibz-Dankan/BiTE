@@ -131,6 +131,7 @@ func (q *Quiz) FindAllWithDetails(limit float64, cursor string, quizCategoryID s
 			"startsAt":          quiz.StartsAt,
 			"endsAt":            quiz.EndsAt,
 			"canBeAttempted":    quiz.CanBeAttempted,
+			"showQuiz":          quiz.ShowQuiz,
 			"createdAt":         quiz.CreatedAt,
 			"updatedAt":         quiz.UpdatedAt,
 			"attachments":       quiz.Attachments,

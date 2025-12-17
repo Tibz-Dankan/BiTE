@@ -14,7 +14,15 @@ import {
   DropdownMenuTrigger,
 } from "../shared/dropdown-menu";
 import { SCNButton } from "../shared/button";
-import { Copy, Edit, MoreVertical, Settings, Trash2 } from "lucide-react";
+import {
+  Copy,
+  Edit,
+  MoreVertical,
+  Settings,
+  Trash2,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import { QuillViewer } from "../shared/QuillViewer";
 import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
 import { isJSON } from "../../../utils/isJson";
@@ -172,6 +180,28 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
               <span className="flex items-center gap-2 cursor-pointer">
                 <Settings className="w-4 h-4 text-gray-800" />
                 Make Quiz Attemptable
+              </span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                const path = quiz.showQuiz
+                  ? `/a/quizzes/${quiz.id}/hide`
+                  : `/a/quizzes/${quiz.id}/show`;
+                navigate(path);
+              }}
+            >
+              <span className="flex items-center gap-2 cursor-pointer text-gray-800">
+                {quiz.showQuiz ? (
+                  <>
+                    <EyeOff className="w-4 h-4 text-inherit" />
+                    Hide Quiz
+                  </>
+                ) : (
+                  <>
+                    <Eye className="w-4 h-4 text-inherit" />
+                    Show Quiz
+                  </>
+                )}
               </span>
             </DropdownMenuItem>
             <DropdownMenuItem

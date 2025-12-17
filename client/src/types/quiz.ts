@@ -29,6 +29,7 @@ export type TQuiz = {
   canBeAttempted: boolean;
   createdAt: string;
   updatedAt: string;
+  showQuiz: boolean;
   questions: null;
   attachments: Prettify<TAttachment[]>;
   quizCategory?: TQuizCategory;
