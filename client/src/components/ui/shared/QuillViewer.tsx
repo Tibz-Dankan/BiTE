@@ -1,6 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
+import katex from "katex";
+import "katex/dist/katex.min.css";
+
+// Configure katex for Quill
+if (typeof window !== "undefined") {
+  (window as any).katex = katex;
+}
 
 interface QuillViewerProps {
   deltaContent: string;
@@ -17,6 +24,7 @@ export const QuillViewer: React.FC<QuillViewerProps> = ({ deltaContent }) => {
         readOnly: true,
         modules: {
           toolbar: false,
+          formula: true, // Enable formula module for rendering
         },
       });
 
