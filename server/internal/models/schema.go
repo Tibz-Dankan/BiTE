@@ -104,6 +104,7 @@ type Quiz struct {
 	EndsAt            time.Time `gorm:"column:endsAt;index" json:"endsAt"`
 	CanBeAttempted    bool      `gorm:"column:canBeAttempted;default:false;index" json:"canBeAttempted"`
 	IsDuplicate       bool      `gorm:"column:isDuplicate;default:false;index" json:"isDuplicate"`
+	ShowQuiz          bool      `gorm:"column:showQuiz;default:false;index" json:"showQuiz"`
 	CreatedAt         time.Time `gorm:"column:createdAt;index" json:"createdAt"`
 	UpdatedAt         time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
 
