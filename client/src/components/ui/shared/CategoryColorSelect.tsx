@@ -1,15 +1,8 @@
 import React, { Fragment, type ReactNode, useEffect, useState } from "react";
-import { isArrayWithElements } from "../../../utils/isArrayWithElements";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./select";
+import { Select, SelectContent, SelectItem, SelectTrigger } from "./select";
 
 // Predefined color options with names and hex values
-export const CATEGORY_COLORS = [
+const CATEGORY_COLORS = [
   { name: "Blue", hex: "#3B82F6" },
   { name: "Cyan", hex: "#06B6D4" },
   { name: "Purple", hex: "#A855F7" },
