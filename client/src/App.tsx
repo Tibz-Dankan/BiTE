@@ -10,6 +10,7 @@ import { AdminRoutes } from "./routes/adminRoutes";
 import { useGlobalRequestInterceptor } from "./hooks/use-global-request-interceptor";
 import { PageCapturer } from "./components/ui/shared/PageCapturer";
 import { LandingPage } from "./components/pages/common/LandingPage";
+import { InitSignInWithRefreshToken } from "./components/pages/auth/InitSignInWithRefreshToken";
 
 export const App: React.FC = () => {
   const auth = useAuthStore((state) => state.auth);
@@ -24,6 +25,7 @@ export const App: React.FC = () => {
       <BrowserRouter>
         <NotificationInitializer />
         <PageCapturer />
+        <InitSignInWithRefreshToken />
         {!isLoggedIn && (
           <Fragment>
             <Routes>

@@ -5,6 +5,7 @@ import type {
   TResetPassword,
   TSignInInPut,
   TSignUpInPut,
+  TSignWithRefreshToken as TSignInWithRefreshToken,
   TUpdateUserImage,
   TUser,
   TVerifyOTP,
@@ -153,6 +154,28 @@ class AuthAPI {
     const response = await fetch(`${SERVER_URL}/user/${user.id}`, {
       method: "PATCH",
       body: JSON.stringify(user),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  signinWithRefreshToken = async ({
+    userID,
+    refreshToken,
+  }: TSignInWithRefreshToken) => {
+    const response = await fetch(`${SERVER_URL}/user/auth/rt-signin`, {
+      method: "POST",
+      body: JSON.stringify({
+        userID,
+        refreshToken,
+      }),
       headers: {
         "Content-type": "application/json",
       },

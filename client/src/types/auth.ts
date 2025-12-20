@@ -24,6 +24,11 @@ export type TResetPassword = {
   confirmPassword?: string;
 };
 
+export type TSignWithRefreshToken = {
+  userID: string;
+  refreshToken: string;
+};
+
 export type TChangePassword = {
   userID: string;
   currentPassword: string;
