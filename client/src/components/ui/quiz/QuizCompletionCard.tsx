@@ -47,8 +47,18 @@ export const QuizCompletionCard: React.FC<QuizCompletionCardProps> = ({
   }, []);
 
   return (
-    <div className="w-full max-w-lg mx-auto mt-8 bg-white rounded-3xl shadow-xl overflow-hidden p-8 text-center animate-in fade-in zoom-in duration-500">
-      <div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
+    <div className="w-full max-w-lg mx-auto mt-8 bg-white rounded-3xl shadow-xl overflow-hidden p-8 text-center animate-in fade-in zoom-in duration-500 relative">
+      <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-orange-400 via-red-500 to-pink-500" />
+
+      <div className="mb-6 flex justify-center">
+        <img
+          src="/images/celebration.png"
+          alt="Celebration"
+          className="w-48 h-auto object-contain animate-in zoom-in fade-in slide-in-from-top-4 duration-1000 drop-shadow-lg rounded-lg"
+        />
+      </div>
+
+      <div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner ring-4 ring-white relative z-10">
         <Trophy className="w-10 h-10 text-orange-600" />
       </div>
 
