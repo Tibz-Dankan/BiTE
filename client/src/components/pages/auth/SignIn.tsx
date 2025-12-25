@@ -3,7 +3,7 @@ import { Loader2 } from "lucide-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import type { TAuth, TSignInInPut } from "../../../types/auth";
 import { useAuthStore } from "../../../stores/auth";
 import { useNotificationStore } from "../../../stores/notification";
@@ -32,7 +32,7 @@ export const SignIn: React.FC = () => {
       navigate("/u/dashboard", { replace: true });
       return;
     }
-    navigate("/auth/login");
+    navigate("/auth/signin");
   };
 
   const { isPending, mutate } = useMutation({
@@ -90,14 +90,14 @@ export const SignIn: React.FC = () => {
         className="w-full max-w-md px-8 py-10 bg-white rounded-lg
         shadow-sm"
       >
-        <div className="flex justify-center mb-8">
+        <Link to="/" className="flex justify-center mb-8">
           <img
             src="/images/bite-logo.png"
             alt="BiTE Logo"
             width={100}
             height={100}
           />
-        </div>
+        </Link>
 
         <h2 className="text-xl font-semibold text-center text-gray-800 mb-8">
           Sign In to Your Account
@@ -130,6 +130,20 @@ export const SignIn: React.FC = () => {
               "Sign In"
             )}
           </Button>
+          <div className="flex items-center justify-between mt-4">
+            <Link
+              to="/auth/forgot-password"
+              className="text-sm font-medium text-gray-600 hover:text-blue-500 hover:underline"
+            >
+              Forgot password?
+            </Link>
+            <Link
+              to="/auth/signup"
+              className="text-sm font-medium text-gray-600 hover:text-blue-500 hover:underline"
+            >
+              Create account
+            </Link>
+          </div>
         </form>
       </div>
     </div>

@@ -3,7 +3,7 @@ import { Loader2 } from "lucide-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import type { TForgotPassword } from "../../../types/auth";
 import { useNotificationStore } from "../../../stores/notification";
 import { InputField } from "../../ui/shared/InputField";
@@ -73,14 +73,14 @@ export const ForgotPassword: React.FC = () => {
         className="w-full max-w-md px-8 py-10 bg-white rounded-lg
         shadow-sm"
       >
-        <div className="flex justify-center mb-8">
+        <Link to="/" className="flex justify-center mb-8">
           <img
             src="/images/bite-logo.png"
             alt="BiTE Logo"
             width={100}
             height={100}
           />
-        </div>
+        </Link>
 
         <h2 className="text-xl font-semibold text-center text-gray-800 mb-8">
           Forgot your password? initiate recovery
@@ -105,6 +105,17 @@ export const ForgotPassword: React.FC = () => {
               "Submit"
             )}
           </Button>
+          <div className="mt-4 text-center">
+            <p className="text-sm text-gray-600">
+              Remember password?{" "}
+              <Link
+                to="/auth/signin"
+                className="font-medium text-gray-600 hover:text-blue-500 hover:underline"
+              >
+                Log in
+              </Link>
+            </p>
+          </div>
         </form>
       </div>
     </div>
