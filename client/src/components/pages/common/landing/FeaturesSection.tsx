@@ -10,7 +10,7 @@ const features = [
   {
     title: "Inquiry-Based Learning",
     description:
-      "Students learn by asking questions, exploring real-world problems, and discovering solutions through curiosity.",
+      "Students learn by answering questions, exploring real-world problems, and discovering solutions through curiosity.",
     icon: Compass,
     className: "md:col-span-2",
   },
