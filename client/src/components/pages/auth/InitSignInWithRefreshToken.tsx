@@ -1,7 +1,7 @@
 import React from "react";
-import { useSigninWithRefreshToken } from "../../../hooks/useSigninWithRefreshToken";
+// import { useSigninWithRefreshToken } from "../../../hooks/useSigninWithRefreshToken";
 
 export const InitSignInWithRefreshToken: React.FC = () => {
-  useSigninWithRefreshToken();
+  // useSigninWithRefreshToken();
   return <div />;
 };
