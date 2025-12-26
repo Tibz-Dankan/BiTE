@@ -56,7 +56,7 @@ var SignInWithRefreshToken = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "Invalid refresh token!")
 	}
 
-	accessToken, err := pkg.SignJWTToken(user.ID, "accessToken")
+	accessToken, err := pkg.SignJWTToken(user.ID, "ACCESS_TOKEN")
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}

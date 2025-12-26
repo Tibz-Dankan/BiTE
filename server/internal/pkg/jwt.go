@@ -14,9 +14,9 @@ func SignJWTToken(userID string, tokenType string) (string, error) {
 	var tokenExpiration int64
 
 	switch tokenType {
-	case "accessToken":
+	case "ACCESS_TOKEN":
 		tokenExpiration = time.Now().Add(12 * time.Hour).Unix()
-	case "refreshToken":
+	case "REFRESH_TOKEN":
 		tokenExpiration = time.Now().Add(24 * 30 * time.Hour).Unix()
 	default:
 		return "", fmt.Errorf("invalid token type: %s", tokenType)
