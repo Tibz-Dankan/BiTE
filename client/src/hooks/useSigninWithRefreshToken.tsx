@@ -4,11 +4,13 @@ import { authAPI } from "../api/auth";
 import type { TAuth } from "../types/auth";
 import { useCallback, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 export const useSigninWithRefreshToken = () => {
   const auth = useAuthStore((state) => state.auth);
   const updateAuth = useAuthStore((state) => state.updateAuth);
   const clearAuth = useAuthStore((state) => state.clearAuth);
+  const navigate = useNavigate();
 
   const isTokenExpired = useCallback((token: string): boolean => {
     if (!token) return true;
@@ -44,6 +46,7 @@ export const useSigninWithRefreshToken = () => {
       console.error("Failed to signin with refresh token:", error.message);
       if (isTokenExpired(auth.refreshToken)) {
         clearAuth();
+        navigate("/auth/signin", { replace: true });
       }
     },
   });
