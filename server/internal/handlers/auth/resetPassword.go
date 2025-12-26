@@ -55,12 +55,12 @@ var ResetPassword = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	accessToken, err := pkg.SignJWTToken(user.ID, "accessToken")
+	accessToken, err := pkg.SignJWTToken(user.ID, "ACCESS_TOKEN")
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	refreshToken, err := pkg.SignJWTToken(user.ID, "refreshToken")
+	refreshToken, err := pkg.SignJWTToken(user.ID, "REFRESH_TOKEN")
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}

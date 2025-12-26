@@ -44,14 +44,12 @@ var SignUp = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	log.Printf("newUser: %+v", newUser)
-
-	accessToken, err := pkg.SignJWTToken(newUser.ID, "accessToken")
+	accessToken, err := pkg.SignJWTToken(newUser.ID, "ACCESS_TOKEN")
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	refreshToken, err := pkg.SignJWTToken(newUser.ID, "refreshToken")
+	refreshToken, err := pkg.SignJWTToken(newUser.ID, "REFRESH_TOKEN")
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
