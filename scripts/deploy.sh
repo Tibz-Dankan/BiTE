@@ -64,6 +64,79 @@ if ! docker info | grep -q "Swarm: active"; then
   docker swarm init --advertise-addr $(hostname -I | awk '{print $1}')
 fi
 
+# Function to check if service is currently updating
+check_service_updating() {
+  local service_name=$1
+  local update_status=$(docker service inspect --format='{{.UpdateStatus.State}}' $service_name 2>/dev/null || echo "none")
+  
+  if [ "$update_status" = "updating" ] || [ "$update_status" = "paused" ]; then
+    return 0  # Service is updating
+  else
+    return 1  # Service is not updating
+  fi
+}
+
+# Function to wait for any ongoing updates to complete
+wait_for_update_completion() {
+  local service_name=$1
+  local max_wait=300  # 5 minutes timeout
+  local elapsed=0
+  local interval=5
+  
+  echo "Checking if service $service_name has any ongoing updates..."
+  
+  while check_service_updating $service_name; do
+    echo "Service is currently updating. Waiting for completion... (${elapsed}s elapsed)"
+    sleep $interval
+    elapsed=$((elapsed + interval))
+    
+    if [ $elapsed -ge $max_wait ]; then
+      echo "WARNING: Update is taking longer than expected. Current status:"
+      docker service ps $service_name --no-trunc | head -10
+      echo ""
+      echo "You may need to manually check the service or force update with:"
+      echo "docker service update --force $service_name"
+      exit 1
+    fi
+  done
+  
+  echo "No ongoing updates detected. Safe to proceed."
+}
+
+# Check if stack exists and wait for any ongoing updates
+if docker stack ls | grep -q "app-stack"; then
+  SERVICE_NAME="app-stack_bite-backend"
+  
+  echo "Stack exists. Checking service status before deployment..."
+  
+  # Check if service exists
+  if docker service ls --filter name=$SERVICE_NAME --format '{{.Name}}' | grep -q "$SERVICE_NAME"; then
+    # Display current service status
+    echo "Current service status:"
+    docker service ls --filter name=$SERVICE_NAME
+    echo ""
+    
+    # Wait for any ongoing updates to complete
+    wait_for_update_completion $SERVICE_NAME
+    
+    # Additional safety check - ensure replicas are stable
+    echo "Verifying service replica stability..."
+    REPLICAS=$(docker service ls --filter name=$SERVICE_NAME --format '{{.Replicas}}')
+    echo "Current replicas: $REPLICAS"
+    
+    if echo "$REPLICAS" | grep -q "/"; then
+      CURRENT=$(echo "$REPLICAS" | cut -d'/' -f1)
+      DESIRED=$(echo "$REPLICAS" | cut -d'/' -f2)
+      
+      if [ "$CURRENT" != "$DESIRED" ]; then
+        echo "WARNING: Service replicas are not stable ($CURRENT/$DESIRED)"
+        echo "Waiting for replicas to stabilize..."
+        sleep 10
+      fi
+    fi
+  fi
+fi
+
 echo "About to deploy stack with image: ${NEW_IMAGE}"
 
 # Deploy or update the stack
@@ -74,6 +147,10 @@ else
   echo "Deploying new stack..."
   docker stack deploy -c docker-compose.yaml app-stack --with-registry-auth
 fi
+
+# Wait a moment for the deployment command to be registered
+echo "Waiting for deployment to register..."
+sleep 5
 
 # Wait for backend service to be running and available on port 5000
 echo "Waiting for backend service to start and be available on port 5000..."
