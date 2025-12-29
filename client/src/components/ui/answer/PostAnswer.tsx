@@ -136,7 +136,8 @@ export const PostAnswer: React.FC<PostAnswerProps> = (props) => {
         nextSequenceData.data.nextSequenceNumber
       );
     }
-  }, [nextSequenceData, formik]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nextSequenceData, formik.setFieldValue]);
 
   return (
     <div
