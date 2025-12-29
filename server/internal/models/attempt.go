@@ -177,3 +177,30 @@ func (a *Attempt) GetTotalDistinctQuizzesAttempted() (int64, error) {
 
 	return count, nil
 }
+
+func (a *Attempt) GetCorrectQuestionsCount(quizID string, userID string) (int64, error) {
+	var attemptIDs []string
+
+	// Get all attemptIDs for this user and quiz
+	if err := db.Model(&Attempt{}).
+		Select("id").
+		Where("\"quizID\" = ? AND \"userID\" = ?", quizID, userID).
+		Pluck("id", &attemptIDs).Error; err != nil {
+		return 0, err
+	}
+
+	if len(attemptIDs) == 0 {
+		return 0, nil
+	}
+
+	var count int64
+
+	// Count AttemptStatus records where IsCorrect is true for those attemptIDs
+	if err := db.Model(&AttemptStatus{}).
+		Where("\"attemptID\" IN ? AND \"IsCorrect\" = ?", attemptIDs, true).
+		Count(&count).Error; err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}
