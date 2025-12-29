@@ -4,12 +4,10 @@ import { CheckCircle, XCircle, AlertCircle } from "lucide-react";
 
 interface UserQuestionResultCardProps {
   question: TQuestionWithAttempts;
-  index: number;
 }
 
 export const UserQuestionResultCard: React.FC<UserQuestionResultCardProps> = ({
   question,
-  index,
 }) => {
   const attemptStatus = question.attemptStatuses?.[0];
   const userAttempt = question.attempts?.[0];
@@ -24,7 +22,7 @@ export const UserQuestionResultCard: React.FC<UserQuestionResultCardProps> = ({
     <div className="p-6 rounded-2xl border border-slate-200 bg-white mb-4 shadow-sm hover:shadow-md transition-shadow">
       <div className="flex justify-between items-start mb-4">
         <h4 className="text-lg font-semibold text-slate-800">
-          Question {index + 1}
+          Question {question.sequenceNumber}
         </h4>
         <div className="flex items-center gap-2">
           {isCorrect ? (

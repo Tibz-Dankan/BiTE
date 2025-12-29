@@ -83,12 +83,8 @@ export const UserQuizResultCard: React.FC<UserQuizResultCardProps> = ({
         <h2 className="text-2xl font-bold text-slate-800 px-2">
           Detailed Review
         </h2>
-        {quiz.questions?.map((question, index) => (
-          <UserQuestionResultCard
-            key={question.id}
-            question={question}
-            index={index}
-          />
+        {quiz.questions?.map((question) => (
+          <UserQuestionResultCard key={question.id} question={question} />
         ))}
       </div>
     </div>

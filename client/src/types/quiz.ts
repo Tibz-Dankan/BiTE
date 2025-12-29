@@ -96,6 +96,18 @@ export type TGetAllQuizzes = {
   quizCategoryID?: string;
 };
 
+export type TGetQuizDataForAttempt = {
+  quizID: string;
+  limit: number;
+  questionCursor: string;
+};
+
+export type TGetQuizAttemptedData = {
+  quizID: string;
+  limit: number;
+  questionCursor: string;
+};
+
 export type TUpdateQuizAttachment = {
   quizID: string;
   attachmentID: string;

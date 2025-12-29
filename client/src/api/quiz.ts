@@ -1,6 +1,8 @@
 import { SERVER_URL } from "../constants/urls";
 import type {
   TGetAllQuizzes,
+  TGetQuizAttemptedData,
+  TGetQuizDataForAttempt,
   TUpdateQuiz,
   TUpdateQuizAttachment,
 } from "../types/quiz";
@@ -127,11 +129,7 @@ class QuizAPI {
     quizID,
     limit,
     questionCursor,
-  }: {
-    quizID: string;
-    limit: number;
-    questionCursor: string;
-  }) => {
+  }: TGetQuizDataForAttempt) => {
     const response = await fetch(
       `${SERVER_URL}/quiz/attempt/${quizID}?limit=${limit}&questionCursor=${questionCursor}`,
       {
@@ -149,9 +147,13 @@ class QuizAPI {
     return await response.json();
   };
 
-  getQuizAttemptedData = async ({ quizID }: { quizID: string }) => {
+  getQuizAttemptedData = async ({
+    quizID,
+    limit,
+    questionCursor,
+  }: TGetQuizAttemptedData) => {
     const response = await fetch(
-      `${SERVER_URL}/quiz/attempted-data/${quizID}`,
+      `${SERVER_URL}/quiz/attempted-data/${quizID}?limit=${limit}&questionCursor=${questionCursor}`,
       {
         method: "GET",
         headers: {
