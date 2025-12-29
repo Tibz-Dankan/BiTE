@@ -37,13 +37,19 @@ export const UserQuestionCard: React.FC<UserQuestionCardProps> = ({
       : JSON.stringify(convertPlainTextToDelta(quizData.title))
     : JSON.stringify(convertPlainTextToDelta(quizData.title));
 
+  const quizIntroductionDelta = quizData.isDeltaDefault
+    ? isJSON(quizData.introductionDelta!)
+      ? quizData.introductionDelta!
+      : JSON.stringify(convertPlainTextToDelta(quizData.introduction))
+    : JSON.stringify(convertPlainTextToDelta(quizData.introduction));
+
   const questionTitleDelta = question.isDeltaDefault
     ? isJSON(question.titleDelta!)
       ? question.titleDelta!
       : JSON.stringify(convertPlainTextToDelta(question.title))
     : JSON.stringify(convertPlainTextToDelta(question.title));
 
-  const introductionDelta = question.isDeltaDefault
+  const questionIntroductionDelta = question.isDeltaDefault
     ? isJSON(question.introductionDelta!)
       ? question.introductionDelta!
       : JSON.stringify(convertPlainTextToDelta(question.introduction))
@@ -58,7 +64,11 @@ export const UserQuestionCard: React.FC<UserQuestionCardProps> = ({
   }
 
   return (
-    <div className="w-full space-y-6 border border-gray-200 shadow-sm p-6 sm:p-8 rounded-2xl bg-white relative overflow-hidden transition-all duration-300 hover:shadow-md">
+    <div
+      className="w-full space-y-6 border border-gray-200 shadow-sm
+      p-6 sm:p-8 rounded-2xl bg-white relative overflow-hidden transition-all 
+      duration-300 hover:shadow-md"
+    >
       {/* Quiz Details */}
       <div
         className="absolute top-0 left-0 w-full h-1.5"
@@ -118,6 +128,9 @@ export const UserQuestionCard: React.FC<UserQuestionCardProps> = ({
             {/* Metadata badges could go here if we had more info to show, e.g. estimated time, difficulty */}
           </div>
         </div>
+        <div className="prose prose-sm max-w-none text-gray-800">
+          <QuillViewer deltaContent={quizIntroductionDelta} />
+        </div>
       </div>
 
       {/* Question Details */}
@@ -160,7 +173,7 @@ export const UserQuestionCard: React.FC<UserQuestionCardProps> = ({
       {hasIntroduction && (
         <div className="w-full flex flex-col gap-1">
           <h4 className="font-medium text-gray-700">Introduction</h4>
-          <QuillViewer deltaContent={introductionDelta} />
+          <QuillViewer deltaContent={questionIntroductionDelta} />
         </div>
       )}
 
