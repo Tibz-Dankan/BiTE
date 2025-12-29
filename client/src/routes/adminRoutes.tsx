@@ -48,7 +48,7 @@ export const AdminRoutes: React.FC = () => {
       {
         title: "Edit Quiz",
         icon: <FileQuestion className="h-4 w-4" />,
-        path: "/a/quizzes/:quizID",
+        path: "/a/quizzes/:quizID/edit",
         showInSidebar: false,
         element: <AdminQuizUpdate />,
       },

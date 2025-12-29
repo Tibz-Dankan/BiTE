@@ -71,11 +71,11 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
   };
 
   const updateAdminQuizEditPage = () => {
-    navigate(`/a/quizzes/${quiz.id}`);
+    navigate(`/a/quizzes/${quiz.id}/edit`);
     updateCurrentPage({
       title: "Edit Quiz",
       icon: undefined,
-      path: "/a/quizzes/:quizID",
+      path: "/a/quizzes/:quizID/edit",
       showInSidebar: false,
       element: undefined,
     });
