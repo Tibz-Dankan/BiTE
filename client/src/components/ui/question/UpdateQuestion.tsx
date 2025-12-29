@@ -14,8 +14,8 @@ import { useQuestionStore } from "../../../stores/question";
 import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
 import { QuillEditor } from "../shared/QuillEditor";
 import { isJSON } from "../../../utils/isJson";
-// import { useNavigate } from "react-router-dom";
-// import { useRouteStore } from "../../../stores/routes";
+import { useNavigate } from "react-router-dom";
+import { useRouteStore } from "../../../stores/routes";
 
 interface UpdateQuestionProps {
   question: TQuestion;
@@ -31,21 +31,21 @@ export const UpdateQuestion: React.FC<UpdateQuestionProps> = (props) => {
     (state) => state.hideCardNotification
   );
   const updateQuestion = useQuestionStore((state) => state.updateQuestion);
-  // const navigate = useNavigate();
-  // const updateCurrentPage = useRouteStore((state) => state.updateCurrentPage);
+  const navigate = useNavigate();
+  const updateCurrentPage = useRouteStore((state) => state.updateCurrentPage);
 
   const user = useAuthStore((state) => state.auth.user);
 
-  // const navigateToQuizQuestionPage = (question: TQuestion) => {
-  //   navigate(`/a/quizzes/${question.quizID}/questions`);
-  //   updateCurrentPage({
-  //     title: "New Question",
-  //     icon: undefined,
-  //     path: `/a/quizzes/${question.quizID}/questions`,
-  //     showInSidebar: false,
-  //     element: undefined,
-  //   });
-  // };
+  const navigateToQuizQuestionPage = (question: TQuestion) => {
+    navigate(`/a/quizzes/${question.quizID}/questions`);
+    updateCurrentPage({
+      title: "New Question",
+      icon: undefined,
+      path: `/a/quizzes/${question.quizID}/questions`,
+      showInSidebar: false,
+      element: undefined,
+    });
+  };
 
   const { isPending, mutate } = useMutation({
     mutationFn: questionAPI.update,
@@ -55,7 +55,7 @@ export const UpdateQuestion: React.FC<UpdateQuestionProps> = (props) => {
       setTimeout(() => {
         hideCardNotification();
       }, 5000);
-      // navigateToQuizQuestionPage(response.data);
+      navigateToQuizQuestionPage(response.data);
     },
     onError: (error: any) => {
       showCardNotification({ type: "error", message: error.message });
