@@ -25,7 +25,7 @@ export const UserQuizResultPage = () => {
     queryFn: () =>
       quizAPI.getQuizAttemptedData({
         quizID: quizID!,
-        limit: 1,
+        limit: 20,
         questionCursor: hasCursor ? cursor : "",
       }),
     enabled: !!quizID && !!user.id,
