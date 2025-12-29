@@ -64,7 +64,11 @@ export const UserQuestionCard: React.FC<UserQuestionCardProps> = ({
   }
 
   return (
-    <div className="w-full space-y-6 border border-gray-200 shadow-sm p-6 sm:p-8 rounded-2xl bg-white relative overflow-hidden transition-all duration-300 hover:shadow-md">
+    <div
+      className="w-full space-y-6 border border-gray-200 shadow-sm
+      p-6 sm:p-8 rounded-2xl bg-white relative overflow-hidden transition-all 
+      duration-300 hover:shadow-md"
+    >
       {/* Quiz Details */}
       <div
         className="absolute top-0 left-0 w-full h-1.5"
