@@ -133,6 +133,8 @@ services:
       - app-network
     ports:
       - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.grafana.rule=Host(`grafana.bitcoinhighschool.com`)"
@@ -153,6 +155,9 @@ services:
       - app-network
     ports:
       - "9090:9090"
+    volumes:
+      - prometheus-data:/prometheus
+      - prometheus-config:/etc/prometheus
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.prometheus.rule=Host(`prometheus.bitcoinhighschool.com`)"
@@ -163,3 +168,9 @@ networks:
 
 volumes:
   traefik-data: # Named volume for persistent certificate storage
+  prometheus-data:
+    driver: local
+  prometheus-config:
+    driver: local
+  grafana-data:
+    driver: local  
