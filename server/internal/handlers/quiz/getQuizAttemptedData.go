@@ -67,10 +67,27 @@ var GetQuizAttemptedData = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
+	totalCorrectQuestions, err := attempt.GetCorrectQuestionsCount(quizID, userID)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
 	progress := map[string]interface{}{
 		"totalQuestions":          totalQuestions,
 		"totalAttemptedQuestions": totalAttemptedQuestions,
 		"status":                  status,
+	}
+
+	var finalScore int64 = 0
+	if totalQuestions > 0 {
+		finalScore = (totalCorrectQuestions * 100) / totalQuestions
+	}
+
+	score := map[string]interface{}{
+		"totalQuestions":          totalQuestions,
+		"totalAttemptedQuestions": totalAttemptedQuestions,
+		"totalCorrectQuestions":   totalCorrectQuestions,
+		"finalScore":              finalScore,
 	}
 
 	response := fiber.Map{
@@ -79,6 +96,7 @@ var GetQuizAttemptedData = func(c *fiber.Ctx) error {
 		"data":       savedQuiz,
 		"pagination": pagination,
 		"progress":   progress,
+		"score":      score,
 	}
 
 	return c.Status(fiber.StatusOK).JSON(response)
