@@ -166,7 +166,8 @@ export const PostQuestion: React.FC<PostQuestionProps> = (props) => {
         nextSequenceData.data.nextSequenceNumber
       );
     }
-  }, [nextSequenceData, formik]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nextSequenceData, formik.setFieldValue]);
 
   const quizTitleDelta = quiz.isDeltaDefault
     ? isJSON(quiz.titleDelta!)
