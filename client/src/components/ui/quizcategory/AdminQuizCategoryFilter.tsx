@@ -1,5 +1,4 @@
 import type { TQuizCategory } from "../../../types/quizCategory";
-import { Button } from "../shared/Btn";
 import { DeleteQuizCategory } from "./DeleteQuizCategory";
 import { UpdateQuizCategory } from "./UpdateQuizCategory";
 import { AddQuizCategoryButton } from "./AddQuizCategoryButton";
@@ -71,27 +70,27 @@ export const AdminQuizCategoryFilter: React.FC = () => {
         Filter by Category
       </h2>
       <div className="flex flex-wrap gap-3">
-        <Button
-          type="button"
+        <span
           onClick={() => onSelectCategoryHandler("")}
-          className={`rounded-full px-6 py-2 bg-gray-100 ${
-            selectedCategoryId === ""
-              ? "bg-(--primary) text-gray-50 hover:bg-(--primary)/90 font-semibold"
-              : "border-1 border-gray-300 text-gray-800  hover:bg-gray-100"
-          }`}
+          className={`flex items-center justify-center rounded-full
+             px-6 py-2 h-10 cursor-pointer ${
+               selectedCategoryId === ""
+                 ? "bg-(--primary) text-gray-50 hover:bg-(--primary)/90 font-semibold"
+                 : "border-1 border-gray-300 text-gray-800  hover:bg-gray-100"
+             }`}
         >
           All Quizzes
-        </Button>
+        </span>
         {quizCategories.map((category) => (
-          <Button
+          <span
             key={category.id}
-            type="button"
             onClick={() => onSelectCategoryHandler(category.id)}
-            className={`rounded-full px-6 py-2 bg-gray-100 ${
-              selectedCategoryId === category.id
-                ? "bg-(--primary) text-gray-50 hover:bg-(--primary)/90 font-semibold"
-                : "border-1 border-gray-300 text-gray-800 hover:bg-(--primary) hover:text-gray-50"
-            }`}
+            className={`flex items-center justify-center rounded-full
+               px-6 py-2 h-10 cursor-pointer ${
+                 selectedCategoryId === category.id
+                   ? "bg-(--primary) text-gray-50 hover:bg-(--primary)/90 font-semibold"
+                   : "border-1 border-gray-300 text-gray-800 hover:bg-(--primary) hover:text-gray-50"
+               }`}
           >
             <span>{category.name}</span>
             <div className="z-50 mx-2 rounded-md hover:bg-gray-300">
@@ -100,7 +99,7 @@ export const AdminQuizCategoryFilter: React.FC = () => {
             <div className="z-50 rounded-md hover:bg-gray-300">
               <UpdateQuizCategory quizCategory={category} />
             </div>
-          </Button>
+          </span>
         ))}
         {/* Add Quiz Category Button */}
         <AddQuizCategoryButton />
