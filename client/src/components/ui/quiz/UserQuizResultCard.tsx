@@ -12,16 +12,10 @@ export const UserQuizResultCard: React.FC<UserQuizResultCardProps> = ({
   attemptData,
 }) => {
   const navigate = useNavigate();
-  const { data: quiz, progress } = attemptData;
+  const { data: quiz, progress, score } = attemptData;
 
-  const correctCount = quiz.questions?.reduce((acc, q) => {
-    const isCorrect = q.attemptStatuses?.[0]?.IsCorrect;
-    return isCorrect ? acc + 1 : acc;
-  }, 0);
-
-  const finalScorePercentage = Math.round(
-    (correctCount / progress.totalQuestions) * 100
-  );
+  const quizAttemptStatus =
+    progress.status === "COMPLETED" ? "Completed" : "In Progress";
 
   return (
     <div className="max-w-4xl mx-auto pb-12">
@@ -47,7 +41,7 @@ export const UserQuizResultCard: React.FC<UserQuizResultCardProps> = ({
               <Trophy size={24} />
             </div>
             <div className="text-3xl font-bold text-orange-900 mb-1">
-              {finalScorePercentage}%
+              {score.finalScore}%
             </div>
             <div className="text-sm font-medium text-orange-600">
               Total Score
@@ -59,7 +53,7 @@ export const UserQuizResultCard: React.FC<UserQuizResultCardProps> = ({
               <CheckCircle2 size={24} />
             </div>
             <div className="text-3xl font-bold text-green-900 mb-1">
-              {correctCount}/{progress.totalQuestions}
+              {score.totalCorrectQuestions}/{score.totalQuestions}
             </div>
             <div className="text-sm font-medium text-green-600">
               Correct Answers
@@ -71,7 +65,7 @@ export const UserQuizResultCard: React.FC<UserQuizResultCardProps> = ({
               <Clock size={24} />
             </div>
             <div className="text-3xl font-bold text-blue-900 mb-1">
-              Completed
+              {quizAttemptStatus}
             </div>
             <div className="text-sm font-medium text-blue-600">Status</div>
           </div>

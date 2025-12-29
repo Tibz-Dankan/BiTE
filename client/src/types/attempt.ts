@@ -76,6 +76,13 @@ export type TQuizAttemptData = {
     totalAttemptedQuestions: number;
     totalQuestions: number;
   };
+  score: {
+    finalScore: number;
+    totalAttemptedQuestions: number;
+    totalCorrectQuestions: number;
+    totalQuestions: number;
+  };
+
   status: string;
 };
 
