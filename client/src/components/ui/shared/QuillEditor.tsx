@@ -21,7 +21,6 @@ export const QuillEditor: React.FC<QuillEditorProps> = (props) => {
   const label = props.label ? props.label : "";
   const { quill, quillRef } = useQuill({
     modules: {
-      formula: true,
       toolbar: [
         ["bold", "italic", "underline", "strike"],
         [{ list: "ordered" }, { list: "bullet" }],

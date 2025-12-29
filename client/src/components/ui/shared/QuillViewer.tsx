@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import Quill from "quill";
+import React, { useEffect } from "react";
+import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css";
 import katex from "katex";
 import "katex/dist/katex.min.css";
@@ -14,44 +14,57 @@ interface QuillViewerProps {
 }
 
 export const QuillViewer: React.FC<QuillViewerProps> = ({ deltaContent }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const quillRef = useRef<any>(null);
+  const { quill, quillRef } = useQuill({
+    theme: "snow",
+    readOnly: true,
+    modules: {
+      toolbar: false,
+    },
+    formats: [
+      "bold",
+      "italic",
+      "underline",
+      "strike",
+      "list",
+      "script",
+      "code-block",
+      "link",
+      "image",
+      "formula",
+      "header",
+      "color",
+      "background",
+      "align",
+    ],
+  });
 
   useEffect(() => {
-    if (containerRef.current && !quillRef.current) {
-      quillRef.current = new Quill(containerRef.current, {
-        theme: "snow",
-        readOnly: true,
-        modules: {
-          toolbar: false,
-          formula: true, // Enable formula module for rendering
-        },
-      });
-
-      // Set content
-      const delta = JSON.parse(deltaContent);
-      quillRef.current.setContents(delta);
+    if (quill && deltaContent) {
+      try {
+        const delta = JSON.parse(deltaContent);
+        quill.setContents(delta);
+      } catch (error) {
+        console.error("Failed to parse deltaContent:", error);
+      }
 
       // Set Custom styles for Editor elements
-      const qlContainer =
-        quillRef.current.container.parentElement.querySelector(".ql-container");
+      const qlContainer = quill.container;
 
       if (qlContainer) {
         qlContainer.style.border = "none";
       }
 
-      const qlEditor =
-        quillRef.current.container.parentElement.querySelector(".ql-editor");
+      const qlEditor = qlContainer.querySelector(".ql-editor") as HTMLElement;
 
       if (qlEditor) {
         qlEditor.style.padding = "0px";
       }
     }
-  }, [deltaContent]);
+  }, [quill, deltaContent]);
 
   return (
     <div className="w-full mx-auto">
-      <div ref={containerRef}>
+      <div ref={quillRef}>
         <style>{`
           div :global(.ql-container) {
             // border: 2px solid #e5e7eb;
