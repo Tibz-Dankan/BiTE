@@ -9,11 +9,13 @@ export const useCapturePageVisit = () => {
 
   const { mutate } = useMutation({
     mutationFn: siteVisitAPI.post,
-    onSuccess: (response: any) => {
-      console.log("Site visit captured successfully:", response);
+    // onSuccess: (response: any) => {
+    onSuccess: () => {
+      // console.log("Site visit captured successfully:", response);
     },
-    onError: (error: any) => {
-      console.error("Failed to capture site visit:", error.message);
+    // onError: (error: any) => {
+    onError: () => {
+      // console.error("Failed to capture site visit:", error.message);
     },
   });
 

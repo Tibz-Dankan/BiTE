@@ -27,7 +27,7 @@ export const useGlobalRequestInterceptor = () => {
         args[1]!["headers"] = headers;
 
         const response = await originalFetch(...args);
-        console.log(`API Call: ${args[0]} | Status Code: ${response.status}`);
+        // console.log(`API Call: ${args[0]} | Status Code: ${response.status}`);
 
         return response;
       };

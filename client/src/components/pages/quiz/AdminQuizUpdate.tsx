@@ -19,8 +19,6 @@ export const AdminQuizUpdate: React.FC = () => {
 
   const quiz: TQuiz = data?.data ?? {};
 
-  console.log("quiz: ", quiz);
-
   if (isPending) {
     return (
       <div className="w-full min-h-[80vh] flex items-center justify-center">
