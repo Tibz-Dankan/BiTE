@@ -66,8 +66,10 @@ export const useSigninWithRefreshToken = () => {
 
     logInWithRT(auth);
 
-    setInterval(() => {
+    const intervalId = setInterval(() => {
       logInWithRT(auth);
     }, 10000);
+
+    return () => clearInterval(intervalId);
   }, [auth, isTokenExpired, mutate, shouldRefreshToken]);
 };
