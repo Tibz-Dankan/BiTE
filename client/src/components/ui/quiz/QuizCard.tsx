@@ -79,8 +79,6 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
       showInSidebar: false,
       element: undefined,
     });
-
-    console.log("Updated the admin quiz edit page in  the store");
   };
 
   const navigateToQuestionsPage = () => {
@@ -103,8 +101,6 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
       showInSidebar: false,
       element: undefined,
     });
-
-    console.log("Updated the admin quiz attempt page in the store");
   };
 
   const deltaContent = quiz.isDeltaDefault

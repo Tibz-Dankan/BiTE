@@ -37,10 +37,7 @@ export const AdminAnalytics: React.FC = () => {
     totalUsers: 0,
   };
 
-  console.log("analyticsData: ", analyticsData);
-
   const getValue = (valueInt: number) => {
-    console.log("valueInt", valueInt);
     if (!valueInt) return "";
     return addCommasToNumber(valueInt);
   };
