@@ -24,7 +24,7 @@ var rateLimiter = &RateLimiter{
 	blockedUntil: make(map[string]time.Time),
 	resetAfter:   make(map[string]time.Time),
 	window:       60 * time.Second, // 1 min window
-	limit:        160,
+	limit:        320,
 }
 
 // AllowRequest blocks requests until the window expires
