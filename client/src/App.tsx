@@ -11,6 +11,8 @@ import { useGlobalRequestInterceptor } from "./hooks/use-global-request-intercep
 import { PageCapturer } from "./components/ui/shared/PageCapturer";
 import { LandingPage } from "./components/pages/common/LandingPage";
 import { InitSignInWithRefreshToken } from "./components/pages/auth/InitSignInWithRefreshToken";
+import { PrivacyPolicy } from "./components/pages/common/PrivacyPolicy";
+import { TermsOfService } from "./components/pages/common/TermsOfService";
 
 export const App: React.FC = () => {
   const auth = useAuthStore((state) => state.auth);
@@ -31,6 +33,8 @@ export const App: React.FC = () => {
             <Routes>
               {/* <Route path="/" element={<Home />} /> */}
               <Route path="/" element={<LandingPage />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
               <Route path="/*" element={<AuthRoutes />} />
             </Routes>
           </Fragment>
