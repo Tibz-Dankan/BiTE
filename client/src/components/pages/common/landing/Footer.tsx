@@ -29,7 +29,10 @@ export const Footer: React.FC = () => {
             >
               Terms of Service
             </Link>
-            <Link to="#" className="hover:text-primary transition-colors">
+            <Link
+              to="/contact"
+              className="hover:text-primary transition-colors"
+            >
               Contact
             </Link>
           </div>

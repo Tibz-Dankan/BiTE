@@ -13,6 +13,7 @@ import { LandingPage } from "./components/pages/common/LandingPage";
 import { InitSignInWithRefreshToken } from "./components/pages/auth/InitSignInWithRefreshToken";
 import { PrivacyPolicy } from "./components/pages/common/PrivacyPolicy";
 import { TermsOfService } from "./components/pages/common/TermsOfService";
+import { Contact } from "./components/pages/common/Contact";
 
 export const App: React.FC = () => {
   const auth = useAuthStore((state) => state.auth);
@@ -35,6 +36,7 @@ export const App: React.FC = () => {
               <Route path="/" element={<LandingPage />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-of-service" element={<TermsOfService />} />
+              <Route path="/contact" element={<Contact />} />
               <Route path="/*" element={<AuthRoutes />} />
             </Routes>
           </Fragment>
