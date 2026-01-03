@@ -40,7 +40,7 @@ func main() {
 
 	app.Use(logger.New())
 
-	app.Use(middlewares.RateLimit)
+	// app.Use(middlewares.RateLimit)
 
 	// Load dev .env file
 	env := os.Getenv("GO_ENV")
