@@ -17,10 +17,16 @@ export const Footer: React.FC = () => {
           </div>
 
           <div className="flex gap-8 text-sm text-gray-600">
-            <Link to="#" className="hover:text-primary transition-colors">
+            <Link
+              to="/privacy-policy"
+              className="hover:text-primary transition-colors"
+            >
               Privacy Policy
             </Link>
-            <Link to="#" className="hover:text-primary transition-colors">
+            <Link
+              to="/terms-of-service"
+              className="hover:text-primary transition-colors"
+            >
               Terms of Service
             </Link>
             <Link to="#" className="hover:text-primary transition-colors">
