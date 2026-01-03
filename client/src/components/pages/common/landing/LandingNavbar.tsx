@@ -23,20 +23,15 @@ export const LandingNavbar: React.FC = () => {
           <Link to="/" className="hover:text-purple-600 transition-colors">
             Overview
           </Link>
+
           <a
-            href="#features"
-            className="hover:text-purple-600 transition-colors"
-          >
-            Features
-          </a>
-          <a
-            href="#mission"
+            href="/#mission"
             className="hover:text-purple-600 transition-colors"
           >
             Mission
           </a>
           <a
-            href="#curriculum"
+            href="/#curriculum"
             className="hover:text-purple-600 transition-colors"
           >
             Curriculum

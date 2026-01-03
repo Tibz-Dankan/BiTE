@@ -2,7 +2,7 @@ import React from "react";
 
 export const MissionSection: React.FC = () => {
   return (
-    <div className="py-24 bg-white relative overflow-hidden">
+    <div id="mission" className="py-24 bg-white relative overflow-hidden">
       {/* Decorative blob */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-50 rounded-full blur-[100px] -z-10 pointer-events-none" />
 
