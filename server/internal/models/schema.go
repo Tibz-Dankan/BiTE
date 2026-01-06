@@ -5,19 +5,21 @@ import "time"
 var db = Db()
 
 type User struct {
-	ID             string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
-	Name           string    `gorm:"column:name;not null;index" json:"name"`
-	Password       string    `gorm:"column:password;not null" json:"password"`
-	Role           string    `gorm:"column:role;default:'USER';not null;index" json:"role"`
-	Email          string    `gorm:"column:email;unique;index" json:"email"`
-	Gender         string    `gorm:"column:gender;default:null" json:"gender,omitempty"`
-	DateOfBirth    string    `gorm:"column:dateOfBirth;default:null" json:"dateOfBirth,omitempty"`
-	Country        string    `gorm:"column:country;default:null" json:"country,omitempty"`
-	ImageUrl       string    `gorm:"column:imageUrl;default:null" json:"imageUrl"`
-	ImagePath      string    `gorm:"column:imagePath;default:null" json:"imagePath,omitempty"`
-	ProfileBgColor string    `gorm:"column:profileBgColor;default:null" json:"profileBgColor"`
-	CreatedAt      time.Time `gorm:"column:createdAt" json:"createdAt"`
-	UpdatedAt      time.Time `gorm:"column:updatedAt" json:"updatedAt"`
+	ID                                string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
+	Name                              string    `gorm:"column:name;not null;index" json:"name"`
+	Password                          string    `gorm:"column:password;not null" json:"password"`
+	Role                              string    `gorm:"column:role;default:'USER';not null;index" json:"role"`
+	Email                             string    `gorm:"column:email;unique;index" json:"email"`
+	Gender                            string    `gorm:"column:gender;default:null" json:"gender,omitempty"`
+	DateOfBirth                       string    `gorm:"column:dateOfBirth;default:null" json:"dateOfBirth,omitempty"`
+	Country                           string    `gorm:"column:country;default:null" json:"country,omitempty"`
+	ImageUrl                          string    `gorm:"column:imageUrl;default:null" json:"imageUrl"`
+	ImagePath                         string    `gorm:"column:imagePath;default:null" json:"imagePath,omitempty"`
+	ProfileBgColor                    string    `gorm:"column:profileBgColor;default:null" json:"profileBgColor"`
+	AgreedTermsOfService              bool      `gorm:"column:agreedTermsOfService;default:true" json:"agreedTermsOfService"`
+	AgreedNewsLetterOrMarketingEmails bool      `gorm:"column:agreedNewsLetterOrMarketingEmails;default:false" json:"agreedNewsLetterOrMarketingEmails"` // Agreed to receive marketing or newsletter emails
+	CreatedAt                         time.Time `gorm:"column:createdAt" json:"createdAt"`
+	UpdatedAt                         time.Time `gorm:"column:updatedAt" json:"updatedAt"`
 
 	// Relationships
 	OTPs             []OTP              `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"otps,omitempty"`
