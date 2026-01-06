@@ -8,6 +8,8 @@ export type TSignUpInPut = {
   email: string;
   password: string;
   confirmPassword?: string;
+  agreedTermsOfService: boolean;
+  agreedNewsLetterOrMarketingEmails: boolean;
 };
 
 export type TForgotPassword = {
@@ -51,6 +53,8 @@ export type TUser = {
   role: "USER" | "ADMIN";
   imageUrl: string;
   profileBgColor: string;
+  agreedTermsOfService: boolean;
+  agreedNewsLetterOrMarketingEmails: boolean;
   createdAt: string;
   updatedAt: string;
 };

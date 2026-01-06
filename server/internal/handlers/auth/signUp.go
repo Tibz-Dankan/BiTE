@@ -26,7 +26,7 @@ var SignUp = func(c *fiber.Ctx) error {
 	}
 
 	if !user.AgreedTermsOfService {
-		return fiber.NewError(fiber.StatusBadRequest, "You must agree to terms of service to signup for an account!")
+		return fiber.NewError(fiber.StatusBadRequest, "You must agree to our terms of service to signup for an account!")
 	}
 
 	userByEmail, err := user.FindByEmail(user.Email)
