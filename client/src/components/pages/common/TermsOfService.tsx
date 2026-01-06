@@ -3,6 +3,8 @@ import { LandingNavbar } from "./landing/LandingNavbar";
 import { Footer } from "./landing/Footer";
 
 export const TermsOfService: React.FC = () => {
+  const lastUpdated: string = "2026-01-04T15:30:45.123+03:00";
+
   return (
     <div className="min-h-screen bg-white font-sans selection:bg-[oklch(0.749_0.154_70.67)] selection:text-white pt-16">
       <LandingNavbar />
@@ -15,7 +17,7 @@ export const TermsOfService: React.FC = () => {
         <div className="prose prose-lg prose-gray max-w-none text-gray-600">
           <p className="mb-6">
             Last updated:{" "}
-            {new Date().toLocaleDateString("en-US", {
+            {new Date(lastUpdated).toLocaleDateString("en-US", {
               month: "long",
               day: "numeric",
               year: "numeric",
