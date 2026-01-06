@@ -14,6 +14,8 @@ const initialAuthValues: TAuth = {
     profileBgColor: "",
     createdAt: "",
     updatedAt: "",
+    agreedTermsOfService: false,
+    agreedNewsLetterOrMarketingEmails: false,
   },
   accessToken: "",
   refreshToken: "",
