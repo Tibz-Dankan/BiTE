@@ -21,8 +21,12 @@ var SignUp = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	if user.Name == "" || user.Password == "" {
-		return fiber.NewError(fiber.StatusBadRequest, "Missing username/telephone number/password!")
+	if user.Name == "" || user.Email == "" || user.Password == "" {
+		return fiber.NewError(fiber.StatusBadRequest, "Missing username/email/password!")
+	}
+
+	if !user.AgreedTermsOfService {
+		return fiber.NewError(fiber.StatusBadRequest, "You must agree to our terms of service to signup for an account!")
 	}
 
 	userByEmail, err := user.FindByEmail(user.Email)

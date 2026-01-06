@@ -10,6 +10,7 @@ import { useNotificationStore } from "../../../stores/notification";
 import { InputField } from "../../ui/shared/InputField";
 import { authAPI } from "../../../api/auth";
 import { Button } from "../../ui/shared/Btn";
+import { InputCheckbox } from "../../ui/shared/InputCheckbox";
 
 export const SignUp: React.FC = () => {
   const navigate = useNavigate();
@@ -59,6 +60,8 @@ export const SignUp: React.FC = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    agreedTermsOfService: true,
+    agreedNewsLetterOrMarketingEmails: false,
   };
 
   const formik = useFormik({
@@ -152,6 +155,22 @@ export const SignUp: React.FC = () => {
             formik={formik}
             required={true}
           />
+
+          <InputCheckbox
+            name="agreedNewsLetterOrMarketingEmails"
+            label="Receive occasional Newsletter or Marketing emails"
+            formik={formik}
+            checked={false}
+          />
+          <div>
+            <p className="text-sm text-gray-600">
+              <span>By signing up for an account you agree to our</span>{" "}
+              <span className="text-blue-500s font-bold">
+                <Link to={"/terms-of-service"}>Terms of Service</Link>
+              </span>
+            </p>
+          </div>
+
           <Button type="submit" className="w-full mt-4" disabled={isPending}>
             {isPending ? (
               <>

@@ -31,13 +31,21 @@ class AuthAPI {
     return await response.json();
   };
 
-  signUp = async ({ name, email, password }: TSignUpInPut) => {
+  signUp = async ({
+    name,
+    email,
+    password,
+    agreedTermsOfService,
+    agreedNewsLetterOrMarketingEmails,
+  }: TSignUpInPut) => {
     const response = await fetch(`${SERVER_URL}/user/auth/signup`, {
       method: "POST",
       body: JSON.stringify({
         name,
         email,
         password,
+        agreedTermsOfService,
+        agreedNewsLetterOrMarketingEmails,
       }),
       headers: {
         "Content-type": "application/json",
