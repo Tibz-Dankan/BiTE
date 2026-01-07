@@ -35,6 +35,12 @@ export const Footer: React.FC = () => {
             >
               Contact
             </Link>
+            <a
+              href="mailto:support@bitcoinhighschool.com"
+              className="hover:text-primary transition-colors"
+            >
+              Support
+            </a>
           </div>
         </div>
         <div className="mt-8 text-center text-xs text-gray-400">
