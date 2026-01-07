@@ -86,10 +86,10 @@ export const Contact: React.FC = () => {
                   <h3 className="font-semibold text-gray-900">Email Us</h3>
                   <p className="text-gray-600">
                     <a
-                      href="mailto:contact@bite.edu"
+                      href="mailto:support@bitcoinhighschool.com"
                       className="hover:text-purple-600 transition-colors"
                     >
-                      contact@bite.edu
+                      support@bitcoinhighschool.com
                     </a>
                   </p>
                   <p className="text-sm text-gray-500 mt-1">
@@ -173,6 +173,18 @@ export const Contact: React.FC = () => {
                 )}
               </Button>
             </form>
+          </div>
+
+          <div className="md:col-span-2 text-center mt-8">
+            <p className="text-gray-600">
+              Or email us directly at{" "}
+              <a
+                href="mailto:support@bitcoinhighschool.com"
+                className="text-purple-600 hover:underline"
+              >
+                support@bitcoinhighschool.com
+              </a>
+            </p>
           </div>
         </div>
       </main>
