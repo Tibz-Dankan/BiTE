@@ -1,6 +1,12 @@
 import React, { Fragment } from "react";
 import { Routes } from "react-router-dom";
-import { FileQuestion, LayoutDashboard, Settings, XCircle } from "lucide-react";
+import {
+  FileQuestion,
+  LayoutDashboard,
+  Settings,
+  Trophy,
+  XCircle,
+} from "lucide-react";
 
 import type { TRoute } from "../types/routes";
 import { renderRoutes } from "./renderRoutes";
@@ -19,6 +25,7 @@ import { AdminDeleteQuestion } from "../components/pages/question/AdminDeleteQue
 import { AdminDuplicateQuiz } from "../components/pages/quiz/AdminDuplicateQuiz";
 import { AdminShowQuiz } from "../components/pages/quiz/AdminShowQuiz";
 import { AdminHideQuiz } from "../components/pages/quiz/AdminHideQuiz";
+import { AdminRankingView } from "../components/pages/ranking/AdminRankingView";
 
 export const AdminRoutes: React.FC = () => {
   const routes: TRoute = {
@@ -37,6 +44,13 @@ export const AdminRoutes: React.FC = () => {
         path: "/a/quizzes",
         showInSidebar: true,
         element: <AdminQuizView />,
+      },
+      {
+        title: "Rankings",
+        icon: <Trophy className="h-4 w-4" />,
+        path: "/a/rankings",
+        showInSidebar: true,
+        element: <AdminRankingView />,
       },
       {
         title: "New Quiz",
