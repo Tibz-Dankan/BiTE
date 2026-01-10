@@ -191,3 +191,119 @@ func (u *User) GetTotalCount() (int64, error) {
 
 	return count, nil
 }
+
+// FindAllWithAdminDetails returns users with detailed statistics for admin view
+func (u *User) FindAllWithAdminDetails(limit int, cursor string) ([]map[string]interface{}, error) {
+	var users []User
+	query := db.Model(&User{})
+
+	// Exclude unknown user
+	query = query.Where("email != ?", "unknownuser@mail.com")
+
+	query = query.Order("\"createdAt\" DESC").Limit(limit)
+
+	if cursor != "" {
+		var lastUser User
+		if err := db.Select("\"createdAt\"").Where("id = ?", cursor).First(&lastUser).Error; err != nil {
+			return nil, err
+		}
+		query = query.Where("\"createdAt\" < ?", lastUser.CreatedAt)
+	}
+
+	if err := query.Find(&users).Error; err != nil {
+		return nil, err
+	}
+
+	var result []map[string]interface{}
+	for _, user := range users {
+		userID := user.ID
+
+		// Rank
+		var ranking Ranking
+		rank := int64(0)
+		if err := db.Where("\"userID\" = ?", userID).First(&ranking).Error; err == nil {
+			rank = ranking.Rank
+		}
+
+		// Last Session with Location
+		var lastSession Session
+		var lastSessionData interface{} = nil
+		if err := db.Preload("Location").Order("\"createdAt\" DESC").Where("\"userID\" = ?", userID).First(&lastSession).Error; err == nil {
+			lastSessionData = lastSession
+		}
+
+		// Last Location (Directly from Location table if needed separately, or fallback if session location missing? Request implies separate preload)
+		// "user's last location"
+		var lastLocation Location
+		var lastLocationData interface{} = nil
+		if err := db.Order("\"createdAt\" DESC").Where("\"userID\" = ?", userID).First(&lastLocation).Error; err == nil {
+			lastLocationData = lastLocation
+		}
+
+		// User Quiz Attempt Count (Distinct Quizzes attempted)
+		var userQuizAttemptCount int64
+		// Using Attempt table to count distinct quizzes
+		db.Model(&Attempt{}).Where("\"userID\" = ?", userID).Distinct("quizID").Count(&userQuizAttemptCount)
+
+		// Question Attempt Count (Total attempts)
+		var questionAttemptCount int64
+		db.Model(&Attempt{}).Where("\"userID\" = ?", userID).Count(&questionAttemptCount)
+
+		// Correct Question Attempt Count
+		var correctQuestionAttemptCount int64
+		db.Model(&AttemptStatus{}).Where("\"userID\" = ? AND \"IsCorrect\" = ?", userID, true).Count(&correctQuestionAttemptCount)
+
+		// Score Percentage
+		scorePercentage := float64(0)
+		if questionAttemptCount > 0 {
+			scorePercentage = (float64(correctQuestionAttemptCount) / float64(questionAttemptCount)) * 100
+		}
+
+		// Total Attempt Duration
+		var totalAttemptDuration int64
+		// Sum duration from Ranking table or calculate from AttemptDetails?
+		// Ranking table has TotalDuration. Request says "total attemmpt duration".
+		// I will calculate it from AttemptDuration table to be safe/granular or check Ranking.
+		// Ranking has "TotalDuration". I will use AttemptDuration sum to be fresh.
+		var totalDurationResult struct {
+			TotalDuration int64
+		}
+		db.Model(&AttemptDuration{}).Select("COALESCE(SUM(duration), 0) as total_duration").Where("\"userID\" = ?", userID).Scan(&totalDurationResult)
+		totalAttemptDuration = totalDurationResult.TotalDuration
+
+		// Total Sessions Count
+		var totalSessionsCount int64
+		db.Model(&Session{}).Where("\"userID\" = ?", userID).Count(&totalSessionsCount)
+
+		// Site Visits Count
+		var siteVisitsCount int64
+		db.Model(&SiteVisit{}).Where("\"userID\" = ?", userID).Count(&siteVisitsCount)
+
+		userData := map[string]interface{}{
+			"id":                          user.ID,
+			"name":                        user.Name,
+			"email":                       user.Email,
+			"role":                        user.Role,
+			"gender":                      user.Gender,
+			"dateOfBirth":                 user.DateOfBirth,
+			"country":                     user.Country,
+			"imageUrl":                    user.ImageUrl,
+			"imagePath":                   user.ImagePath,
+			"profileBgColor":              user.ProfileBgColor,
+			"createdAt":                   user.CreatedAt,
+			"rank":                        rank,
+			"lastSession":                 lastSessionData,
+			"lastLocation":                lastLocationData,
+			"userQuizAttemptCount":        userQuizAttemptCount,
+			"questionAttemptCount":        questionAttemptCount,
+			"correctQuestionAttemptCount": correctQuestionAttemptCount,
+			"scorePercentage":             scorePercentage,
+			"totalAttemptDuration":        totalAttemptDuration,
+			"totalSessionsCount":          totalSessionsCount,
+			"siteVisitsCount":             siteVisitsCount,
+		}
+		result = append(result, userData)
+	}
+
+	return result, nil
+}
