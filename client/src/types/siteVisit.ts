@@ -20,3 +20,14 @@ export type TPostSiteVisit = {
   path: string;
   capturedAt: string;
 };
+
+export type TSiteVisitResponse = {
+  data: TSiteVisit[];
+  pagination: {
+    count: number;
+    hasNextItems: boolean;
+    limit: number;
+    nextCursor: string;
+  };
+  status: string;
+};
