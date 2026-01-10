@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   Settings,
   Trophy,
+  Users,
   XCircle,
 } from "lucide-react";
 
@@ -28,6 +29,7 @@ import { AdminShowQuiz } from "../components/pages/quiz/AdminShowQuiz";
 import { AdminHideQuiz } from "../components/pages/quiz/AdminHideQuiz";
 import { AdminRankingView } from "../components/pages/ranking/AdminRankingView";
 import { AdminSiteVisitView } from "../components/pages/siteVisit/AdminSiteVisitView";
+import { AdminUserView } from "../components/pages/user/AdminUserView";
 
 export const AdminRoutes: React.FC = () => {
   const routes: TRoute = {
@@ -46,6 +48,13 @@ export const AdminRoutes: React.FC = () => {
         path: "/a/quizzes",
         showInSidebar: true,
         element: <AdminQuizView />,
+      },
+      {
+        title: "Users",
+        icon: <Users className="h-4 w-4" />,
+        path: "/a/users",
+        showInSidebar: true,
+        element: <AdminUserView />,
       },
       {
         title: "Rankings",
