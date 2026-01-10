@@ -52,7 +52,7 @@ export const UserSiteVisitCard: React.FC<UserSiteVisitCardProps> = ({
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md transition-shadow">
       <div className="flex flex-col gap-4">
         {/* User Details */}
-        <div className="w-full relative z-10 flexs items-center justify-between">
+        <div className="w-full relative z-10">
           <div className="flex items-center gap-2">
             <div
               className="flex-shrink-0 h-8 w-8 rounded-full flex 
@@ -105,7 +105,7 @@ export const UserSiteVisitCard: React.FC<UserSiteVisitCardProps> = ({
                 Page
               </span>
               <span className="text-xs text-gray-800 ml-auto font-medium">
-                {truncateString(page, 24)}
+                {truncateString(page, 20)}
               </span>
             </div>
 
@@ -118,7 +118,7 @@ export const UserSiteVisitCard: React.FC<UserSiteVisitCardProps> = ({
                 className="text-xs text-gray-800 ml-auto font-medium"
                 title={path}
               >
-                {truncateString(path, 24)}
+                {truncateString(path, 20)}
               </span>
             </div>
           </div>

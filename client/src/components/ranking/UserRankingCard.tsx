@@ -19,7 +19,7 @@ export const UserRankingCard: React.FC<UserRankingCardProps> = ({
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md transition-shadow">
       <div className="flex flex-col gap-4">
         {/* User Details */}
-        <div className="w-full relative z-10 flexs items-center justify-between">
+        <div className="w-full relative z-10">
           <div className="flex items-center gap-2">
             <div
               className="flex-shrink-0 h-10 w-10 rounded-full flex 
