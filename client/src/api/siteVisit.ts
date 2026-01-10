@@ -1,5 +1,5 @@
 import { SERVER_URL } from "../constants/urls";
-import type { TPostSiteVisit } from "../types/siteVisit";
+import type { TPostSiteVisit, TSiteVisitResponse } from "../types/siteVisit";
 
 class SiteVisitAPI {
   post = async ({ page, path, capturedAt }: TPostSiteVisit) => {
@@ -14,6 +14,27 @@ class SiteVisitAPI {
         "Content-type": "application/json",
       },
     });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  getAll = async (
+    limit: number = 20,
+    cursor: string = ""
+  ): Promise<TSiteVisitResponse> => {
+    const response = await fetch(
+      `${SERVER_URL}/sitevisit?limit=${limit}&cursor=${cursor}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
 
     if (!response.ok) {
       const error = await response.json();

@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { Routes } from "react-router-dom";
 import {
+  Eye,
   FileQuestion,
   LayoutDashboard,
   Settings,
@@ -26,6 +27,7 @@ import { AdminDuplicateQuiz } from "../components/pages/quiz/AdminDuplicateQuiz"
 import { AdminShowQuiz } from "../components/pages/quiz/AdminShowQuiz";
 import { AdminHideQuiz } from "../components/pages/quiz/AdminHideQuiz";
 import { AdminRankingView } from "../components/pages/ranking/AdminRankingView";
+import { AdminSiteVisitView } from "../components/pages/siteVisit/AdminSiteVisitView";
 
 export const AdminRoutes: React.FC = () => {
   const routes: TRoute = {
@@ -51,6 +53,13 @@ export const AdminRoutes: React.FC = () => {
         path: "/a/rankings",
         showInSidebar: true,
         element: <AdminRankingView />,
+      },
+      {
+        title: "Site Visits",
+        icon: <Eye className="h-4 w-4" />,
+        path: "/a/site-visits",
+        showInSidebar: true,
+        element: <AdminSiteVisitView />,
       },
       {
         title: "New Quiz",
