@@ -69,3 +69,25 @@ func (sv *SiteVisit) GetTotalCount() (int64, error) {
 
 	return count, nil
 }
+
+func (sv *SiteVisit) FindAllWithDetails(limit float64, cursor string) ([]SiteVisit, error) {
+	var siteVisits []SiteVisit
+
+	query := db.Model(&SiteVisit{}).
+		Preload("User").
+		Preload("Location").
+		Order("\"createdAt\" DESC").Limit(int(limit))
+
+	if cursor != "" {
+		var lastSiteVisit SiteVisit
+		if err := db.Select("\"createdAt\"").Where("id = ?",
+			cursor).First(&lastSiteVisit).Error; err != nil {
+			return siteVisits, err
+		}
+		query = query.Where("\"createdAt\" < ?", lastSiteVisit.CreatedAt)
+	}
+
+	query.Find(&siteVisits)
+
+	return siteVisits, nil
+}

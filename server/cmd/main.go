@@ -147,6 +147,7 @@ func main() {
 		return c.Next()
 	})
 	siteVisitGroup.Post("/", middlewares.SetUserInRequest, sitevisit.PostSiteVisit)
+	siteVisitGroup.Get("/", middlewares.Auth, middlewares.IsAdmin, sitevisit.GetSiteVisits)
 
 	// Ranking
 	rankingGroup := app.Group("/api/v1/ranking", func(c *fiber.Ctx) error {
