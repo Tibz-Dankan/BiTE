@@ -113,3 +113,26 @@ func (r *Ranking) Delete(id string) error {
 	}
 	return nil
 }
+
+func (r *Ranking) FindAllWithUserDetails(limit int, cursor string) ([]Ranking, error) {
+	var rankings []Ranking
+
+	query := db.Model(&Ranking{}).
+		Preload("User").
+		Order("rank ASC").
+		Limit(limit)
+
+	if cursor != "" {
+		var lastRanking Ranking
+		if err := db.Select("rank").Where("id = ?", cursor).First(&lastRanking).Error; err != nil {
+			return nil, err
+		}
+		query = query.Where("rank > ?", lastRanking.Rank)
+	}
+
+	if err := query.Find(&rankings).Error; err != nil {
+		return nil, err
+	}
+
+	return rankings, nil
+}

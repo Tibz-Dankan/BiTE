@@ -16,6 +16,7 @@ import (
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/question"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/quiz"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/quizcategory"
+	"github.com/Tibz-Dankan/BiTE/internal/handlers/ranking"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/sitevisit"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/status"
 	"github.com/Tibz-Dankan/BiTE/internal/middlewares"
@@ -145,6 +146,12 @@ func main() {
 		return c.Next()
 	})
 	siteVisitGroup.Post("/", middlewares.SetUserInRequest, sitevisit.PostSiteVisit)
+
+	// Ranking
+	rankingGroup := app.Group("/api/v1/ranking", func(c *fiber.Ctx) error {
+		return c.Next()
+	})
+	rankingGroup.Get("/users", middlewares.Auth, middlewares.IsAdmin, ranking.GetUsersWithRanks)
 
 	// Analytics
 	analyticsGroup := app.Group("/api/v1/analytics", func(c *fiber.Ctx) error {
