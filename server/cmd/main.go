@@ -19,6 +19,7 @@ import (
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/ranking"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/sitevisit"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/status"
+	"github.com/Tibz-Dankan/BiTE/internal/handlers/user"
 	"github.com/Tibz-Dankan/BiTE/internal/middlewares"
 	"github.com/Tibz-Dankan/BiTE/internal/pkg"
 
@@ -68,7 +69,7 @@ func main() {
 	userGroup.Patch("/:id/auth/change-password", middlewares.Auth, auth.ChangePassword)
 	userGroup.Patch("/:id/image", middlewares.Auth, auth.UpdateUserImage)
 	userGroup.Patch("/:id", middlewares.Auth, auth.UpdateUser)
-	userGroup.Get("/", middlewares.Auth, middlewares.IsAdmin, auth.GetAllUsers)
+	userGroup.Get("/", middlewares.Auth, middlewares.IsAdmin, user.GetAllUsers)
 
 	// Quiz Category
 	quizCategoryGroup := app.Group("/api/v1/quizcategory", func(c *fiber.Ctx) error {
