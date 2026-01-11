@@ -26,7 +26,7 @@ func SetUserInRequest(c *fiber.Ctx) error {
 		return c.Next()
 	}
 
-	if userID != "" {
+	if userID == "" {
 		user, err := User.FindUnknown()
 		if err != nil {
 			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
