@@ -6,7 +6,6 @@ import { useAuthStore } from "./stores/auth";
 import { AuthRoutes } from "./routes/authRoutes";
 import { UserRoutes } from "./routes/userRoutes";
 import { AdminRoutes } from "./routes/adminRoutes";
-// import { Home } from "./components/ui/shared/Home";
 import { useGlobalRequestInterceptor } from "./hooks/use-global-request-interceptor";
 import { PageCapturer } from "./components/ui/shared/PageCapturer";
 import { LandingPage } from "./components/pages/common/LandingPage";
@@ -32,7 +31,6 @@ export const App: React.FC = () => {
         {!isLoggedIn && (
           <Fragment>
             <Routes>
-              {/* <Route path="/" element={<Home />} /> */}
               <Route path="/" element={<LandingPage />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-of-service" element={<TermsOfService />} />
