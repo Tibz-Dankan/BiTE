@@ -10,3 +10,9 @@ type AttemptStatusEventData struct {
 type RankingEventData struct {
 	UserID string
 }
+
+// QuizUserProgressEventData represents the data published with UPDATE_QUIZ_USER_PROGRESS event
+type QuizUserProgressEventData struct {
+	UserID string
+	QuizID string
+}

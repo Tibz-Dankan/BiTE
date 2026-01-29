@@ -18,6 +18,7 @@ var PostQuestion = func(c *fiber.Ctx) error {
 	question := models.Question{}
 	user := models.User{}
 	attachment := models.Attachment{}
+	attempt := models.Attempt{}
 	imageProcessor := pkg.ImageProcessor{}
 
 	ctx := context.Background()
@@ -85,6 +86,15 @@ var PostQuestion = func(c *fiber.Ctx) error {
 	}
 	if quiz.ID == "" {
 		return fiber.NewError(fiber.StatusBadRequest, "Quiz of provided ID doesn't exist!")
+	}
+
+	quizAttempt, err := attempt.FindOneByQuiz(question.QuizID)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+	if quizAttempt.ID != "" {
+		return fiber.NewError(fiber.StatusBadRequest,
+			"Can't add more questions to a quiz that has already been attempted!")
 	}
 
 	fileHeader, err := c.FormFile("file")
