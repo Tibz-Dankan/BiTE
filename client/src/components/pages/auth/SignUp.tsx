@@ -39,7 +39,6 @@ export const SignUp: React.FC = () => {
   const { isPending, mutate } = useMutation({
     mutationFn: authAPI.signUp,
     onSuccess: async (auth: TAuth & { message: string }) => {
-      console.log("auth response:", auth);
       showCardNotification({ type: "success", message: auth.message });
       setTimeout(() => {
         hideCardNotification();
