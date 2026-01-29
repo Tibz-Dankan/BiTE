@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Cloudflare Pages (bite created using cf cli)
+wrangler.toml
+

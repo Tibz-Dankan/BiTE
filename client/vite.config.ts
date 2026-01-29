@@ -20,6 +20,7 @@ export default defineConfig({
       include: [/quill/, /react-quill/, /node_modules/],
       transformMixedEsModules: true,
     },
+    sourcemap: false,
   },
   define: {
     global: "globalThis",
