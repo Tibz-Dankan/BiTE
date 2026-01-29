@@ -96,11 +96,18 @@ var PostAttempt = func(c *fiber.Ctx) error {
 	}
 
 	// Publish an event to create attempt status
-	eventData := types.AttemptStatusEventData{
+	attemptStatusEventData := types.AttemptStatusEventData{
 		UserID:     attempt.UserID,
 		QuestionID: attempt.QuestionID,
 	}
-	events.EB.Publish("CREATE_ATTEMPT_STATUS", eventData)
+	events.EB.Publish("CREATE_ATTEMPT_STATUS", attemptStatusEventData)
+
+	// Publish an event to updare quiz user progress
+	quizUserProgressEventData := types.QuizUserProgressEventData{
+		UserID: attempt.UserID,
+		QuizID: attempt.QuizID,
+	}
+	events.EB.Publish("UPDATE_QUIZ_USER_PROGRESS", quizUserProgressEventData)
 
 	response := map[string]interface{}{
 		"status":  "success",

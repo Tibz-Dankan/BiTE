@@ -10,6 +10,7 @@ func InitEventSubscribers() {
 
 	go PostAttemptStatus()
 	go UpdateRanking()
+	go UpdateQuizUserProgress()
 
 	log.Println("Event subscribers initialized successfully")
 }

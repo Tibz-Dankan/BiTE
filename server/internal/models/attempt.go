@@ -57,6 +57,18 @@ func (a *Attempt) FindLastAttemptByQuizAndUser(quizID string, userID string) (At
 	return attempt, nil
 }
 
+func (a *Attempt) FindOneByQuiz(quizID string) (Attempt, error) {
+	var attempt Attempt
+
+	err := db.Model(&Attempt{}).Where("\"quizID\" = ?", quizID).First(&attempt).Error
+
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return attempt, err
+	}
+
+	return attempt, nil
+}
+
 // FindProgressByQuizAndUser returns the progress of a user's attempt for a specific quiz.
 // Returns total questions, total attempts, and status
 func (a *Attempt) FindProgressByQuizAndUser(quizID string, userID string) (int64, int64, string, error) {
@@ -198,6 +210,19 @@ func (a *Attempt) GetCorrectQuestionsCount(quizID string, userID string) (int64,
 	// Count AttemptStatus records where IsCorrect is true for those attemptIDs
 	if err := db.Model(&AttemptStatus{}).
 		Where("\"attemptID\" IN ? AND \"IsCorrect\" = ?", attemptIDs, true).
+		Count(&count).Error; err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}
+
+// GetAttemptedQuestionsCount counts the total numbers of questions of a quiz attempted by a user
+func (a *Attempt) GetAttemptedQuestionsCount(quizID string, userID string) (int64, error) {
+	var count int64
+
+	if err := db.Model(&Attempt{}).
+		Where("\"quizID\" = ? AND \"userID\" = ?", quizID, userID).Distinct("\"questionID\"").
 		Count(&count).Error; err != nil {
 		return 0, err
 	}
