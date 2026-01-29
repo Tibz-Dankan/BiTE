@@ -35,5 +35,5 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy client/dist --project-name=BiTE
+          command: pages deploy client/dist --project-name=bite
           gitHubToken: ${{ secrets.ACCESS_TOKEN_GITHUB }}
