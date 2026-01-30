@@ -10,9 +10,9 @@ import { useSearchParams } from "react-router-dom";
 export const UserQuizCategoryFilter: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [quizCategories, setQuizCategories] = useState<TQuizCategory[]>([]);
-  const initialquizCategoryID = searchParams.get("qzCategoryID") ?? "";
+  const initialQuizCategoryID = searchParams.get("qzCategoryID") ?? "";
   const [selectedCategoryId, setSelectedCategoryId] = useState(
-    initialquizCategoryID
+    initialQuizCategoryID,
   );
 
   const { data, isPending, isError, error } = useQuery({
@@ -38,7 +38,7 @@ export const UserQuizCategoryFilter: React.FC = () => {
         prev.delete("qzCursor"); // Reset cursor when changing category
         return prev;
       },
-      { replace: false }
+      { replace: false },
     );
   };
 
