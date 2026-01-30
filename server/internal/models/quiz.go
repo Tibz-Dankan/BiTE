@@ -104,7 +104,7 @@ func (q *Quiz) FindAllWithDetails(limit float64, cursor string, quizCategoryID s
 		totalQuestions, totalAttemptedQuestions, status, err := attempt.FindProgressByQuizAndUser(quiz.ID, userID)
 		if err != nil {
 			totalAttemptedQuestions = 0
-			status = "NOT_STARTED"
+			status = "UN_ATTEMPTED"
 		}
 
 		userProgress := map[string]interface{}{
@@ -187,7 +187,7 @@ func (q *Quiz) FindAllWithDetailsForUser(limit float64, cursor string, quizCateg
 		totalQuestions, totalAttemptedQuestions, status, err := attempt.FindProgressByQuizAndUser(quiz.ID, userID)
 		if err != nil {
 			totalAttemptedQuestions = 0
-			status = "IN_PROGRESS"
+			status = "UN_ATTEMPTED"
 		}
 
 		userProgress := map[string]interface{}{
@@ -370,7 +370,7 @@ func (q *Quiz) FindAllByUserProgressWithNoStatusValue(limit float64, cursor stri
 		totalQuestions, totalAttemptedQuestions, status, err := attempt.FindProgressByQuizAndUser(quiz.ID, userID)
 		if err != nil {
 			totalAttemptedQuestions = 0
-			status = "NOT_STARTED"
+			status = "UN_ATTEMPTED"
 		}
 
 		userProgress := map[string]interface{}{
