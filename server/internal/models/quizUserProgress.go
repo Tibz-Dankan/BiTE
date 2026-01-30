@@ -114,6 +114,37 @@ func (qup *QuizUserProgress) FindOneByQuizAndUser(quizID string, userID string) 
 	return quizUserProgress, nil
 }
 
+func (qup *QuizUserProgress) GetTotalCountByStatusAndUser(userID string, status string) (int64, error) {
+	var count int64
+
+	if err := db.Model(&QuizUserProgress{}).Where("\"userID\" = ? AND \"status\" = ?",
+		userID, status).Count(&count).Error; err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}
+
+func (qup *QuizUserProgress) GetTotalCountOfUnattemptedQuizzesByUser(userID string) (int64, error) {
+	var count int64
+	var userAttemptedQuizIDs []string
+
+	// Get all userAttemptedQuizIDs for this user
+	if err := db.Model(&QuizUserProgress{}).
+		Select("quizID").
+		Where("\"userID\" = ?", userID).
+		Pluck("quizID", &userAttemptedQuizIDs).Error; err != nil {
+		return count, err
+	}
+
+	if err := db.Model(&Quiz{}).Where("\"showQuiz\" = ? AND \"canBeAttempted\" = ? AND \"id\" NOT IN ?",
+		true, true, userAttemptedQuizIDs).Count(&count).Error; err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}
+
 func (qup *QuizUserProgress) Update() (QuizUserProgress, error) {
 	db.Save(&qup)
 
