@@ -95,24 +95,20 @@ func (q *Quiz) FindAllWithDetails(limit float64, cursor string, quizCategoryID s
 	// Build result with additional metadata
 	var result []map[string]interface{}
 	for _, quiz := range quizzes {
-		// Count questions for this quiz
-		var questionCount int64
-		db.Model(&Question{}).Where("\"quizID\" = ?", quiz.ID).Count(&questionCount)
-
 		// Count attempts for this quiz
 		var attemptCount int64
 		db.Model(&Attempt{}).Where("\"quizID\" = ?", quiz.ID).Distinct("\"userID\"").Count(&attemptCount)
 
 		// Get user progress
 		var attempt Attempt
-		_, totalAttemptedQuestions, status, err := attempt.FindProgressByQuizAndUser(quiz.ID, userID)
+		totalQuestions, totalAttemptedQuestions, status, err := attempt.FindProgressByQuizAndUser(quiz.ID, userID)
 		if err != nil {
 			totalAttemptedQuestions = 0
-			status = "IN_PROGRESS"
+			status = "NOT_STARTED"
 		}
 
 		userProgress := map[string]interface{}{
-			"totalQuestions":          questionCount,
+			"totalQuestions":          totalQuestions,
 			"totalAttemptedQuestions": totalAttemptedQuestions,
 			"status":                  status,
 		}
@@ -140,7 +136,7 @@ func (q *Quiz) FindAllWithDetails(limit float64, cursor string, quizCategoryID s
 			"attachments":       quiz.Attachments,
 			"quizCategory":      quiz.QuizCategory,
 			"postedByUser":      quiz.PostedByUser,
-			"questionCount":     questionCount,
+			"questionCount":     totalQuestions,
 			"attemptCount":      attemptCount,
 			"userProgress":      userProgress,
 		}
@@ -182,24 +178,20 @@ func (q *Quiz) FindAllWithDetailsForUser(limit float64, cursor string, quizCateg
 	// Build result with additional metadata
 	var result []map[string]interface{}
 	for _, quiz := range quizzes {
-		// Count questions for this quiz
-		var questionCount int64
-		db.Model(&Question{}).Where("\"quizID\" = ?", quiz.ID).Count(&questionCount)
-
 		// Count attempts for this quiz
 		var attemptCount int64
 		db.Model(&Attempt{}).Where("\"quizID\" = ?", quiz.ID).Distinct("\"userID\"").Count(&attemptCount)
 
 		// Get user progress
 		var attempt Attempt
-		_, totalAttemptedQuestions, status, err := attempt.FindProgressByQuizAndUser(quiz.ID, userID)
+		totalQuestions, totalAttemptedQuestions, status, err := attempt.FindProgressByQuizAndUser(quiz.ID, userID)
 		if err != nil {
 			totalAttemptedQuestions = 0
 			status = "IN_PROGRESS"
 		}
 
 		userProgress := map[string]interface{}{
-			"totalQuestions":          questionCount,
+			"totalQuestions":          totalQuestions,
 			"totalAttemptedQuestions": totalAttemptedQuestions,
 			"status":                  status,
 		}
@@ -227,7 +219,7 @@ func (q *Quiz) FindAllWithDetailsForUser(limit float64, cursor string, quizCateg
 			"attachments":       quiz.Attachments,
 			"quizCategory":      quiz.QuizCategory,
 			"postedByUser":      quiz.PostedByUser,
-			"questionCount":     questionCount,
+			"questionCount":     totalQuestions,
 			"attemptCount":      attemptCount,
 			"userProgress":      userProgress,
 		}
