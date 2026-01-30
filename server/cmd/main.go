@@ -103,6 +103,7 @@ func main() {
 	quizGroup.Get("/attempt/:id", middlewares.Auth, quiz.GetQuizDataForAttempt)
 	quizGroup.Get("/attempted-data/:id", middlewares.Auth, quiz.GetQuizAttemptedData)
 	quizGroup.Get("/analytics/summary", middlewares.Auth, middlewares.IsAdmin, quiz.GetQuizAnalytics)
+	quizGroup.Get("/user/:userID/progress", middlewares.Auth, quiz.GetQuizzesByUserAndProgress)
 
 	// Question
 	questionGroup := app.Group("/api/v1/question", func(c *fiber.Ctx) error {

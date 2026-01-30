@@ -85,7 +85,9 @@ func (a *Attempt) FindProgressByQuizAndUser(quizID string, userID string) (int64
 		return totalQuestions, totalAttemptedQuestions, status, err
 	}
 
-	if totalAttemptedQuestions == totalQuestions {
+	if totalAttemptedQuestions == 0 || totalQuestions == 0 {
+		status = "NOT_STARTED"
+	} else if totalAttemptedQuestions == totalQuestions {
 		status = "COMPLETED"
 	} else {
 		status = "IN_PROGRESS"
