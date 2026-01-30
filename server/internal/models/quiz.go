@@ -271,14 +271,9 @@ func (q *Quiz) FindAllByUserProgressWithStatusValue(limit float64, cursor string
 		db.Model(&Attempt{}).Where("\"quizID\" = ?", quizUserProgress.Quiz.ID).Distinct("\"userID\"").Count(&attemptCount)
 
 		userProgress := map[string]interface{}{
-			"id":                      quizUserProgress.ID,
 			"totalQuestions":          quizUserProgress.TotalQuestions,
 			"totalAttemptedQuestions": quizUserProgress.TotalAttemptedQuestions,
 			"status":                  quizUserProgress.Status,
-			"quizID":                  quizUserProgress.Quiz.ID,
-			"userID":                  quizUserProgress.User.ID,
-			"createdAt":               quizUserProgress.CreatedAt,
-			"updatedAt":               quizUserProgress.UpdatedAt,
 		}
 
 		quizData := map[string]interface{}{
@@ -374,10 +369,6 @@ func (q *Quiz) FindAllByUserProgressWithNoStatusValue(limit float64, cursor stri
 	// Build result with additional metadata
 	var result []map[string]interface{}
 	for _, quiz := range quizzes {
-		// // Count questions for this quiz
-		// var questionCount int64
-		// db.Model(&Question{}).Where("\"quizID\" = ?", quiz.ID).Count(&questionCount)
-
 		// Count attempts for this quiz
 		var attemptCount int64
 		db.Model(&Attempt{}).Where("\"quizID\" = ?", quiz.ID).Distinct("\"userID\"").Count(&attemptCount)
@@ -387,12 +378,10 @@ func (q *Quiz) FindAllByUserProgressWithNoStatusValue(limit float64, cursor stri
 		totalQuestions, totalAttemptedQuestions, status, err := attempt.FindProgressByQuizAndUser(quiz.ID, userID)
 		if err != nil {
 			totalAttemptedQuestions = 0
-			// status = "IN_PROGRESS"
 			status = "NOT_STARTED"
 		}
 
 		userProgress := map[string]interface{}{
-			// "totalQuestions":          questionCount,
 			"totalQuestions":          totalQuestions,
 			"totalAttemptedQuestions": totalAttemptedQuestions,
 			"status":                  status,
@@ -430,83 +419,6 @@ func (q *Quiz) FindAllByUserProgressWithNoStatusValue(limit float64, cursor stri
 
 	return pagination, result, nil
 }
-
-// func (q *Quiz) FindAllByUserProgress(limit float64, cursor string, userID string, status string) (types.Pagination, []map[string]interface{}, error) {
-// 	quizUserProgressModel := QuizUserProgress{}
-// 	var pagination types.Pagination
-
-// 	quizUserProgresses, err := quizUserProgressModel.FindAllByUser(userID, status, limit+1, cursor)
-// 	if err != nil {
-// 		return pagination, nil, err
-// 	}
-
-// 	var nextCursor string = ""
-// 	var hasNextItems bool = false
-
-// 	if len(quizUserProgresses) > int(limit) {
-// 		quizUserProgresses = quizUserProgresses[:len(quizUserProgresses)-1] // Remove last element
-// 		nextCursor = quizUserProgresses[len(quizUserProgresses)-1].ID
-// 		hasNextItems = true
-// 	}
-
-// 	pagination = types.Pagination{
-// 		Limit:        int64(limit),
-// 		NextCursor:   nextCursor,
-// 		HasNextItems: hasNextItems,
-// 		Count:        int64(len(quizUserProgresses)),
-// 	}
-
-// 	// Build result with additional metadata
-// 	var result []map[string]interface{}
-
-// 	for _, quizUserProgress := range quizUserProgresses {
-// 		// Count attempts for this quiz
-// 		var attemptCount int64
-// 		db.Model(&Attempt{}).Where("\"quizID\" = ?", quizUserProgress.Quiz.ID).Distinct("\"userID\"").Count(&attemptCount)
-
-// 		userProgress := map[string]interface{}{
-// 			"id":                      quizUserProgress.ID,
-// 			"totalQuestions":          quizUserProgress.TotalQuestions,
-// 			"totalAttemptedQuestions": quizUserProgress.TotalAttemptedQuestions,
-// 			"status":                  quizUserProgress.Status,
-// 			"quizID":                  quizUserProgress.Quiz.ID,
-// 			"userID":                  quizUserProgress.User.ID,
-// 			"createdAt":               quizUserProgress.CreatedAt,
-// 			"updatedAt":               quizUserProgress.UpdatedAt,
-// 		}
-
-// 		quizData := map[string]interface{}{
-// 			"id":                quizUserProgress.Quiz.ID,
-// 			"title":             quizUserProgress.Quiz.Title,
-// 			"titleDelta":        quizUserProgress.Quiz.TitleDelta,
-// 			"titleHTML":         quizUserProgress.Quiz.TitleHTML,
-// 			"introduction":      quizUserProgress.Quiz.Introduction,
-// 			"introductionDelta": quizUserProgress.Quiz.IntroductionDelta,
-// 			"introductionHTML":  quizUserProgress.Quiz.IntroductionHTML,
-// 			"instructions":      quizUserProgress.Quiz.Instructions,
-// 			"instructionsDelta": quizUserProgress.Quiz.InstructionsDelta,
-// 			"instructionsHTML":  quizUserProgress.Quiz.InstructionsHTML,
-// 			"isDeltaDefault":    quizUserProgress.Quiz.IsDeltaDefault,
-// 			"postedByUserID":    quizUserProgress.Quiz.PostedByUserID,
-// 			"quizCategoryID":    quizUserProgress.Quiz.QuizCategoryID,
-// 			"startsAt":          quizUserProgress.Quiz.StartsAt,
-// 			"endsAt":            quizUserProgress.Quiz.EndsAt,
-// 			"canBeAttempted":    quizUserProgress.Quiz.CanBeAttempted,
-// 			"showQuiz":          quizUserProgress.Quiz.ShowQuiz,
-// 			"createdAt":         quizUserProgress.Quiz.CreatedAt,
-// 			"updatedAt":         quizUserProgress.Quiz.UpdatedAt,
-// 			"attachments":       quizUserProgress.Quiz.Attachments,
-// 			"quizCategory":      quizUserProgress.Quiz.QuizCategory,
-// 			"postedByUser":      quizUserProgress.Quiz.PostedByUser,
-// 			"questionCount":     quizUserProgress.TotalQuestions,
-// 			"attemptCount":      attemptCount,
-// 			"userProgress":      userProgress,
-// 		}
-// 		result = append(result, quizData)
-// 	}
-
-// 	return pagination, result, nil
-// }
 
 func (q *Quiz) FindAllByUserProgress(limit float64, cursor string, userID string, status string) (types.Pagination, []map[string]interface{}, error) {
 	var pagination types.Pagination
