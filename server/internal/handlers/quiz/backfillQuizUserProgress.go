@@ -2,6 +2,7 @@ package quiz
 
 import (
 	"log"
+	"time"
 
 	"github.com/Tibz-Dankan/BiTE/internal/events"
 	"github.com/Tibz-Dankan/BiTE/internal/models"
@@ -41,10 +42,10 @@ func BackfillQuizUserProgress() {
 	log.Printf("Backfill completed. Published %d UPDATE_QUIZ_USER_PROGRESS events.", totalEventsPublished)
 }
 
-// func init() {
-// 	go func() {
-// 		time.Sleep(5 * time.Minute)
-// 		// time.Sleep(15 * time.Second)
-// 		BackfillQuizUserProgress()
-// 	}()
-// }
+func init() {
+	go func() {
+		time.Sleep(6 * time.Minute)
+		// time.Sleep(15 * time.Second)
+		BackfillQuizUserProgress()
+	}()
+}

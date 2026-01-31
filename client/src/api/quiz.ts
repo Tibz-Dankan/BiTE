@@ -3,6 +3,8 @@ import type {
   TGetAllQuizzes,
   TGetQuizAttemptedData,
   TGetQuizDataForAttempt,
+  TGetQuizUserProgressCount,
+  TGetQuizzesByUserAndProgress,
   TUpdateQuiz,
   TUpdateQuizAttachment,
 } from "../types/quiz";
@@ -82,7 +84,7 @@ class QuizAPI {
         headers: {
           Authorization: "",
         },
-      }
+      },
     );
 
     if (!response.ok) {
@@ -115,7 +117,7 @@ class QuizAPI {
         headers: {
           "Content-type": "application/json",
         },
-      }
+      },
     );
 
     if (!response.ok) {
@@ -137,7 +139,7 @@ class QuizAPI {
         headers: {
           "Content-type": "application/json",
         },
-      }
+      },
     );
 
     if (!response.ok) {
@@ -159,7 +161,49 @@ class QuizAPI {
         headers: {
           "Content-type": "application/json",
         },
-      }
+      },
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  getQuizzesByUserAndProgress = async ({
+    userID,
+    limit,
+    cursor,
+    status,
+    quizCategoryID,
+  }: TGetQuizzesByUserAndProgress) => {
+    const response = await fetch(
+      `${SERVER_URL}/quiz/user/${userID}/progress?limit=${limit}&cursor=${cursor}&status=${status}&quizCategoryID=${quizCategoryID}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      },
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  getQuizUserProgressCount = async ({ userID }: TGetQuizUserProgressCount) => {
+    const response = await fetch(
+      `${SERVER_URL}/quiz/user/${userID}/progress/count`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      },
     );
 
     if (!response.ok) {
