@@ -6,24 +6,33 @@ import type { TQuiz } from "../../../types/quiz";
 import { UserQuizCard } from "./UserQuizCard";
 import { AlertCard } from "../shared/AlertCard";
 import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
-import type { TPagination } from "../../../types/pagination";
 import { useAuthStore } from "../../../stores/auth";
+import type { TPagination } from "../../../types/pagination";
 import { Button } from "../shared/Btn";
 
-export const UserQuizList: React.FC = () => {
+export const UserQuizListProgress: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const cursor = searchParams.get("qzCursor")!;
   const hasCursor: boolean = !!cursor;
-  const quizCategoryID = searchParams.get("qzCategoryID")!;
   const userID = useAuthStore((state) => state.auth.user.id);
+  const quizProgressStatusParam = searchParams.get("qzpStatus");
   const quizCategoryIDParam = searchParams.get("qzCategoryID");
-  const navigate = useNavigate();
+
+  let quizProgressStatus = "";
+  if (quizProgressStatusParam === "in_progress") {
+    quizProgressStatus = "IN_PROGRESS";
+  }
+  if (quizProgressStatusParam === "completed") {
+    quizProgressStatus = "COMPLETED";
+  }
 
   const { isPending, isError, data, error } = useQuery({
     queryKey: [
-      "user-quiz-list",
+      "user-quiz-list-progress",
       cursor ?? "",
       userID,
+      quizProgressStatus ?? "",
       quizCategoryIDParam ?? "",
     ],
     queryFn: () =>
@@ -31,8 +40,8 @@ export const UserQuizList: React.FC = () => {
         userID,
         limit: 20,
         cursor: hasCursor ? cursor : "",
-        status: "",
-        quizCategoryID: quizCategoryID ? quizCategoryID : "",
+        status: quizProgressStatus,
+        quizCategoryID: quizCategoryIDParam ?? "",
       }),
   });
 
@@ -79,7 +88,7 @@ export const UserQuizList: React.FC = () => {
   }
 
   return (
-    <div className="w-full space-y-12">
+    <div className="space-y-12">
       {/* Quiz Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {quizzes.map((quiz) => (
@@ -106,7 +115,7 @@ export const UserQuizList: React.FC = () => {
           type={"button"}
           disabled={disablePrevBtn}
           className="min-w-28 bg-gray-800/10 border-[1px] border-gray-300
-                 text-orange-500 disabled:text-orange-500/50 h-auto py-2 px-2"
+           text-orange-500 disabled:text-orange-500/50 h-auto py-2 px-2"
           onClick={() => loadPrevQuizzesHandler()}
         >
           <div className="flex items-center justify-center gap-2 text-inherit">
@@ -118,7 +127,7 @@ export const UserQuizList: React.FC = () => {
           type={"button"}
           disabled={disableNextBtn}
           className="min-w-28 bg-gray-800/10 border-[1px] border-gray-300
-                 text-orange-500 disabled:text-orange-500/50 h-auto py-2 px-2"
+           text-orange-500 disabled:text-orange-500/50 h-auto py-2 px-2"
           onClick={() => loadNextQuizzesHandler()}
         >
           <>

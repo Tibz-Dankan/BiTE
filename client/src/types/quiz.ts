@@ -153,3 +153,32 @@ export type TUserAnalytics = {
     totalQuizzesAttempted: number;
   };
 };
+
+//  userID: string;
+//     limit: number;
+//     cursor: string;
+//     status: string;
+
+export type TGetQuizzesByUserAndProgress = {
+  userID: string;
+  limit: number;
+  cursor: string;
+  status: string;
+  quizCategoryID: string;
+};
+
+export type TGetQuizUserProgressCount = {
+  userID: string;
+};
+
+export type TQuizUserProgressCount = {
+  completedCount: number;
+  inProgressCount: number;
+  unattemptedCount: number;
+};
+
+export type TQuizUserProgressResponse = {
+  status: string;
+  message: string;
+  data: Prettify<TQuizUserProgressCount>;
+};
