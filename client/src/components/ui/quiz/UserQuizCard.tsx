@@ -70,6 +70,19 @@ export const UserQuizCard: React.FC<UserQuizCardProps> = ({ quiz }) => {
 
   const bgColor = getQuizCategoryColor(quiz);
 
+  const getQuizUserProgress = (quiz: TQuiz) => {
+    if (quiz.userProgress!.status === "IN_PROGRESS") {
+      return "In Progress";
+    }
+    if (quiz.userProgress!.status === "COMPLETED") {
+      return "Completed";
+    }
+    if (quiz.userProgress!.status === "UN_ATTEMPTED") {
+      return "Un Attempted";
+    }
+    return "Unknown";
+  };
+
   const navigateToQuizAttempt = (quiz: TQuiz) => {
     navigate(`/u/quizzes/${quiz.id}/attempt`);
   };
@@ -190,12 +203,7 @@ export const UserQuizCard: React.FC<UserQuizCardProps> = ({ quiz }) => {
               Your Progress
             </p>
             <div className="flex items-center justify-between text-sm text-orange-800">
-              <span>
-                Status:{" "}
-                {quiz.userProgress.status === "IN_PROGRESS"
-                  ? "In Progress"
-                  : "Completed"}
-              </span>
+              <span>Status: {getQuizUserProgress(quiz)}</span>
               <span>
                 {quiz.userProgress.totalAttemptedQuestions} /{" "}
                 {quiz.userProgress.totalQuestions}
@@ -241,12 +249,12 @@ export const UserQuizCard: React.FC<UserQuizCardProps> = ({ quiz }) => {
           {quiz.userProgress?.status === "COMPLETED"
             ? "View Results"
             : quiz.userProgress?.status === "IN_PROGRESS"
-            ? quiz.userProgress.totalAttemptedQuestions === 0
-              ? "Start Quiz"
-              : "Continue Attempt"
-            : quiz.canBeAttempted
-            ? "Start Quiz"
-            : "Coming Soon"}
+              ? quiz.userProgress.totalAttemptedQuestions === 0
+                ? "Start Quiz"
+                : "Continue Attempt"
+              : quiz.canBeAttempted
+                ? "Start Quiz"
+                : "Coming Soon"}
 
           {(quiz.canBeAttempted ||
             quiz.userProgress?.status === "COMPLETED") && (
