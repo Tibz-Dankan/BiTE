@@ -10,7 +10,8 @@ import type { TQuizUserProgressCount } from "../../../types/quiz";
 
 export const UserQuizProgressFilter: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const quizProgressStatusParam = searchParams.get("qzpStatus") ?? "";
+  const quizProgressStatusParam =
+    searchParams.get("qzpStatus") ?? "un_attempted";
   const [selectedQuizProgressStatus, setSelectedQuizProgressStatus] = useState(
     quizProgressStatusParam,
   );
