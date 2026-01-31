@@ -1,8 +1,6 @@
 package models
 
 import (
-	"log"
-
 	"github.com/Tibz-Dankan/BiTE/internal/types"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -302,7 +300,7 @@ func (q *Quiz) FindAllByUserProgressWithStatusValue(limit float64, cursor string
 }
 
 // FindAllByUserProgressWithNoStatusValue returns quizzes with additional metadata for user side, filtering out hidden quizzes
-func (q *Quiz) FindAllByUserProgressWithNoStatusValue(limit float64, cursor string, userID string) (types.Pagination, []map[string]interface{}, error) {
+func (q *Quiz) FindAllByUserProgressWithNoStatusValue(limit float64, cursor string, userID string, quizCategoryID string) (types.Pagination, []map[string]interface{}, error) {
 	var quizzes []Quiz
 	var pagination types.Pagination
 	var quizIDsWithStatus []string
@@ -332,7 +330,9 @@ func (q *Quiz) FindAllByUserProgressWithNoStatusValue(limit float64, cursor stri
 		query = query.Where("\"createdAt\" < ?", lastQuiz.CreatedAt)
 	}
 
-	log.Printf("quizIDsWithStatus: %+v", quizIDsWithStatus)
+	if quizCategoryID != "" {
+		query = query.Where("\"quizCategoryID\" = ?", quizCategoryID)
+	}
 
 	if len(quizIDsWithStatus) > 0 {
 		query = query.Where("id NOT IN ?", quizIDsWithStatus)
@@ -412,7 +412,7 @@ func (q *Quiz) FindAllByUserProgressWithNoStatusValue(limit float64, cursor stri
 	return pagination, result, nil
 }
 
-func (q *Quiz) FindAllByUserProgress(limit float64, cursor string, userID string, status string) (types.Pagination, []map[string]interface{}, error) {
+func (q *Quiz) FindAllByUserProgress(limit float64, cursor string, userID string, status string, quizCategoryID string) (types.Pagination, []map[string]interface{}, error) {
 	var pagination types.Pagination
 	// Build result with additional metadata
 	var result []map[string]interface{}
@@ -426,7 +426,7 @@ func (q *Quiz) FindAllByUserProgress(limit float64, cursor string, userID string
 		return pagination, result, nil
 	}
 
-	pagination, result, err = q.FindAllByUserProgressWithNoStatusValue(limit, cursor, userID)
+	pagination, result, err = q.FindAllByUserProgressWithNoStatusValue(limit, cursor, userID, quizCategoryID)
 	if err != nil {
 		return pagination, result, err
 	}
