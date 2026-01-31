@@ -29,7 +29,7 @@ export const UserQuizList: React.FC = () => {
     queryFn: () =>
       quizAPI.getQuizzesByUserAndProgress({
         userID,
-        limit: 20,
+        limit: 12,
         cursor: hasCursor ? cursor : "",
         status: "",
         quizCategoryID: quizCategoryID ? quizCategoryID : "",
