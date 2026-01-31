@@ -65,13 +65,13 @@ export const UserQuizProgressInfo: React.FC = () => {
   return (
     <div
       className="w-full flex flex-col sm:flex-row gap-4 border-1s
-      border-gray-300 rounded-lg p-4 text-gray-600 bg-gray-800/8"
+            border-gray-300 rounded-lg p-4 text-gray-600 bg-gray-800/8"
     >
       {/* InProgressInfo */}
       {showInProgressInfo && (
         <div className="w-full flex items-center gap-2">
           <span className="text-sm">
-            Hi {user.name} you have {quizUserProgressCount.inProgressCount}{" "}
+            Hi {user.name}, ⏳ you have {quizUserProgressCount.inProgressCount}{" "}
             unfinished quizzes. Please continue attempting to complete them
           </span>
         </div>
@@ -81,7 +81,7 @@ export const UserQuizProgressInfo: React.FC = () => {
           type="button"
           onClick={() => navigateTo(`/u/quizzes?qzpStatus=in_progress`)}
           className={`rounded-lg px-4 py-2 bg-(--primary)
-             text-gray-50 hover:cursor-pointer self-end`}
+                         text-gray-50 hover:cursor-pointer self-end`}
         >
           <span>Continue</span>
         </Button>
@@ -91,8 +91,8 @@ export const UserQuizProgressInfo: React.FC = () => {
       {showCompletedInfo && (
         <div className="w-full flex items-center gap-2">
           <span className="text-sm">
-            Hi {user.name} you have {quizUserProgressCount.completedCount}{" "}
-            completed quizzes. Great job!. Attempt more quizzes to improve your
+            Hi {user.name}, 🏆 you have {quizUserProgressCount.completedCount}{" "}
+            completed quizzes. Great job! Attempt more quizzes to improve your
             ranking
           </span>
         </div>
@@ -102,7 +102,7 @@ export const UserQuizProgressInfo: React.FC = () => {
           type="button"
           onClick={() => navigateTo(`/u/quizzes?qzpStatus=un_attempted`)}
           className={`rounded-lg px-4 py-2 bg-(--primary)
-             text-gray-50 hover:cursor-pointer self-end`}
+                         text-gray-50 hover:cursor-pointer self-end`}
         >
           <span>Attempt</span>
         </Button>
@@ -112,7 +112,7 @@ export const UserQuizProgressInfo: React.FC = () => {
       {showUnattemptedInfo && (
         <div className="w-full flex items-center gap-2">
           <span className="text-sm">
-            Hi {user.name} you have not attempted any quizzes yet. Start
+            Hi {user.name}, 📝 you have not attempted any quizzes yet. Start
             attempting quizzes to improve your ranking.
           </span>
         </div>
@@ -123,7 +123,7 @@ export const UserQuizProgressInfo: React.FC = () => {
           type="button"
           onClick={() => navigateTo(`/u/quizzes?qzpStatus=un_attempted`)}
           className={`rounded-lg px-4 py-2 bg-(--primary)
-             text-gray-50 hover:cursor-pointer self-end`}
+                         text-gray-50 hover:cursor-pointer self-end`}
         >
           <span>Start</span>
         </Button>
