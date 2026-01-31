@@ -12,6 +12,7 @@ var GetQuizzesByUserAndProgress = func(c *fiber.Ctx) error {
 	cursorParam := c.Query("cursor")
 	statusParam := c.Query("status")
 	userID := c.Params("userID")
+	quizCategoryIDParam := c.Query("quizCategoryID")
 
 	limit, err := pkg.ValidateQueryLimit(limitParam)
 	if err != nil {
@@ -24,11 +25,15 @@ var GetQuizzesByUserAndProgress = func(c *fiber.Ctx) error {
 		statusParam = ""
 	}
 
+	if quizCategoryIDParam == "" {
+		quizCategoryIDParam = ""
+	}
+
 	if userID == "" {
 		return fiber.NewError(fiber.StatusBadRequest, "Please provide userID!")
 	}
 
-	pagination, allQuiz, err := quiz.FindAllByUserProgress(limit, cursorParam, userID, statusParam)
+	pagination, allQuiz, err := quiz.FindAllByUserProgress(limit, cursorParam, userID, statusParam, quizCategoryIDParam)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
