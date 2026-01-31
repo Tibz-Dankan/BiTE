@@ -70,7 +70,7 @@ export const UserQuizCategoryFilter: React.FC = () => {
         <Button
           type="button"
           onClick={() => onSelectCategoryHandler("")}
-          className={`rounded-full px-6 py-2 bg-gray-100 ${
+          className={`rounded-full px-4 py-1 bg-gray-100 text-sm ${
             selectedCategoryId === ""
               ? "bg-(--primary) text-gray-50 hover:bg-(--primary)/90 font-semibold"
               : "border-1 border-gray-300 text-gray-800  hover:bg-gray-100"
@@ -83,7 +83,7 @@ export const UserQuizCategoryFilter: React.FC = () => {
             key={category.id}
             type="button"
             onClick={() => onSelectCategoryHandler(category.id)}
-            className={`rounded-full px-6 py-2 bg-gray-100 ${
+            className={`rounded-full px-4 py-1 bg-gray-100 text-sm h-auto ${
               selectedCategoryId === category.id
                 ? "bg-(--primary) text-gray-50 hover:bg-(--primary)/90 font-semibold"
                 : "border-1 border-gray-300 text-gray-800 hover:bg-(--primary) hover:text-gray-50"
