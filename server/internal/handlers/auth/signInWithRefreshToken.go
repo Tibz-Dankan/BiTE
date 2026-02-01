@@ -44,7 +44,7 @@ var SignInWithRefreshToken = func(c *fiber.Ctx) error {
 
 	userIDFromToken, err := pkg.DecodeJWT(sigInInput.RefreshToken)
 	if err != nil {
-		return fiber.NewError(fiber.StatusNotFound, err.Error())
+		return fiber.NewError(fiber.StatusForbidden, err.Error())
 	}
 
 	savedRefreshToken, err := session.FindByRefreshToken(sigInInput.RefreshToken)

@@ -55,6 +55,12 @@ export const useSigninWithRefreshToken = () => {
     const logInWithRT = async (auth: TAuth) => {
       if (!auth.refreshToken || !auth.accessToken) return;
 
+      if (isTokenExpired(auth.refreshToken)) {
+        clearAuth();
+        navigate("/auth/signin", { replace: true });
+        return;
+      }
+
       if (isTokenExpired(auth.accessToken)) {
         mutate({ userID: auth.user.id, refreshToken: auth.refreshToken });
         return;
@@ -71,5 +77,5 @@ export const useSigninWithRefreshToken = () => {
     }, 10000);
 
     return () => clearInterval(intervalId);
-  }, [auth, isTokenExpired, mutate, shouldRefreshToken]);
+  }, [auth, clearAuth, isTokenExpired, mutate, navigate, shouldRefreshToken]);
 };
