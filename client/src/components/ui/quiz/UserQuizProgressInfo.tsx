@@ -72,7 +72,10 @@ export const UserQuizProgressInfo: React.FC = () => {
         <div className="w-full flex items-center gap-2">
           <span className="text-sm">
             Hi {user.name}, ⏳ you have {quizUserProgressCount.inProgressCount}{" "}
-            unfinished quizzes. Please continue attempting to complete them
+            unfinished{" "}
+            {quizUserProgressCount.inProgressCount === 1 ? "quiz" : "quizzes"}.
+            Please continue attempting to complete{" "}
+            {quizUserProgressCount.inProgressCount === 1 ? "it" : "them"}
           </span>
         </div>
       )}
@@ -92,8 +95,9 @@ export const UserQuizProgressInfo: React.FC = () => {
         <div className="w-full flex items-center gap-2">
           <span className="text-sm">
             Hi {user.name}, 🏆 you have {quizUserProgressCount.completedCount}{" "}
-            completed quizzes. Great job! Attempt more quizzes to improve your
-            ranking
+            completed{" "}
+            {quizUserProgressCount.completedCount === 1 ? "quiz" : "quizzes"}.
+            Great job! Attempt more quizzes to improve your ranking
           </span>
         </div>
       )}
