@@ -39,7 +39,7 @@ export const AdminQuizUpdate: React.FC = () => {
   }
 
   return (
-    <div className="w-full mb-16 space-y-8 mt-8">
+    <div className="w-full space-y-8 mt-8">
       <UpdateQuizFormHeading />
       <div className="w-full flex flex-col md:flex-row items-start justify-start gap-6">
         <div className="flex items-center">

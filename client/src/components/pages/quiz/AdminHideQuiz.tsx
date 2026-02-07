@@ -44,7 +44,7 @@ export const AdminHideQuiz: React.FC = () => {
   }
 
   return (
-    <div className="w-full mb-16 space-y-8 mt-8">
+    <div className="w-full space-y-8 mt-8">
       <div className="w-full">
         <h1 className="text-2xl font-bold text-gray-800">Hide Quiz</h1>
         <p className="text-sm text-gray-600 mt-2">

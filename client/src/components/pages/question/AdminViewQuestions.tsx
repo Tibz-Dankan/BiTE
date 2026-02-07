@@ -67,7 +67,7 @@ export const AdminViewQuestions: React.FC = () => {
   }
 
   return (
-    <div className="w-full mt-4 space-y-8 mb-16">
+    <div className="w-full mt-4 space-y-8">
       <div className="w-full flex items-center justify-between gap-4">
         <div>
           <QuillViewer deltaContent={titleDelta} />

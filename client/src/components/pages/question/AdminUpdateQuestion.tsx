@@ -73,7 +73,7 @@ export const AdminUpdateQuestion: React.FC = () => {
   }
 
   return (
-    <div className="w-full mb-16 space-y-8 mt-8">
+    <div className="w-full space-y-8 mt-8">
       <div className="w-full">
         <UpdateQuestionFormHeading quizTitleDelta={quizTitleDelta} />
       </div>
