@@ -3,7 +3,7 @@ import { AdminRankingList } from "../../ui/ranking/AdminRankingList";
 
 export const AdminRankingView: React.FC = () => {
   return (
-    <div className="w-full mt-4 mb-16 px-4 lg:px-0">
+    <div className="w-full mt-4 px-4 lg:px-0">
       <AdminRankingList />
     </div>
   );
