@@ -557,3 +557,20 @@ func (q *Quiz) Delete(id string) error {
 	}
 	return nil
 }
+
+func (q *Quiz) AutoCorrectAllQuizzesQuestions() error {
+	var quizzes []Quiz
+
+	if err := db.Model(&Quiz{}).Find(&quizzes).Error; err != nil {
+		return err
+	}
+
+	for _, quiz := range quizzes {
+		question := Question{}
+		if err := question.AutoCorrectSequenceNumbers(quiz.ID); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}

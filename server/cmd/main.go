@@ -98,6 +98,8 @@ func main() {
 	quizGroup.Patch("/:id/unattemptable", middlewares.Auth, middlewares.IsAdmin, quiz.MakeQuizUnAttemptable)
 	quizGroup.Patch("/:id/show", middlewares.Auth, middlewares.IsAdmin, quiz.ShowQuiz)
 	quizGroup.Patch("/:id/hide", middlewares.Auth, middlewares.IsAdmin, quiz.HideQuiz)
+	quizGroup.Patch("/auto-number-questions", middlewares.Auth, middlewares.IsAdmin, quiz.AutoNumberAllQuizzesQuestions)
+	quizGroup.Patch("/:id/auto-number-questions", middlewares.Auth, middlewares.IsAdmin, quiz.AutoNumberQuizQuestions)
 	quizGroup.Get("/", middlewares.Auth, quiz.GetAllQuizzes)
 	// quizGroup.Get("/data-for-attempt/:id", middlewares.Auth, quiz.GetQuizDataForAttempt)
 	quizGroup.Get("/attempt/:id", middlewares.Auth, quiz.GetQuizDataForAttempt)
