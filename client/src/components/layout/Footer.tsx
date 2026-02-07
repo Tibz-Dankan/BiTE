@@ -1,5 +1,4 @@
 import React from "react";
-// import { Link } from "react-router-dom";
 
 export const DashboardFooter: React.FC = () => {
   return (
@@ -21,36 +20,8 @@ export const DashboardFooter: React.FC = () => {
               &copy; {new Date().getFullYear()} Bitcoin High School. All rights
               reserved.
             </div>
-            {/* <Link
-              to="/privacy-policy"
-              className="hover:text-primary transition-colors"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              to="/terms-of-service"
-              className="hover:text-primary transition-colors"
-            >
-              Terms of Service
-            </Link>
-            <Link
-              to="/contact"
-              className="hover:text-primary transition-colors"
-            >
-              Contact
-            </Link>
-            <a
-              href="mailto:support@bitcoinhighschool.com"
-              className="hover:text-primary transition-colors"
-            >
-              Support
-            </a> */}
           </div>
         </div>
-        {/* <div className="mt-8 text-center text-xs text-gray-400">
-          &copy; {new Date().getFullYear()} Bitcoin High School. All rights
-          reserved.
-        </div> */}
       </div>
     </footer>
   );
