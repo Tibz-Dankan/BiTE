@@ -7,6 +7,7 @@ import (
 
 var DeleteQuestion = func(c *fiber.Ctx) error {
 	question := models.Question{}
+	attempt := models.Attempt{}
 	questionID := c.Params("id")
 
 	savedQuestion, err := question.FindOne(questionID)
@@ -15,6 +16,15 @@ var DeleteQuestion = func(c *fiber.Ctx) error {
 	}
 	if savedQuestion.ID == "" {
 		return fiber.NewError(fiber.StatusInternalServerError, "Question of provided ID doesn't exist!")
+	}
+
+	quizAttempt, err := attempt.FindOneByQuiz(savedQuestion.QuizID)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+	if quizAttempt.ID != "" {
+		return fiber.NewError(fiber.StatusBadRequest,
+			"Can't delete question from a quiz that has already been attempted!")
 	}
 
 	err = question.Delete(questionID)
