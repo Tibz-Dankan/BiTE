@@ -293,3 +293,56 @@ type Attachment struct {
 	Question     *Question     `gorm:"foreignKey:QuestionID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"question,omitempty"`
 	Answer       *Answer       `gorm:"foreignKey:AnswerID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"answer,omitempty"`
 }
+
+type SatsReward struct {
+	ID                  string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
+	UserID              string    `gorm:"column:userID;not null;index" json:"userID"`
+	QuizID              string    `gorm:"column:quizID;not null;index" json:"quizID"`
+	SatsRewardAddressID string    `gorm:"column:satsRewardAddressID;not null;index" json:"satsRewardAddressID"`
+	Status              string    `gorm:"column:status;not null;index" json:"status"` // PENDING, COMPLETED, FAILED
+	CreatedAt           time.Time `gorm:"column:createdAt;index" json:"createdAt"`
+	UpdatedAt           time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
+
+	// Relationships
+	User              *User              `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"user,omitempty"`
+	Quiz              *Quiz              `gorm:"foreignKey:QuizID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"quiz,omitempty"`
+	SatsRewardAddress *SatsRewardAddress `gorm:"foreignKey:SatsRewardAddressID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"satsRewardAddress,omitempty"`
+}
+
+type SatsRewardAddress struct {
+	ID         string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
+	UserID     string    `gorm:"column:userID;not null;index" json:"userID"`
+	Address    string    `gorm:"column:address;not null;unique;index" json:"address"`
+	IsVerified bool      `gorm:"column:isVerified;default:false;index" json:"isVerified"`
+	IsDefault  bool      `gorm:"column:isDefault;default:true;index" json:"isDefault"`
+	CreatedAt  time.Time `gorm:"column:createdAt;index" json:"createdAt"`
+	UpdatedAt  time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
+
+	// Relationships
+	User       *User         `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"user,omitempty"`
+	SatsReward []*SatsReward `gorm:"foreignKey:SatsRewardAddressID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"satsRewards,omitempty"`
+}
+
+type SatsRewardTransaction struct {
+	ID                  string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
+	SatsRewardID        string    `gorm:"column:satsRewardID;not null;index" json:"satsRewardID"`
+	Transaction         JSONB     `gorm:"column:transaction;not null" json:"transaction"`
+	RewardedQuestionIDs JSONB     `gorm:"column:rewardedQuestionIDs;not null" json:"rewardedQuestionIDs"`
+	CreatedAt           time.Time `gorm:"column:createdAt;index" json:"createdAt"`
+	UpdatedAt           time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
+
+	// Relationships
+	SatsReward *SatsReward `gorm:"foreignKey:SatsRewardID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"satsReward,omitempty"`
+}
+
+type SatsRewardOperation struct {
+	ID           string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
+	SatsRewardID string    `gorm:"column:satsRewardID;not null;index" json:"satsRewardID"`
+	Status       string    `gorm:"column:status;not null" json:"status"` //SUCCESS, FAIL
+	Info         string    `gorm:"column:info;not null" json:"info"`
+	CreatedAt    time.Time `gorm:"column:createdAt;index" json:"createdAt"`
+	UpdatedAt    time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
+
+	// Relationships
+	SatsReward *SatsReward `gorm:"foreignKey:SatsRewardID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"satsReward,omitempty"`
+}
