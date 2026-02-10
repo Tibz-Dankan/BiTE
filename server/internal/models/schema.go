@@ -304,9 +304,10 @@ type SatsReward struct {
 	UpdatedAt           time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
 
 	// Relationships
-	User              *User              `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"user,omitempty"`
-	Quiz              *Quiz              `gorm:"foreignKey:QuizID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"quiz,omitempty"`
-	SatsRewardAddress *SatsRewardAddress `gorm:"foreignKey:SatsRewardAddressID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"satsRewardAddress,omitempty"`
+	User                  *User                    `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"user,omitempty"`
+	Quiz                  *Quiz                    `gorm:"foreignKey:QuizID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"quiz,omitempty"`
+	SatsRewardAddress     *SatsRewardAddress       `gorm:"foreignKey:SatsRewardAddressID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"satsRewardAddress,omitempty"`
+	SatsRewardTransaction []*SatsRewardTransaction `gorm:"foreignKey:SatsRewardID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"satsRewardTransactions,omitempty"`
 }
 
 type SatsRewardAddress struct {
@@ -315,6 +316,7 @@ type SatsRewardAddress struct {
 	Address    string    `gorm:"column:address;not null;unique;index" json:"address"`
 	IsVerified bool      `gorm:"column:isVerified;default:false;index" json:"isVerified"`
 	IsDefault  bool      `gorm:"column:isDefault;default:true;index" json:"isDefault"`
+	Info       JSONB     `gorm:"column:info" json:"info"`
 	CreatedAt  time.Time `gorm:"column:createdAt;index" json:"createdAt"`
 	UpdatedAt  time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
 

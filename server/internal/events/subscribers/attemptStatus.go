@@ -146,6 +146,22 @@ func PostAttemptStatus() {
 				UserID: eventData.UserID,
 			}
 			events.EB.Publish("UPDATE_RANKING", rankingEventData)
+
+			quizUserProgress := models.QuizUserProgress{}
+			quizUserProgress, err = quizUserProgress.FindOneByUserQuizAndStatus(eventData.UserID, savedQuestion.QuizID, "COMPLETED")
+			if err != nil {
+				log.Printf("Error finding quiz user progress: %+v", err)
+				continue
+			}
+
+			if quizUserProgress.ID != "" {
+				// 	Publish an event to make sats reward payment
+				satsRewardPaymentEventData := types.SatsRewardPaymentEventData{
+					UserID: eventData.UserID,
+					QuizID: savedQuestion.QuizID,
+				}
+				events.EB.Publish("MAKE_SATS_REWARD_PAYMENT", satsRewardPaymentEventData)
+			}
 		}
 	}()
 }
