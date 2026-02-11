@@ -9,45 +9,36 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/mailjet/mailjet-apiv3-go/v4"
+	"github.com/resend/resend-go/v3"
 )
 
 type Email struct {
 	Recipient string
 }
 
-// sends email to mails of all categories using mailjet wrapper
+// sends email to mails of all categories using resend
 func (e *Email) sendMailHTML(html, subject string) error {
-	publicKey := os.Getenv("MJ_APIKEY_PUBLIC")
-	secretKey := os.Getenv("MJ_APIKEY_PRIVATE")
-	senderMail := os.Getenv("MJ_SENDER_MAIL")
+	resendApiKey := os.Getenv("RESEND_API_KEY")
+	senderMail := os.Getenv("RESEND_SENDER_EMAIL")
 
-	mailjetClient := mailjet.NewMailjetClient(publicKey, secretKey)
-	messagesInfo := []mailjet.InfoMessagesV31{
-		{
-			From: &mailjet.RecipientV31{
-				Email: senderMail,
-				Name:  "BiTE",
-			},
-			To: &mailjet.RecipientsV31{
-				mailjet.RecipientV31{
-					Email: e.Recipient,
-					Name:  "User x",
-				},
-			},
-			Subject:  subject,
-			TextPart: "",
-			HTMLPart: html,
-		},
+	client := resend.NewClient(resendApiKey)
+
+	params := &resend.SendEmailRequest{
+		From:    "BiTE <" + senderMail + ">",
+		To:      []string{e.Recipient},
+		Html:    html,
+		Subject: subject,
+		// Cc:      []string{"cc@example.com"},
+		// Bcc:     []string{"bcc@example.com"},
+		ReplyTo: "support@bitcoinhighschool.com",
 	}
-	messages := mailjet.MessagesV31{Info: messagesInfo}
 
-	results, err := mailjetClient.SendMailV31(&messages)
+	sent, err := client.Emails.Send(params)
 	if err != nil {
+		log.Println(err.Error())
 		return err
 	}
-	log.Printf("MailJet results %+v :", results)
-	log.Println("mail sent!")
+	log.Println(sent.Id)
 
 	return nil
 }
