@@ -105,6 +105,35 @@ func (sr *SatsReward) FindAll(limit float64, cursor string) ([]SatsReward, error
 	return satsRewards, nil
 }
 
+func (sr *SatsReward) FindAllForAdmin(limit float64, cursor string) ([]SatsReward, error) {
+	var satsRewards []SatsReward
+
+	query := db.Model(&SatsReward{}).
+		Preload("Quiz.Attachments").
+		Preload("Quiz").
+		Preload("User", func(db *gorm.DB) *gorm.DB {
+			return db.Select("id", "name", "email", "\"profileBgColor\"", "\"createdAt\"", "\"updatedAt\"")
+		}).
+		Preload("SatsRewardAddress").
+		Preload("SatsRewardTransaction").
+		Preload("SatsRewardOperation").
+		Order("\"createdAt\" DESC").Limit(int(limit))
+
+	if cursor != "" {
+		var lastSatsReward SatsReward
+		if err := db.Select("\"createdAt\"").Where("id = ?", cursor).First(&lastSatsReward).Error; err != nil {
+			return nil, err
+		}
+		query = query.Where("\"createdAt\" < ?", lastSatsReward.CreatedAt)
+	}
+
+	if err := query.Find(&satsRewards).Error; err != nil {
+		return nil, err
+	}
+
+	return satsRewards, nil
+}
+
 // Update updates one Session in the database, using the information
 // stored in the receiver u
 func (sr *SatsReward) Update() (SatsReward, error) {
