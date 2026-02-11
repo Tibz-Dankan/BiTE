@@ -27,6 +27,19 @@ func (qup *QuizUserProgress) FindOne(id string) (QuizUserProgress, error) {
 	return quizUserProgress, nil
 }
 
+func (qup *QuizUserProgress) FindOneByUserQuizAndStatus(userID string, quizID string, status string) (QuizUserProgress, error) {
+	var quizUserProgress QuizUserProgress
+
+	if err := db.Model(&QuizUserProgress{}).
+		Where("\"userID\" = ? AND \"quizID\" = ? AND \"status\" = ?",
+			userID, quizID, status).
+		First(&quizUserProgress).Error; err != nil && err != gorm.ErrRecordNotFound {
+		return quizUserProgress, err
+	}
+
+	return quizUserProgress, nil
+}
+
 func (qup *QuizUserProgress) FindAll(limit float64, cursor string) ([]QuizUserProgress, error) {
 	var quizUserProgress []QuizUserProgress
 

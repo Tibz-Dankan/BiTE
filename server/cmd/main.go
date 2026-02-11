@@ -17,6 +17,7 @@ import (
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/quiz"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/quizcategory"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/ranking"
+	"github.com/Tibz-Dankan/BiTE/internal/handlers/satsreward"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/sitevisit"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/status"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/user"
@@ -166,6 +167,19 @@ func main() {
 	})
 	analyticsGroup.Get("/admin", middlewares.Auth, middlewares.IsAdmin, analytics.GetAdminAnalytics)
 	analyticsGroup.Get("/user", middlewares.Auth, analytics.GetUserAnalytics)
+
+	// SatsReward
+	satsRewardGroup := app.Group("/api/v1/satsreward", func(c *fiber.Ctx) error {
+		return c.Next()
+	})
+	satsRewardGroup.Get("/", middlewares.Auth, middlewares.IsAdmin, satsreward.GetAllSatsRewards)
+	satsRewardGroup.Patch("/:satsRewardID/reconcile", middlewares.Auth, middlewares.IsAdmin, satsreward.ReconcileSatsReward)
+	satsRewardGroup.Get("/user/:userID", middlewares.Auth, satsreward.GetAllSatsRewardsByUser)
+	satsRewardGroup.Post("/address", middlewares.Auth, satsreward.PostSatsRewardAddress)
+	satsRewardGroup.Get("/address", middlewares.Auth, middlewares.IsAdmin, satsreward.GetAllSatsRewardAddresses)
+	satsRewardGroup.Get("/address/user/:userID", middlewares.Auth, satsreward.GetSatsRewardAddressesByUser)
+	satsRewardGroup.Patch("/address/:address/verify", middlewares.Auth, satsreward.VerifySatsRewardAddress)
+	satsRewardGroup.Get("/operations", middlewares.Auth, middlewares.IsAdmin, satsreward.GetAllSatsRewardOperations)
 
 	// Metrics
 	app.Get("/metrics", monitor.GetMetrics)

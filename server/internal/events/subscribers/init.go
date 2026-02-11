@@ -11,6 +11,8 @@ func InitEventSubscribers() {
 	go PostAttemptStatus()
 	go UpdateRanking()
 	go UpdateQuizUserProgress()
+	go MakeSatsRewardPayment()
+	go VerifySatsRewardAddress()
 
 	log.Println("Event subscribers initialized successfully")
 }

@@ -16,3 +16,14 @@ type QuizUserProgressEventData struct {
 	UserID string
 	QuizID string
 }
+
+// SatsRewardPaymentEventData represents the data published with MAKE_SATS_REWARD_PAYMENT event
+type SatsRewardPaymentEventData struct {
+	UserID string
+	QuizID string
+}
+
+type SatsRewardAddressEventData struct {
+	UserID  string
+	Address string
+}
