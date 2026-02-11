@@ -308,6 +308,7 @@ type SatsReward struct {
 	Quiz                  *Quiz                    `gorm:"foreignKey:QuizID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"quiz,omitempty"`
 	SatsRewardAddress     *SatsRewardAddress       `gorm:"foreignKey:SatsRewardAddressID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"satsRewardAddress,omitempty"`
 	SatsRewardTransaction []*SatsRewardTransaction `gorm:"foreignKey:SatsRewardID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"satsRewardTransactions,omitempty"`
+	SatsRewardOperation   []*SatsRewardOperation   `gorm:"foreignKey:SatsRewardID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"satsRewardOperations,omitempty"`
 }
 
 type SatsRewardAddress struct {

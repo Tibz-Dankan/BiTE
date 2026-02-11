@@ -19,7 +19,7 @@ var GetAllSatsRewards = func(c *fiber.Ctx) error {
 		cursorParam = ""
 	}
 
-	satsRewards, err := satsReward.FindAll(limit+1, cursorParam)
+	satsRewards, err := satsReward.FindAllForAdmin(limit+1, cursorParam)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
