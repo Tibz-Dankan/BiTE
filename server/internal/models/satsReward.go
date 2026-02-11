@@ -56,9 +56,10 @@ func (sr *SatsReward) FindAllByUser(userID string, limit float64, cursor string)
 		Preload("Quiz.Attachments").
 		Preload("Quiz").
 		Preload("User", func(db *gorm.DB) *gorm.DB {
-			return db.Select("id", "name", "email", "\"profileBgColor\", createdAt\", \"updatedAt\"")
+			return db.Select("id", "name", "email", "\"profileBgColor\"", "\"createdAt\"", "\"updatedAt\"")
 		}).
 		Preload("SatsRewardAddress").
+		Preload("SatsRewardTransaction").
 		Order("\"createdAt\" DESC").Limit(int(limit))
 
 	if cursor != "" {
