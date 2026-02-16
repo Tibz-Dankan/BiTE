@@ -10,11 +10,21 @@ import (
 	"github.com/Tibz-Dankan/BiTE/internal/models"
 	"github.com/Tibz-Dankan/BiTE/internal/pkg"
 	"github.com/Tibz-Dankan/BiTE/internal/types"
+	"github.com/posthog/posthog-go"
 )
 
 // MakeSatsRewardPayment subscribes to MAKE_SATS_REWARD_PAYMENT event and
 // sends sats reward to the user
 func MakeSatsRewardPayment() {
+	client, _ := posthog.NewWithConfig(
+		os.Getenv("POSTHOG_API_KEY"),
+		posthog.Config{
+			// PersonalApiKey: "your personal API key", // Optional, but much more performant.  If this token is not supplied, then fetching feature flag values will be slower.
+			Endpoint: "https://us.i.posthog.com",
+		},
+	)
+	defer client.Close()
+
 	go func() {
 		satsRewardPaymentChan := make(chan events.DataEvent)
 		events.EB.Subscribe("MAKE_SATS_REWARD_PAYMENT", satsRewardPaymentChan)
@@ -28,6 +38,23 @@ func MakeSatsRewardPayment() {
 			}
 
 			log.Printf("Processing MAKE_SATS_REWARD_PAYMENT event for userID: %s, quizID: %s", eventData.UserID, eventData.QuizID)
+
+			// Sats Reward Feature Flag
+			isMyFlagEnabled, err := client.IsFeatureEnabled(posthog.FeatureFlagPayload{
+				Key:        "sats-reward",
+				DistinctId: eventData.UserID,
+			})
+			if err != nil {
+				log.Printf("Error getting feature flag value: %+v", err)
+			}
+			if isMyFlagEnabled == true {
+				log.Printf("Feature flag enabled for user: %s", eventData.UserID)
+			}
+
+			if isMyFlagEnabled == false {
+				log.Printf("Feature flag disabled for user: %s", eventData.UserID)
+				continue
+			}
 
 			const SATS_PER_CORRECT_QUESTION = 1
 			walletID := os.Getenv("BLINK_WALLET_ID")

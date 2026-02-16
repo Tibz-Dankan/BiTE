@@ -18,6 +18,7 @@ import {
 import { useSidebarStore } from "../../stores/sidebar";
 import { useGetWindowWidth } from "../../hooks/useGetWindowWidth";
 import { useRouteStore } from "../../stores/routes";
+import { useFeatureFlagEnabled } from "@posthog/react";
 
 interface DashboardSidebarProps {
   routes: TRoute;
@@ -39,6 +40,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
   const updateCurrentPage = useRouteStore((state) => state.updateCurrentPage);
 
   const { width } = useGetWindowWidth();
+  const isSatsRewardEnabled = useFeatureFlagEnabled("sats-reward");
 
   const isAdminAccount = auth.user.role === "ADMIN";
   const isUserAccount = auth.user.role === "USER";
@@ -68,7 +70,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
 
   const toggleSubmenu = (title: string) => {
     setOpenSubmenus((prev) =>
-      prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title]
+      prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title],
     );
   };
 
@@ -99,14 +101,14 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
                  py-2 text-sm font-medium transition-colors`,
                 shouldHighlight
                   ? "bg-primary/10 text-(--primary) font-semibold"
-                  : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+                  : "text-gray-500 hover:bg-gray-100 hover:text-gray-900",
               )}
             >
               <div className="flex items-center">
                 <span
                   className={cn(
                     "mr-3",
-                    shouldHighlight ? "text-(--primary)" : "text-gray-500"
+                    shouldHighlight ? "text-(--primary)" : "text-gray-500",
                   )}
                 >
                   {subitem.icon}
@@ -117,13 +119,13 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
                 className={cn(
                   "h-4 w-4 transition-transform",
                   openSubmenus.includes(submenuKey) && "rotate-180",
-                  shouldHighlight ? "text-(--primary)" : "text-gray-500"
+                  shouldHighlight ? "text-(--primary)" : "text-gray-500",
                 )}
               />
             </button>
             {openSubmenus.includes(submenuKey) &&
               renderSubmenu(subitem.children!, submenuKey)}
-          </div>
+          </div>,
         );
       }
 
@@ -137,7 +139,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
                transition-colors`,
               isActive
                 ? "bg-primary/10 text-(--primary) font-semibold"
-                : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+                : "text-gray-500 hover:bg-gray-100 hover:text-gray-900",
             )}
             onClick={() => {
               onNavigateHandler(subitem);
@@ -146,13 +148,13 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
             <span
               className={cn(
                 "mr-3",
-                isActive ? "text-(--primary)" : "text-gray-500"
+                isActive ? "text-(--primary)" : "text-gray-500",
               )}
             >
               {subitem.icon}
             </span>
             <span>{subitem.title}</span>
-          </Link>
+          </Link>,
         );
       }
     }
@@ -236,86 +238,95 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
           scrollbar-track-transparent hover:scrollbar-thumb-gray-600"
         >
           <nav className="space-y-1">
-            {pages.map((item, index) => {
-              const submenuKey = item.title;
-              const isActive = pathname === item.path;
-              const hasActiveChild = item.children
-                ? isSubmenuActive(item.children)
-                : false;
-              const shouldHighlight =
-                isActive || hasActiveChild || openSubmenus.includes(submenuKey);
+            {pages
+              .filter((item) => {
+                if (item.title === "Rewards") {
+                  return isSatsRewardEnabled;
+                }
+                return true;
+              })
+              .map((item, index) => {
+                const submenuKey = item.title;
+                const isActive = pathname === item.path;
+                const hasActiveChild = item.children
+                  ? isSubmenuActive(item.children)
+                  : false;
+                const shouldHighlight =
+                  isActive ||
+                  hasActiveChild ||
+                  openSubmenus.includes(submenuKey);
 
-              return (
-                <div key={index}>
-                  {item.children && item.showInSidebar && (
-                    <div>
-                      <button
-                        onClick={() => toggleSubmenu(submenuKey)}
-                        className={cn(
-                          `flex w-full items-center justify-between rounded-md px-3 
+                return (
+                  <div key={index}>
+                    {item.children && item.showInSidebar && (
+                      <div>
+                        <button
+                          onClick={() => toggleSubmenu(submenuKey)}
+                          className={cn(
+                            `flex w-full items-center justify-between rounded-md px-3 
                            py-3 text-sm font-normal transition-colors`,
-                          shouldHighlight
-                            ? "bg-primary/20 text-(--primary) font-normal"
-                            : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
-                        )}
-                      >
-                        <div className="flex items-center">
-                          <span
+                            shouldHighlight
+                              ? "bg-primary/20 text-(--primary) font-normal"
+                              : "text-gray-500 hover:bg-gray-100 hover:text-gray-900",
+                          )}
+                        >
+                          <div className="flex items-center">
+                            <span
+                              className={cn(
+                                "mr-3",
+                                shouldHighlight
+                                  ? "text-(--primary)"
+                                  : "text-gray-500",
+                              )}
+                            >
+                              {item.icon}
+                            </span>
+                            <span>{item.title}</span>
+                          </div>
+                          <ChevronDown
                             className={cn(
-                              "mr-3",
+                              "h-4 w-4 transition-transform",
+                              openSubmenus.includes(submenuKey) && "rotate-180",
                               shouldHighlight
                                 ? "text-(--primary)"
-                                : "text-gray-500"
+                                : "text-gray-500",
                             )}
-                          >
-                            {item.icon}
-                          </span>
-                          <span>{item.title}</span>
-                        </div>
-                        <ChevronDown
-                          className={cn(
-                            "h-4 w-4 transition-transform",
-                            openSubmenus.includes(submenuKey) && "rotate-180",
-                            shouldHighlight
-                              ? "text-(--primary)"
-                              : "text-gray-500"
-                          )}
-                        />
-                      </button>
-                      {openSubmenus.includes(submenuKey) &&
-                        renderSubmenu(item.children!, submenuKey)}
-                    </div>
-                  )}
+                          />
+                        </button>
+                        {openSubmenus.includes(submenuKey) &&
+                          renderSubmenu(item.children!, submenuKey)}
+                      </div>
+                    )}
 
-                  {!item.children && item.showInSidebar && (
-                    <Link
-                      key={index}
-                      to={item.path}
-                      className={cn(
-                        `flex items-center rounded-md px-3 py-2 text-sm font-normal 
-                         transition-colors`,
-                        isActive
-                          ? "bg-(--primary)/15 text-(--primary) font-normal"
-                          : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
-                      )}
-                      onClick={() => {
-                        onNavigateHandler(item);
-                      }}
-                    >
-                      <span
+                    {!item.children && item.showInSidebar && (
+                      <Link
+                        key={index}
+                        to={item.path}
                         className={cn(
-                          "mr-3",
-                          isActive ? "text-(--primary)" : "text-gray-500"
+                          `flex items-center rounded-md px-3 py-2 text-sm font-normal 
+                         transition-colors`,
+                          isActive
+                            ? "bg-(--primary)/15 text-(--primary) font-normal"
+                            : "text-gray-500 hover:bg-gray-100 hover:text-gray-900",
                         )}
+                        onClick={() => {
+                          onNavigateHandler(item);
+                        }}
                       >
-                        {item.icon}
-                      </span>
-                      <span>{item.title}</span>
-                    </Link>
-                  )}
-                </div>
-              );
-            })}
+                        <span
+                          className={cn(
+                            "mr-3",
+                            isActive ? "text-(--primary)" : "text-gray-500",
+                          )}
+                        >
+                          {item.icon}
+                        </span>
+                        <span>{item.title}</span>
+                      </Link>
+                    )}
+                  </div>
+                );
+              })}
           </nav>
         </div>
 
@@ -388,7 +399,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
                         to={buildDropdownLink("dashboard")}
                         className={classNames(
                           focus ? "bg-gray-200" : "",
-                          "block px-4 py-2 text-sm text-gray-500"
+                          "block px-4 py-2 text-sm text-gray-500",
                         )}
                       >
                         <div className="w-full">
@@ -438,7 +449,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
                         to={buildDropdownLink("settings")}
                         className={classNames(
                           focus ? "bg-gray-200" : "",
-                          "block px-4 py-2 text-sm text-gray-500 hover:text-gray-800"
+                          "block px-4 py-2 text-sm text-gray-500 hover:text-gray-800",
                         )}
                       >
                         <div className="flex items-center justify-start gap-2">
@@ -459,7 +470,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
                         className={classNames(
                           focus ? "bg-gray-200" : "",
                           `flex items-center gap-2 text-sm font-medium text-gray-500
-                           hover:text-gray-800 w-full px-4 py-2 cursor-pointer`
+                           hover:text-gray-800 w-full px-4 py-2 cursor-pointer`,
                         )}
                       >
                         <LogOut className="h-4 w-4" />

@@ -14,10 +14,12 @@ interface ModalContentProps {
 }
 
 interface ModalProps {
-  openModalElement: ReactNode;
+  openModalElement?: ReactNode;
   children: ReactNode;
   className?: string;
   closed?: boolean;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
 const ModalOverlay: React.FC<ModalOverlayProps> = (props) => {
@@ -36,7 +38,7 @@ const ModalContent: React.FC<ModalContentProps> = (props) => {
       className={twMerge(
         `relative z-[1000] rounded-md bg-color-bg-primary p-0
           transition-all`,
-        props.className
+        props.className,
       )}
     >
       <span
@@ -51,10 +53,24 @@ const ModalContent: React.FC<ModalContentProps> = (props) => {
 };
 
 export const Modal: React.FC<ModalProps> = (props) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
 
-  const onOpenHandler = () => setIsOpen(() => !isOpen);
-  const onCloseHandler = () => setIsOpen(() => !isOpen);
+  const isControlled = props.isOpen !== undefined;
+  const isOpen = isControlled ? props.isOpen : internalIsOpen;
+
+  const onOpenHandler = () => {
+    if (!isControlled) {
+      setInternalIsOpen(true);
+    }
+  };
+
+  const onCloseHandler = () => {
+    if (isControlled) {
+      props.onClose?.();
+    } else {
+      setInternalIsOpen(false);
+    }
+  };
 
   const createAppendPortalElement = () => {
     const portalElement = document.createElement("div");
@@ -64,15 +80,20 @@ export const Modal: React.FC<ModalProps> = (props) => {
   };
   createAppendPortalElement();
 
+  const { closed, onClose } = props;
+
   useEffect(() => {
     const autoCloseHandler = () => {
-      const isClosed = props.closed !== undefined && props.closed;
-      if (!isClosed) return;
-      setIsOpen(() => !isClosed);
+      if (closed === undefined || !closed) return;
+      if (!isControlled) {
+        setInternalIsOpen(() => !closed);
+      } else {
+        onClose?.();
+      }
     };
 
     autoCloseHandler();
-  }, [props.closed]);
+  }, [closed, isControlled, onClose]);
 
   return (
     <Fragment>
@@ -92,7 +113,7 @@ export const Modal: React.FC<ModalProps> = (props) => {
                 className={props?.className}
               />
             </div>,
-            document.getElementById("portal")!
+            document.getElementById("portal")!,
           )}
       </>
     </Fragment>

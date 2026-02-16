@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { Routes } from "react-router-dom";
 import {
+  Bitcoin,
   Eye,
   FileQuestion,
   LayoutDashboard,
@@ -30,6 +31,7 @@ import { AdminHideQuiz } from "../components/pages/quiz/AdminHideQuiz";
 import { AdminRankingView } from "../components/pages/ranking/AdminRankingView";
 import { AdminSiteVisitView } from "../components/pages/siteVisit/AdminSiteVisitView";
 import { AdminUserView } from "../components/pages/user/AdminUserView";
+import { AdminSatsRewardsPage } from "../components/pages/satsreward/AdminSatsRewardsPage";
 
 export const AdminRoutes: React.FC = () => {
   const routes: TRoute = {
@@ -69,6 +71,13 @@ export const AdminRoutes: React.FC = () => {
         path: "/a/site-visits",
         showInSidebar: true,
         element: <AdminSiteVisitView />,
+      },
+      {
+        title: "Rewards",
+        icon: <Bitcoin className="h-4 w-4" />,
+        path: "/a/rewards",
+        showInSidebar: true,
+        element: <AdminSatsRewardsPage />,
       },
       {
         title: "New Quiz",

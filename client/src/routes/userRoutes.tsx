@@ -1,6 +1,13 @@
 import React, { Fragment } from "react";
 import { Routes } from "react-router-dom";
-import { FileQuestion, LayoutDashboard, Settings, XCircle } from "lucide-react";
+import {
+  FileQuestion,
+  Gift,
+  LayoutDashboard,
+  Settings,
+  XCircle,
+} from "lucide-react";
+import { UserSatsRewardsPage } from "../components/pages/satsreward/UserSatsRewardsPage";
 
 import type { TRoute } from "../types/routes";
 import { renderRoutes } from "./renderRoutes";
@@ -28,6 +35,13 @@ export const UserRoutes: React.FC = () => {
         path: "/u/quizzes",
         showInSidebar: true,
         element: <UserQuizView />,
+      },
+      {
+        title: "Rewards",
+        icon: <Gift className="h-5 w-5" />,
+        path: "/u/rewards",
+        showInSidebar: true,
+        element: <UserSatsRewardsPage />,
       },
       {
         title: "Quiz Attempt",
