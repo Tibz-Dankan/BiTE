@@ -10,11 +10,19 @@ import { SignUp } from "../components/pages/auth/SignUp";
 import { ForgotPassword } from "../components/pages/auth/ForgotPassword";
 import { VerifyOTP } from "../components/pages/auth/VerifyOTP";
 import { ResetPassword } from "../components/pages/auth/ResetPassword";
+import { RewardsInfoPage } from "../components/pages/common/rewards/RewardsInfoPage";
 
 export const AuthRoutes: React.FC = () => {
   const routes: TRoute = {
     title: "auth",
     pages: [
+      {
+        title: "Rewards",
+        icon: "icon",
+        path: "/rewards",
+        showInSidebar: false,
+        element: <RewardsInfoPage />,
+      },
       {
         title: "Sign In",
         icon: "icon",
