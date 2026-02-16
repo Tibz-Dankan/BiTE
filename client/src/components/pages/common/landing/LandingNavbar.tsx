@@ -1,8 +1,11 @@
 import React from "react";
 import { SCNButton } from "../../../ui/shared/button";
 import { Link } from "react-router-dom";
+import { useFeatureFlagEnabled } from "@posthog/react";
 
 export const LandingNavbar: React.FC = () => {
+  const isSatsRewardEnabled = useFeatureFlagEnabled("sats-reward");
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
       <div className="container mx-auto px-4 max-w-6xl h-16 flex items-center justify-between">
@@ -36,6 +39,14 @@ export const LandingNavbar: React.FC = () => {
           >
             Curriculum
           </a>
+          {isSatsRewardEnabled && (
+            <Link
+              to="/rewards"
+              className="hover:text-purple-600 transition-colors"
+            >
+              Rewards
+            </Link>
+          )}
         </div>
 
         {/* Auth Buttons */}

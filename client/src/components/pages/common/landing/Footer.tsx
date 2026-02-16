@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useFeatureFlagEnabled } from "@posthog/react";
 
 export const Footer: React.FC = () => {
+  const isSatsRewardEnabled = useFeatureFlagEnabled("sats-reward");
+
   return (
     <footer className="bg-gray-50 border-t border-gray-200 py-12">
       <div className="container mx-auto px-4 max-w-5xl">
@@ -29,6 +32,14 @@ export const Footer: React.FC = () => {
             >
               Terms of Service
             </Link>
+            {isSatsRewardEnabled && (
+              <Link
+                to="/rewards"
+                className="hover:text-primary transition-colors"
+              >
+                Rewards
+              </Link>
+            )}
             <Link
               to="/contact"
               className="hover:text-primary transition-colors"
