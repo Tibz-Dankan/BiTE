@@ -4,10 +4,10 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { quizAPI } from "../../../api/quiz";
 import type { TQuiz } from "../../../types/quiz";
 import type { TPagination } from "../../../types/pagination";
-import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
+import { Pagination } from "../shared/Pagination";
+import { Loader2 } from "lucide-react";
 import { AlertCard } from "../shared/AlertCard";
 import { QuizCard } from "./QuizCard";
-import { Button } from "../shared/Btn";
 
 export const AdminQuizList: React.FC = () => {
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ export const AdminQuizList: React.FC = () => {
         prev.set("qzCursor", pagination!.nextCursor);
         return prev;
       },
-      { replace: false }
+      { replace: false },
     );
   };
 
@@ -89,43 +89,13 @@ export const AdminQuizList: React.FC = () => {
           </div>
         )}
       </div>
-      {/* Pagination action */}
-      <div className="w-full flex items-center justify-end gap-8">
-        <Button
-          type={"button"}
-          disabled={disablePrevBtn}
-          className="min-w-28 bg-gray-800/10 border-[1px] border-gray-300
-           text-orange-500 disabled:text-orange-500/50 h-auto py-2 px-2"
-          onClick={() => loadPrevQuizzesHandler()}
-        >
-          <div className="flex items-center justify-center gap-2 text-inherit">
-            <ArrowLeft className="text-inherit w-4 h-4 text-sm -ml-2" />
-            <span className="text-inherit w-4 h-4 text-[12px]">Prev</span>
-          </div>
-        </Button>
-        <Button
-          type={"button"}
-          disabled={disableNextBtn}
-          className="min-w-28 bg-gray-800/10 border-[1px] border-gray-300
-           text-orange-500 disabled:text-orange-500/50 h-auto py-2 px-2"
-          onClick={() => loadNextQuizzesHandler()}
-        >
-          <>
-            {!showNextLoader && (
-              <div className="flex items-center justify-center gap-2 text-inherit">
-                <span className="text-inherit text-[12px]">Next</span>
-                <ArrowRight className="text-inherit w-4 h-4" />
-              </div>
-            )}
-            {showNextLoader && (
-              <div className="flex items-center justify-center gap-2">
-                <Loader2 className="h-4 w-4 animate-spin text-inherit" />
-                <span className="text-inherit text-[12px]">Loading...</span>
-              </div>
-            )}
-          </>
-        </Button>
-      </div>
+      <Pagination
+        disablePrev={disablePrevBtn}
+        disableNext={disableNextBtn}
+        onPrev={loadPrevQuizzesHandler}
+        onNext={loadNextQuizzesHandler}
+        isLoadingNext={showNextLoader}
+      />
     </div>
   );
 };

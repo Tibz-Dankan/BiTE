@@ -7,14 +7,8 @@ import { UserSatsRewardAddressCard } from "../../ui/satsReward/UserSatsRewardAdd
 import { AddSatsRewardAddressModal } from "../../ui/satsReward/AddSatsRewardAddressModal";
 import { AlertCard } from "../../ui/shared/AlertCard";
 import { Button } from "../../ui/shared/Btn";
-import {
-  Loader2,
-  ArrowLeft,
-  ArrowRight,
-  Plus,
-  Gift,
-  MapPin,
-} from "lucide-react";
+import { Pagination } from "../../ui/shared/Pagination";
+import { Loader2, Plus, Gift, MapPin } from "lucide-react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
 export const UserSatsRewardsPage: React.FC = () => {
@@ -159,27 +153,13 @@ export const UserSatsRewardsPage: React.FC = () => {
                   ))}
                 </div>
 
-                {/* Pagination */}
-                <div className="w-full flex items-center justify-center gap-4 pt-4">
-                  <Button
-                    type="button"
-                    disabled={!cursor}
-                    onClick={loadPrevPage}
-                    className="bg-slate-100 text-slate-700 border border-slate-200
-                    hover:bg-slate-200"
-                  >
-                    <ArrowLeft size={18} className="mr-2" /> Prev
-                  </Button>
-                  <Button
-                    type="button"
-                    disabled={!rewardsData?.pagination.hasNextItems}
-                    onClick={loadNextPage}
-                    className="bg-slate-100 text-slate-700 border border-slate-200
-                    hover:bg-slate-200"
-                  >
-                    Next <ArrowRight size={18} className="ml-2" />
-                  </Button>
-                </div>
+                <Pagination
+                  disablePrev={!cursor}
+                  disableNext={!rewardsData?.pagination.hasNextItems}
+                  onPrev={loadPrevPage}
+                  onNext={loadNextPage}
+                  isLoadingNext={isRewardsPending && !!cursor}
+                />
               </div>
             )}
           </>

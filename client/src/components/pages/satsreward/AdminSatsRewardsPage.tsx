@@ -3,8 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { satsRewardAPI } from "../../../api/satsReward";
 import { AdminSatsRewardCard } from "../../ui/satsReward/AdminSatsRewardCard";
 import { AlertCard } from "../../ui/shared/AlertCard";
-import { Button } from "../../ui/shared/Btn";
-import { Loader2, ArrowLeft, ArrowRight, Bitcoin, Search } from "lucide-react";
+import { Pagination } from "../../ui/shared/Pagination";
+import { Loader2, Bitcoin, Search } from "lucide-react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
 export const AdminSatsRewardsPage: React.FC = () => {
@@ -94,7 +94,7 @@ export const AdminSatsRewardsPage: React.FC = () => {
       ) : (
         <div className="space-y-10 pb-10">
           <div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3ss
             xl:grid-cols-4 gap-6"
           >
             {data?.data.map((reward) => (
@@ -102,35 +102,13 @@ export const AdminSatsRewardsPage: React.FC = () => {
             ))}
           </div>
 
-          {/* Pagination */}
-          <div
-            className="flex items-center justify-end gap-6 pt-6 border-t
-            border-slate-100"
-          >
-            <p className="text-sm font-medium text-slate-400">
-              Showing {data?.data.length} results
-            </p>
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                disabled={!cursor}
-                onClick={loadPrevPage}
-                className="bg-white text-slate-700 border border-slate-200
-                hover:bg-slate-50 h-11 px-6 shadow-sm disabled:opacity-50"
-              >
-                <ArrowLeft size={18} className="mr-2" /> Prev
-              </Button>
-              <Button
-                type="button"
-                disabled={!data?.pagination.hasNextItems}
-                onClick={loadNextPage}
-                className="bg-white text-slate-700 border border-slate-200
-                hover:bg-slate-50 h-11 px-6 shadow-sm disabled:opacity-50"
-              >
-                Next <ArrowRight size={18} className="ml-2" />
-              </Button>
-            </div>
-          </div>
+          <Pagination
+            disablePrev={!cursor}
+            disableNext={!data?.pagination.hasNextItems}
+            onPrev={loadPrevPage}
+            onNext={loadNextPage}
+            isLoadingNext={isPending && !!cursor}
+          />
         </div>
       )}
     </div>
