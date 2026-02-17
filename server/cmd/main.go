@@ -176,6 +176,7 @@ func main() {
 	satsRewardGroup.Patch("/:satsRewardID/reconcile", middlewares.Auth, middlewares.IsAdmin, satsreward.ReconcileSatsReward)
 	satsRewardGroup.Patch("/:satsRewardID/claim", middlewares.Auth, satsreward.ClaimSatsReward)
 	satsRewardGroup.Get("/user/:userID", middlewares.Auth, satsreward.GetAllSatsRewardsByUser)
+	satsRewardGroup.Get("/user/:userID/quizzes", middlewares.Auth, satsreward.GetAllUserSatsRewardForQuizzes)
 	satsRewardGroup.Post("/address", middlewares.Auth, satsreward.PostSatsRewardAddress)
 	satsRewardGroup.Get("/address", middlewares.Auth, middlewares.IsAdmin, satsreward.GetAllSatsRewardAddresses)
 	satsRewardGroup.Get("/address/user/:userID", middlewares.Auth, satsreward.GetSatsRewardAddressesByUser)

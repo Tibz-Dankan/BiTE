@@ -66,6 +66,27 @@ func (a *AttemptStatus) CountCorrectByUser(userID string) (int64, error) {
 	return count, nil
 }
 
+func (a *AttemptStatus) CountCorrectByUserAndQuiz(userID string, quizID string) (int64, error) {
+	var count int64
+	var quizQuestionIDs []string
+
+	// Get all quizQuestionIDs for this quiz
+	if err := db.Model(&Question{}).
+		Select("\"id\"").
+		Where("\"quizID\" = ?", quizID).
+		Pluck("\"id\"", &quizQuestionIDs).Error; err != nil {
+		return 0, err
+	}
+
+	if err := db.Model(&AttemptStatus{}).
+		Where(" \"questionID\" IN ? AND \"userID\" = ? AND \"IsCorrect\" = ?", quizQuestionIDs, userID, true).
+		Count(&count).Error; err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}
+
 func (a *AttemptStatus) Update() (AttemptStatus, error) {
 	db.Save(&a)
 
