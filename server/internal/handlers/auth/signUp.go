@@ -2,12 +2,20 @@ package auth
 
 import (
 	"log"
+	"strings"
 
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/location"
 	"github.com/Tibz-Dankan/BiTE/internal/models"
 	"github.com/Tibz-Dankan/BiTE/internal/pkg"
 	"github.com/gofiber/fiber/v2"
 )
+
+type SignUpInput struct {
+	Name                 string `validate:"string,min=3"`
+	Email                string `validate:"email,min=5"`
+	Password             string `validate:"string"`
+	AgreedTermsOfService bool   `validate:"bool"`
+}
 
 var SignUp = func(c *fiber.Ctx) error {
 	user := models.User{}
@@ -21,8 +29,10 @@ var SignUp = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	if user.Name == "" || user.Email == "" || user.Password == "" {
-		return fiber.NewError(fiber.StatusBadRequest, "Missing username/email/password!")
+	var input SignUpInput
+	errors := pkg.ValidateInput(c, &input)
+	if len(errors) > 0 {
+		return fiber.NewError(fiber.StatusBadRequest, strings.Join(errors, ", "))
 	}
 
 	if !user.AgreedTermsOfService {
