@@ -68,13 +68,20 @@ func applyValidationRule(rule, fieldName string, value reflect.Value) error {
 		return fmt.Errorf("missing field %s", fieldName)
 	}
 
-	switch rule {
+	ruleParts := strings.SplitN(rule, "=", 2)
+	ruleName := ruleParts[0]
+	var ruleValue string
+	if len(ruleParts) > 1 {
+		ruleValue = ruleParts[1]
+	}
+
+	switch ruleName {
 	case "string":
 		if value.Kind() != reflect.String {
 			return fmt.Errorf("field %s must be a string", fieldName)
 		}
 	case "number":
-		if value.Kind() != reflect.Float64 && value.Kind() != reflect.Int {
+		if value.Kind() != reflect.Float64 && value.Kind() != reflect.Int && value.Kind() != reflect.Int64 {
 			return fmt.Errorf("field %s must be a valid number", fieldName)
 		}
 	case "email":
@@ -91,8 +98,28 @@ func applyValidationRule(rule, fieldName string, value reflect.Value) error {
 		if value.Kind() != reflect.Bool {
 			return fmt.Errorf("field %s must be a boolean", fieldName)
 		}
+	case "min":
+		var minVal int
+		if _, err := fmt.Sscanf(ruleValue, "%d", &minVal); err != nil {
+			return fmt.Errorf("invalid min value %s for field %s", ruleValue, fieldName)
+		}
+		if value.Kind() == reflect.String {
+			if len(value.String()) < minVal {
+				return fmt.Errorf("field %s must be at least %d characters", fieldName, minVal)
+			}
+		} else if value.Kind() == reflect.Int || value.Kind() == reflect.Int64 {
+			if value.Int() < int64(minVal) {
+				return fmt.Errorf("field %s must be at least %d", fieldName, minVal)
+			}
+		} else if value.Kind() == reflect.Float64 {
+			if value.Float() < float64(minVal) {
+				return fmt.Errorf("field %s must be at least %d", fieldName, minVal)
+			}
+		} else {
+			return fmt.Errorf("min rule not supported for field %s", fieldName)
+		}
 	default:
-		return fmt.Errorf("unsupported validation rule %s for field %s", rule, fieldName)
+		return fmt.Errorf("unsupported validation rule %s for field %s", ruleName, fieldName)
 	}
 
 	return nil

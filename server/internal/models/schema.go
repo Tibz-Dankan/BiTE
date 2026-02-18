@@ -9,7 +9,7 @@ type User struct {
 	Name                              string    `gorm:"column:name;not null;index" json:"name"`
 	Password                          string    `gorm:"column:password;not null" json:"password"`
 	Role                              string    `gorm:"column:role;default:'USER';not null;index" json:"role"`
-	Email                             string    `gorm:"column:email;unique;index" json:"email"`
+	Email                             string    `gorm:"column:email;not null;unique;index" json:"email"`
 	Gender                            string    `gorm:"column:gender;default:null" json:"gender,omitempty"`
 	DateOfBirth                       string    `gorm:"column:dateOfBirth;default:null" json:"dateOfBirth,omitempty"`
 	Country                           string    `gorm:"column:country;default:null" json:"country,omitempty"`
