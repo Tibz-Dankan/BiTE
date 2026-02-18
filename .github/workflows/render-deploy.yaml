@@ -2,7 +2,8 @@ name: Deploy Server To Render
 on:
   push:
     branches:
-      - dev
+      - main
+      # - dev
 jobs:
   deploy:
     runs-on: ubuntu-latest
