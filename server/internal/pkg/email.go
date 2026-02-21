@@ -133,3 +133,49 @@ func (e *Email) SendOPT(name, OPT, subject string) error {
 
 	return nil
 }
+
+type RewardInfo struct {
+	QuizTitle  string
+	SatsAmount int64
+}
+
+func (e *Email) SendSatsRewardNotification(name string, rewards []RewardInfo, subject string) error {
+	data := struct {
+		Subject string
+		Name    string
+		Rewards []RewardInfo
+		Year    string
+	}{
+		Subject: subject,
+		Name:    name,
+		Rewards: rewards,
+		Year:    strconv.Itoa(time.Now().Year()),
+	}
+
+	var body bytes.Buffer
+
+	templatePath, err := filepath.Abs("./internal/templates/email/sats-reward-notification.html")
+	if err != nil {
+		log.Println("Error finding absolute path:", err)
+		return err
+	}
+
+	tmpl, err := template.ParseFiles(templatePath)
+	if err != nil {
+		log.Println("Error parsing template:", err)
+		return err
+	}
+
+	err = tmpl.Execute(&body, data)
+	if err != nil {
+		log.Println("Error executing template:", err)
+		return err
+	}
+
+	if err := e.send(body.String(), subject); err != nil {
+		log.Println("Error sending email:", err)
+		return err
+	}
+
+	return nil
+}
