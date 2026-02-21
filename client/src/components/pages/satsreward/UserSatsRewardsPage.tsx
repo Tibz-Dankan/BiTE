@@ -4,23 +4,40 @@ import { satsRewardAPI } from "../../../api/satsReward";
 import { useAuthStore } from "../../../stores/auth";
 import { UserSatsRewardCard } from "../../ui/satsReward/UserSatsRewardCard";
 import { UserSatsRewardAddressCard } from "../../ui/satsReward/UserSatsRewardAddressCard";
+import { UserClaimCard } from "../../ui/satsReward/UserClaimCard";
 import { AddSatsRewardAddressModal } from "../../ui/satsReward/AddSatsRewardAddressModal";
 import { AlertCard } from "../../ui/shared/AlertCard";
 import { Button } from "../../ui/shared/Btn";
 import { Pagination } from "../../ui/shared/Pagination";
-import { Loader2, Plus, Gift, MapPin } from "lucide-react";
+import { Loader2, Plus, Gift, MapPin, Trophy } from "lucide-react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
 export const UserSatsRewardsPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<"rewards" | "addresses">(
-    "rewards",
-  );
+  const [activeTab, setActiveTab] = useState<
+    "claims" | "rewards" | "addresses"
+  >("claims");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const user = useAuthStore((state) => state.auth.user);
   const cursor = searchParams.get("cursor") || "";
+
+  const {
+    data: claimsData,
+    isPending: isClaimsPending,
+    isError: isClaimsError,
+    error: claimsError,
+  } = useQuery({
+    queryKey: ["claimableQuizzes", user.id, cursor],
+    queryFn: () =>
+      satsRewardAPI.getClaimableQuizzes({
+        userID: user.id,
+        limit: 10,
+        cursor,
+      }),
+    enabled: activeTab === "claims",
+  });
 
   const {
     data: rewardsData,
@@ -47,7 +64,12 @@ export const UserSatsRewardsPage: React.FC = () => {
   });
 
   const loadNextPage = () => {
-    if (rewardsData?.pagination.hasNextItems) {
+    if (activeTab === "claims" && claimsData?.pagination.hasNextItems) {
+      setSearchParams({ cursor: claimsData.pagination.nextCursor });
+    } else if (
+      activeTab === "rewards" &&
+      rewardsData?.pagination.hasNextItems
+    ) {
       setSearchParams({ cursor: rewardsData.pagination.nextCursor });
     }
   };
@@ -87,6 +109,21 @@ export const UserSatsRewardsPage: React.FC = () => {
       >
         <button
           onClick={() => {
+            setActiveTab("claims");
+            setSearchParams({});
+          }}
+          className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold
+            transition-all ${
+              activeTab === "claims"
+                ? "bg-white text-(--primary) shadow-sm"
+                : "text-slate-500 hover:text-slate-700"
+            }`}
+        >
+          <Trophy size={18} />
+          <span>Claims</span>
+        </button>
+        <button
+          onClick={() => {
             setActiveTab("rewards");
             setSearchParams({});
           }}
@@ -116,7 +153,54 @@ export const UserSatsRewardsPage: React.FC = () => {
 
       {/* Content */}
       <div className="w-full min-h-[400px]">
-        {activeTab === "rewards" ? (
+        {activeTab === "claims" ? (
+          <>
+            {isClaimsPending ? (
+              <div className="flex flex-col items-center justify-center py-20">
+                <Loader2 className="h-8 w-8 animate-spin text-(--primary) mb-3" />
+                <p className="text-slate-500 text-sm">
+                  Loading claimable quizzes...
+                </p>
+              </div>
+            ) : isClaimsError ? (
+              <AlertCard type="error" message={claimsError.message} />
+            ) : claimsData?.data === null || claimsData?.data?.length === 0 ? (
+              <div
+                className="text-center py-20 bg-slate-50 rounded-3xl border-2
+                border-dashed border-slate-200"
+              >
+                <div
+                  className="w-16 h-16 bg-slate-100 rounded-full flex
+                  items-center justify-center mx-auto mb-4"
+                >
+                  <Trophy size={32} className="text-slate-300" />
+                </div>
+                <h3 className="text-xl font-bold text-slate-800">
+                  No claimable rewards
+                </h3>
+                <p className="text-slate-500 mt-1">
+                  Complete more quizzes to earn sats rewards!
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="flex flex-col gap-4">
+                  {claimsData?.data.map((claim) => (
+                    <UserClaimCard key={claim.id} claim={claim} />
+                  ))}
+                </div>
+
+                <Pagination
+                  disablePrev={!cursor}
+                  disableNext={!claimsData?.pagination.hasNextItems}
+                  onPrev={loadPrevPage}
+                  onNext={loadNextPage}
+                  isLoadingNext={isClaimsPending && !!cursor}
+                />
+              </div>
+            )}
+          </>
+        ) : activeTab === "rewards" ? (
           <>
             {isRewardsPending ? (
               <div className="flex flex-col items-center justify-center py-20">
