@@ -1,5 +1,9 @@
 import { SERVER_URL } from "../constants/urls";
-import { type SatsReward, type SatsRewardAddress } from "../types/satsReward";
+import {
+  type SatsReward,
+  type SatsRewardAddress,
+  type SatsClaimQuiz,
+} from "../types/satsReward";
 import { type TPagination } from "../types/pagination";
 
 export interface SatsRewardResponse {
@@ -13,6 +17,13 @@ export interface SatsRewardAddressResponse {
   status: string;
   message: string;
   data: SatsRewardAddress[];
+  pagination: TPagination;
+}
+
+export interface SatsClaimQuizResponse {
+  status: string;
+  message: string;
+  data: SatsClaimQuiz[];
   pagination: TPagination;
 }
 
@@ -59,6 +70,52 @@ class SatsRewardAPI {
         },
       },
     );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  getClaimableQuizzes = async ({
+    userID,
+    limit = 10,
+    cursor = "",
+  }: {
+    userID: string;
+    limit?: number;
+    cursor?: string;
+  }): Promise<SatsClaimQuizResponse> => {
+    const response = await fetch(
+      `${SERVER_URL}/satsreward/user/${userID}/quizzes?limit=${limit}&cursor=${cursor}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      },
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  claimQuizReward = async ({
+    quizID,
+  }: {
+    quizID: string;
+  }): Promise<{ status: string; message: string }> => {
+    const response = await fetch(`${SERVER_URL}/satsreward/claim-quiz`, {
+      method: "POST",
+      body: JSON.stringify({ quizID }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
 
     if (!response.ok) {
       const error = await response.json();

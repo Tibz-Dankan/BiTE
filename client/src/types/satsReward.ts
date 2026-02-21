@@ -45,3 +45,17 @@ export type SatsReward = {
   satsRewardTransactions?: SatsRewardTransaction[];
   satsRewardOperations?: SatsRewardOperation[];
 };
+
+export type SatsClaimQuiz = {
+  id: string;
+  userID: string;
+  quizID: string;
+  totalQuestions: number;
+  totalAttemptedQuestions: number;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  user?: TUser;
+  quiz?: TQuiz;
+  correctQuestionCount: number;
+};
