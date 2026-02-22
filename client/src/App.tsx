@@ -13,6 +13,7 @@ import { InitSignInWithRefreshToken } from "./components/pages/auth/InitSignInWi
 import { PrivacyPolicy } from "./components/pages/common/PrivacyPolicy";
 import { TermsOfService } from "./components/pages/common/TermsOfService";
 import { Contact } from "./components/pages/common/Contact";
+import { RewardsInfoPage } from "./components/pages/common/rewards/RewardsInfoPage";
 
 export const App: React.FC = () => {
   const auth = useAuthStore((state) => state.auth);
@@ -32,6 +33,7 @@ export const App: React.FC = () => {
           <Fragment>
             <Routes>
               <Route path="/" element={<LandingPage />} />
+              <Route path="/rewards" element={<RewardsInfoPage />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-of-service" element={<TermsOfService />} />
               <Route path="/contact" element={<Contact />} />
@@ -43,6 +45,8 @@ export const App: React.FC = () => {
         {isLoggedInUser && (
           <Fragment>
             <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/rewards" element={<RewardsInfoPage />} />
               <Route path="/*" element={<UserRoutes />} />
               <Route
                 path="/"
@@ -55,6 +59,8 @@ export const App: React.FC = () => {
         {isLoggedInAdmin && (
           <Fragment>
             <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/rewards" element={<RewardsInfoPage />} />
               <Route path="/*" element={<AdminRoutes />} />
               <Route
                 path="/"
