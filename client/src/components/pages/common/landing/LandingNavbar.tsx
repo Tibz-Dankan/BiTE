@@ -2,9 +2,29 @@ import React from "react";
 import { SCNButton } from "../../../ui/shared/button";
 import { Link } from "react-router-dom";
 import { useFeatureFlagEnabled } from "@posthog/react";
+import { useAuthStore } from "../../../../stores/auth";
+import { jwtDecode } from "jwt-decode";
 
 export const LandingNavbar: React.FC = () => {
   const isSatsRewardEnabled = useFeatureFlagEnabled("sats-reward");
+  const auth = useAuthStore((state) => state.auth);
+
+  const isTokenExpired = (token: string): boolean => {
+    if (!token) return true;
+    try {
+      const payload = jwtDecode(token);
+      if (!payload || !payload.exp) return true;
+      const currentTime = Math.floor(Date.now() / 1000);
+      return payload.exp <= currentTime;
+    } catch {
+      return true;
+    }
+  };
+
+  const hasValidRefreshToken =
+    !!auth.refreshToken && !isTokenExpired(auth.refreshToken);
+  const dashboardPath =
+    auth.user.role === "ADMIN" ? "/a/dashboard" : "/u/dashboard";
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
@@ -50,21 +70,37 @@ export const LandingNavbar: React.FC = () => {
         </div>
 
         {/* Auth Buttons */}
-        <div className="flex items-center gap-3">
-          <Link
-            to="/auth/signin"
-            className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors hidden sm:block"
-          >
-            Sign In
-          </Link>
-          <SCNButton
-            asChild
-            size="sm"
-            className="rounded-full shadow-md shadow-purple-100"
-          >
-            <Link to="/auth/signup">Get Started</Link>
-          </SCNButton>
-        </div>
+        {!hasValidRefreshToken && (
+          <div className="flex items-center gap-3">
+            <Link
+              to="/auth/signin"
+              className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors hidden sm:block"
+            >
+              Sign In
+            </Link>
+            <SCNButton
+              asChild
+              size="sm"
+              className="rounded-full shadow-md shadow-purple-100"
+            >
+              <Link to="/auth/signup">Get Started</Link>
+            </SCNButton>
+          </div>
+        )}
+
+        {/* Dashboard Button */}
+        {hasValidRefreshToken && (
+          <div className="flex items-center gap-3">
+            <SCNButton
+              asChild
+              size="sm"
+              className="rounded-lg shadow-md shadow-purple-100 bg-(--primary)
+               text-(--primary-foreground) px-4"
+            >
+              <Link to={dashboardPath}>Dashboard</Link>
+            </SCNButton>
+          </div>
+        )}
       </div>
     </nav>
   );
