@@ -212,6 +212,83 @@ func (sr *SatsReward) FindAllSatsClaimForUser(limit float64, cursor string, user
 	return result, pagination, nil
 }
 
+func (sr *SatsReward) FindAllSatsClaimForUserStats(limit float64, cursor string, userID string) ([]types.UserQuizProgressForReward, types.Pagination, error) {
+	var userQuizProgress []QuizUserProgress
+	var rewardQuizIDs []string
+
+	// Get all rewardQuizIDs for this user
+	if err := db.Model(&SatsReward{}).
+		Select("\"quizID\"").
+		Where("\"userID\" = ? AND \"status\" = ?", userID, "COMPLETED").
+		Pluck("\"quizID\"", &rewardQuizIDs).Error; err != nil {
+		return nil, types.Pagination{}, err
+	}
+
+	query := db.Model(&QuizUserProgress{}).
+		Preload("Quiz.Attachments").
+		Preload("Quiz").
+		Preload("User", func(db *gorm.DB) *gorm.DB {
+			return db.Select("id", "name", "email", "\"profileBgColor\"", "\"createdAt\"", "\"updatedAt\"")
+		}).Limit(int(limit + 1)).Order("\"createdAt\" DESC")
+
+	if cursor != "" {
+		var lastQuizUserProgress QuizUserProgress
+		if err := db.Select("\"createdAt\"").Where("id = ?", cursor).First(&lastQuizUserProgress).Error; err != nil {
+			return nil, types.Pagination{}, err
+		}
+		query = query.Where("\"createdAt\" < ?", lastQuizUserProgress.CreatedAt)
+	}
+
+	if err := query.
+		Where("\"quizID\" NOT IN ? AND \"status\" = ? AND \"userID\" = ?", rewardQuizIDs, "COMPLETED", userID).
+		Find(&userQuizProgress).Error; err != nil {
+		return nil, types.Pagination{}, err
+	}
+
+	var nextCursor string = ""
+	var hasNextItems bool = false
+
+	if len(userQuizProgress) > int(limit) {
+		userQuizProgress = userQuizProgress[:len(userQuizProgress)-1] // Remove last element
+		nextCursor = userQuizProgress[len(userQuizProgress)-1].ID
+		hasNextItems = true
+	}
+
+	pagination := types.Pagination{
+		Limit:        int64(limit),
+		NextCursor:   nextCursor,
+		HasNextItems: hasNextItems,
+		Count:        int64(len(userQuizProgress)),
+	}
+
+	var result []types.UserQuizProgressForReward
+	//
+	for _, usrQuizProgress := range userQuizProgress {
+		var attemptStatus AttemptStatus
+		correctQuestionCount, err := attemptStatus.CountCorrectByUserAndQuiz(userID, usrQuizProgress.QuizID)
+		if err != nil {
+			return nil, types.Pagination{}, err
+		}
+
+		usrQuizProgressData := types.UserQuizProgressForReward{
+			ID:                      usrQuizProgress.ID,
+			UserID:                  usrQuizProgress.UserID,
+			QuizID:                  usrQuizProgress.QuizID,
+			TotalQuestions:          usrQuizProgress.TotalQuestions,
+			TotalAttemptedQuestions: usrQuizProgress.TotalAttemptedQuestions,
+			Status:                  usrQuizProgress.Status,
+			CreatedAt:               usrQuizProgress.CreatedAt,
+			UpdatedAt:               usrQuizProgress.UpdatedAt,
+			User:                    usrQuizProgress.User,
+			Quiz:                    usrQuizProgress.Quiz,
+			CorrectQuestionCount:    correctQuestionCount,
+		}
+		result = append(result, usrQuizProgressData)
+	}
+
+	return result, pagination, nil
+}
+
 // Update updates one Session in the database, using the information
 // stored in the receiver u
 func (sr *SatsReward) Update() (SatsReward, error) {
