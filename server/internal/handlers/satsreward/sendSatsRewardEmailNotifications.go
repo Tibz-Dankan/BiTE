@@ -14,6 +14,32 @@ func SendSatsRewardEmailNotifications() {
 	userModel := models.User{}
 	satsRewardModel := models.SatsReward{}
 
+	// Sats Reward Feature Flag
+	client, _ := posthog.NewWithConfig(
+		os.Getenv("POSTHOG_API_KEY"),
+		posthog.Config{
+			// PersonalApiKey: "your personal API key", // Optional, but much more performant.  If this token is not supplied, then fetching feature flag values will be slower.
+			Endpoint: "https://us.i.posthog.com",
+		},
+	)
+	defer client.Close()
+
+	isMyFlagEnabled, err := client.IsFeatureEnabled(posthog.FeatureFlagPayload{
+		Key:        "sats-reward",
+		DistinctId: "eventData.UserID",
+	})
+	if err != nil {
+		log.Printf("Error getting feature flag value: %+v", err)
+	}
+	if isMyFlagEnabled == true {
+		log.Printf("Feature flag enabled for rewards notification")
+	}
+
+	if isMyFlagEnabled == false {
+		log.Printf("Feature flag disabled for rewards notification")
+		return
+	}
+
 	users, err := userModel.FindByRole("USER")
 	if err != nil {
 		log.Println("Error fetching users by role USER:", err)
@@ -72,34 +98,7 @@ func SendSatsRewardEmailNotifications() {
 }
 
 func init() {
-	client, _ := posthog.NewWithConfig(
-		os.Getenv("POSTHOG_API_KEY"),
-		posthog.Config{
-			// PersonalApiKey: "your personal API key", // Optional, but much more performant.  If this token is not supplied, then fetching feature flag values will be slower.
-			Endpoint: "https://us.i.posthog.com",
-		},
-	)
-	defer client.Close()
 	go func() {
-		// Wait for the app to fully start
-
-		// Sats Reward Feature Flag
-		isMyFlagEnabled, err := client.IsFeatureEnabled(posthog.FeatureFlagPayload{
-			Key:        "sats-reward",
-			DistinctId: "eventData.UserID",
-		})
-		if err != nil {
-			log.Printf("Error getting feature flag value: %+v", err)
-		}
-		if isMyFlagEnabled == true {
-			log.Printf("Feature flag enabled for rewards notification")
-		}
-
-		if isMyFlagEnabled == false {
-			log.Printf("Feature flag disabled for rewards notification")
-			return
-		}
-
 		time.Sleep(15 * time.Second)
 		log.Println("Starting Sats Reward Email Notifications background task...")
 		// SendSatsRewardEmailNotifications()
