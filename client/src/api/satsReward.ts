@@ -3,6 +3,7 @@ import {
   type SatsReward,
   type SatsRewardAddress,
   type SatsClaimQuiz,
+  type SatsRewardStats,
 } from "../types/satsReward";
 import { type TPagination } from "../types/pagination";
 
@@ -25,6 +26,12 @@ export interface SatsClaimQuizResponse {
   message: string;
   data: SatsClaimQuiz[];
   pagination: TPagination;
+}
+
+export interface SatsRewardStatsResponse {
+  status: string;
+  message: string;
+  data: SatsRewardStats;
 }
 
 class SatsRewardAPI {
@@ -180,6 +187,28 @@ class SatsRewardAPI {
       `${SERVER_URL}/satsreward/address/${address}/verify`,
       {
         method: "PATCH",
+        headers: {
+          "Content-type": "application/json",
+        },
+      },
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  getUserStats = async ({
+    userID,
+  }: {
+    userID: string;
+  }): Promise<SatsRewardStatsResponse> => {
+    const response = await fetch(
+      `${SERVER_URL}/satsreward/user/${userID}/stats`,
+      {
+        method: "GET",
         headers: {
           "Content-type": "application/json",
         },

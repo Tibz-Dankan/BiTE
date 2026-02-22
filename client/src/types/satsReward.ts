@@ -59,3 +59,8 @@ export type SatsClaimQuiz = {
   quiz?: TQuiz;
   correctQuestionCount: number;
 };
+
+export type SatsRewardStats = {
+  totalSatsToBeClaimed: number;
+  totalSatsEarned: number;
+};
