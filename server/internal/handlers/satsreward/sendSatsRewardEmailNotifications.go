@@ -18,14 +18,14 @@ func SendSatsRewardEmailNotifications() {
 	client, _ := posthog.NewWithConfig(
 		os.Getenv("POSTHOG_API_KEY"),
 		posthog.Config{
-			// PersonalApiKey: "your personal API key", // Optional, but much more performant.  If this token is not supplied, then fetching feature flag values will be slower.
-			Endpoint: "https://us.i.posthog.com",
+			PersonalApiKey: os.Getenv("POSTHOG_BITE_PERSONAL_KEY"), // Optional, but much more performant.  If this token is not supplied, then fetching feature flag values will be slower.
+			Endpoint:       "https://us.i.posthog.com",
 		},
 	)
 	defer client.Close()
 
 	isMyFlagEnabled, err := client.IsFeatureEnabled(posthog.FeatureFlagPayload{
-		Key:        "sats-reward",
+		Key:        "sats-reward-backend",
 		DistinctId: "eventData.UserID",
 	})
 	if err != nil {
