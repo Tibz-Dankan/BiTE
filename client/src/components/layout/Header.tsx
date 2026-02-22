@@ -1,6 +1,6 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import type { TRoute } from "../../types/routes";
-import { HelpCircle, Menu, Plus, X } from "lucide-react";
+import { Gift, HelpCircle, Menu, Plus, X } from "lucide-react";
 import { useSidebarStore } from "../../stores/sidebar";
 import { removeColonsFromPath } from "../../utils/removeColonsFromPath";
 import { useRouteStore } from "../../stores/routes";
@@ -8,6 +8,7 @@ import { Button } from "../ui/shared/Btn";
 import { useAuthStore } from "../../stores/auth";
 import { matchPath } from "react-router-dom";
 import { QuizTimer } from "../ui/quiz/QuizTimer";
+import { useFeatureFlagEnabled } from "@posthog/react";
 
 interface DashboardSidebarProps {
   routes: TRoute;
@@ -19,6 +20,7 @@ export function DashboardHeader(props: DashboardSidebarProps) {
   const pages = props.routes.pages;
   const currentPageFromStore = useRouteStore((state) => state.currentPage);
   const auth = useAuthStore((state) => state.auth);
+  const isSatsRewardEnabled = useFeatureFlagEnabled("sats-reward");
 
   const isOpenSidebar = useSidebarStore((state) => state.isOpen);
   const OpenSidebar = useSidebarStore((state) => state.openSidebar);
@@ -26,9 +28,11 @@ export function DashboardHeader(props: DashboardSidebarProps) {
 
   const isAdmin = auth.user.role === "ADMIN";
 
+  const rewardPath = isAdmin ? "/a/rewards" : "/u/rewards";
+
   const getPageTitle = () => {
     const currentPage = pages.find(
-      (page) => removeColonsFromPath(page.path) === pathname
+      (page) => removeColonsFromPath(page.path) === pathname,
     );
 
     const hasCurrentPageFromRoutes = !!currentPage?.title;
@@ -83,6 +87,15 @@ export function DashboardHeader(props: DashboardSidebarProps) {
                 <span className="text-gray-50 font-semibold">New Quiz</span>
               </Button>
             </div>
+          )}
+          {isSatsRewardEnabled && (
+            <Link
+              to={rewardPath}
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <Gift className="w-4 h-4 text-gray-700" />
+              <span className="text-gray-700 text-sm">Rewards</span>
+            </Link>
           )}
           <div
             className="flex items-center gap-2 border-[1.5px] border-gray-700
