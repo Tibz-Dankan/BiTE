@@ -27,7 +27,24 @@ var PostSatsRewardAddress = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "Reward address already exists!")
 	}
 
+	var userHasDefaultAddress bool = false
+
+	allSavedUserSatsRewardAddress, err := satsRewardAddress.FindAllByUser(satsRewardAddress.UserID, 200, "")
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	if len(allSavedUserSatsRewardAddress) > 0 {
+		for _, address := range allSavedUserSatsRewardAddress {
+			if address.IsDefault {
+				userHasDefaultAddress = true
+				break
+			}
+		}
+	}
+
 	satsRewardAddress.IsVerified = false
+	satsRewardAddress.IsDefault = !userHasDefaultAddress // If the user has no default address, set the new address as default
 
 	createdSatsRewardAddress, err := satsRewardAddress.Create(satsRewardAddress)
 	if err != nil {

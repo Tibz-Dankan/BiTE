@@ -316,7 +316,7 @@ type SatsRewardAddress struct {
 	UserID     string    `gorm:"column:userID;not null;index" json:"userID"`
 	Address    string    `gorm:"column:address;not null;unique;index" json:"address"`
 	IsVerified bool      `gorm:"column:isVerified;default:false;index" json:"isVerified"`
-	IsDefault  bool      `gorm:"column:isDefault;default:true;index" json:"isDefault"`
+	IsDefault  bool      `gorm:"column:isDefault;default:false;index" json:"isDefault"`
 	Info       JSONB     `gorm:"column:info" json:"info"`
 	CreatedAt  time.Time `gorm:"column:createdAt;index" json:"createdAt"`
 	UpdatedAt  time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`

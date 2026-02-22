@@ -9,7 +9,7 @@ import { AddSatsRewardAddressModal } from "../../ui/satsReward/AddSatsRewardAddr
 import { AlertCard } from "../../ui/shared/AlertCard";
 import { Button } from "../../ui/shared/Btn";
 import { Pagination } from "../../ui/shared/Pagination";
-import { Loader2, Plus, Gift, MapPin, Trophy } from "lucide-react";
+import { Loader2, Plus, Gift, MapPin, Trophy, Info } from "lucide-react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { UserSatsRewardCount } from "../../ui/satsReward/UserSatsRewardCount";
 
@@ -287,13 +287,26 @@ export const UserSatsRewardsPage: React.FC = () => {
                 </Button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {addressesData?.data.map((address) => (
-                  <UserSatsRewardAddressCard
-                    key={address.id}
-                    address={address}
-                  />
-                ))}
+              <div className="space-y-6">
+                <div
+                  className="flex items-start gap-3 p-3 bg-(--primary)/10
+                  border border-(--primary)/20 rounded-md text-sm text-(--primary)"
+                >
+                  <Info size={18} className="shrink-0 mt-0.5" />
+                  <p>
+                    <strong>Note:</strong> Satoshis are sent to default and
+                    verified addresses only. Please ensure your payout address
+                    is verified and set as default to receive rewards.
+                  </p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {addressesData?.data.map((address) => (
+                    <UserSatsRewardAddressCard
+                      key={address.id}
+                      address={address}
+                    />
+                  ))}
+                </div>
               </div>
             )}
           </>
