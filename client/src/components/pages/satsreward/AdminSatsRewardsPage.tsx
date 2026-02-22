@@ -4,7 +4,7 @@ import { satsRewardAPI } from "../../../api/satsReward";
 import { AdminSatsRewardCard } from "../../ui/satsReward/AdminSatsRewardCard";
 import { AlertCard } from "../../ui/shared/AlertCard";
 import { Pagination } from "../../ui/shared/Pagination";
-import { Loader2, Bitcoin, Search } from "lucide-react";
+import { Loader2, Bitcoin } from "lucide-react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
 export const AdminSatsRewardsPage: React.FC = () => {
@@ -36,28 +36,13 @@ export const AdminSatsRewardsPage: React.FC = () => {
             <Bitcoin size={32} />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-slate-900 uppercase tracking-tight">
+            <h1 className="text-2xl font-bold text-slate-900 uppercases tracking-tight">
               Reward Master
             </h1>
-            <p className="text-slate-500 font-medium">
+            <p className="text-slate-500 text-sm">
               Manage and oversea all bitcoin rewards across the platform
             </p>
           </div>
-        </div>
-
-        <div className="relative group max-w-xs w-full">
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400
-            group-focus-within:text-(--primary) transition-colors"
-            size={20}
-          />
-          <input
-            type="text"
-            placeholder="Search rewards..."
-            className="w-full pl-11 pr-4 py-3 bg-white border border-slate-200
-            rounded-2xl outline-none focus:ring-2 ring-indigo-500/10 focus:border-(--primary)
-            transition-all"
-          />
         </div>
       </div>
 
