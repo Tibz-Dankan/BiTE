@@ -11,6 +11,7 @@ import { Button } from "../../ui/shared/Btn";
 import { Pagination } from "../../ui/shared/Pagination";
 import { Loader2, Plus, Gift, MapPin, Trophy } from "lucide-react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { UserSatsRewardCount } from "../../ui/satsReward/UserSatsRewardCount";
 
 export const UserSatsRewardsPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<
@@ -101,7 +102,7 @@ export const UserSatsRewardsPage: React.FC = () => {
           </Button>
         )}
       </div>
-
+      <UserSatsRewardCount />
       {/* Tabs */}
       <div
         className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl w-fit
