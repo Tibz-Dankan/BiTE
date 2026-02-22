@@ -105,15 +105,17 @@ export const UserSatsRewardsPage: React.FC = () => {
       <UserSatsRewardCount />
       {/* Tabs */}
       <div
-        className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl w-fit
-        mb-8 border border-slate-200"
+        className="w-full sm:w-fit flex flex-col sm:flex-row sm:items-center
+        justify-center sm:justify-start items-center gap-1 bg-slate-100 p-1
+        rounded-xl mb-8 border border-slate-200"
       >
         <button
           onClick={() => {
             setActiveTab("claims");
             setSearchParams({});
           }}
-          className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold
+          className={`w-full sm:w-auto flex items-center justify-center
+            gap-2 px-6 py-2.5 rounded-lg text-sm font-bold
             transition-all ${
               activeTab === "claims"
                 ? "bg-white text-(--primary) shadow-sm"
@@ -128,7 +130,8 @@ export const UserSatsRewardsPage: React.FC = () => {
             setActiveTab("rewards");
             setSearchParams({});
           }}
-          className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold
+          className={`w-full sm:w-auto flex items-center justify-center
+            gap-2 px-6 py-2.5 rounded-lg text-sm font-bold
             transition-all ${
               activeTab === "rewards"
                 ? "bg-white text-(--primary) shadow-sm"
@@ -140,7 +143,8 @@ export const UserSatsRewardsPage: React.FC = () => {
         </button>
         <button
           onClick={() => setActiveTab("addresses")}
-          className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm 
+          className={`w-full sm:w-auto flex items-center justify-center
+            gap-2 px-6 py-2.5 rounded-lg text-sm 
             font-bold transition-all ${
               activeTab === "addresses"
                 ? "bg-white text-(--primary) shadow-sm"
