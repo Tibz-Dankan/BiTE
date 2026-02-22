@@ -117,7 +117,9 @@ func (sr *SatsReward) FindAllForAdmin(limit float64, cursor string) ([]SatsRewar
 		}).
 		Preload("SatsRewardAddress").
 		Preload("SatsRewardTransaction").
-		Preload("SatsRewardOperation").
+		Preload("SatsRewardOperation", func(db *gorm.DB) *gorm.DB {
+			return db.Order("\"createdAt\" DESC")
+		}).
 		Order("\"createdAt\" DESC").Limit(int(limit))
 
 	if cursor != "" {
