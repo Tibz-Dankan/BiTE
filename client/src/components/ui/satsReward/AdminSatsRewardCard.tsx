@@ -8,7 +8,7 @@ import {
   Bitcoin,
   User as UserIcon,
   Mail,
-  ExternalLink,
+  // ExternalLink,
 } from "lucide-react";
 import { decodeBase64 } from "../../../utils/decodeBase64";
 import { removeMinusCharPrefix } from "../../../utils/removeMinusCharPrefix";
@@ -187,14 +187,14 @@ export const AdminSatsRewardCard: React.FC<AdminSatsRewardCardProps> = ({
             )}
         </div>
 
-        <div className="mt-6 flex gap-2">
+        {/* <div className="mt-6 flex gap-2">
           <button className="flex-1 py-2 rounded-lg bg-(--primary) text-white text-sm font-semibold hover:opacity-90 transition-all flex items-center justify-center gap-2">
             Manage Reward
           </button>
           <button className="p-2 rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50 transition-all">
             <ExternalLink size={18} />
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
