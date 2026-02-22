@@ -178,6 +178,7 @@ func main() {
 	satsRewardGroup.Post("/claim-quiz", middlewares.Auth, satsreward.ClaimQuizSatsReward)
 	satsRewardGroup.Get("/user/:userID", middlewares.Auth, satsreward.GetAllSatsRewardsByUser)
 	satsRewardGroup.Get("/user/:userID/quizzes", middlewares.Auth, satsreward.GetAllUserSatsRewardForQuizzes)
+	satsRewardGroup.Get("/user/:userID/stats", middlewares.Auth, satsreward.GetUserSatsRewardStats)
 	satsRewardGroup.Post("/address", middlewares.Auth, satsreward.PostSatsRewardAddress)
 	satsRewardGroup.Get("/address", middlewares.Auth, middlewares.IsAdmin, satsreward.GetAllSatsRewardAddresses)
 	satsRewardGroup.Get("/address/user/:userID", middlewares.Auth, satsreward.GetSatsRewardAddressesByUser)
