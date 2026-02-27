@@ -263,8 +263,8 @@ export const UserSatsRewardsPage: React.FC = () => {
               <AlertCard type="error" message={addressesError.message} />
             ) : addressesData?.data.length === 0 ? (
               <div
-                className="text-center py-20 bg-slate-50 rounded-3xl border-2
-                border-dashed border-slate-200"
+                className="flex flex-col items-center justify-center text-center py-20
+                 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200 gap-2"
               >
                 <div
                   className="w-16 h-16 bg-slate-100 rounded-full flex
@@ -283,7 +283,7 @@ export const UserSatsRewardsPage: React.FC = () => {
                   onClick={() => setIsModalOpen(true)}
                   className="mt-6 px-8"
                 >
-                  Add Your First Address
+                  Add Your blink Address
                 </Button>
               </div>
             ) : (
