@@ -183,6 +183,8 @@ func main() {
 	satsRewardGroup.Get("/address", middlewares.Auth, middlewares.IsAdmin, satsreward.GetAllSatsRewardAddresses)
 	satsRewardGroup.Get("/address/user/:userID", middlewares.Auth, satsreward.GetSatsRewardAddressesByUser)
 	satsRewardGroup.Patch("/address/:address/verify", middlewares.Auth, satsreward.VerifySatsRewardAddress)
+	satsRewardGroup.Patch("/address/:id/edit", middlewares.Auth, satsreward.UpdateSatsRewardAddress)
+	satsRewardGroup.Patch("/address/:id/default", middlewares.Auth, satsreward.MakeDefaultSatsRewardAddress)
 	satsRewardGroup.Get("/operations", middlewares.Auth, middlewares.IsAdmin, satsreward.GetAllSatsRewardOperations)
 
 	// Metrics
