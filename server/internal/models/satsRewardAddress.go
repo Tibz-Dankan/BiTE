@@ -46,7 +46,7 @@ func (sra *SatsRewardAddress) FindDefaultAndVerifiedByUser(userID string) (SatsR
 
 	query := db.Where("\"userID\" = ? AND \"isDefault\" = ? AND \"isVerified\" = ?", userID, true, true)
 
-	if err := query.First(&satsRewardAddress).Error; err != nil {
+	if err := query.First(&satsRewardAddress).Error; err != nil && err != gorm.ErrRecordNotFound {
 		return satsRewardAddress, err
 	}
 
