@@ -142,7 +142,6 @@ func (qup *QuizUserProgress) GetTotalCountOfUnattemptedQuizzesByUser(userID stri
 	var count int64
 	var userAttemptedQuizIDs []string
 
-	// Get all userAttemptedQuizIDs for this user
 	if err := db.Model(&QuizUserProgress{}).
 		Select("quizID").
 		Where("\"userID\" = ?", userID).
@@ -150,8 +149,13 @@ func (qup *QuizUserProgress) GetTotalCountOfUnattemptedQuizzesByUser(userID stri
 		return count, err
 	}
 
-	if err := db.Model(&Quiz{}).Where("\"showQuiz\" = ? AND \"canBeAttempted\" = ? AND \"id\" NOT IN ?",
-		true, true, userAttemptedQuizIDs).Count(&count).Error; err != nil {
+	query := db.Model(&Quiz{}).Where("\"showQuiz\" = ? AND \"canBeAttempted\" = ?", true, true)
+
+	if len(userAttemptedQuizIDs) > 0 {
+		query = query.Where("\"id\" NOT IN ?", userAttemptedQuizIDs)
+	}
+
+	if err := query.Count(&count).Error; err != nil {
 		return 0, err
 	}
 
