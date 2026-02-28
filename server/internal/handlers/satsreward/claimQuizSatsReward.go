@@ -4,11 +4,14 @@ import (
 	"log"
 
 	"github.com/Tibz-Dankan/BiTE/internal/events"
+	"github.com/Tibz-Dankan/BiTE/internal/models"
 	"github.com/Tibz-Dankan/BiTE/internal/types"
 	"github.com/gofiber/fiber/v2"
 )
 
 var ClaimQuizSatsReward = func(c *fiber.Ctx) error {
+	quiz := models.Quiz{}
+	satsRewardAddress := models.SatsRewardAddress{}
 	userID := c.Locals("userID").(string)
 
 	type RequestBody struct {
@@ -22,6 +25,24 @@ var ClaimQuizSatsReward = func(c *fiber.Ctx) error {
 
 	if body.QuizID == "" {
 		return fiber.NewError(fiber.StatusBadRequest, "Please provide a quizID")
+	}
+
+	savedQuiz, err := quiz.FindOne(body.QuizID)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	if savedQuiz.ID == "" {
+		return fiber.NewError(fiber.StatusNotFound, "Quiz of provided id is not found!")
+	}
+
+	savedSatsRewardAddress, err := satsRewardAddress.FindDefaultAndVerifiedByUser(userID)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	if savedSatsRewardAddress.ID == "" {
+		return fiber.NewError(fiber.StatusBadRequest, "No address found, make sure you have a verified address!")
 	}
 
 	// Publish an event to make sats reward payment

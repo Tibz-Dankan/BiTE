@@ -11,6 +11,7 @@ import (
 
 var ClaimSatsReward = func(c *fiber.Ctx) error {
 	satsReward := models.SatsReward{}
+	satsRewardAddress := models.SatsRewardAddress{}
 	satsRewardID := c.Params("satsRewardID")
 	userID := c.Locals("userID").(string)
 
@@ -33,6 +34,15 @@ var ClaimSatsReward = func(c *fiber.Ctx) error {
 
 	if satsReward.Status == "COMPLETED" {
 		return fiber.NewError(fiber.StatusBadRequest, "Sats reward already completed!")
+	}
+
+	savedSatsRewardAddress, err := satsRewardAddress.FindDefaultAndVerifiedByUser(userID)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	if savedSatsRewardAddress.ID == "" {
+		return fiber.NewError(fiber.StatusBadRequest, "No address found, make sure you have a verified address!")
 	}
 
 	// 	Publish an event to make sats reward payment
