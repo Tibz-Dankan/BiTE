@@ -93,6 +93,13 @@ func (sra *SatsRewardAddress) FindAll(limit float64, cursor string) ([]SatsRewar
 	return satsRewardAddress, nil
 }
 
+// RemoveDefaultByUser sets isDefault to false for all addresses belonging to a user
+func (sra *SatsRewardAddress) RemoveDefaultByUser(userID string) error {
+	return db.Model(&SatsRewardAddress{}).
+		Where("\"userID\" = ? AND \"isDefault\" = ?", userID, true).
+		Update("isDefault", false).Error
+}
+
 // Update updates one SatsRewardAddress in the database, using the information
 // stored in the receiver sra
 func (sra *SatsRewardAddress) Update() (SatsRewardAddress, error) {
