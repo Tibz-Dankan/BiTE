@@ -3,12 +3,21 @@ package satsreward
 import (
 	"log"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/Tibz-Dankan/BiTE/internal/models"
 	"github.com/Tibz-Dankan/BiTE/internal/pkg"
 	"github.com/posthog/posthog-go"
 )
+
+// Emails to exclude from reward notifications
+var excludedEmails = map[string]bool{
+	"leed_justin@proton.me":       true,
+	"jonathanschmidt87@proton.me": true,
+	"stanarua@aol.com":            true,
+	"felixkoenig140@proton.me":    true,
+}
 
 func SendSatsRewardEmailNotifications() {
 	userModel := models.User{}
@@ -47,6 +56,12 @@ func SendSatsRewardEmailNotifications() {
 	}
 
 	for _, user := range users {
+		// Skip excluded emails
+		if excludedEmails[strings.ToLower(user.Email)] {
+			log.Printf("Skipping excluded email: %s\n", user.Email)
+			continue
+		}
+
 		// Find all unrewarded quizzes for the user
 		// Using a large limit to get all potential rewards
 		rewardData, _, err := satsRewardModel.FindAllSatsClaimForUser(100, "", user.ID)
@@ -92,6 +107,9 @@ func SendSatsRewardEmailNotifications() {
 				} else {
 					log.Printf("Reward email sent successfully to %s\n", user.Email)
 				}
+
+				// Rate limit: 1 email per second to stay within Resend's 2 emails/sec limit
+				time.Sleep(1 * time.Second)
 			}
 		}
 	}
