@@ -1,8 +1,6 @@
 package satsreward
 
 import (
-	"log"
-
 	"github.com/Tibz-Dankan/BiTE/internal/models"
 	"github.com/Tibz-Dankan/BiTE/internal/pkg"
 	"github.com/gofiber/fiber/v2"
@@ -34,8 +32,6 @@ var GetAllUserSatsRewardForQuizzes = func(c *fiber.Ctx) error {
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
-
-	log.Printf("GetAllUserSatsRewardForQuizzes->userQuizProgresses: %+v", userQuizProgresses)
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status":     "success",
