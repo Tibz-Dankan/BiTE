@@ -1,6 +1,8 @@
 package models
 
 import (
+	"log"
+
 	"github.com/Tibz-Dankan/BiTE/internal/types"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -150,6 +152,8 @@ func (sr *SatsReward) FindAllSatsClaimForUser(limit float64, cursor string, user
 		return nil, types.Pagination{}, err
 	}
 
+	log.Printf("FindAllSatsClaimForUser->rewardQuizIDs: %+v", rewardQuizIDs)
+
 	query := db.Model(&QuizUserProgress{}).
 		Preload("Quiz.Attachments").
 		Preload("Quiz").
@@ -170,6 +174,8 @@ func (sr *SatsReward) FindAllSatsClaimForUser(limit float64, cursor string, user
 		Find(&userQuizProgress).Error; err != nil {
 		return nil, types.Pagination{}, err
 	}
+
+	log.Printf("FindAllSatsClaimForUser->userQuizProgress: %+v", userQuizProgress)
 
 	var nextCursor string = ""
 	var hasNextItems bool = false
@@ -211,6 +217,8 @@ func (sr *SatsReward) FindAllSatsClaimForUser(limit float64, cursor string, user
 		result = append(result, usrQuizProgressData)
 	}
 
+	log.Printf("FindAllSatsClaimForUser->result: %+v", result)
+
 	return result, pagination, nil
 }
 
@@ -225,6 +233,8 @@ func (sr *SatsReward) FindAllSatsClaimForUserStats(limit float64, cursor string,
 		Pluck("\"quizID\"", &rewardQuizIDs).Error; err != nil {
 		return nil, types.Pagination{}, err
 	}
+
+	log.Printf("FindAllSatsClaimForUserStats->rewardQuizIDs: %+v", rewardQuizIDs)
 
 	query := db.Model(&QuizUserProgress{}).
 		Preload("Quiz.Attachments").
@@ -246,6 +256,8 @@ func (sr *SatsReward) FindAllSatsClaimForUserStats(limit float64, cursor string,
 		Find(&userQuizProgress).Error; err != nil {
 		return nil, types.Pagination{}, err
 	}
+
+	log.Printf("FindAllSatsClaimForUserStats->userQuizProgress: %+v", userQuizProgress)
 
 	var nextCursor string = ""
 	var hasNextItems bool = false
@@ -287,6 +299,8 @@ func (sr *SatsReward) FindAllSatsClaimForUserStats(limit float64, cursor string,
 		}
 		result = append(result, usrQuizProgressData)
 	}
+
+	log.Printf("FindAllSatsClaimForUserStats->result: %+v", result)
 
 	return result, pagination, nil
 }
