@@ -169,8 +169,12 @@ func (sr *SatsReward) FindAllSatsClaimForUser(limit float64, cursor string, user
 		query = query.Where("\"createdAt\" < ?", lastQuizUserProgress.CreatedAt)
 	}
 
+	if len(rewardQuizIDs) > 0 {
+		query = query.Where("\"quizID\" NOT IN ?", rewardQuizIDs)
+	}
+
 	if err := query.
-		Where("\"quizID\" NOT IN ? AND \"status\" = ? AND \"userID\" = ?", rewardQuizIDs, "COMPLETED", userID).
+		Where("\"status\" = ? AND \"userID\" = ?", "COMPLETED", userID).
 		Find(&userQuizProgress).Error; err != nil {
 		return nil, types.Pagination{}, err
 	}
@@ -251,8 +255,12 @@ func (sr *SatsReward) FindAllSatsClaimForUserStats(limit float64, cursor string,
 		query = query.Where("\"createdAt\" < ?", lastQuizUserProgress.CreatedAt)
 	}
 
+	if len(rewardQuizIDs) > 0 {
+		query = query.Where("\"quizID\" NOT IN ?", rewardQuizIDs)
+	}
+
 	if err := query.
-		Where("\"quizID\" NOT IN ? AND \"status\" = ? AND \"userID\" = ?", rewardQuizIDs, "COMPLETED", userID).
+		Where("\"status\" = ? AND \"userID\" = ?", "COMPLETED", userID).
 		Find(&userQuizProgress).Error; err != nil {
 		return nil, types.Pagination{}, err
 	}
