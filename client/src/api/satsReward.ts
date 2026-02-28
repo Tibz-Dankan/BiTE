@@ -221,6 +221,43 @@ class SatsRewardAPI {
     }
     return await response.json();
   };
+
+  updateAddress = async ({ id, address }: { id: string; address: string }) => {
+    const response = await fetch(
+      `${SERVER_URL}/satsreward/address/${id}/edit`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({ address }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      },
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  makeDefaultAddress = async ({ id }: { id: string }) => {
+    const response = await fetch(
+      `${SERVER_URL}/satsreward/address/${id}/default`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-type": "application/json",
+        },
+      },
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
 }
 
 export const satsRewardAPI = new SatsRewardAPI();
