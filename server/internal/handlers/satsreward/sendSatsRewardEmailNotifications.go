@@ -101,13 +101,13 @@ func init() {
 	go func() {
 		time.Sleep(15 * time.Second)
 		log.Println("Starting Sats Reward Email Notifications background task...")
-		// SendSatsRewardEmailNotifications()
+		SendSatsRewardEmailNotifications()
 
-		// Run every 24 hours (or adjust as needed)
-		ticker := time.NewTicker(24 * time.Hour)
-		for range ticker.C {
-			log.Println("Running scheduled Sats Reward Email Notifications...")
-			// SendSatsRewardEmailNotifications()
-		}
+		// // Run every 24 hours (or adjust as needed)
+		// ticker := time.NewTicker(24 * time.Hour)
+		// for range ticker.C {
+		// 	log.Println("Running scheduled Sats Reward Email Notifications...")
+		// 	// SendSatsRewardEmailNotifications()
+		// }
 	}()
 }
