@@ -12,6 +12,7 @@ import { formatDate } from "../../../utils/formatDate";
 import type { SatsRewardAddress } from "../../../types/satsReward";
 import { UpdateSatsRewardAddressModal } from "./UpdateSatsRewardAddressModal";
 import { MakeDefaultSatsRewardAddressModal } from "./MakeDefaultSatsRewardAddressModal";
+import { VerifySatsRewardAddressModal } from "./VerifySatsRewardAddressModal";
 
 interface UserSatsRewardAddressCardProps {
   address: SatsRewardAddress;
@@ -25,6 +26,7 @@ export const UserSatsRewardAddressCard: React.FC<
   );
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDefaultModalOpen, setIsDefaultModalOpen] = useState(false);
+  const [isVerifyModalOpen, setIsVerifyModalOpen] = useState(false);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(address.address);
@@ -142,8 +144,11 @@ export const UserSatsRewardAddressCard: React.FC<
             {!address.isVerified && (
               <button
                 type="button"
-                className="text-xs font-bold text-(--primary) hover:underline"
+                onClick={() => setIsVerifyModalOpen(true)}
+                className="flex items-center gap-1.5 text-xs font-bold
+                  text-green-600 hover:underline cursor-pointer"
               >
+                <ShieldCheck size={12} />
                 Verify Now
               </button>
             )}
@@ -159,6 +164,11 @@ export const UserSatsRewardAddressCard: React.FC<
       <MakeDefaultSatsRewardAddressModal
         isOpen={isDefaultModalOpen}
         onClose={() => setIsDefaultModalOpen(false)}
+        address={address}
+      />
+      <VerifySatsRewardAddressModal
+        isOpen={isVerifyModalOpen}
+        onClose={() => setIsVerifyModalOpen(false)}
         address={address}
       />
     </>
