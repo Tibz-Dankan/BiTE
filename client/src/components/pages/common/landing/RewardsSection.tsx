@@ -38,9 +38,9 @@ export const RewardsSection: React.FC = () => {
               </h2>
 
               <p className="text-lg text-gray-600 leading-relaxed">
-                At BiTE, we believe knowledge is valuable. Complete our STEM,
-                AI, and Robotics quizzes to earn Bitcoin rewards delivered
-                straight to your lightning address.
+                At Bitcoin High School, we believe knowledge is valuable.
+                Complete our STEM, AI, and Robotics quizzes to earn Bitcoin
+                rewards delivered straight to your lightning address.
               </p>
 
               <div className="space-y-4 pt-4">
