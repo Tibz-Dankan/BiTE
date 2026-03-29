@@ -22,18 +22,19 @@ type User struct {
 	UpdatedAt                         time.Time `gorm:"column:updatedAt" json:"updatedAt"`
 
 	// Relationships
-	OTPs             []OTP               `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"otps,omitempty"`
-	Sessions         []*Session          `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"sessions,omitempty"`
-	Locations        []*Location         `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"locations,omitempty"`
-	Quizzes          []*Quiz             `gorm:"foreignKey:PostedByUserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"quizzes,omitempty"`
-	Questions        []*Question         `gorm:"foreignKey:PostedByUserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"questions,omitempty"`
-	Answers          []*Answer           `gorm:"foreignKey:PostedByUserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"answers,omitempty"`
-	Attempts         []*Attempt          `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"attempts,omitempty"`
-	AttemptDurations []*AttemptDuration  `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"attemptDurations,omitempty"`
-	Rankings         *Ranking            `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"rankings,omitempty"`
-	QuizUserProgress []*QuizUserProgress `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"quizUserProgress,omitempty"`
-	SiteVisits       []*SiteVisit        `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"siteVisits,omitempty"`
-	Attachments      []*Attachment       `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"attachments,omitempty"`
+	OTPs             []OTP                 `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"otps,omitempty"`
+	Sessions         []*Session            `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"sessions,omitempty"`
+	Locations        []*Location           `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"locations,omitempty"`
+	Quizzes          []*Quiz               `gorm:"foreignKey:PostedByUserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"quizzes,omitempty"`
+	Questions        []*Question           `gorm:"foreignKey:PostedByUserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"questions,omitempty"`
+	Answers          []*Answer             `gorm:"foreignKey:PostedByUserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"answers,omitempty"`
+	Attempts         []*Attempt            `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"attempts,omitempty"`
+	AttemptDurations []*AttemptDuration    `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"attemptDurations,omitempty"`
+	Rankings         *Ranking              `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"rankings,omitempty"`
+	QuizUserProgress []*QuizUserProgress   `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"quizUserProgress,omitempty"`
+	SiteVisits       []*SiteVisit          `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"siteVisits,omitempty"`
+	Attachments      []*Attachment         `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"attachments,omitempty"`
+	Certificates     []*CertificateAwarded `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"certificates,omitempty"`
 }
 
 type OTP struct {
@@ -86,8 +87,9 @@ type QuizCategory struct {
 	UpdatedAt time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
 
 	// Relationships
-	Quiz        *Quiz         `gorm:"foreignKey:QuizCategoryID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"quiz,omitempty"`
-	Attachments []*Attachment `gorm:"foreignKey:QuizCategoryID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attachments"`
+	Quiz        *Quiz                `gorm:"foreignKey:QuizCategoryID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"quiz,omitempty"`
+	Attachments []*Attachment        `gorm:"foreignKey:QuizCategoryID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attachments"`
+	Certificate *CategoryCertificate `gorm:"foreignKey:QuizCategoryID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"certificate"`
 }
 
 type Quiz struct {
@@ -348,4 +350,40 @@ type SatsRewardOperation struct {
 
 	// Relationships
 	SatsReward *SatsReward `gorm:"foreignKey:SatsRewardID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"satsReward,omitempty"`
+}
+
+type CategoryCertificate struct {
+	ID             string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
+	QuizCategoryID string    `gorm:"column:quizCategoryID;not null;index" json:"quizCategoryID"`
+	CreatedAt      time.Time `gorm:"column:createdAt;index" json:"createdAt"`
+	UpdatedAt      time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
+
+	// Relationships
+	QuizCategory               *QuizCategory                 `gorm:"foreignKey:QuizCategoryID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"quizCategory,omitempty"`
+	CategoryCertificateQuizzes []*CategoryCertificateQuizzes `gorm:"foreignKey:CategoryCertificateID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"categoryCertificateQuizzes,omitempty"`
+}
+
+type CategoryCertificateQuizzes struct {
+	ID                    string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
+	CategoryCertificateID string    `gorm:"column:categoryCertificateID;not null;index" json:"categoryCertificateID"`
+	QuizID                string    `gorm:"column:quizID;not null;index" json:"quizID"`
+	CreatedAt             time.Time `gorm:"column:createdAt;index" json:"createdAt"`
+	UpdatedAt             time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
+
+	// Relationships
+	CategoryCertificate *CategoryCertificate `gorm:"foreignKey:CategoryCertificateID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"categoryCertificate,omitempty"`
+	Quiz                *Quiz                `gorm:"foreignKey:QuizID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"quiz,omitempty"`
+}
+
+type CertificateAwarded struct {
+	ID                    string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
+	UserID                string    `gorm:"column:userID;not null;index" json:"userID"`
+	CategoryCertificateID string    `gorm:"column:categoryCertificateID;not null;index" json:"categoryCertificateID"`
+	AwardedQuizIDs        JSONB     `gorm:"column:awardedQuizIDs;not null" json:"awardedQuizIDs"`
+	CreatedAt             time.Time `gorm:"column:createdAt;index" json:"createdAt"`
+	UpdatedAt             time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
+
+	// Relationships
+	User                *User                `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"user,omitempty"`
+	CategoryCertificate *CategoryCertificate `gorm:"foreignKey:CategoryCertificateID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"categoryCertificate,omitempty"`
 }
