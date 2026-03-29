@@ -11,6 +11,7 @@ import (
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/attempt"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/attemptduration"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/auth"
+	"github.com/Tibz-Dankan/BiTE/internal/handlers/categorycertificate"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/health"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/monitor"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/question"
@@ -186,6 +187,19 @@ func main() {
 	satsRewardGroup.Patch("/address/:id/edit", middlewares.Auth, satsreward.UpdateSatsRewardAddress)
 	satsRewardGroup.Patch("/address/:id/default", middlewares.Auth, satsreward.MakeDefaultSatsRewardAddress)
 	satsRewardGroup.Get("/operations", middlewares.Auth, middlewares.IsAdmin, satsreward.GetAllSatsRewardOperations)
+
+	// CategoryCertificate
+	categoryCertificateGroup := app.Group("/api/v1/categorycertificate", func(c *fiber.Ctx) error {
+		return c.Next()
+	})
+	categoryCertificateGroup.Post("/", middlewares.Auth, middlewares.IsAdmin, categorycertificate.PostCategoryCertificate)
+	categoryCertificateGroup.Get("/", middlewares.Auth, categorycertificate.GetAllCategoryCertificates)
+	categoryCertificateGroup.Get("/awarded", middlewares.Auth, middlewares.IsAdmin, categorycertificate.GetAllCertificatesAwarded)
+	categoryCertificateGroup.Get("/awarded/user/:userID", middlewares.Auth, categorycertificate.GetCertificatesAwardedByUser)
+	categoryCertificateGroup.Get("/:id", middlewares.Auth, categorycertificate.GetCategoryCertificate)
+	categoryCertificateGroup.Put("/:id", middlewares.Auth, middlewares.IsAdmin, categorycertificate.UpdateCategoryCertificate)
+	categoryCertificateGroup.Patch("/:id", middlewares.Auth, middlewares.IsAdmin, categorycertificate.PatchCategoryCertificate)
+	categoryCertificateGroup.Delete("/:id", middlewares.Auth, middlewares.IsAdmin, categorycertificate.DeleteCategoryCertificate)
 
 	// Metrics
 	app.Get("/metrics", monitor.GetMetrics)
