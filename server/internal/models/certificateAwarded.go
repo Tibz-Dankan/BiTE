@@ -11,6 +11,18 @@ func (ca *CertificateAwarded) BeforeCreate(tx *gorm.DB) error {
 	return nil
 }
 
+func (ca *CertificateAwarded) CountByCertificate(categoryCertificateID string) (int64, error) {
+	var count int64
+
+	if err := db.Model(&CertificateAwarded{}).
+		Where("\"categoryCertificateID\" = ?", categoryCertificateID).
+		Count(&count).Error; err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}
+
 func (ca *CertificateAwarded) FindAll(limit float64, cursor string) ([]CertificateAwarded, error) {
 	var certificates []CertificateAwarded
 
