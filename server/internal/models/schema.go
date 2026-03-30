@@ -87,7 +87,7 @@ type QuizCategory struct {
 	UpdatedAt time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
 
 	// Relationships
-	Quiz        *Quiz                `gorm:"foreignKey:QuizCategoryID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"quiz,omitempty"`
+	Quizzes     []*Quiz              `gorm:"foreignKey:QuizCategoryID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"quizzes,omitempty"`
 	Attachments []*Attachment        `gorm:"foreignKey:QuizCategoryID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attachments"`
 	Certificate *CategoryCertificate `gorm:"foreignKey:QuizCategoryID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"certificate"`
 }
