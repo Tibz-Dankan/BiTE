@@ -54,6 +54,7 @@ func (cc *CategoryCertificate) FindAll(limit float64, cursor string) ([]Category
 	query := db.Model(&CategoryCertificate{}).
 		Preload("QuizCategory").
 		Preload("CategoryCertificateQuizzes.Quiz").
+		Preload("CategoryCertificateQuizzes.Quiz.Attachments").
 		Order("\"createdAt\" DESC").Limit(int(limit))
 
 	if cursor != "" {
