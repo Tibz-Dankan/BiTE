@@ -7,6 +7,7 @@ import (
 
 var DeleteCategoryCertificate = func(c *fiber.Ctx) error {
 	categoryCertificate := models.CategoryCertificate{}
+	certificateAwarded := models.CertificateAwarded{}
 	certificateID := c.Params("id")
 
 	savedCertificate, err := categoryCertificate.FindOne(certificateID)
@@ -15,6 +16,14 @@ var DeleteCategoryCertificate = func(c *fiber.Ctx) error {
 	}
 	if savedCertificate.ID == "" {
 		return fiber.NewError(fiber.StatusBadRequest, "Category Certificate of provided ID doesn't exist!")
+	}
+
+	awardedCount, err := certificateAwarded.CountByCertificate(certificateID)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+	if awardedCount > 0 {
+		return fiber.NewError(fiber.StatusBadRequest, "Cannot delete a certificate that has been awarded to users!")
 	}
 
 	err = categoryCertificate.Delete(certificateID)
