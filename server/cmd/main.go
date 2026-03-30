@@ -189,7 +189,7 @@ func main() {
 	satsRewardGroup.Get("/operations", middlewares.Auth, middlewares.IsAdmin, satsreward.GetAllSatsRewardOperations)
 
 	// CategoryCertificate
-	categoryCertificateGroup := app.Group("/api/v1/categorycertificate", func(c *fiber.Ctx) error {
+	categoryCertificateGroup := app.Group("/api/v1/certificate", func(c *fiber.Ctx) error {
 		return c.Next()
 	})
 	categoryCertificateGroup.Post("/", middlewares.Auth, middlewares.IsAdmin, categorycertificate.PostCategoryCertificate)
