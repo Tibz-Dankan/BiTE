@@ -2,20 +2,24 @@ import type { TQuizCategory } from "../../../types/quizCategory";
 import { DeleteQuizCategory } from "./DeleteQuizCategory";
 import { UpdateQuizCategory } from "./UpdateQuizCategory";
 import { AddQuizCategoryButton } from "./AddQuizCategoryButton";
+import { AdminCategoryCertificateOps } from "../categorycertificate/AdminCategoryCertificateOps";
 import { quizCategoryAPI } from "../../../api/quizCategory";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { AlertCard } from "../shared/AlertCard";
+import { useFeatureFlagEnabled } from "posthog-js/react";
 
 export const AdminQuizCategoryFilter: React.FC = () => {
   const [quizCategories, setQuizCategories] = useState<TQuizCategory[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const initialquizCategoryID = searchParams.get("qzCategoryID") ?? "";
   const [selectedCategoryId, setSelectedCategoryId] = useState(
-    initialquizCategoryID
+    initialquizCategoryID,
   );
+
+  const isCertificateEnabled = useFeatureFlagEnabled("certification");
 
   const { isPending, isError, data, error } = useQuery({
     queryKey: [`admin-quiz-category-view`],
@@ -40,7 +44,7 @@ export const AdminQuizCategoryFilter: React.FC = () => {
         prev.delete("qzCursor"); // Reset cursor when changing category
         return prev;
       },
-      { replace: false }
+      { replace: false },
     );
   };
 
@@ -99,6 +103,11 @@ export const AdminQuizCategoryFilter: React.FC = () => {
             <div className="z-50 rounded-md hover:bg-gray-300">
               <UpdateQuizCategory quizCategory={category} />
             </div>
+            {isCertificateEnabled && (
+              <div className="z-50 rounded-md hover:bg-gray-300">
+                <AdminCategoryCertificateOps quizCategory={category} />
+              </div>
+            )}
           </span>
         ))}
         {/* Add Quiz Category Button */}
