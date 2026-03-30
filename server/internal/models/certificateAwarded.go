@@ -29,6 +29,21 @@ func (ca *CertificateAwarded) FindByUserAndCertificate(userID string, categoryCe
 	return certificate, nil
 }
 
+func (ca *CertificateAwarded) FindByUserAndCertificateWithPreloads(userID string, categoryCertificateID string) (CertificateAwarded, error) {
+	var certificate CertificateAwarded
+
+	db.Model(&CertificateAwarded{}).
+		Preload("User").
+		Preload("CategoryCertificate.QuizCategory").
+		Preload("CategoryCertificate.QuizCategory.Quizzes").
+		Preload("CategoryCertificate.QuizCategory.Quizzes.Attachments").
+		Preload("CategoryCertificate.QuizCategory.Attachments").
+		Where("\"userID\" = ? AND \"categoryCertificateID\" = ?", userID, categoryCertificateID).
+		First(&certificate)
+
+	return certificate, nil
+}
+
 func (ca *CertificateAwarded) CountByCertificate(categoryCertificateID string) (int64, error) {
 	var count int64
 
