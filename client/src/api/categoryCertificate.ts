@@ -11,6 +11,7 @@ import type {
   TGetClaimStatus,
   TGetAllCertificatesAwarded,
   TGetCertificatesAwardedByUser,
+  TGetCertificateAwardByUser,
 } from "../types/categoryCertificate";
 
 class CategoryCertificateAPI {
@@ -169,6 +170,23 @@ class CategoryCertificateAPI {
   }: TGetCertificatesAwardedByUser) => {
     const response = await fetch(
       `${SERVER_URL}/certificate/awards/user/${userID}?limit=${limit}&cursor=${cursor}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      },
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+  getAwardByUser = async ({ certID, userID }: TGetCertificateAwardByUser) => {
+    const response = await fetch(
+      `${SERVER_URL}/certificate/${certID}/awards/user/${userID}`,
       {
         method: "GET",
         headers: {

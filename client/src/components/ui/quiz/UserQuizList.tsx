@@ -9,6 +9,8 @@ import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import type { TPagination } from "../../../types/pagination";
 import { useAuthStore } from "../../../stores/auth";
 import { Button } from "../shared/Btn";
+import { MainUserCertificateClaimBanner } from "../categorycertificate/MainUserCertificateClaimBanner";
+import { useFeatureFlagEnabled } from "posthog-js/react";
 
 export const UserQuizList: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -18,6 +20,7 @@ export const UserQuizList: React.FC = () => {
   const userID = useAuthStore((state) => state.auth.user.id);
   const quizCategoryIDParam = searchParams.get("qzCategoryID");
   const navigate = useNavigate();
+  const isCertificateEnabled = useFeatureFlagEnabled("certification");
 
   const { isPending, isError, data, error } = useQuery({
     queryKey: [
@@ -80,7 +83,11 @@ export const UserQuizList: React.FC = () => {
 
   return (
     <div className="w-full space-y-12">
-      {/* Quiz Grid */}
+      {isCertificateEnabled && (
+        <div className="w-full">
+          <MainUserCertificateClaimBanner />
+        </div>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {quizzes.map((quiz) => (
           <UserQuizCard key={quiz.id} quiz={quiz} />
