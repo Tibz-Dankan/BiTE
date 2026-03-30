@@ -11,6 +11,24 @@ func (ca *CertificateAwarded) BeforeCreate(tx *gorm.DB) error {
 	return nil
 }
 
+func (ca *CertificateAwarded) Create(certificateAwarded CertificateAwarded) (CertificateAwarded, error) {
+	if err := db.Create(&certificateAwarded).Error; err != nil {
+		return certificateAwarded, err
+	}
+
+	return certificateAwarded, nil
+}
+
+func (ca *CertificateAwarded) FindByUserAndCertificate(userID string, categoryCertificateID string) (CertificateAwarded, error) {
+	var certificate CertificateAwarded
+
+	db.Model(&CertificateAwarded{}).
+		Where("\"userID\" = ? AND \"categoryCertificateID\" = ?", userID, categoryCertificateID).
+		First(&certificate)
+
+	return certificate, nil
+}
+
 func (ca *CertificateAwarded) CountByCertificate(categoryCertificateID string) (int64, error) {
 	var count int64
 

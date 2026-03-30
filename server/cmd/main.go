@@ -196,6 +196,7 @@ func main() {
 	categoryCertificateGroup.Get("/", middlewares.Auth, categorycertificate.GetAllCategoryCertificates)
 	categoryCertificateGroup.Get("/awarded", middlewares.Auth, middlewares.IsAdmin, categorycertificate.GetAllCertificatesAwarded)
 	categoryCertificateGroup.Get("/awarded/user/:userID", middlewares.Auth, categorycertificate.GetCertificatesAwardedByUser)
+	categoryCertificateGroup.Post("/claim", middlewares.Auth, categorycertificate.ClaimCertificate)
 	categoryCertificateGroup.Get("/:id", middlewares.Auth, categorycertificate.GetCategoryCertificate)
 	categoryCertificateGroup.Put("/:id", middlewares.Auth, middlewares.IsAdmin, categorycertificate.UpdateCategoryCertificate)
 	categoryCertificateGroup.Patch("/:id", middlewares.Auth, middlewares.IsAdmin, categorycertificate.PatchCategoryCertificate)
