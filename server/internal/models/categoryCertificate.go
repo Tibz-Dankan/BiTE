@@ -33,6 +33,7 @@ func (cc *CategoryCertificate) FindOneWithQuizzes(id string) (CategoryCertificat
 	db.Model(&CategoryCertificate{}).
 		Preload("QuizCategory").
 		Preload("CategoryCertificateQuizzes.Quiz").
+		Preload("CategoryCertificateQuizzes.Quiz.Attachments").
 		First(&certificate, "id = ?", id)
 
 	return certificate, nil
