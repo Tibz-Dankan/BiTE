@@ -1,5 +1,6 @@
 import type { TAttachment } from "./attachment";
 import type { TPagination } from "./pagination";
+import type { TCategoryCertificate } from "./categoryCertificate";
 
 export type TQuizCategory = {
   id: string;
@@ -8,6 +9,7 @@ export type TQuizCategory = {
   createdAt: string;
   updatedAt: string;
   attachments: TAttachment[];
+  certificate: TCategoryCertificate | null;
 };
 
 export type TQuizCategoryResponse = {
