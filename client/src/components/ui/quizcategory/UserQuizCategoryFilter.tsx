@@ -4,8 +4,9 @@ import { Button } from "../shared/Btn";
 import { quizCategoryAPI } from "../../../api/quizCategory";
 import { useQuery } from "@tanstack/react-query";
 import { AlertCard } from "../shared/AlertCard";
-import { Loader2 } from "lucide-react";
+import { Loader2, GraduationCap } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
+import { useFeatureFlagEnabled } from "posthog-js/react";
 
 export const UserQuizCategoryFilter: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -14,6 +15,8 @@ export const UserQuizCategoryFilter: React.FC = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(
     initialQuizCategoryID,
   );
+
+  const isCertificateEnabled = useFeatureFlagEnabled("certification");
 
   const { data, isPending, isError, error } = useQuery({
     queryKey: ["user-quiz-categories"],
@@ -89,7 +92,10 @@ export const UserQuizCategoryFilter: React.FC = () => {
                 : "border-1 border-gray-300 text-gray-800 hover:bg-(--primary) hover:text-gray-50"
             }`}
           >
-            <span>{category.name}</span>
+            <span className="mr-2">{category.name}</span>
+            {isCertificateEnabled && category.certificate && (
+              <GraduationCap className="w-5 h-5 text-gray-500 fill-gray-500" />
+            )}
           </Button>
         ))}
       </div>
