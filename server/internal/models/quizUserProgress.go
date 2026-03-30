@@ -68,6 +68,7 @@ func (qup *QuizUserProgress) FindAllByUser(userID string, status string, limit f
 	query := db.Model(&QuizUserProgress{}).
 		Preload("Quiz.Attachments").
 		Preload("Quiz.QuizCategory.Attachments").
+		Preload("Quiz.QuizCategory.Certificate").
 		Preload("Quiz.QuizCategory").
 		Preload("Quiz.PostedByUser").
 		Preload("Quiz").
