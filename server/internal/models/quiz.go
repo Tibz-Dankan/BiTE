@@ -316,6 +316,7 @@ func (q *Quiz) FindAllByUserProgressWithNoStatusValue(limit float64, cursor stri
 	query := db.Model(&Quiz{}).
 		Preload("Attachments").
 		Preload("QuizCategory.Attachments").
+		Preload("QuizCategory.Certificate").
 		Preload("QuizCategory").
 		Preload("PostedByUser").
 		Where("\"showQuiz\" = ?", true).
