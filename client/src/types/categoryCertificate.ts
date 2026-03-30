@@ -125,3 +125,13 @@ export type TGetAllCertificatesAwardedResponse = {
   pagination: TPagination;
   status: string;
 };
+
+export type TGetCertificateAwardByUser = {
+  certID: string;
+  userID: string;
+};
+
+export type TCertificateAwardByUserResponse = {
+  data: TCertificateAwarded;
+  status: string;
+};

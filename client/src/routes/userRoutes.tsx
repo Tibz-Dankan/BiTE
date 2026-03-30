@@ -17,6 +17,7 @@ import { UserQuizView } from "../components/pages/quiz/UserQuizView";
 import { UserQuizAttempt } from "../components/pages/quiz/UserQuizAttempt";
 import { UserQuizResultPage } from "../components/pages/quiz/UserQuizResultPage";
 import { UserDashboard } from "../components/pages/quiz/UserDashboard";
+import { UserCategoryCertificateQuizzes } from "../components/pages/categorycertificate/UserCategoryCertificateQuizzes";
 
 export const UserRoutes: React.FC = () => {
   const routes: TRoute = {
@@ -63,6 +64,13 @@ export const UserRoutes: React.FC = () => {
         path: "/u/settings",
         showInSidebar: true,
         element: <div>User Settings</div>,
+      },
+      {
+        title: "Certificate Quizzes",
+        icon: <FileQuestion className="h-4 w-4" />,
+        path: "/u/quizzes/cert/:certID",
+        showInSidebar: false,
+        element: <UserCategoryCertificateQuizzes />,
       },
 
       // Page Not Found - Wildcard Route
