@@ -3,7 +3,12 @@ import { useQuery } from "@tanstack/react-query";
 import { categoryCertificateAPI } from "../../../api/categoryCertificate";
 import { Modal } from "../shared/Modal";
 import { Button } from "../shared/Btn";
-import { Download, FileImage, FileText, Loader2 } from "lucide-react";
+import {
+  // Download,
+  FileImage,
+  FileText,
+  Loader2,
+} from "lucide-react";
 import Certificate from "./Certificate";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
