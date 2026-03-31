@@ -10,7 +10,7 @@ import (
 func BackfillQuizUserProgressCategoryID() {
 	log.Println("Starting backfill of quiz user progress category IDs...")
 
-	batchSize := float64(10000)
+	batchSize := float64(500)
 	cursor := ""
 	totalUpdated := 0
 	totalSkipped := 0
@@ -70,7 +70,7 @@ func BackfillQuizUserProgressCategoryID() {
 
 func init() {
 	go func() {
-		time.Sleep(5 * time.Minute)
+		time.Sleep(1 * time.Minute)
 		// time.Sleep(15 * time.Second)
 		BackfillQuizUserProgressCategoryID()
 	}()
