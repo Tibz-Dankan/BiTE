@@ -19,8 +19,17 @@ export const UserQuizList: React.FC = () => {
   const quizCategoryID = searchParams.get("qzCategoryID")!;
   const userID = useAuthStore((state) => state.auth.user.id);
   const quizCategoryIDParam = searchParams.get("qzCategoryID");
+  const quizProgressStatusParam = searchParams.get("qzpStatus");
   const navigate = useNavigate();
   const isCertificateEnabled = useFeatureFlagEnabled("certification");
+
+  let quizProgressStatus = "";
+  if (quizProgressStatusParam === "in_progress") {
+    quizProgressStatus = "IN_PROGRESS";
+  }
+  if (quizProgressStatusParam === "completed") {
+    quizProgressStatus = "COMPLETED";
+  }
 
   const { isPending, isError, data, error } = useQuery({
     queryKey: [
@@ -28,13 +37,14 @@ export const UserQuizList: React.FC = () => {
       cursor ?? "",
       userID,
       quizCategoryIDParam ?? "",
+      quizProgressStatus ?? "",
     ],
     queryFn: () =>
       quizAPI.getQuizzesByUserAndProgress({
         userID,
         limit: 12,
         cursor: hasCursor ? cursor : "",
-        status: "",
+        status: quizProgressStatus,
         quizCategoryID: quizCategoryID ? quizCategoryID : "",
       }),
   });
