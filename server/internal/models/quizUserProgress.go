@@ -85,7 +85,7 @@ func (qup *QuizUserProgress) FindAllAndIncludeQuizCategory(limit float64, cursor
 	return quizUserProgress, nil
 }
 
-func (qup *QuizUserProgress) FindAllByUser(userID string, status string, limit float64, cursor string) ([]QuizUserProgress, error) {
+func (qup *QuizUserProgress) FindAllByUser(userID string, quizCategoryID string, status string, limit float64, cursor string) ([]QuizUserProgress, error) {
 	var quizUserProgress []QuizUserProgress
 
 	query := db.Model(&QuizUserProgress{}).
@@ -106,6 +106,10 @@ func (qup *QuizUserProgress) FindAllByUser(userID string, status string, limit f
 			return quizUserProgress, err
 		}
 		query = query.Where("\"createdAt\" < ?", lastQuizUserProgress.CreatedAt)
+	}
+
+	if quizCategoryID != "" {
+		query = query.Where("\"quizCategoryID\" = ?", quizCategoryID)
 	}
 
 	query.Where("\"userID\" = ? AND \"status\" = ?", userID, status).Find(&quizUserProgress)
