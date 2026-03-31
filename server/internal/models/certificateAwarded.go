@@ -105,3 +105,13 @@ func (ca *CertificateAwarded) FindAllByUser(userID string, limit float64, cursor
 
 	return certificates, nil
 }
+
+func (ca *CertificateAwarded) GetTotalCount() (int64, error) {
+	var count int64
+
+	if err := db.Model(&CertificateAwarded{}).Count(&count).Error; err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}
