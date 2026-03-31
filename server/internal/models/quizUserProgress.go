@@ -62,6 +62,29 @@ func (qup *QuizUserProgress) FindAll(limit float64, cursor string) ([]QuizUserPr
 	return quizUserProgress, nil
 }
 
+func (qup *QuizUserProgress) FindAllAndIncludeQuizCategory(limit float64, cursor string) ([]QuizUserProgress, error) {
+	var quizUserProgress []QuizUserProgress
+
+	query := db.Model(&QuizUserProgress{}).
+		Preload("User").
+		Preload("Quiz.QuizCategory").
+		Preload("Quiz").
+		Limit(int(limit))
+
+	if cursor != "" {
+		var lastQuizUserProgress QuizUserProgress
+		if err := db.Select("\"createdAt\"").Where("id = ?",
+			cursor).First(&lastQuizUserProgress).Error; err != nil {
+			return quizUserProgress, err
+		}
+		query = query.Where("\"createdAt\" < ?", lastQuizUserProgress.CreatedAt)
+	}
+
+	query.Find(&quizUserProgress)
+
+	return quizUserProgress, nil
+}
+
 func (qup *QuizUserProgress) FindAllByUser(userID string, status string, limit float64, cursor string) ([]QuizUserProgress, error) {
 	var quizUserProgress []QuizUserProgress
 
@@ -161,6 +184,13 @@ func (qup *QuizUserProgress) GetTotalCountOfUnattemptedQuizzesByUser(userID stri
 	}
 
 	return count, nil
+}
+
+func (qup *QuizUserProgress) UpdateQuizCategoryID(id string, quizCategoryID string) error {
+	if err := db.Model(&QuizUserProgress{}).Where("id = ?", id).Update("\"quizCategoryID\"", quizCategoryID).Error; err != nil {
+		return err
+	}
+	return nil
 }
 
 func (qup *QuizUserProgress) Update() (QuizUserProgress, error) {
