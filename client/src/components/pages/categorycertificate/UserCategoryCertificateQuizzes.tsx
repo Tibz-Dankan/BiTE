@@ -78,7 +78,7 @@ export const UserCategoryCertificateQuizzes: React.FC = () => {
       {/* Page Header */}
       <div>
         <h2 className="text-2xl text-gray-800 font-bold text-foreground">
-          {categoryName} Certificate
+          {categoryName} Module
         </h2>
         <p className="text-sm text-gray-500 mt-1">
           Complete all quizzes below to earn your certificate

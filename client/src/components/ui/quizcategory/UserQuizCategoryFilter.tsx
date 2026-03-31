@@ -67,7 +67,7 @@ export const UserQuizCategoryFilter: React.FC = () => {
   return (
     <div className="">
       <h2 className="text-2xl text-gray-800 font-bold mb-6 text-foreground">
-        Filter by Category
+        Filter by Module
       </h2>
       <div className="flex flex-wrap gap-3">
         <Button
