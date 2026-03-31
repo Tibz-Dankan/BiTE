@@ -58,7 +58,7 @@ export const UserCategoryCertificateQuizzes: React.FC = () => {
   const quizzes: TQuiz[] = quizProgresses.map((qp: any) => ({
     ...qp.quiz,
     questionCount: qp.totalQuestions,
-    attemptCount: 0,
+    attemptCount: qp.attemptCount,
     quizCategory: claimStatusData?.certificate?.quizCategory
       ? {
           id: claimStatusData.certificate.quizCategory.id,
