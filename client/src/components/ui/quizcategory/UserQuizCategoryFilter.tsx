@@ -27,7 +27,10 @@ export const UserQuizCategoryFilter: React.FC = () => {
     if (data?.data) {
       setQuizCategories(data.data);
     }
-  }, [data]);
+    if (!initialQuizCategoryID) {
+      setSelectedCategoryId(() => "");
+    }
+  }, [data, initialQuizCategoryID]);
 
   const onSelectCategoryHandler = (categoryId: string) => {
     setSelectedCategoryId(() => categoryId);
