@@ -2,7 +2,7 @@ import React from "react";
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
-interface Module {
+interface Quiz {
   number: number;
   title: string;
   score: string;
@@ -13,7 +13,7 @@ interface CertificateProps {
   categoryName?: string;
   questionsCompleted?: number;
   exams?: string;
-  modules?: Module[];
+  quizzes?: Quiz[];
   signedBy?: string;
   organization?: string;
 }
@@ -254,7 +254,7 @@ export const CertificateLightTheme: React.FC<CertificateProps> = ({
   categoryName = "Bitcoin",
   questionsCompleted = 20,
   exams = "10 BiTEs",
-  modules = [
+  quizzes = [
     {
       number: 1,
       title: "Data Analysis and Descriptive Statistics",
@@ -518,7 +518,7 @@ export const CertificateLightTheme: React.FC<CertificateProps> = ({
               marginBottom: "24px",
             }}
           >
-            {modules.map((mod) => (
+            {quizzes.map((mod) => (
               <div
                 key={mod.number}
                 style={{ display: "flex", alignItems: "flex-end", gap: "4px" }}

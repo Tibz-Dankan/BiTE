@@ -21,23 +21,27 @@ export const UserCategoryCertificateDownload: React.FC<
   const certRef = useRef<HTMLDivElement>(null);
 
   const { data, isPending } = useQuery({
-    queryKey: ["cert-award-by-user", certID, userID],
-    queryFn: () => categoryCertificateAPI.getAwardByUser({ certID, userID }),
+    queryKey: ["cert-claim-status-download", certID, userID],
+    queryFn: () =>
+      categoryCertificateAPI.getClaimStatus({ id: certID, userID }),
     enabled: !!certID && !!userID,
   });
 
-  const award = data?.data;
-  const categoryName =
-    award?.categoryCertificate?.quizCategory?.name ?? "Category";
-  const recipientName = award?.user?.name ?? "Recipient";
-  const quizzes = award?.categoryCertificate?.quizCategory?.quizzes ?? [];
+  const claimData = data?.data;
+  const categoryName = claimData?.certificate?.quizCategory?.name ?? "Category";
+  const recipientName =
+    claimData?.certificateAwarded?.user?.name ?? "Recipient";
+  const certQuizzes = claimData?.certificate?.categoryCertificateQuizzes ?? [];
+  const quizProgresses = claimData?.quizProgresses ?? [];
 
-  console.log("award", award);
-  console.log("quizzes", quizzes);
+  const totalQuestionsCompleted = quizProgresses.reduce(
+    (sum: number, qp: any) => sum + (qp.totalQuestions || 0),
+    0,
+  );
 
-  const modules = quizzes.map((q: any, index: number) => ({
+  const quizzes = certQuizzes.map((cq: any, index: number) => ({
     number: index + 1,
-    title: (q.title || "").replace(/\n/g, "").trim(),
+    title: (cq.quiz?.title || "").replace(/\n/g, "").trim(),
     score: "Completed",
   }));
 
@@ -150,9 +154,9 @@ export const UserCategoryCertificateDownload: React.FC<
             <CertificateLightTheme
               recipientName={recipientName}
               categoryName={categoryName}
-              modules={modules}
-              questionsCompleted={modules.length}
-              exams={`${modules.length} BiTEs`}
+              quizzes={quizzes}
+              questionsCompleted={totalQuestionsCompleted}
+              exams={`${quizzes.length} BiTEs`}
             />
           </div>
         )}
