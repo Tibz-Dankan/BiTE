@@ -137,6 +137,7 @@ export type TAdminAnalytics = {
     totalSiteVisits: number;
     totalUserSessions: number;
     totalUsers: number;
+    totalCertificatesAwarded: number;
   };
 };
 

@@ -13,6 +13,7 @@ import {
   Globe,
   MonitorPlay,
   UserCheck,
+  GraduationCap,
 } from "lucide-react";
 import { AlertCard } from "../shared/AlertCard";
 import { Card } from "../shared/Card";
@@ -35,6 +36,7 @@ export const AdminAnalytics: React.FC = () => {
     totalSiteVisits: 0,
     totalUserSessions: 0,
     totalUsers: 0,
+    totalCertificatesAwarded: 0,
   };
 
   const getValue = (valueInt: number) => {
@@ -122,6 +124,11 @@ export const AdminAnalytics: React.FC = () => {
       label: "User Sessions",
       value: getValue(analyticsData.totalUserSessions),
       icon: <UserCheck className="text-primary w-5 h-5 text-(--primary)" />,
+    },
+    {
+      label: "Certificates Awarded",
+      value: getValue(analyticsData.totalCertificatesAwarded),
+      icon: <GraduationCap className="text-primary w-5 h-5 text-(--primary)" />,
     },
   ];
 

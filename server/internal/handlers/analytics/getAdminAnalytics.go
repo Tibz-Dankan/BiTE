@@ -15,6 +15,7 @@ var GetAdminAnalytics = func(c *fiber.Ctx) error {
 	siteVisit := models.SiteVisit{}
 	session := models.Session{}
 	user := models.User{}
+	certificateAwarded := models.CertificateAwarded{}
 
 	quizCount, err := quiz.GetTotalCount()
 	if err != nil {
@@ -66,6 +67,11 @@ var GetAdminAnalytics = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
+	certificateAwardedCount, err := certificateAwarded.GetTotalCount()
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
 	analytics := fiber.Map{
 		"totalQuizzes":            quizCount,
 		"totalQuestions":          questionCount,
@@ -78,6 +84,7 @@ var GetAdminAnalytics = func(c *fiber.Ctx) error {
 		"totalSiteVisits":            siteVisitCount,
 		"totalUserSessions":          sessionCount, // Logins/Signups
 		"totalUsers":                 userCount,
+		"totalCertificatesAwarded":   certificateAwardedCount,
 	}
 
 	response := fiber.Map{
