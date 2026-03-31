@@ -81,21 +81,23 @@ var GetCertificateClaimStatus = func(c *fiber.Ctx) error {
 	}
 
 	// Check if already claimed
-	existingAward, err := certificateAwarded.FindByUserAndCertificate(userID, certificateID)
+	savedCertificateAwarded, err := certificateAwarded.FindByUserAndCertificate(userID,
+		certificateID)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
-	isClaimed := existingAward.ID != ""
+	isClaimed := savedCertificateAwarded.ID != ""
 
 	response := fiber.Map{
 		"status": "success",
 		"data": fiber.Map{
-			"certificateID":  certificateID,
-			"userID":         userID,
-			"claimable":      claimable,
-			"isClaimed":      isClaimed,
-			"quizProgresses": quizProgresses,
-			"certificate":    savedCertificate,
+			"certificateID":      certificateID,
+			"userID":             userID,
+			"claimable":          claimable,
+			"isClaimed":          isClaimed,
+			"quizProgresses":     quizProgresses,
+			"certificate":        savedCertificate,
+			"certificateAwarded": savedCertificateAwarded,
 		},
 	}
 
