@@ -227,11 +227,11 @@ func (q *Quiz) FindAllWithDetailsForUser(limit float64, cursor string, quizCateg
 	return result, nil
 }
 
-func (q *Quiz) FindAllByUserProgressWithStatusValue(limit float64, cursor string, userID string, status string) (types.Pagination, []map[string]interface{}, error) {
+func (q *Quiz) FindAllByUserProgressWithStatusValue(limit float64, cursor string, userID string, quizCategoryID string, status string) (types.Pagination, []map[string]interface{}, error) {
 	quizUserProgressModel := QuizUserProgress{}
 	var pagination types.Pagination
 
-	quizUserProgresses, err := quizUserProgressModel.FindAllByUser(userID, status, limit+1, cursor)
+	quizUserProgresses, err := quizUserProgressModel.FindAllByUser(userID, quizCategoryID, status, limit+1, cursor)
 	if err != nil {
 		return pagination, nil, err
 	}
@@ -420,7 +420,7 @@ func (q *Quiz) FindAllByUserProgress(limit float64, cursor string, userID string
 	var err error
 
 	if status == "IN_PROGRESS" || status == "COMPLETED" {
-		pagination, result, err = q.FindAllByUserProgressWithStatusValue(limit, cursor, userID, status)
+		pagination, result, err = q.FindAllByUserProgressWithStatusValue(limit, cursor, userID, quizCategoryID, status)
 		if err != nil {
 			return pagination, result, err
 		}
