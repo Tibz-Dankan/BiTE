@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "../shared/Btn";
 import { useQuery } from "@tanstack/react-query";
 import { AlertCard } from "../shared/AlertCard";
-import { Gift, Loader2 } from "lucide-react";
+import { Gift, Loader2, ChevronRight } from "lucide-react";
 import { quizAPI } from "../../../api/quiz";
 import { useAuthStore } from "../../../stores/auth";
 import type { TQuizUserProgressCount } from "../../../types/quiz";
@@ -96,12 +96,12 @@ export const UserQuizProgressInfo: React.FC = () => {
     <div className="w-full">
       {showUnclaimedSatsInfo && (
         <div
-          className="w-full flex flex-col sm:flex-row gap-4 border-1s
-         border-gray-300 rounded-lg p-4 text-gray-600 bg-gray-800/8"
+          className="w-full flex flex-col sm:flex-row gap-4
+         border border-gray-200 rounded-xl p-4 text-gray-600 bg-gradient-to-r from-gray-50 to-white"
         >
           <div className="w-full flex items-center gap-2">
             <p className="w-full flex items-center gap-2 text-sm">
-              <span>
+              <span className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-100 flex-shrink-0">
                 <Gift className="w-4 h-4 text-(--primary)" />
               </span>
               <span>
@@ -122,17 +122,18 @@ export const UserQuizProgressInfo: React.FC = () => {
           <Button
             type="button"
             onClick={() => navigateTo(`/u/rewards`)}
-            className={`rounded-lg px-4 py-2 bg-(--primary)
-           text-gray-50 hover:cursor-pointer self-end`}
+            className="flex-shrink-0 flex items-center gap-1 px-4 py-2 h-auto
+             bg-(--primary) text-white text-sm rounded-lg hover:bg-(--primary)/90"
           >
-            <span>Claim</span>
+            Claim
+            <ChevronRight className="w-4 h-4" />
           </Button>
         </div>
       )}
       {!showUnclaimedSatsInfo && (
         <div
-          className="w-full flex flex-col sm:flex-row gap-4 border-1s
-         border-gray-300 rounded-lg p-4 text-gray-600 bg-gray-800/8"
+          className="w-full flex flex-col sm:flex-row gap-4
+         border border-gray-200 rounded-xl p-4 text-gray-600 bg-gradient-to-r from-gray-50 to-white"
         >
           {/* InProgressInfo */}
           {showInProgressInfo && (
@@ -152,10 +153,11 @@ export const UserQuizProgressInfo: React.FC = () => {
             <Button
               type="button"
               onClick={() => navigateTo(`/u/quizzes?qzpStatus=in_progress`)}
-              className={`rounded-lg px-4 py-2 bg-(--primary)
-                         text-gray-50 hover:cursor-pointer self-end`}
+              className="flex-shrink-0 flex items-center gap-1 px-4 py-2 h-auto
+               bg-(--primary) text-white text-sm rounded-lg hover:bg-(--primary)/90"
             >
-              <span>Continue</span>
+              Continue
+              <ChevronRight className="w-4 h-4" />
             </Button>
           )}
 
@@ -176,10 +178,11 @@ export const UserQuizProgressInfo: React.FC = () => {
             <Button
               type="button"
               onClick={() => navigateTo(`/u/quizzes?qzpStatus=un_attempted`)}
-              className={`rounded-lg px-4 py-2 bg-(--primary)
-                         text-gray-50 hover:cursor-pointer self-end`}
+              className="flex-shrink-0 flex items-center gap-1 px-4 py-2 h-auto
+               bg-(--primary) text-white text-sm rounded-lg hover:bg-(--primary)/90"
             >
-              <span>Attempt</span>
+              Attempt
+              <ChevronRight className="w-4 h-4" />
             </Button>
           )}
 
@@ -197,10 +200,11 @@ export const UserQuizProgressInfo: React.FC = () => {
             <Button
               type="button"
               onClick={() => navigateTo(`/u/quizzes?qzpStatus=un_attempted`)}
-              className={`rounded-lg px-4 py-2 bg-(--primary)
-              text-gray-50 hover:cursor-pointer self-end`}
+              className="flex-shrink-0 flex items-center gap-1 px-4 py-2 h-auto
+               bg-(--primary) text-white text-sm rounded-lg hover:bg-(--primary)/90"
             >
-              <span>Start</span>
+              Start
+              <ChevronRight className="w-4 h-4" />
             </Button>
           )}
         </div>
