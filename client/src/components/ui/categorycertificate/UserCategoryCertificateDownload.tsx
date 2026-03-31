@@ -3,15 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import { categoryCertificateAPI } from "../../../api/categoryCertificate";
 import { Modal } from "../shared/Modal";
 import { Button } from "../shared/Btn";
-import {
-  // Download,
-  FileImage,
-  FileText,
-  Loader2,
-} from "lucide-react";
-import Certificate from "./Certificate";
+import { FileImage, FileText, Loader2 } from "lucide-react";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
+import { CertificateLightTheme } from "./CertificateLightTheme";
 
 interface UserCategoryCertificateDownloadProps {
   certID: string;
@@ -36,6 +31,9 @@ export const UserCategoryCertificateDownload: React.FC<
     award?.categoryCertificate?.quizCategory?.name ?? "Category";
   const recipientName = award?.user?.name ?? "Recipient";
   const quizzes = award?.categoryCertificate?.quizCategory?.quizzes ?? [];
+
+  console.log("award", award);
+  console.log("quizzes", quizzes);
 
   const modules = quizzes.map((q: any, index: number) => ({
     number: index + 1,
@@ -149,7 +147,7 @@ export const UserCategoryCertificateDownload: React.FC<
           </div>
         ) : (
           <div ref={certRef}>
-            <Certificate
+            <CertificateLightTheme
               recipientName={recipientName}
               categoryName={categoryName}
               modules={modules}
