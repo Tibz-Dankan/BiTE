@@ -62,7 +62,7 @@ export const UserCategoryCertificateDownload: React.FC<
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.download = `${categoryName}_Certificate.png`;
+        link.download = `${recipientName.replace(/\s+/g, "_")}_${Math.floor(Date.now() / 1000)}.png`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -96,7 +96,7 @@ export const UserCategoryCertificateDownload: React.FC<
       const url = URL.createObjectURL(pdfBlob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `${categoryName}_Certificate.pdf`;
+      link.download = `${recipientName.replace(/\s+/g, "_")}_${Math.floor(Date.now() / 1000)}.pdf`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
