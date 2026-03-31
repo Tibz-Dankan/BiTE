@@ -45,32 +45,63 @@ export const UserCategoryCertificateDownload: React.FC<
 
   const handleDownloadPNG = async () => {
     if (!certRef.current) return;
-    const canvas = await html2canvas(certRef.current, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: "#0a0a0f",
-    });
-    const link = document.createElement("a");
-    link.download = `${categoryName}_Certificate.png`;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
+    try {
+      const canvas = await html2canvas(certRef.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#0a0a0f",
+        logging: false,
+        allowTaint: true,
+        scrollX: 0,
+        scrollY: -window.scrollY,
+      });
+      canvas.toBlob((blob) => {
+        if (!blob) return;
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${categoryName}_Certificate.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }, "image/png");
+    } catch (err) {
+      console.error("PNG download failed:", err);
+    }
   };
 
   const handleDownloadPDF = async () => {
     if (!certRef.current) return;
-    const canvas = await html2canvas(certRef.current, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: "#0a0a0f",
-    });
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF({
-      orientation: "landscape",
-      unit: "px",
-      format: [canvas.width, canvas.height],
-    });
-    pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
-    pdf.save(`${categoryName}_Certificate.pdf`);
+    try {
+      const canvas = await html2canvas(certRef.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#0a0a0f",
+        logging: false,
+        allowTaint: true,
+        scrollX: 0,
+        scrollY: -window.scrollY,
+      });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        orientation: "landscape",
+        unit: "px",
+        format: [canvas.width, canvas.height],
+      });
+      pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+      const pdfBlob = pdf.output("blob");
+      const url = URL.createObjectURL(pdfBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${categoryName}_Certificate.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("PDF download failed:", err);
+    }
   };
 
   return (

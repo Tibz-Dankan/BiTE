@@ -21,13 +21,35 @@ interface CertificateProps {
 // ── Sub-components ──────────────────────────────────────────────────────────
 
 const BitcoinIcon: React.FC = () => (
-  <div className="relative w-20 h-20 flex-shrink-0">
+  <div
+    style={{
+      position: "relative",
+      width: "80px",
+      height: "80px",
+      flexShrink: 0,
+    }}
+  >
     {/* Glow */}
-    <div className="absolute inset-0 rounded-full bg-yellow-400 blur-xl opacity-40" />
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        borderRadius: "9999px",
+        backgroundColor: "#facc15",
+        filter: "blur(24px)",
+        opacity: 0.4,
+      }}
+    />
     {/* Coin body */}
     <div
-      className="relative w-20 h-20 rounded-full flex items-center justify-center shadow-2xl"
       style={{
+        position: "relative",
+        width: "80px",
+        height: "80px",
+        borderRadius: "9999px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
         background:
           "radial-gradient(circle at 35% 35%, #ffd700, #e6a800 60%, #b8860b)",
         boxShadow:
@@ -35,8 +57,10 @@ const BitcoinIcon: React.FC = () => (
       }}
     >
       <span
-        className="text-3xl font-black select-none"
         style={{
+          fontSize: "1.875rem",
+          fontWeight: 900,
+          userSelect: "none",
           color: "#7a5200",
           textShadow: "1px 1px 0 rgba(255,255,255,0.3)",
           fontFamily: "'Georgia', serif",
@@ -47,7 +71,12 @@ const BitcoinIcon: React.FC = () => (
     </div>
     {/* Circuit tendrils */}
     <svg
-      className="absolute -bottom-6 left-1/2 -translate-x-1/2"
+      style={{
+        position: "absolute",
+        bottom: "-24px",
+        left: "50%",
+        transform: "translateX(-50%)",
+      }}
       width="80"
       height="32"
       viewBox="0 0 80 32"
@@ -73,10 +102,16 @@ const BitcoinIcon: React.FC = () => (
 
 const ChipIcon: React.FC = () => (
   <div
-    className="w-16 h-16 flex-shrink-0 flex items-center justify-center rounded-lg border-2"
     style={{
+      width: "64px",
+      height: "64px",
+      flexShrink: 0,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      borderRadius: "8px",
+      border: "2px solid #00ffcc",
       background: "linear-gradient(135deg, #1a1a2e, #2d2d4e)",
-      borderColor: "#00ffcc",
       boxShadow: "0 0 12px rgba(0,255,204,0.3)",
     }}
   >
@@ -153,10 +188,27 @@ const ChipIcon: React.FC = () => (
   </div>
 );
 
-const CornerDot: React.FC<{ className?: string }> = ({ className = "" }) => (
+interface CornerDotProps {
+  top?: string;
+  bottom?: string;
+  left?: string;
+  right?: string;
+}
+
+const CornerDot: React.FC<CornerDotProps> = ({ top, bottom, left, right }) => (
   <div
-    className={`absolute w-3 h-3 rounded-full bg-cyan-400 ${className}`}
-    style={{ boxShadow: "0 0 8px 2px rgba(0,255,204,0.6)" }}
+    style={{
+      position: "absolute",
+      width: "12px",
+      height: "12px",
+      borderRadius: "9999px",
+      backgroundColor: "#22d3ee",
+      boxShadow: "0 0 8px 2px rgba(0,255,204,0.6)",
+      top,
+      bottom,
+      left,
+      right,
+    }}
   />
 );
 
@@ -196,15 +248,20 @@ const Certificate: React.FC<CertificateProps> = ({
 }) => {
   return (
     <div
-      className="flex items-center justify-center p-6"
       style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "24px",
         background: "linear-gradient(135deg, #0a0a0f 0%, #0d1117 100%)",
       }}
     >
       {/* Certificate outer frame */}
       <div
-        className="relative w-full max-w-3xl"
         style={{
+          position: "relative",
+          width: "100%",
+          maxWidth: "48rem",
           background:
             "linear-gradient(160deg, #0d1117 0%, #111827 50%, #0a0f1a 100%)",
           border: "2px solid #00ffcc",
@@ -216,8 +273,11 @@ const Certificate: React.FC<CertificateProps> = ({
       >
         {/* Inner animated border */}
         <div
-          className="absolute inset-0 rounded pointer-events-none"
           style={{
+            position: "absolute",
+            inset: 0,
+            borderRadius: "4px",
+            pointerEvents: "none",
             background:
               "linear-gradient(90deg, transparent 20%, rgba(0,255,204,0.15) 50%, transparent 80%)",
             animation: "shimmer 3s infinite linear",
@@ -225,47 +285,69 @@ const Certificate: React.FC<CertificateProps> = ({
         />
 
         {/* Corner decorations */}
-        <CornerDot className="top-3 left-3" />
-        <CornerDot className="top-3 right-3" />
-        <CornerDot className="bottom-3 left-3" />
-        <CornerDot className="bottom-3 right-3" />
+        <CornerDot top="12px" left="12px" />
+        <CornerDot top="12px" right="12px" />
+        <CornerDot bottom="12px" left="12px" />
+        <CornerDot bottom="12px" right="12px" />
 
         {/* Top edge dots */}
         {[25, 37.5, 50, 62.5, 75].map((pct) => (
           <div
-            key={pct}
-            className="absolute top-1.5 w-2 h-2 rounded-full bg-cyan-400 -translate-x-1/2"
+            key={`top-${pct}`}
             style={{
+              position: "absolute",
+              top: "6px",
               left: `${pct}%`,
+              transform: "translateX(-50%)",
+              width: "8px",
+              height: "8px",
+              borderRadius: "9999px",
+              backgroundColor: "#22d3ee",
               boxShadow: "0 0 6px rgba(0,255,204,0.6)",
             }}
           />
         ))}
         {[25, 37.5, 50, 62.5, 75].map((pct) => (
           <div
-            key={pct}
-            className="absolute bottom-1.5 w-2 h-2 rounded-full bg-cyan-400 -translate-x-1/2"
+            key={`bottom-${pct}`}
             style={{
+              position: "absolute",
+              bottom: "6px",
               left: `${pct}%`,
+              transform: "translateX(-50%)",
+              width: "8px",
+              height: "8px",
+              borderRadius: "9999px",
+              backgroundColor: "#22d3ee",
               boxShadow: "0 0 6px rgba(0,255,204,0.6)",
             }}
           />
         ))}
 
         {/* Content area */}
-        <div className="relative z-10 px-10 py-8">
+        <div style={{ position: "relative", zIndex: 10, padding: "32px 40px" }}>
           {/* Header row */}
-          <div className="flex items-start justify-between mb-4">
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              justifyContent: "space-between",
+              marginBottom: "16px",
+            }}
+          >
             <BitcoinIcon />
 
             {/* Title block */}
-            <div className="flex-1 text-center px-4">
+            <div style={{ flex: 1, textAlign: "center", padding: "0 16px" }}>
               <h1
-                className="text-2xl font-black tracking-widest uppercase mb-2"
                 style={{
+                  fontSize: "1.5rem",
+                  fontWeight: 900,
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase",
+                  marginBottom: "8px",
                   color: "#ffffff",
                   fontFamily: "'Georgia', serif",
-                  letterSpacing: "0.15em",
                   textShadow: "0 0 20px rgba(255,255,255,0.3)",
                 }}
               >
@@ -273,15 +355,23 @@ const Certificate: React.FC<CertificateProps> = ({
               </h1>
 
               <p
-                className="text-sm mb-2"
-                style={{ color: "#a0aec0", fontFamily: "'Georgia', serif" }}
+                style={{
+                  fontSize: "0.875rem",
+                  marginBottom: "8px",
+                  color: "#a0aec0",
+                  fontFamily: "'Georgia', serif",
+                }}
               >
                 Of
               </p>
 
               <h2
-                className="text-lg font-extrabold leading-snug"
-                style={{ fontFamily: "'Georgia', serif" }}
+                style={{
+                  fontSize: "1.125rem",
+                  fontWeight: 800,
+                  lineHeight: 1.4,
+                  fontFamily: "'Georgia', serif",
+                }}
               >
                 <span style={{ color: "#ffffff" }}>{categoryName} </span>
                 <span
@@ -300,8 +390,10 @@ const Certificate: React.FC<CertificateProps> = ({
 
           {/* Divider */}
           <div
-            className="w-full h-px mb-5"
             style={{
+              width: "100%",
+              height: "1px",
+              marginBottom: "20px",
               background:
                 "linear-gradient(90deg, transparent, #00ffcc, transparent)",
             }}
@@ -309,54 +401,101 @@ const Certificate: React.FC<CertificateProps> = ({
 
           {/* Award text */}
           <p
-            className="text-center text-sm leading-relaxed mb-1"
-            style={{ color: "#f6c90e", fontFamily: "'Georgia', serif" }}
+            style={{
+              textAlign: "center",
+              fontSize: "0.875rem",
+              lineHeight: 1.625,
+              marginBottom: "4px",
+              color: "#f6c90e",
+              fontFamily: "'Georgia', serif",
+            }}
           >
             This Certificate is awarded to{" "}
-            <span className="font-bold" style={{ color: "#f6c90e" }}>
+            <span style={{ fontWeight: 700, color: "#f6c90e" }}>
               ({recipientName})
             </span>{" "}
             for appreciating Bitcoin and learning
           </p>
           <p
-            className="text-center text-sm mb-5"
-            style={{ color: "#f6c90e", fontFamily: "'Georgia', serif" }}
+            style={{
+              textAlign: "center",
+              fontSize: "0.875rem",
+              marginBottom: "20px",
+              color: "#f6c90e",
+              fontFamily: "'Georgia', serif",
+            }}
           >
             how to use AI to benefit the Bitcoin Ecosystem.
           </p>
 
           {/* Stats row */}
-          <div className="flex justify-center gap-10 mb-3">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "40px",
+              marginBottom: "12px",
+            }}
+          >
             <span
-              className="text-xs font-semibold"
-              style={{ color: "#e2e8f0", fontFamily: "'Georgia', serif" }}
+              style={{
+                fontSize: "0.75rem",
+                fontWeight: 600,
+                color: "#e2e8f0",
+                fontFamily: "'Georgia', serif",
+              }}
             >
               Questions completed:{" "}
-              <span className="font-bold text-white">{questionsCompleted}</span>
+              <span style={{ fontWeight: 700, color: "#ffffff" }}>
+                {questionsCompleted}
+              </span>
             </span>
             <span
-              className="text-xs font-semibold"
-              style={{ color: "#e2e8f0", fontFamily: "'Georgia', serif" }}
+              style={{
+                fontSize: "0.75rem",
+                fontWeight: 600,
+                color: "#e2e8f0",
+                fontFamily: "'Georgia', serif",
+              }}
             >
-              Exams: <span className="font-bold text-white">{exams}</span>
+              Exams:{" "}
+              <span style={{ fontWeight: 700, color: "#ffffff" }}>{exams}</span>
             </span>
           </div>
 
           {/* Modules heading */}
           <h3
-            className="text-center text-base font-bold mb-4"
-            style={{ color: "#ffffff", fontFamily: "'Georgia', serif" }}
+            style={{
+              textAlign: "center",
+              fontSize: "1rem",
+              fontWeight: 700,
+              marginBottom: "16px",
+              color: "#ffffff",
+              fontFamily: "'Georgia', serif",
+            }}
           >
             Modules covered:
           </h3>
 
           {/* Module list */}
-          <div className="space-y-2 mb-6">
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "8px",
+              marginBottom: "24px",
+            }}
+          >
             {modules.map((mod) => (
-              <div key={mod.number} className="flex items-end gap-1">
+              <div
+                key={mod.number}
+                style={{ display: "flex", alignItems: "flex-end", gap: "4px" }}
+              >
                 <span
-                  className="text-xs whitespace-nowrap flex-shrink-0"
                   style={{
+                    fontSize: "0.75rem",
+                    whiteSpace: "nowrap",
+                    flexShrink: 0,
                     color: "#cbd5e0",
                     fontFamily: "'Georgia', serif",
                     minWidth: "max-content",
@@ -365,15 +504,18 @@ const Certificate: React.FC<CertificateProps> = ({
                   {mod.number}. {mod.title}
                 </span>
                 <span
-                  className="flex-1 border-b border-dashed mx-1"
                   style={{
-                    borderColor: "rgba(0,255,204,0.3)",
+                    flex: 1,
+                    borderBottom: "1px dashed rgba(0,255,204,0.3)",
+                    margin: "0 4px",
                     marginBottom: "3px",
                   }}
                 />
                 <span
-                  className="text-xs font-bold flex-shrink-0"
                   style={{
+                    fontSize: "0.75rem",
+                    fontWeight: 700,
+                    flexShrink: 0,
                     color: mod.score === "Completed" ? "#00ffcc" : "#f6c90e",
                     fontFamily: "'Georgia', serif",
                   }}
@@ -385,27 +527,41 @@ const Certificate: React.FC<CertificateProps> = ({
           </div>
 
           {/* Signature */}
-          <div className="flex justify-center">
-            <div className="text-center">
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <div style={{ textAlign: "center" }}>
               <div
-                className="w-36 border-b mb-1"
-                style={{ borderColor: "#a0aec0" }}
+                style={{
+                  width: "144px",
+                  borderBottom: "1px solid #a0aec0",
+                  marginBottom: "4px",
+                }}
               />
               <p
-                className="text-xs italic"
-                style={{ color: "#a0aec0", fontFamily: "'Georgia', serif" }}
+                style={{
+                  fontSize: "0.75rem",
+                  fontStyle: "italic",
+                  color: "#a0aec0",
+                  fontFamily: "'Georgia', serif",
+                }}
               >
                 Signed:
               </p>
               <p
-                className="text-xs font-bold"
-                style={{ color: "#ffffff", fontFamily: "'Georgia', serif" }}
+                style={{
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  color: "#ffffff",
+                  fontFamily: "'Georgia', serif",
+                }}
               >
                 {signedBy}
               </p>
               <p
-                className="text-xs"
-                style={{ color: "#a0aec0", fontFamily: "'Georgia', serif" }}
+                style={{
+                  fontSize: "0.75rem",
+                  color: "#a0aec0",
+                  fontFamily: "'Georgia', serif",
+                }}
               >
                 {organization}
               </p>
@@ -414,8 +570,15 @@ const Certificate: React.FC<CertificateProps> = ({
 
           {/* Bottom-right star */}
           <div
-            className="absolute bottom-6 right-8 text-2xl select-none"
-            style={{ color: "#4a5568", opacity: 0.6 }}
+            style={{
+              position: "absolute",
+              bottom: "24px",
+              right: "32px",
+              fontSize: "1.5rem",
+              userSelect: "none",
+              color: "#4a5568",
+              opacity: 0.6,
+            }}
           >
             ✦
           </div>
@@ -423,15 +586,23 @@ const Certificate: React.FC<CertificateProps> = ({
 
         {/* Side border lines */}
         <div
-          className="absolute left-0 top-8 bottom-8 w-0.5"
           style={{
+            position: "absolute",
+            left: 0,
+            top: "32px",
+            bottom: "32px",
+            width: "2px",
             background:
               "linear-gradient(180deg, transparent, #00ffcc, transparent)",
           }}
         />
         <div
-          className="absolute right-0 top-8 bottom-8 w-0.5"
           style={{
+            position: "absolute",
+            right: 0,
+            top: "32px",
+            bottom: "32px",
+            width: "2px",
             background:
               "linear-gradient(180deg, transparent, #00ffcc, transparent)",
           }}
