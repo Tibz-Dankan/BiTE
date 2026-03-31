@@ -441,7 +441,7 @@ export const CertificateLightTheme: React.FC<CertificateProps> = ({
           >
             This Certificate is awarded to{" "}
             <span style={{ fontWeight: 700, color: "#b45309" }}>
-              ({recipientName})
+              {recipientName}
             </span>{" "}
           </p>
           <p
