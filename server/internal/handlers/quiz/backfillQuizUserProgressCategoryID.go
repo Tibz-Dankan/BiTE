@@ -2,7 +2,6 @@ package quiz
 
 import (
 	"log"
-	"time"
 
 	"github.com/Tibz-Dankan/BiTE/internal/models"
 )
@@ -11,6 +10,7 @@ func BackfillQuizUserProgressCategoryID() {
 	log.Println("Starting backfill of quiz user progress category IDs...")
 
 	batchSize := float64(500)
+	// batchSize := float64(10000)
 	cursor := ""
 	totalUpdated := 0
 	totalSkipped := 0
@@ -68,10 +68,10 @@ func BackfillQuizUserProgressCategoryID() {
 	log.Printf("Backfill completed. Updated %d quiz user progress records. Skipped %d records.", totalUpdated, totalSkipped)
 }
 
-func init() {
-	go func() {
-		time.Sleep(1 * time.Minute)
-		// time.Sleep(15 * time.Second)
-		BackfillQuizUserProgressCategoryID()
-	}()
-}
+// func init() {
+// 	go func() {
+// 		time.Sleep(1 * time.Minute)
+// 		// time.Sleep(15 * time.Second)
+// 		BackfillQuizUserProgressCategoryID()
+// 	}()
+// }
