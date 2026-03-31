@@ -231,3 +231,12 @@ func (a *Attempt) GetAttemptedQuestionsCount(quizID string, userID string) (int6
 
 	return count, nil
 }
+
+// GetUniqueQuizAttemptCount counts the total numbers of users that have attempted a quiz
+func (a *Attempt) GetUniqueQuizAttemptCount(quizID string) (int64, error) {
+	var attemptCount int64
+	if err := db.Model(&Attempt{}).Where("\"quizID\" = ?", quizID).Distinct("\"userID\"").Count(&attemptCount).Error; err != nil {
+		return 0, err
+	}
+	return attemptCount, nil
+}
