@@ -23,6 +23,7 @@ func (ca *CertificateAwarded) FindByUserAndCertificate(userID string, categoryCe
 	var certificate CertificateAwarded
 
 	db.Model(&CertificateAwarded{}).
+		Preload("User").
 		Where("\"userID\" = ? AND \"categoryCertificateID\" = ?", userID, categoryCertificateID).
 		First(&certificate)
 
