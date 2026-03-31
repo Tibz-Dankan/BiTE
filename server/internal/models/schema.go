@@ -246,6 +246,7 @@ type QuizUserProgress struct {
 	ID                      string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
 	UserID                  string    `gorm:"column:userID;not null;index" json:"userID"`
 	QuizID                  string    `gorm:"column:quizID;not null;index" json:"quizID"`
+	QuizCategoryID          string    `gorm:"column:quizCategoryID;index" json:"quizCategoryID"`
 	TotalQuestions          int64     `gorm:"column:totalQuestions;not null;index" json:"totalQuestions"`
 	TotalAttemptedQuestions int64     `gorm:"column:totalAttemptedQuestions;not null" json:"totalAttemptedQuestions"`
 	Status                  string    `gorm:"column:status;not null;index" json:"status"` // COMPLETED, IN_PROGRESS
@@ -253,8 +254,9 @@ type QuizUserProgress struct {
 	UpdatedAt               time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
 
 	// Relationships
-	User *User `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"user,omitempty"`
-	Quiz *Quiz `gorm:"foreignKey:QuizID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"quiz,omitempty"`
+	User         *User         `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"user,omitempty"`
+	Quiz         *Quiz         `gorm:"foreignKey:QuizID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"quiz,omitempty"`
+	QuizCategory *QuizCategory `gorm:"foreignKey:QuizCategoryID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"quizCategory,omitempty"`
 }
 
 type SiteVisit struct {
