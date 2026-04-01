@@ -61,6 +61,33 @@ func (q *Quiz) FindAll(limit float64, cursor string, quizCategoryID string) ([]Q
 	return quizzes, nil
 }
 
+func (q *Quiz) FindAllAttemptableAndVisible(limit float64, cursor string, quizCategoryID string) ([]Quiz, error) {
+	var quizzes []Quiz
+
+	query := db.Model(&Quiz{}).
+		Preload("Attachments").
+		Where("\"canBeAttempted\" = ?", true).
+		Where("\"showQuiz\" = ?", true).
+		Order("\"createdAt\" DESC").Limit(int(limit))
+
+	if cursor != "" {
+		var lastQuiz Quiz
+		if err := db.Select("\"createdAt\"").Where("id = ?",
+			cursor).First(&lastQuiz).Error; err != nil {
+			return quizzes, err
+		}
+		query = query.Where("\"createdAt\" < ?", lastQuiz.CreatedAt)
+	}
+
+	if quizCategoryID != "" {
+		query = query.Where("\"quizCategoryID\" = ?", quizCategoryID)
+	}
+
+	query.Find(&quizzes)
+
+	return quizzes, nil
+}
+
 // FindAllWithDetails returns quizzes with additional metadata for user side
 // Includes question count, attempt count, and preloaded relationships
 func (q *Quiz) FindAllWithDetails(limit float64, cursor string, quizCategoryID string, userID string) ([]map[string]interface{}, error) {
