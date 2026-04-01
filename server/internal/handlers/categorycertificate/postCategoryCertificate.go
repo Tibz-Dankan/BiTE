@@ -40,7 +40,7 @@ var PostCategoryCertificate = func(c *fiber.Ctx) error {
 	}
 
 	// Fetch quizzes in category where canBeAttempted=true AND showQuiz=true
-	quizzes, err := quiz.FindAll(1000, "", categoryCertificate.QuizCategoryID)
+	quizzes, err := quiz.FindAllAttemptableAndVisible(1000, "", categoryCertificate.QuizCategoryID)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
