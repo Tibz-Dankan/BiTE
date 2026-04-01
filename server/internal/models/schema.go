@@ -161,6 +161,7 @@ type Question struct {
 	Attachments     []*Attachment    `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attachments"`
 	Attempts        []*Attempt       `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attempts,omitempty"`
 	AttemptStatuses []*AttemptStatus `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attemptStatuses,omitempty"`
+	AIPreview       *AIPreview       `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"aiPreview,omitempty"`
 }
 
 type Answer struct {
@@ -227,6 +228,19 @@ type AttemptDuration struct {
 	// Relationships
 	User *User `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"user,omitempty"`
 	Quiz *Quiz `gorm:"foreignKey:QuizID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"quiz,omitempty"`
+}
+
+type AIPreview struct {
+	ID         string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
+	QuestionID string    `gorm:"column:questionID;not null;index" json:"questionID"`
+	Summary    string    `gorm:"column:summary;not null;index" json:"summary"`
+	Prompt     string    `gorm:"column:prompt;not null;index" json:"prompt"`
+	IsDefault  bool      `gorm:"column:isDefault;not null;default:false;index" json:"isDefault"`
+	CreatedAt  time.Time `gorm:"column:createdAt;index" json:"createdAt"`
+	UpdatedAt  time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
+
+	// Relationships
+	Question *Question `gorm:"foreignKey:QuestionID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"question,omitempty"`
 }
 
 type Ranking struct {
