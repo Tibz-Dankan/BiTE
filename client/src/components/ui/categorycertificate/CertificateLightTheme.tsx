@@ -278,7 +278,8 @@ export const CertificateLightTheme: React.FC<CertificateProps> = ({
       score: "Completed",
     },
   ],
-  signedBy = "CEO",
+  // signedBy = "CEO",
+  signedBy = "Maali Marvin, CEO",
   organization = "Bitcoin High School",
 }) => {
   return (
@@ -561,6 +562,16 @@ export const CertificateLightTheme: React.FC<CertificateProps> = ({
           {/* Signature */}
           <div style={{ display: "flex", justifyContent: "center" }}>
             <div style={{ textAlign: "center" }}>
+              <img
+                src="/images/mmk-signature.png"
+                alt="Signature"
+                style={{
+                  width: "120px",
+                  height: "auto",
+                  objectFit: "contain",
+                  marginBottom: "4px",
+                }}
+              />
               <div
                 style={{
                   width: "144px",
