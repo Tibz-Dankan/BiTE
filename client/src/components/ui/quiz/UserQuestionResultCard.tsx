@@ -10,10 +10,12 @@ import { truncateString } from "../../../utils/truncateString";
 
 interface UserQuestionResultCardProps {
   question: TQuestionWithAttempts;
+  instructionsDelta?: string;
 }
 
 export const UserQuestionResultCard: React.FC<UserQuestionResultCardProps> = ({
   question,
+  instructionsDelta,
 }) => {
   const attemptStatus = question.attemptStatuses?.[0];
   const isCorrect = attemptStatus?.IsCorrect;
@@ -65,6 +67,11 @@ export const UserQuestionResultCard: React.FC<UserQuestionResultCardProps> = ({
           </div>
         )}
         <QuillViewer deltaContent={questionTitleDelta} />
+        {instructionsDelta && (
+          <div className="mt-2">
+            <QuillViewer deltaContent={instructionsDelta} />
+          </div>
+        )}
       </div>
 
       <UserAnswerResultTable
