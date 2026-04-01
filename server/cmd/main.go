@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/Tibz-Dankan/BiTE/internal/events/subscribers"
+	"github.com/Tibz-Dankan/BiTE/internal/handlers/aipreview"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/analytics"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/answer"
 	"github.com/Tibz-Dankan/BiTE/internal/handlers/attempt"
@@ -203,6 +204,17 @@ func main() {
 	categoryCertificateGroup.Put("/:id", middlewares.Auth, middlewares.IsAdmin, categorycertificate.UpdateCategoryCertificate)
 	categoryCertificateGroup.Patch("/:id", middlewares.Auth, middlewares.IsAdmin, categorycertificate.PatchCategoryCertificate)
 	categoryCertificateGroup.Delete("/:id", middlewares.Auth, middlewares.IsAdmin, categorycertificate.DeleteCategoryCertificate)
+
+	// AI Preview
+	aiPreviewGroup := app.Group("/api/v1/aipreview", func(c *fiber.Ctx) error {
+		return c.Next()
+	})
+	aiPreviewGroup.Post("/", middlewares.Auth, middlewares.IsAdmin, aipreview.PostAIPreview)
+	aiPreviewGroup.Get("/question/:questionID", middlewares.Auth, aipreview.GetAllAIPreviewsByQuestion)
+	aiPreviewGroup.Get("/:id", middlewares.Auth, middlewares.IsAdmin, aipreview.GetAIPreview)
+	aiPreviewGroup.Put("/:id", middlewares.Auth, middlewares.IsAdmin, aipreview.UpdateAIPreview)
+	aiPreviewGroup.Delete("/:id", middlewares.Auth, middlewares.IsAdmin, aipreview.DeleteAIPreview)
+	aiPreviewGroup.Patch("/:id/default", middlewares.Auth, middlewares.IsAdmin, aipreview.MakeDefaultAIPreview)
 
 	// Metrics
 	app.Get("/metrics", monitor.GetMetrics)
