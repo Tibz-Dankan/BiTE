@@ -42,13 +42,13 @@ export const UserAnswerResultTable: React.FC<UserAnswerResultTableProps> = ({
         <thead>
           <tr className="border-b border-gray-200">
             <th className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-              Correct Ans
+              Correct Answer
             </th>
             <th className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-              Your Ans
+              Your Answer(s)
             </th>
             <th className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-              Content
+              Answers
             </th>
           </tr>
         </thead>
