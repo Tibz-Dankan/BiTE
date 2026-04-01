@@ -91,8 +91,8 @@ export const UserQuizCard: React.FC<UserQuizCardProps> = ({ quiz }) => {
 
   return (
     <div
-      className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all
-       duration-300 overflow-hidden group hover:-translate-y-2"
+      className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all
+       duration-300 overflow-hidden group hover:-translate-y-2 text-white"
     >
       {/* Category Badge Header */}
       <div className="h-2" style={{ backgroundColor: bgColor }}></div>
@@ -231,7 +231,7 @@ export const UserQuizCard: React.FC<UserQuizCardProps> = ({ quiz }) => {
            items-center justify-center gap-2 group/btn ${
              quiz.canBeAttempted || quiz.userProgress?.status === "COMPLETED"
                ? "text-white hover:shadow-lg"
-               : "text-slate-500 cursor-not-allowed"
+               : "text-white cursor-not-allowed"
            }`}
           style={{
             backgroundColor:
