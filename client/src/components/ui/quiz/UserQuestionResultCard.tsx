@@ -1,6 +1,12 @@
 import React from "react";
 import type { TQuestionWithAttempts } from "../../../types/attempt";
-import { CheckCircle, XCircle, AlertCircle } from "lucide-react";
+import { CheckCircle, XCircle } from "lucide-react";
+import { QuillViewer } from "../shared/QuillViewer";
+import { isJSON } from "../../../utils/isJson";
+import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
+import { UserAnswerResultTable } from "./UserAnswerResultTable";
+import { isArrayWithElements } from "../../../utils/isArrayWithElements";
+import { truncateString } from "../../../utils/truncateString";
 
 interface UserQuestionResultCardProps {
   question: TQuestionWithAttempts;
@@ -10,13 +16,15 @@ export const UserQuestionResultCard: React.FC<UserQuestionResultCardProps> = ({
   question,
 }) => {
   const attemptStatus = question.attemptStatuses?.[0];
-  const userAttempt = question.attempts?.[0];
   const isCorrect = attemptStatus?.IsCorrect;
+  const questionAttachments = question.attachments;
+  const hasQuestionAttachments = isArrayWithElements(questionAttachments);
 
-  // Find the selected answer title if it exists
-  const selectedAnswer = question.answers.find(
-    (a) => a.id === userAttempt?.answerID
-  );
+  const questionTitleDelta = question.isDeltaDefault
+    ? isJSON(question.titleDelta!)
+      ? question.titleDelta!
+      : JSON.stringify(convertPlainTextToDelta(question.title))
+    : JSON.stringify(convertPlainTextToDelta(question.title));
 
   return (
     <div className="p-6 rounded-2xl border border-slate-200 bg-white mb-4 shadow-sm hover:shadow-md transition-shadow">
@@ -40,63 +48,30 @@ export const UserQuestionResultCard: React.FC<UserQuestionResultCardProps> = ({
       </div>
 
       <div className="prose prose-slate max-w-none mb-6">
-        <div
-          dangerouslySetInnerHTML={{
-            __html: question.titleHTML || question.title,
-          }}
-        />
-      </div>
-
-      <div className="space-y-3">
-        <div className="text-sm font-medium text-slate-500 uppercase tracking-wider">
-          Your Answer
-        </div>
-
-        {selectedAnswer ? (
-          <div
-            className={`p-4 rounded-xl border flex items-center justify-between ${
-              isCorrect
-                ? "bg-green-100 border-green-300 text-green-900"
-                : "bg-red-100 border-red-300 text-red-900"
-            }`}
-          >
-            <div
-              dangerouslySetInnerHTML={{
-                __html: selectedAnswer.titleHTML || selectedAnswer.title,
-              }}
-            />
-            {isCorrect ? <CheckCircle size={20} /> : <XCircle size={20} />}
-          </div>
-        ) : (
-          <div className="p-4 rounded-xl border bg-slate-100 border-slate-300 text-slate-500 italic flex items-center gap-2">
-            <AlertCircle size={20} />
-            No answer selected
+        {hasQuestionAttachments && (
+          <div className="flex flex-wrap gap-3 mb-3">
+            {questionAttachments.map((attachment) => (
+              <div
+                key={attachment.id}
+                className="w-32 border border-gray-300 rounded-md overflow-hidden"
+              >
+                <img
+                  src={attachment.url}
+                  alt={truncateString(question.title, 6)}
+                  className="w-full object-cover object-center rounded-md"
+                />
+              </div>
+            ))}
           </div>
         )}
-
-        {!isCorrect && (
-          <div className="mt-4">
-            <div className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2">
-              Correct Answer
-            </div>
-            {question.answers
-              .filter((a) => a.isCorrect)
-              .map((answer) => (
-                <div
-                  key={answer.id}
-                  className="p-4 rounded-xl border bg-green-100 border-green-300 text-green-900 flex items-center justify-between mb-2"
-                >
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: answer.titleHTML || answer.title,
-                    }}
-                  />
-                  <CheckCircle size={20} />
-                </div>
-              ))}
-          </div>
-        )}
+        <QuillViewer deltaContent={questionTitleDelta} />
       </div>
+
+      <UserAnswerResultTable
+        answers={question.answers}
+        attempts={question.attempts || []}
+        attemptStatuses={question.attemptStatuses || []}
+      />
     </div>
   );
 };
