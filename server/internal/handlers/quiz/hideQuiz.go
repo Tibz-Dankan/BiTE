@@ -7,6 +7,7 @@ import (
 
 var HideQuiz = func(c *fiber.Ctx) error {
 	quiz := models.Quiz{}
+	attempt := models.Attempt{}
 	quizID := c.Params("id")
 
 	quiz, err := quiz.FindOne(quizID)
@@ -15,6 +16,15 @@ var HideQuiz = func(c *fiber.Ctx) error {
 	}
 	if quiz.ID == "" {
 		return fiber.NewError(fiber.StatusBadRequest, "Quiz of provided ID doesn't exist!")
+	}
+
+	quizAttempt, err := attempt.FindOneByQuiz(quizID)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+	if quizAttempt.ID != "" {
+		return fiber.NewError(fiber.StatusBadRequest,
+			"Can't hide quiz that has already been attempted!")
 	}
 
 	updatedQuiz, err := quiz.UpdateShowQuiz(quizID, false)

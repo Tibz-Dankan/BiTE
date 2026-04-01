@@ -8,6 +8,7 @@ import (
 var MakeQuizUnAttemptable = func(c *fiber.Ctx) error {
 	quiz := models.Quiz{}
 	attachment := models.Attachment{}
+	attempt := models.Attempt{}
 	quizID := c.Params("id")
 
 	quiz, err := quiz.FindOne(quizID)
@@ -20,6 +21,15 @@ var MakeQuizUnAttemptable = func(c *fiber.Ctx) error {
 
 	if !quiz.CanBeAttempted {
 		return fiber.NewError(fiber.StatusBadRequest, "Quiz is already un attemptable!")
+	}
+
+	quizAttempt, err := attempt.FindOneByQuiz(quizID)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+	if quizAttempt.ID != "" {
+		return fiber.NewError(fiber.StatusBadRequest,
+			"Can't make quiz un attemptable since it has already been attempted!")
 	}
 
 	updatedQuiz, err := quiz.UpdateCanBeAttempted(quizID, false)
