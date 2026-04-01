@@ -173,10 +173,17 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
               </span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => updateAdminQuizAttemptPage()}>
-              <span className="flex items-center gap-2 cursor-pointer">
-                <Settings className="w-4 h-4 text-gray-800" />
-                Make Quiz Attemptable
-              </span>
+              {quiz.canBeAttempted ? (
+                <span className="flex items-center gap-2 cursor-pointer">
+                  <Settings className="w-4 h-4 text-gray-800" />
+                  Make Quiz UnAttemptable
+                </span>
+              ) : (
+                <span className="flex items-center gap-2 cursor-pointer">
+                  <Settings className="w-4 h-4 text-gray-800" />
+                  Make Quiz Attemptable
+                </span>
+              )}
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
@@ -221,7 +228,7 @@ export const QuizCard: React.FC<QuizCardProps> = (props) => {
       </div>
       <div
         className={`hidden sm:block h-20 w-2 ${getQuizStatusColor(
-          quiz
+          quiz,
         )} rounded-r-lg`}
       />
     </div>
