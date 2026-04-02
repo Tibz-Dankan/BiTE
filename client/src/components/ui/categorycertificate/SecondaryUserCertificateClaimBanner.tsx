@@ -6,7 +6,7 @@ import { categoryCertificateAPI } from "../../../api/categoryCertificate";
 import { useAuthStore } from "../../../stores/auth";
 import { Button } from "../shared/Btn";
 import { useNotificationStore } from "../../../stores/notification";
-import { UserCategoryCertificateDownload } from "./UserCategoryCertificateDownload";
+import { UserCategoryCertificateDownloadV2 } from "./UserCategoryCertificateDownloadV2";
 import { useFeatureFlagEnabled } from "posthog-js/react";
 
 export const SecondaryUserCertificateClaimBanner: React.FC = () => {
@@ -142,7 +142,7 @@ export const SecondaryUserCertificateClaimBanner: React.FC = () => {
       </div>
 
       {showDownloadModal && certID && (
-        <UserCategoryCertificateDownload
+        <UserCategoryCertificateDownloadV2
           certID={certID}
           userID={userID}
           isOpen={showDownloadModal}

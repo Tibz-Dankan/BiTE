@@ -43,6 +43,7 @@ export type TCertificateAwarded = {
     imageUrl: string;
   };
   categoryCertificate?: TCategoryCertificate;
+  attachments?: TAttachment[];
 };
 
 export type TPostCategoryCertificate = {
@@ -106,6 +107,7 @@ export type TClaimStatusResponse = {
     isClaimed: boolean;
     quizProgresses: TClaimStatusQuizProgress[];
     certificate: TCategoryCertificate;
+    certificateAwarded?: TCertificateAwarded;
   };
 };
 
