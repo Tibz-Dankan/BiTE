@@ -25,6 +25,7 @@ func (ccq *CategoryCertificateQuizzes) FindAllByCertificate(categoryCertificateI
 	db.Model(&CategoryCertificateQuizzes{}).
 		Preload("Quiz").
 		Preload("Quiz.Attachments").
+		Preload("Quiz.Questions").
 		Where("\"categoryCertificateID\" = ?", categoryCertificateID).
 		Find(&quizLinks)
 

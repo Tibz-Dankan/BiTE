@@ -39,6 +39,16 @@ func (cc *CategoryCertificate) FindOneWithQuizzes(id string) (CategoryCertificat
 	return certificate, nil
 }
 
+func (cc *CategoryCertificate) FindOneWithQuizCategory(id string) (CategoryCertificate, error) {
+	var certificate CategoryCertificate
+
+	db.Model(&CategoryCertificate{}).
+		Preload("QuizCategory").
+		First(&certificate, "id = ?", id)
+
+	return certificate, nil
+}
+
 func (cc *CategoryCertificate) FindByQuizCategoryID(quizCategoryID string) (CategoryCertificate, error) {
 	var certificate CategoryCertificate
 
