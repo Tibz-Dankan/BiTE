@@ -1,7 +1,21 @@
 FROM golang:1.25-alpine 
 
-# Install curl for container health check
-RUN apk add --no-cache curl
+# Install Chromium and its dependencies + curl for healthcheck
+RUN apk add --no-cache \
+    curl \
+    chromium \
+    chromium-chromedriver \
+    nss \
+    freetype \
+    harfbuzz \
+    ca-certificates \
+    ttf-freefont \
+    font-noto \
+    font-noto-emoji
+
+# Tell chromedp where to find the Chromium binary
+ENV CHROMEDP_NO_SANDBOX=true
+ENV CHROME_BIN=/usr/bin/chromium-browser
 
 WORKDIR /app/server
 
