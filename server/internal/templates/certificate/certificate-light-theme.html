@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Certificate of Completion</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Georgia", serif;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: linear-gradient(135deg, #fefce8 0%, #fffbeb 100%);
+      "
+    >
+      <!-- Certificate outer frame -->
+      <div
+        style="
+          position: relative;
+          width: 100%;
+          max-width: 48rem;
+          background: linear-gradient(
+            160deg,
+            #fffdf0 0%,
+            #fffbeb 50%,
+            #fef9e0 100%
+          );
+          border: 2px solid #b45309;
+          border-radius: 6px;
+          box-shadow:
+            0 0 0 6px rgba(180, 130, 0, 0.08),
+            0 0 0 12px rgba(180, 130, 0, 0.04),
+            0 20px 60px rgba(120, 80, 0, 0.15),
+            0 4px 16px rgba(180, 130, 0, 0.1);
+          padding: 2px;
+          overflow: hidden;
+        "
+      >
+        <!-- Hexagonal background SVG -->
+        <svg
+          id="hexBg"
+          style="
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 6px;
+          "
+          preserveAspectRatio="xMidYMid slice"
+          aria-hidden="true"
+        >
+          <defs>
+            <linearGradient
+              id="hexFillGrad"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+              <stop offset="0%" stop-color="rgba(217,119,6,0.07)" />
+              <stop offset="50%" stop-color="rgba(180,83,9,0.04)" />
+              <stop offset="100%" stop-color="rgba(217,119,6,0.08)" />
+            </linearGradient>
+          </defs>
+        </svg>
+
+        <!-- Inner decorative border -->
+        <div
+          style="
+            position: absolute;
+            inset: 8px;
+            border-radius: 3px;
+            border: 1px solid rgba(180, 130, 0, 0.28);
+            pointer-events: none;
+            z-index: 2;
+          "
+        ></div>
+
+        <!-- Top accent bar -->
+        <div
+          style="
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(
+              90deg,
+              transparent 0%,
+              #b45309 30%,
+              #d97706 50%,
+              #b45309 70%,
+              transparent 100%
+            );
+            z-index: 3;
+          "
+        ></div>
+        <!-- Bottom accent bar -->
+        <div
+          style="
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(
+              90deg,
+              transparent 0%,
+              #b45309 30%,
+              #d97706 50%,
+              #b45309 70%,
+              transparent 100%
+            );
+            z-index: 3;
+          "
+        ></div>
+
+        <!-- Content area -->
+        <div style="position: relative; z-index: 10; padding: 32px 40px">
+          <!-- Header row -->
+          <div
+            style="
+              display: flex;
+              align-items: flex-start;
+              justify-content: space-between;
+              margin-bottom: 16px;
+            "
+          >
+            <!-- Logo -->
+            <div
+              style="
+                position: relative;
+                width: 80px;
+                height: 80px;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <!-- Soft glow ring -->
+              <div
+                style="
+                  position: absolute;
+                  inset: -6px;
+                  border-radius: 9999px;
+                  background: radial-gradient(
+                    circle,
+                    rgba(234, 179, 8, 0.25) 0%,
+                    transparent 70%
+                  );
+                "
+              ></div>
+              <img
+                src="data:image/png;base64,{{ .LogoImageBase64 }}"
+                alt="BiTE Logo"
+                style="
+                  width: 80px;
+                  height: 80px;
+                  object-fit: contain;
+                  position: relative;
+                  z-index: 1;
+                  filter: drop-shadow(0 2px 8px rgba(180, 130, 0, 0.3));
+                "
+              />
+            </div>
+
+            <!-- Title block -->
+            <div style="flex: 1; text-align: center; padding: 0 16px">
+              <h1
+                style="
+                  font-size: 1.5rem;
+                  font-weight: 900;
+                  letter-spacing: 0.15em;
+                  text-transform: uppercase;
+                  margin: 0 0 8px 0;
+                  color: #1c0a00;
+                  font-family: &quot;Georgia&quot;, serif;
+                  text-shadow: 0 1px 2px rgba(180, 130, 0, 0.12);
+                "
+              >
+                Certificate of Completion
+              </h1>
+
+              <p
+                style="
+                  font-size: 0.875rem;
+                  margin: 0 0 8px 0;
+                  color: #78350f;
+                  font-family: &quot;Georgia&quot;, serif;
+                "
+              >
+                Of
+              </p>
+
+              <h2
+                style="
+                  font-size: 1.125rem;
+                  font-weight: 800;
+                  line-height: 1.4;
+                  font-family: &quot;Georgia&quot;, serif;
+                  margin: 0;
+                "
+              >
+                <span style="color: #1c0a00">{{ .CategoryName }} </span>
+                <span
+                  style="
+                    color: #b45309;
+                    text-shadow: 0 1px 4px rgba(180, 130, 0, 0.25);
+                  "
+                  >Module</span
+                >
+              </h2>
+            </div>
+
+            <!-- Graduation Cap Icon -->
+            <div
+              style="
+                width: 72px;
+                height: 72px;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+              "
+            >
+              <!-- Outer decorative ring -->
+              <div
+                style="
+                  position: absolute;
+                  inset: 0;
+                  border-radius: 9999px;
+                  border: 2px solid rgba(180, 130, 0, 0.35);
+                  background: radial-gradient(
+                    circle at 40% 35%,
+                    rgba(255, 246, 210, 0.95),
+                    rgba(253, 235, 160, 0.75)
+                  );
+                  box-shadow:
+                    0 4px 16px rgba(180, 130, 0, 0.2),
+                    inset 0 1px 3px rgba(255, 255, 255, 0.8);
+                "
+              ></div>
+              <!-- Inner dashed ring -->
+              <div
+                style="
+                  position: absolute;
+                  inset: 5px;
+                  border-radius: 9999px;
+                  border: 1.5px dashed rgba(180, 130, 0, 0.3);
+                "
+              ></div>
+              <!-- Cap SVG -->
+              <svg
+                viewBox="0 0 48 48"
+                width="38"
+                height="38"
+                fill="none"
+                style="position: relative; z-index: 1"
+              >
+                <defs>
+                  <linearGradient
+                    id="capGrad"
+                    x1="4"
+                    y1="8"
+                    x2="44"
+                    y2="28"
+                    gradientUnits="userSpaceOnUse"
+                  >
+                    <stop offset="0%" stop-color="#fbbf24" />
+                    <stop offset="100%" stop-color="#b45309" />
+                  </linearGradient>
+                </defs>
+                <!-- Mortarboard top -->
+                <polygon
+                  points="24,8 44,18 24,28 4,18"
+                  fill="url(#capGrad)"
+                  opacity="0.95"
+                />
+                <!-- Shine on board -->
+                <polygon
+                  points="24,8 44,18 34,23 14,13"
+                  fill="rgba(255,255,255,0.22)"
+                />
+                <!-- Cap body / gown -->
+                <path
+                  d="M12 20 L12 32 Q24 38 24 38 Q24 38 36 32 L36 20 L24 26 Z"
+                  fill="#92400e"
+                  opacity="0.85"
+                />
+                <!-- Tassel string -->
+                <line
+                  x1="44"
+                  y1="18"
+                  x2="44"
+                  y2="30"
+                  stroke="#b45309"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <!-- Tassel ball -->
+                <circle cx="44" cy="32" r="3" fill="#d97706" />
+                <!-- Tassel fringe -->
+                <line
+                  x1="42"
+                  y1="35"
+                  x2="42"
+                  y2="40"
+                  stroke="#d97706"
+                  stroke-width="1.2"
+                  stroke-linecap="round"
+                  opacity="0.8"
+                />
+                <line
+                  x1="44"
+                  y1="35"
+                  x2="44"
+                  y2="40"
+                  stroke="#d97706"
+                  stroke-width="1.2"
+                  stroke-linecap="round"
+                  opacity="0.8"
+                />
+                <line
+                  x1="46"
+                  y1="35"
+                  x2="46"
+                  y2="40"
+                  stroke="#d97706"
+                  stroke-width="1.2"
+                  stroke-linecap="round"
+                  opacity="0.8"
+                />
+              </svg>
+              <!-- Star accents -->
+              <div
+                style="
+                  position: absolute;
+                  top: 2px;
+                  right: 5px;
+                  font-size: 9px;
+                  color: #d97706;
+                  opacity: 0.65;
+                  user-select: none;
+                "
+              >
+                ✦
+              </div>
+              <div
+                style="
+                  position: absolute;
+                  bottom: 3px;
+                  left: 4px;
+                  font-size: 7px;
+                  color: #d97706;
+                  opacity: 0.45;
+                  user-select: none;
+                "
+              >
+                ✦
+              </div>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div
+            style="
+              width: 100%;
+              height: 1px;
+              margin-bottom: 20px;
+              background: linear-gradient(
+                90deg,
+                transparent,
+                #b45309,
+                #d97706,
+                #b45309,
+                transparent
+              );
+            "
+          ></div>
+
+          <!-- Award text -->
+          <p
+            style="
+              text-align: center;
+              font-size: 0.875rem;
+              line-height: 1.625;
+              margin: 0 0 4px 0;
+              color: #78350f;
+              font-family: &quot;Georgia&quot;, serif;
+            "
+          >
+            This Certificate is awarded to
+            <span style="font-weight: 700; color: #b45309"
+              >{{ .RecipientName }}</span
+            >
+          </p>
+          <p
+            style="
+              text-align: center;
+              font-size: 0.875rem;
+              margin: 0 0 20px 0;
+              color: #78350f;
+              font-family: &quot;Georgia&quot;, serif;
+            "
+          >
+            for successfully completing the {{ .CategoryName }} module on
+            Bitcoin High School
+          </p>
+
+          <!-- Stats row -->
+          <div
+            style="
+              display: flex;
+              justify-content: center;
+              gap: 40px;
+              margin-bottom: 12px;
+            "
+          >
+            <span
+              style="
+                font-size: 0.75rem;
+                font-weight: 600;
+                color: #78350f;
+                font-family: &quot;Georgia&quot;, serif;
+              "
+            >
+              Questions completed:
+              <span style="font-weight: 700; color: #1c0a00"
+                >{{ .QuestionsCompleted }}</span
+              >
+            </span>
+            <span
+              style="
+                font-size: 0.75rem;
+                font-weight: 600;
+                color: #78350f;
+                font-family: &quot;Georgia&quot;, serif;
+              "
+            >
+              Exams:
+              <span style="font-weight: 700; color: #1c0a00">{{ .Exams }}</span>
+            </span>
+          </div>
+
+          <!-- Quizzes heading -->
+          <h3
+            style="
+              text-align: center;
+              font-size: 1rem;
+              font-weight: 700;
+              margin: 0 0 16px 0;
+              color: #1c0a00;
+              font-family: &quot;Georgia&quot;, serif;
+            "
+          >
+            Quizzes Attempted:
+          </h3>
+
+          <!-- Quiz list -->
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              gap: 8px;
+              margin-bottom: 24px;
+            "
+          >
+            {{ range $index, $element := .Quizzes }}
+            <div style="display: flex; align-items: flex-end; gap: 4px">
+              <span
+                style="
+                  font-size: 0.75rem;
+                  white-space: nowrap;
+                  flex-shrink: 0;
+                  color: #44200a;
+                  font-family: &quot;Georgia&quot;, serif;
+                  min-width: max-content;
+                "
+                >{{ inc $index }}. {{ .Title }}</span
+              >
+              <span
+                style="
+                  flex: 1;
+                  border-bottom: 1px dashed rgba(180, 83, 9, 0.3);
+                  margin: 0 4px;
+                  margin-bottom: 3px;
+                "
+              ></span>
+              <span
+                style="
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  flex-shrink: 0;
+                  color: #065f46;
+                  font-family: &quot;Georgia&quot;, serif;
+                "
+                >Completed</span
+              >
+            </div>
+            {{ end }}
+          </div>
+
+          <!-- Signature -->
+          <div style="display: flex; justify-content: center">
+            <div style="text-align: center">
+              <img
+                src="data:image/png;base64,{{ .SignatureImageBase64 }}"
+                alt="Signature"
+                style="
+                  width: 120px;
+                  height: auto;
+                  object-fit: contain;
+                  margin-bottom: 4px;
+                "
+              />
+              <div
+                style="
+                  width: 144px;
+                  border-bottom: 1px solid #b45309;
+                  margin-bottom: 4px;
+                "
+              ></div>
+              <p
+                style="
+                  font-size: 0.75rem;
+                  font-style: italic;
+                  color: #78350f;
+                  font-family: &quot;Georgia&quot;, serif;
+                  margin: 0;
+                "
+              >
+                Signed:
+              </p>
+              <p
+                style="
+                  font-size: 0.75rem;
+                  font-weight: 700;
+                  color: #1c0a00;
+                  font-family: &quot;Georgia&quot;, serif;
+                  margin: 0;
+                "
+              >
+                {{ .SignedBy }}
+              </p>
+              <p
+                style="
+                  font-size: 0.75rem;
+                  color: #78350f;
+                  font-family: &quot;Georgia&quot;, serif;
+                  margin: 0;
+                "
+              >
+                {{ .Organization }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Bottom-right star -->
+          <div
+            style="
+              position: absolute;
+              bottom: 24px;
+              right: 32px;
+              font-size: 1.5rem;
+              user-select: none;
+              color: #b45309;
+              opacity: 0.35;
+            "
+          >
+            ✦
+          </div>
+        </div>
+
+        <!-- Left side border gradient -->
+        <div
+          style="
+            position: absolute;
+            left: 0;
+            top: 32px;
+            bottom: 32px;
+            width: 3px;
+            background: linear-gradient(
+              180deg,
+              transparent,
+              #b45309,
+              #d97706,
+              #b45309,
+              transparent
+            );
+            z-index: 4;
+          "
+        ></div>
+        <!-- Right side border gradient -->
+        <div
+          style="
+            position: absolute;
+            right: 0;
+            top: 32px;
+            bottom: 32px;
+            width: 3px;
+            background: linear-gradient(
+              180deg,
+              transparent,
+              #b45309,
+              #d97706,
+              #b45309,
+              transparent
+            );
+            z-index: 4;
+          "
+        ></div>
+      </div>
+    </div>
+
+    <!-- Generate hexagonal background -->
+    <script>
+      (function () {
+        var hexSize = 22;
+        var hexW = hexSize * 2;
+        var hexH = Math.sqrt(3) * hexSize;
+        var cols = 24;
+        var rows = 20;
+        var vw = cols * hexW * 0.75 + hexSize;
+        var vh = rows * hexH + hexH;
+
+        var svg = document.getElementById("hexBg");
+        svg.setAttribute("viewBox", "0 0 " + vw + " " + vh);
+
+        function hexPoints(cx, cy, r) {
+          var pts = [];
+          for (var i = 0; i < 6; i++) {
+            var angle = (Math.PI / 180) * (60 * i - 30);
+            pts.push(
+              cx + r * Math.cos(angle) + "," + (cy + r * Math.sin(angle)),
+            );
+          }
+          return pts.join(" ");
+        }
+
+        var idx = 0;
+        for (var row = 0; row < rows; row++) {
+          for (var col = 0; col < cols; col++) {
+            var cx = col * hexW * 0.75 + hexSize;
+            var cy = row * hexH + (col % 2 === 1 ? hexH / 2 : 0) + hexH / 2;
+            var opacity = 0.2 + ((idx * 37 + row * 13) % 55) / 220;
+
+            var poly = document.createElementNS(
+              "http://www.w3.org/2000/svg",
+              "polygon",
+            );
+            poly.setAttribute("points", hexPoints(cx, cy, hexSize - 1.2));
+            poly.setAttribute("fill", "url(#hexFillGrad)");
+            poly.setAttribute("stroke", "rgba(180,83,9,0.2)");
+            poly.setAttribute("stroke-width", "0.75");
+            poly.setAttribute("opacity", opacity);
+            svg.appendChild(poly);
+            idx++;
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>
