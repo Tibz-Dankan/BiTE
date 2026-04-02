@@ -104,12 +104,10 @@ func main() {
 	quizGroup.Patch("/auto-number-questions", middlewares.Auth, middlewares.IsAdmin, quiz.AutoNumberAllQuizzesQuestions)
 	quizGroup.Patch("/:id/auto-number-questions", middlewares.Auth, middlewares.IsAdmin, quiz.AutoNumberQuizQuestions)
 	quizGroup.Get("/", middlewares.Auth, quiz.GetAllQuizzes)
-	// quizGroup.Get("/data-for-attempt/:id", middlewares.Auth, quiz.GetQuizDataForAttempt)
 	quizGroup.Get("/attempt/:id", middlewares.Auth, quiz.GetQuizDataForAttempt)
 	quizGroup.Get("/attempted-data/:id", middlewares.Auth, quiz.GetQuizAttemptedData)
 	quizGroup.Get("/analytics/summary", middlewares.Auth, middlewares.IsAdmin, quiz.GetQuizAnalytics)
 	quizGroup.Get("/user/:userID/progress", middlewares.Auth, quiz.GetQuizzesByUserAndProgress)
-	// quizGroup.Get("/user/:userID/progress", middlewares.Auth, quiz.GetQuizzesByUserAndProgress)
 	quizGroup.Get("/user/:userID/progress/count", middlewares.Auth, quiz.GetQuizUserProgressCount)
 
 	// Question

@@ -11,6 +11,7 @@ var GetCertificateClaimStatus = func(c *fiber.Ctx) error {
 	quizUserProgress := models.QuizUserProgress{}
 	certificateAwarded := models.CertificateAwarded{}
 	attempt := models.Attempt{}
+	question := models.Question{}
 
 	certificateID := c.Params("id")
 	userID := c.Params("userID")
@@ -64,8 +65,11 @@ var GetCertificateClaimStatus = func(c *fiber.Ctx) error {
 				quizProgress["totalAttemptedQuestions"] = inProgress.TotalAttemptedQuestions
 				quizProgress["status"] = inProgress.Status
 			} else {
-				// TODO: Add query to get questions count per quiz
-				quizProgress["totalQuestions"] = 0
+				quizQuestionCount, err := question.GetTotalCountByQuiz(cq.QuizID)
+				if err != nil {
+					return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+				}
+				quizProgress["totalQuestions"] = quizQuestionCount
 				quizProgress["totalAttemptedQuestions"] = 0
 				quizProgress["status"] = "UN_ATTEMPTED"
 			}
