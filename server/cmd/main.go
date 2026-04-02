@@ -204,6 +204,7 @@ func main() {
 	categoryCertificateGroup.Put("/:id", middlewares.Auth, middlewares.IsAdmin, categorycertificate.UpdateCategoryCertificate)
 	categoryCertificateGroup.Patch("/:id", middlewares.Auth, middlewares.IsAdmin, categorycertificate.PatchCategoryCertificate)
 	categoryCertificateGroup.Delete("/:id", middlewares.Auth, middlewares.IsAdmin, categorycertificate.DeleteCategoryCertificate)
+	categoryCertificateGroup.Delete("/awards/:id", middlewares.Auth, middlewares.IsAdmin, categorycertificate.DeleteCertificateAwarded)
 
 	// AI Preview
 	aiPreviewGroup := app.Group("/api/v1/aipreview", func(c *fiber.Ctx) error {

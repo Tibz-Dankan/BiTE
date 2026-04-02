@@ -19,6 +19,14 @@ func (ca *CertificateAwarded) Create(certificateAwarded CertificateAwarded) (Cer
 	return certificateAwarded, nil
 }
 
+func (ca *CertificateAwarded) FindOne(id string) (CertificateAwarded, error) {
+	var certificate CertificateAwarded
+
+	db.First(&certificate, "id = ?", id)
+
+	return certificate, nil
+}
+
 func (ca *CertificateAwarded) FindByUserAndCertificate(userID string, categoryCertificateID string) (CertificateAwarded, error) {
 	var certificate CertificateAwarded
 
@@ -114,4 +122,11 @@ func (ca *CertificateAwarded) GetTotalCount() (int64, error) {
 	}
 
 	return count, nil
+}
+
+func (ca *CertificateAwarded) Delete(id string) error {
+	if err := db.Unscoped().Where("id = ?", id).Delete(&CertificateAwarded{}).Error; err != nil {
+		return err
+	}
+	return nil
 }
