@@ -64,6 +64,7 @@ var GetCertificateClaimStatus = func(c *fiber.Ctx) error {
 				quizProgress["totalAttemptedQuestions"] = inProgress.TotalAttemptedQuestions
 				quizProgress["status"] = inProgress.Status
 			} else {
+				// TODO: Add query to get questions count per quiz
 				quizProgress["totalQuestions"] = 0
 				quizProgress["totalAttemptedQuestions"] = 0
 				quizProgress["status"] = "UN_ATTEMPTED"
