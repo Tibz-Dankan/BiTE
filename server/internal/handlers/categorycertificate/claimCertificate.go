@@ -141,11 +141,12 @@ var ClaimCertificate = func(c *fiber.Ctx) error {
 	}
 
 	newCertificatePDFAttachment, err := attachment.Create(models.Attachment{
-		Type:        "CERTIFICATE_PDF",
-		ContentType: pdfContentType,
-		Url:         uploadCertificatePDFResp.URL,
-		Filename:    uploadCertificatePDFResp.Filename,
-		Size:        int64(len(certPdfBuf)),
+		CertificateAwardedID: newAward.ID,
+		Type:                 "CERTIFICATE_PDF",
+		ContentType:          pdfContentType,
+		Url:                  uploadCertificatePDFResp.URL,
+		Filename:             uploadCertificatePDFResp.Filename,
+		Size:                 int64(len(certPdfBuf)),
 	})
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
@@ -189,11 +190,12 @@ var ClaimCertificate = func(c *fiber.Ctx) error {
 	}
 
 	newCertificatePNGAttachment, err := attachment.Create(models.Attachment{
-		Type:        "CERTIFICATE_PNG",
-		ContentType: pngContentType,
-		Url:         uploadCertificatePNGResp.URL,
-		Filename:    uploadCertificatePNGResp.Filename,
-		Size:        int64(len(certPngBuf)),
+		CertificateAwardedID: newAward.ID,
+		Type:                 "CERTIFICATE_PNG",
+		ContentType:          pngContentType,
+		Url:                  uploadCertificatePNGResp.URL,
+		Filename:             uploadCertificatePNGResp.Filename,
+		Size:                 int64(len(certPngBuf)),
 	})
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
