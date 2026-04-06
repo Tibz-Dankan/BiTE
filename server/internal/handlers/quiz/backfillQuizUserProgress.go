@@ -76,12 +76,12 @@ func BackfillQuizUserProgressSince(since time.Time) {
 // 	}()
 // }
 
-func init() {
-	go func() {
-		time.Sleep(2 * time.Minute) //Production
-		// time.Sleep(15 * time.Second) //Development
-		since := time.Date(2026, time.March, 30, 0, 0, 0, 0, time.UTC) //Production
-		// since := time.Date(2026, time.January, 1, 0, 0, 0, 0, time.UTC) //Development
-		BackfillQuizUserProgressSince(since)
-	}()
-}
+// func init() {
+// 	go func() {
+// 		time.Sleep(2 * time.Minute) //Production
+// 		// time.Sleep(15 * time.Second) //Development
+// 		since := time.Date(2026, time.March, 30, 0, 0, 0, 0, time.UTC) //Production
+// 		// since := time.Date(2026, time.January, 1, 0, 0, 0, 0, time.UTC) //Development
+// 		BackfillQuizUserProgressSince(since)
+// 	}()
+// }
