@@ -24,6 +24,13 @@ func UpdateQuizUserProgress() {
 
 			log.Printf("Processing UPDATE_QUIZ_USER_PROGRESS event for userID: %s, quizID: %s", eventData.UserID, eventData.QuizID)
 
+			quiz := models.Quiz{}
+			quiz, err := quiz.FindOne(eventData.QuizID)
+			if err != nil {
+				log.Printf("Error getting quiz: %+v", err)
+				continue
+			}
+
 			// Get total questions of the quiz
 			question := models.Question{}
 			totalQuestions, err := question.GetTotalCountByQuiz(eventData.QuizID)
@@ -78,14 +85,24 @@ func UpdateQuizUserProgress() {
 
 			// create new quiz user progress
 			if savedQuizUserProgress.ID == "" {
-				quizUserProgressData := models.QuizUserProgress{
-					UserID:                  eventData.UserID,
-					QuizID:                  eventData.QuizID,
-					TotalQuestions:          totalQuestions,
-					TotalAttemptedQuestions: totalAttemptedQuestions,
-					Status:                  status,
+				// quizUserProgressData := models.QuizUserProgress{
+				// 	UserID:                  eventData.UserID,
+				// 	QuizID:                  eventData.QuizID,
+				// 	TotalQuestions:          totalQuestions,
+				// 	TotalAttemptedQuestions: totalAttemptedQuestions,
+				// 	Status:                  status,
+				// 	QuizCategoryID:          quiz.QuizCategoryID,
+				// }
+				quizUserProgress.UserID = eventData.UserID
+				quizUserProgress.QuizID = eventData.QuizID
+				quizUserProgress.TotalQuestions = totalQuestions
+				quizUserProgress.TotalAttemptedQuestions = totalAttemptedQuestions
+				quizUserProgress.Status = status
+				if quiz.QuizCategoryID != "" {
+					quizUserProgress.QuizCategoryID = quiz.QuizCategoryID
 				}
-				newQuizUserProgress, err := quizUserProgress.Create(quizUserProgressData)
+
+				newQuizUserProgress, err := quizUserProgress.Create(quizUserProgress)
 				if err != nil {
 					log.Printf("Error creating QuizUserProgress  : %+v", err)
 					continue
