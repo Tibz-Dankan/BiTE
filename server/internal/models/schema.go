@@ -260,7 +260,7 @@ type QuizUserProgress struct {
 	ID                      string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
 	UserID                  string    `gorm:"column:userID;not null;index" json:"userID"`
 	QuizID                  string    `gorm:"column:quizID;not null;index" json:"quizID"`
-	QuizCategoryID          string    `gorm:"column:quizCategoryID;index" json:"quizCategoryID"`
+	QuizCategoryID          string    `gorm:"column:quizCategoryID;default:null;index" json:"quizCategoryID"`
 	TotalQuestions          int64     `gorm:"column:totalQuestions;not null;index" json:"totalQuestions"`
 	TotalAttemptedQuestions int64     `gorm:"column:totalAttemptedQuestions;not null" json:"totalAttemptedQuestions"`
 	Status                  string    `gorm:"column:status;not null;index" json:"status"` // COMPLETED, IN_PROGRESS
