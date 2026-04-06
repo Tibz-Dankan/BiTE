@@ -85,14 +85,6 @@ func UpdateQuizUserProgress() {
 
 			// create new quiz user progress
 			if savedQuizUserProgress.ID == "" {
-				// quizUserProgressData := models.QuizUserProgress{
-				// 	UserID:                  eventData.UserID,
-				// 	QuizID:                  eventData.QuizID,
-				// 	TotalQuestions:          totalQuestions,
-				// 	TotalAttemptedQuestions: totalAttemptedQuestions,
-				// 	Status:                  status,
-				// 	QuizCategoryID:          quiz.QuizCategoryID,
-				// }
 				quizUserProgress.UserID = eventData.UserID
 				quizUserProgress.QuizID = eventData.QuizID
 				quizUserProgress.TotalQuestions = totalQuestions

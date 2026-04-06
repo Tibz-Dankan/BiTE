@@ -1,6 +1,8 @@
 package models
 
 import (
+	"time"
+
 	"github.com/Tibz-Dankan/BiTE/internal/constants"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -239,4 +241,21 @@ func (a *Attempt) GetUniqueQuizAttemptCount(quizID string) (int64, error) {
 		return 0, err
 	}
 	return attemptCount, nil
+}
+
+// FindUniqueAttemptsSince returns unique attempts distinct by userID and questionID, created on or after a given date
+func (a *Attempt) FindUniqueAttemptsSince(since time.Time) ([]Attempt, error) {
+	var attempts []Attempt
+
+	// PostgreSQL specific: DISTINCT ON allows you to specify the columns to evaluate distinctness,
+	// but still return all columns (*). Note that typically ORDER BY is required alongside it
+	// to ensure deterministic results.
+	if err := db.Model(&Attempt{}).
+		Select("DISTINCT ON (\"userID\", \"quizID\", \"questionID\") *").
+		Where("\"createdAt\" >= ?", since).
+		Find(&attempts).Error; err != nil {
+		return attempts, err
+	}
+
+	return attempts, nil
 }
