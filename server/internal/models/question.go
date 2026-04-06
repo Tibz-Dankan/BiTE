@@ -41,6 +41,14 @@ func (q *Question) FindOneAndIncludeAttachments(id string) (Question, error) {
 	return question, nil
 }
 
+func (q *Question) FindByQuizAndSequenceNumber(quizID string, sequenceNumber int64) (Question, error) {
+	var question Question
+
+	db.Where("\"quizID\" = ? AND \"sequenceNumber\" = ?", quizID, sequenceNumber).First(&question)
+
+	return question, nil
+}
+
 func (q *Question) FindAllByQuiz(quizID string, limit float64, cursor string) ([]Question, error) {
 	var questions []Question
 

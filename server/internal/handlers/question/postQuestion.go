@@ -43,8 +43,6 @@ var PostQuestion = func(c *fiber.Ctx) error {
 
 	var fileUploaded bool = true
 
-	// TODO: Validate sequence number for uniqueness
-
 	if question.PostedByUserID == "" ||
 		question.Title == "" ||
 		question.QuizID == "" ||
@@ -59,6 +57,12 @@ var PostQuestion = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 	question.SequenceNumber = int64(parsedSequenceNumber)
+
+	existingQuestion, err := question.FindByQuizAndSequenceNumber(question.QuizID, question.SequenceNumber)
+	if err == nil && existingQuestion.ID != "" {
+		return fiber.NewError(fiber.StatusBadRequest,
+			fmt.Sprintf("The provided sequence number %d already exists in this quiz!", question.SequenceNumber))
+	}
 
 	hasMultipleCorrectAnswers, err := strconv.ParseBool(hasMultipleCorrectAnswersStr)
 	if err != nil {
