@@ -128,10 +128,22 @@ var UpdateUserImage = func(c *fiber.Ctx) error {
 		user.Attachments = append(user.Attachments, &newUserAttachment)
 	}
 
+	userMap := map[string]interface{}{
+		"id":             user.ID,
+		"name":           user.Name,
+		"email":          user.Email,
+		"role":           user.Role,
+		"imageUrl":       user.ImageUrl,
+		"profileBgColor": user.ProfileBgColor,
+		"createdAt":      user.CreatedAt,
+		"updatedAt":      user.UpdatedAt,
+		"attachments":    user.Attachments,
+	}
+
 	response := fiber.Map{
 		"status":  "success",
 		"message": "User image updated successfully!",
-		"data":    user,
+		"data":    userMap,
 	}
 
 	return c.Status(fiber.StatusOK).JSON(response)

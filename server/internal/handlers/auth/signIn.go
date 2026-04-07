@@ -22,7 +22,7 @@ var SignIn = func(c *fiber.Ctx) error {
 	}
 	password := user.Password
 
-	userByEmail, err := user.FindByEmail(user.Email)
+	userByEmail, err := user.FindByEmailAndIncludeAttachments(user.Email)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
@@ -71,6 +71,7 @@ var SignIn = func(c *fiber.Ctx) error {
 		"profileBgColor": user.ProfileBgColor,
 		"createdAt":      user.CreatedAt,
 		"updatedAt":      user.UpdatedAt,
+		"attachments":    user.Attachments,
 	}
 	response := map[string]interface{}{
 		"status":       "success",

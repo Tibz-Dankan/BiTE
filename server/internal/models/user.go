@@ -58,9 +58,24 @@ func (u *User) FindOne(id string) (User, error) {
 	return user, nil
 }
 
+func (u *User) FindOneWithAttachments(id string) (User, error) {
+	var user User
+
+	db.Preload("Attachments").First(&user, "id = ?", id)
+
+	return user, nil
+}
+
 func (u *User) FindByEmail(email string) (User, error) {
 	var user User
 	db.First(&user, "email = ?", email)
+
+	return user, nil
+}
+
+func (u *User) FindByEmailAndIncludeAttachments(email string) (User, error) {
+	var user User
+	db.Preload("Attachments").First(&user, "email = ?", email)
 
 	return user, nil
 }
@@ -82,6 +97,13 @@ func (u *User) FindUnknown() (User, error) {
 func (u *User) FindAll() ([]User, error) {
 	var users []User
 	db.Find(&users)
+
+	return users, nil
+}
+
+func (u *User) FindAllWithAttachments() ([]User, error) {
+	var users []User
+	db.Preload("Attachments").Find(&users)
 
 	return users, nil
 }
