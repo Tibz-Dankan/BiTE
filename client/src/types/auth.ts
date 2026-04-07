@@ -57,6 +57,7 @@ export type TUser = {
   agreedNewsLetterOrMarketingEmails: boolean;
   createdAt: string;
   updatedAt: string;
+  attachments?: any[];
 };
 
 export type TAuth = {

@@ -18,7 +18,7 @@ import { UserQuizAttempt } from "../components/pages/quiz/UserQuizAttempt";
 import { UserQuizResultPage } from "../components/pages/quiz/UserQuizResultPage";
 import { UserDashboard } from "../components/pages/quiz/UserDashboard";
 import { UserCategoryCertificateQuizzes } from "../components/pages/categorycertificate/UserCategoryCertificateQuizzes";
-
+import { SettingsPage } from "../components/pages/user/SettingsPage";
 export const UserRoutes: React.FC = () => {
   const routes: TRoute = {
     title: "User",
@@ -63,7 +63,7 @@ export const UserRoutes: React.FC = () => {
         icon: <Settings className="h-4 w-4" />,
         path: "/u/settings",
         showInSidebar: true,
-        element: <div>User Settings</div>,
+        element: <SettingsPage />,
       },
       {
         title: "Certificate Quizzes",

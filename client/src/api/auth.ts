@@ -106,7 +106,7 @@ class AuthAPI {
         headers: {
           "Content-type": "application/json",
         },
-      }
+      },
     );
 
     if (!response.ok) {
@@ -132,7 +132,7 @@ class AuthAPI {
         headers: {
           "Content-type": "application/json",
         },
-      }
+      },
     );
 
     if (!response.ok) {
@@ -146,9 +146,10 @@ class AuthAPI {
     const response = await fetch(`${SERVER_URL}/user/${userID}/image`, {
       method: "PATCH",
       body: formData,
-      // headers: {
-      //   "Content-type": "multipart/form-data",
-      // },
+      headers: {
+        // "Content-type": "multipart/form-data",
+        Authorization: "",
+      },
     });
 
     if (!response.ok) {
