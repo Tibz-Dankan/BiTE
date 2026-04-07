@@ -78,6 +78,7 @@ export const UserQuestionResultCard: React.FC<UserQuestionResultCardProps> = ({
         answers={question.answers}
         attempts={question.attempts || []}
         attemptStatuses={question.attemptStatuses || []}
+        requiresNumericalAnswer={question.requiresNumericalAnswer}
       />
     </div>
   );

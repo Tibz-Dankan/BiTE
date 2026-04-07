@@ -12,12 +12,14 @@ interface UserAnswerResultTableProps {
   answers: TAnswer[];
   attempts: Attempt[];
   attemptStatuses: TAttemptStatus[];
+  requiresNumericalAnswer?: boolean;
 }
 
 export const UserAnswerResultTable: React.FC<UserAnswerResultTableProps> = ({
   answers,
   attempts,
   attemptStatuses,
+  requiresNumericalAnswer,
 }) => {
   const getUserAttemptForAnswer = (answerId: string) => {
     return attempts.find((attempt) => attempt.answerID === answerId);
@@ -75,14 +77,25 @@ export const UserAnswerResultTable: React.FC<UserAnswerResultTableProps> = ({
                 {/* Your Ans column */}
                 <td className="py-3 px-3 border border-gray-200 text-center align-middle">
                   {wasSelected && (
-                    <div
-                      className={`inline-flex items-center justify-center w-8 h-8 rounded ${
-                        isAttemptCorrect
-                          ? "bg-green-100 text-green-600"
-                          : "bg-red-100 text-red-600"
-                      }`}
-                    >
-                      {isAttemptCorrect ? <Check size={18} /> : <X size={18} />}
+                    <div className="flex items-center justify-center gap-2">
+                      <div
+                        className={`inline-flex items-center justify-center w-8 h-8 rounded shrink-0 ${
+                          isAttemptCorrect
+                            ? "bg-green-100 text-green-600"
+                            : "bg-red-100 text-red-600"
+                        }`}
+                      >
+                        {isAttemptCorrect ? (
+                          <Check size={18} />
+                        ) : (
+                          <X size={18} />
+                        )}
+                      </div>
+                      {requiresNumericalAnswer && userAttempt.answerInput && (
+                        <span className="text-xs text-slate-700 whitespace-nowrap">
+                          {userAttempt.answerInput}
+                        </span>
+                      )}
                     </div>
                   )}
                 </td>
