@@ -19,6 +19,7 @@ type UpdateUserInput struct {
 
 var UpdateUser = func(c *fiber.Ctx) error {
 	user := models.User{}
+	attachment := models.Attachment{}
 	userID := c.Params("id")
 
 	if err := c.BodyParser(&user); err != nil {
@@ -68,6 +69,15 @@ var UpdateUser = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
+	userAttachments, err := attachment.FindAllByUser(userID, 2, "")
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	for _, userAttachment := range userAttachments {
+		updatedUser.Attachments = append(updatedUser.Attachments, &userAttachment)
+	}
+
 	updateUserMap := fiber.Map{
 		"id":             updatedUser.ID,
 		"name":           updatedUser.Name,
@@ -77,6 +87,7 @@ var UpdateUser = func(c *fiber.Ctx) error {
 		"profileBgColor": updatedUser.ProfileBgColor,
 		"createdAt":      updatedUser.CreatedAt,
 		"updatedAt":      updatedUser.UpdatedAt,
+		"attachments":    updatedUser.Attachments,
 	}
 
 	response := fiber.Map{

@@ -33,7 +33,7 @@ var SignInWithRefreshToken = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "Missing userID/refreshToken!")
 	}
 
-	user, err := user.FindOne(sigInInput.UserID)
+	user, err := user.FindOneWithAttachments(sigInInput.UserID)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
@@ -86,6 +86,7 @@ var SignInWithRefreshToken = func(c *fiber.Ctx) error {
 		"profileBgColor": user.ProfileBgColor,
 		"createdAt":      user.CreatedAt,
 		"updatedAt":      user.UpdatedAt,
+		"attachments":    user.Attachments,
 	}
 	response := map[string]interface{}{
 		"status":       "success",

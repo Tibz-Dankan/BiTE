@@ -89,6 +89,7 @@ var SignUp = func(c *fiber.Ctx) error {
 		"profileBgColor": newUser.ProfileBgColor,
 		"createdAt":      newUser.CreatedAt,
 		"updatedAt":      newUser.UpdatedAt,
+		"attachments":    newUser.Attachments,
 	}
 	response := map[string]interface{}{
 		"status":       "success",

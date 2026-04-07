@@ -40,7 +40,7 @@ var ResetPassword = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "OPT is already used or unverified or expired!")
 	}
 
-	user, err = user.FindOne(otp.UserID)
+	user, err = user.FindOneWithAttachments(otp.UserID)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
@@ -86,6 +86,7 @@ var ResetPassword = func(c *fiber.Ctx) error {
 		"profileBgColor": user.ProfileBgColor,
 		"createdAt":      user.CreatedAt,
 		"updatedAt":      user.UpdatedAt,
+		"attachments":    user.Attachments,
 	}
 	response := map[string]interface{}{
 		"status":       "success",
