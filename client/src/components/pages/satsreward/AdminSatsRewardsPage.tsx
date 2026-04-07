@@ -29,7 +29,7 @@ export const AdminSatsRewardsPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full p-6 animate-fade-in-up">
+    <div className="w-full h-full py-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
         <div className="flex items-center gap-4">
           <div className="p-3 bg-slate-900 rounded-2xl text-white">
@@ -78,10 +78,7 @@ export const AdminSatsRewardsPage: React.FC = () => {
         </div>
       ) : (
         <div className="space-y-10 pb-10">
-          <div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3ss
-            xl:grid-cols-4 gap-6"
-          >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {data?.data.map((reward) => (
               <AdminSatsRewardCard key={reward.id} reward={reward} />
             ))}

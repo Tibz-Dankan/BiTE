@@ -305,7 +305,7 @@ export const SettingsPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto py-8 px-4">
+    <div className="w-full max-w-4xl mx-auto py-8">
       <h1 className="text-3xl font-semibold text-gray-900 mb-8">
         Account settings
       </h1>
