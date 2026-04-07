@@ -45,6 +45,9 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
   const isAdminAccount = auth.user.role === "ADMIN";
   const isUserAccount = auth.user.role === "USER";
 
+  const profileImage =
+    auth?.user?.attachments?.[0]?.url || auth?.user?.imageUrl;
+
   const isSubmenuActive = (items: TPage[]): boolean => {
     return items.some((item) => {
       if (item.path !== "#" && pathname === item.path) {
@@ -216,13 +219,19 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
           >
             <div
               className="flex-shrink-0 h-6 w-6 rounded-md bg-orange-300
-             flex items-center justify-center pt-1"
+             flex items-center justify-center overflow-hidden"
             >
-              {
+              {profileImage ? (
+                <img
+                  src={profileImage}
+                  alt="avatar"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
                 <span className="text-[12px] font-medium text-orange-600">
                   {auth.user.name.charAt(0).toUpperCase()}
                 </span>
-              }
+              )}
             </div>
             <div>
               <p className="text-sm font-medium text-gray-800">
@@ -351,14 +360,24 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
                   <div className="flex items-center gap-2">
                     <div
                       className="flex-shrink-0 h-8 w-8 rounded-full flex 
-                      items-center justify-center"
-                      style={{ backgroundColor: auth.user.profileBgColor }}
+                      items-center justify-center overflow-hidden"
+                      style={{
+                        backgroundColor: profileImage
+                          ? "transparent"
+                          : auth.user.profileBgColor,
+                      }}
                     >
-                      {
+                      {profileImage ? (
+                        <img
+                          src={profileImage}
+                          alt="avatar"
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
                         <span className="font-medium text-white">
                           {auth.user.name.charAt(0).toUpperCase()}
                         </span>
-                      }
+                      )}
                     </div>
                     <div>
                       <p className="text-sm text-start font-medium text-gray-800">
@@ -406,16 +425,24 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
                           <div className="flex items-center gap-2">
                             <div
                               className="flex-shrink-0 h-8 w-8 rounded-full flex 
-                              items-center justify-center"
+                              items-center justify-center overflow-hidden"
                               style={{
-                                backgroundColor: auth.user.profileBgColor,
+                                backgroundColor: profileImage
+                                  ? "transparent"
+                                  : auth.user.profileBgColor,
                               }}
                             >
-                              {
+                              {profileImage ? (
+                                <img
+                                  src={profileImage}
+                                  alt="avatar"
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
                                 <span className="font-medium text-white">
                                   {auth.user.name.charAt(0).toUpperCase()}
                                 </span>
-                              }
+                              )}
                             </div>
                             <div>
                               <p className="text-sm text-start font-medium text-gray-800">

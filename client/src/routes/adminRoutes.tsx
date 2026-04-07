@@ -32,6 +32,7 @@ import { AdminRankingView } from "../components/pages/ranking/AdminRankingView";
 import { AdminSiteVisitView } from "../components/pages/siteVisit/AdminSiteVisitView";
 import { AdminUserView } from "../components/pages/user/AdminUserView";
 import { AdminSatsRewardsPage } from "../components/pages/satsreward/AdminSatsRewardsPage";
+import { SettingsPage } from "../components/pages/user/SettingsPage";
 
 export const AdminRoutes: React.FC = () => {
   const routes: TRoute = {
@@ -161,7 +162,7 @@ export const AdminRoutes: React.FC = () => {
         icon: <Settings className="h-4 w-4" />,
         path: "/a/settings",
         showInSidebar: true,
-        element: <div>Admin Settings</div>,
+        element: <SettingsPage />,
       },
 
       // Page Not Found - Wildcard Route
