@@ -72,7 +72,7 @@ export type TQuizAttemptData = {
     nextCursor: string;
   };
   progress: {
-    status: "IN_PROGRESS" | "COMPLETED";
+    status: "IN_PROGRESS" | "COMPLETED" | "UN_ATTEMPTED";
     totalAttemptedQuestions: number;
     totalQuestions: number;
   };
