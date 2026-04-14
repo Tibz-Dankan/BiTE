@@ -1,0 +1,167 @@
+[
+  {
+    "id": "TC001",
+    "title": "signin with valid credentials",
+    "description": "Test POST /api/v1/user/auth/signin with valid email+password. Expect 200 with accessToken, refreshToken and user profile (status=success)."
+  },
+  {
+    "id": "TC002",
+    "title": "signin with invalid password",
+    "description": "Test POST /api/v1/user/auth/signin with a valid email but wrong password. Expect 400 with error message 'Invalid email/password!'."
+  },
+  {
+    "id": "TC003",
+    "title": "refresh token signin with valid token",
+    "description": "Test POST /api/v1/user/auth/rt-signin with a valid refreshToken. Expect 200 with new accessToken and refreshToken."
+  },
+  {
+    "id": "TC004",
+    "title": "refresh token signin with invalid token",
+    "description": "Test POST /api/v1/user/auth/rt-signin with an expired/invalid refreshToken. Expect 400 with error about refresh token missing/expired/invalid."
+  },
+  {
+    "id": "TC005",
+    "title": "signup with valid payload",
+    "description": "Test POST /api/v1/user/auth/signup with valid payload (name, email, password, agreedTermsOfService=true). Expect 201 with accessToken, refreshToken and user object."
+  },
+  {
+    "id": "TC006",
+    "title": "signup with terms not agreed",
+    "description": "Test POST /api/v1/user/auth/signup with agreedTermsOfService=false. Expect 400 with message about agreeing to terms."
+  },
+  {
+    "id": "TC007",
+    "title": "get all quizzes with valid auth",
+    "description": "Test GET /api/v1/quiz/ with valid Bearer token. Expect 200 with array of quizzes (status=success)."
+  },
+  {
+    "id": "TC008",
+    "title": "get quiz data for attempt with attemptable quiz",
+    "description": "Test GET /api/v1/quiz/attempt/:id with Bearer token for an attemptable quiz. Expect 200 with quiz questions and answers but without isCorrect fields (sanitized for student)."
+  },
+  {
+    "id": "TC009",
+    "title": "get quiz data for attempt with non-attemptable quiz",
+    "description": "Test GET /api/v1/quiz/attempt/:id for a quiz that is not attemptable. Expect 400 with message 'Quiz not attemptable'."
+  },
+  {
+    "id": "TC010",
+    "title": "post attempt with valid answer",
+    "description": "Test POST /api/v1/attempt/ with Bearer token and valid payload (userID, questionID, answerIDList JSON string with at least one answer UUID). Expect 200 with message 'Attempt created successfully!' and data array."
+  },
+  {
+    "id": "TC011",
+    "title": "post attempt with empty answer list",
+    "description": "Test POST /api/v1/attempt/ with empty answerIDList. Expect 400 with message 'Please provide an answer!'."
+  },
+  {
+    "id": "TC012",
+    "title": "post attempt duplicate question attempt",
+    "description": "Test POST /api/v1/attempt/ selecting an answer already attempted by this user for this question. Expect 400 with message 'You have already attempted this question!'."
+  },
+  {
+    "id": "TC013",
+    "title": "update attempt duration",
+    "description": "Test PATCH /api/v1/attemptduration/quiz/:quizID with Bearer token and valid payload (quizID path, userID, duration integer). Expect 200 with updated AttemptDuration object."
+  },
+  {
+    "id": "TC014",
+    "title": "get attempt duration",
+    "description": "Test GET /api/v1/attemptduration/quiz/:quizID with Bearer token and userID query. Expect 200 with AttemptDuration record or null."
+  },
+  {
+    "id": "TC015",
+    "title": "post site visit anonymous",
+    "description": "Test POST /api/v1/sitevisit/ (no auth) with payload (page, path, capturedAt). Expect 201 with created SiteVisit."
+  },
+  {
+    "id": "TC016",
+    "title": "get admin analytics",
+    "description": "Test GET /api/v1/analytics/admin with admin Bearer token. Expect 200 with admin analytics summary (status=success)."
+  },
+  {
+    "id": "TC017",
+    "title": "get user analytics",
+    "description": "Test GET /api/v1/analytics/user with Bearer token and userID query. Expect 200 with user analytics object."
+  },
+  {
+    "id": "TC018",
+    "title": "get users with ranks",
+    "description": "Test GET /api/v1/ranking/users with admin Bearer token. Expect 200 with list of users and computed rank metrics."
+  },
+  {
+    "id": "TC019",
+    "title": "post sats reward address",
+    "description": "Test POST /api/v1/satsreward/address with Bearer token and payload (userID, address). Expect 201 with created SatsRewardAddress."
+  },
+  {
+    "id": "TC020",
+    "title": "post sats reward address duplicate",
+    "description": "Test POST /api/v1/satsreward/address with duplicate address. Expect 400 with duplicate address error."
+  },
+  {
+    "id": "TC021",
+    "title": "make default sats reward address",
+    "description": "Test PATCH /api/v1/satsreward/address/:id/default with Bearer token. Expect 200 with updated address (previous default cleared)."
+  },
+  {
+    "id": "TC022",
+    "title": "claim quiz sats reward completed quiz",
+    "description": "Test POST /api/v1/satsreward/claim-quiz with Bearer token and valid payload (userID, quizID) when user has completed quiz and has verified default Lightning address. Expect 201 with SatsReward record."
+  },
+  {
+    "id": "TC023",
+    "title": "claim quiz sats reward not completed",
+    "description": "Test POST /api/v1/satsreward/claim-quiz when user hasn't completed quiz. Expect 400 with message 'Quiz not completed by user'."
+  },
+  {
+    "id": "TC024",
+    "title": "get certificate claim status",
+    "description": "Test GET /api/v1/certificate/:id/claim-status/user/:userID with Bearer token. Expect 200 with data {claimed: boolean, certificateAwarded: object|null}."
+  },
+  {
+    "id": "TC025",
+    "title": "claim certificate prerequisites not met",
+    "description": "Test POST /api/v1/certificate/claim when user has not completed prerequisites. Expect 400 with message 'User has not completed all required quizzes'."
+  },
+  {
+    "id": "TC026",
+    "title": "post ai preview admin",
+    "description": "Test POST /api/v1/aipreview/ with admin Bearer token and payload (questionID, prompt, summary). Expect 201 with created AIPreview."
+  },
+  {
+    "id": "TC027",
+    "title": "get ai preview for question non admin",
+    "description": "Test GET /api/v1/aipreview/question/:questionID with Bearer token (non-admin). Expect 200 with only the default preview for the question."
+  },
+  {
+    "id": "TC028",
+    "title": "make default ai preview",
+    "description": "Test PATCH /api/v1/aipreview/:id/default with admin Bearer token. Expect 200 with updated AIPreview and previous default cleared."
+  },
+  {
+    "id": "TC029",
+    "title": "health check endpoint",
+    "description": "Test GET /health endpoint. Expect 200 with health status response."
+  },
+  {
+    "id": "TC030",
+    "title": "create question with duplicate sequence number",
+    "description": "Test POST /api/v1/question/ with admin Bearer token and a sequenceNumber that already exists for the same quiz. Expect 400 with duplicate sequenceNumber error."
+  },
+  {
+    "id": "TC031",
+    "title": "create answer with missing required fields",
+    "description": "Test POST /api/v1/answer/ with admin Bearer token and missing required fields. Expect 400 with missing fields error."
+  },
+  {
+    "id": "TC032",
+    "title": "get all answers by question",
+    "description": "Test GET /api/v1/answer/question/:questionID with Bearer token. Expect 200 with ordered answers array."
+  },
+  {
+    "id": "TC033",
+    "title": "get question with answers and attachments",
+    "description": "Test GET /api/v1/question/:id with Bearer token. Expect 200 with question plus answers and attachments."
+  }
+]
