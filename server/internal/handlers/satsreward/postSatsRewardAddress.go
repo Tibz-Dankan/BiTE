@@ -64,5 +64,5 @@ var PostSatsRewardAddress = func(c *fiber.Ctx) error {
 		"data":    createdSatsRewardAddress,
 	}
 
-	return c.Status(fiber.StatusOK).JSON(response)
+	return c.Status(fiber.StatusCreated).JSON(response)
 }

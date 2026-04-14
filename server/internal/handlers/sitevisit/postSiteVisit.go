@@ -63,5 +63,5 @@ var PostSiteVisit = func(c *fiber.Ctx) error {
 		"message": "Visit created successfully!",
 	}
 
-	return c.Status(fiber.StatusOK).JSON(response)
+	return c.Status(fiber.StatusCreated).JSON(response)
 }
