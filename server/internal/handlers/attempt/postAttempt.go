@@ -115,5 +115,5 @@ var PostAttempt = func(c *fiber.Ctx) error {
 		"data":    attempts,
 	}
 
-	return c.Status(fiber.StatusOK).JSON(response)
+	return c.Status(fiber.StatusCreated).JSON(response)
 }
