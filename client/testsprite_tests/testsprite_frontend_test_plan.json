@@ -1,0 +1,780 @@
+[
+  {
+    "id": "TC001",
+    "title": "Returning student can sign up, log out, and sign back in to reach dashboard",
+    "description": "A new student can create an account, log out from settings, then sign in again with the same credentials and be redirected to the dashboard.",
+    "category": "User Login",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /auth/signup"
+      },
+      {
+        "type": "action",
+        "description": "Fill Test User into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique email into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill TestPass123! into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Fill TestPass123! into the confirm password field"
+      },
+      {
+        "type": "action",
+        "description": "Accept the terms checkbox"
+      },
+      {
+        "type": "action",
+        "description": "Submit registration"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to open user settings"
+      },
+      {
+        "type": "action",
+        "description": "Log out"
+      },
+      {
+        "type": "action",
+        "description": "Fill the same email used during signup into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill TestPass123! into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Submit signin"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the user lands on the dashboard"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC002",
+    "title": "New student can register and is auto-authenticated into dashboard",
+    "description": "A new student can successfully register and is automatically redirected to the authenticated dashboard.",
+    "category": "User Registration",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /auth/signup"
+      },
+      {
+        "type": "action",
+        "description": "Fill Test User into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique email into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill TestPass123! into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Fill TestPass123! into the confirm password field"
+      },
+      {
+        "type": "action",
+        "description": "Accept the terms checkbox"
+      },
+      {
+        "type": "action",
+        "description": "Submit registration"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the user lands on the dashboard"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC003",
+    "title": "Protected routes require auth after logout",
+    "description": "Verifies that after logging out, attempting to access settings again requires signing in.",
+    "category": "Settings View",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /auth/signup"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique email into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid password into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Fill the same password into the confirm password field"
+      },
+      {
+        "type": "action",
+        "description": "Accept the terms and conditions"
+      },
+      {
+        "type": "action",
+        "description": "Submit the signup form"
+      },
+      {
+        "type": "action",
+        "description": "Click the sidebar link to Settings"
+      },
+      {
+        "type": "action",
+        "description": "Log out"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /u/settings"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the user is prompted to sign in"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC004",
+    "title": "Quizzes page requires authentication",
+    "description": "Verifies that an unauthenticated visitor is prevented from accessing the quizzes page and is redirected to sign in.",
+    "category": "Quizzes View",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /u/quizzes"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the user is prompted to sign in"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC005",
+    "title": "Logout from settings ends the session",
+    "description": "Verifies an authenticated student can log out from settings and is returned to the sign-in page.",
+    "category": "Settings View",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /auth/signup"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique email into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid password into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Fill the same password into the confirm password field"
+      },
+      {
+        "type": "action",
+        "description": "Accept the terms and conditions"
+      },
+      {
+        "type": "action",
+        "description": "Submit the signup form"
+      },
+      {
+        "type": "action",
+        "description": "Click the sidebar link to Settings"
+      },
+      {
+        "type": "action",
+        "description": "Log out"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the user is on the sign-in page"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC006",
+    "title": "Rewards page requires authentication",
+    "description": "Verifies that an unauthenticated visitor is prevented from accessing the rewards page and is redirected to sign in.",
+    "category": "Rewards View",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /u/rewards"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the user is prompted to sign in"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC007",
+    "title": "Browse quizzes after new user signup",
+    "description": "Verifies a new student can sign up, reach the dashboard, and navigate to the quizzes page where the quizzes list is displayed.",
+    "category": "Quizzes View",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /auth/signup"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique email into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid password into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Fill the same password into the confirm password field"
+      },
+      {
+        "type": "action",
+        "description": "Accept the terms and conditions"
+      },
+      {
+        "type": "action",
+        "description": "Submit the signup form"
+      },
+      {
+        "type": "action",
+        "description": "Click the sidebar link to Quizzes"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the quizzes list is displayed with quiz titles and metadata"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC008",
+    "title": "Settings page loads and saves profile name",
+    "description": "Verifies an authenticated student can open settings, update their first name, save changes, and see a success confirmation.",
+    "category": "Settings View",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /auth/signup"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique email into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid password into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Fill the same password into the confirm password field"
+      },
+      {
+        "type": "action",
+        "description": "Accept the terms and conditions"
+      },
+      {
+        "type": "action",
+        "description": "Submit the signup form"
+      },
+      {
+        "type": "action",
+        "description": "Click the sidebar link to Settings"
+      },
+      {
+        "type": "action",
+        "description": "Fill TestFirstName into the first name field"
+      },
+      {
+        "type": "action",
+        "description": "Save settings changes"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a success confirmation is visible"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC009",
+    "title": "Dashboard shows welcome and progress summary after signup auto-login",
+    "description": "After completing signup, the authenticated student sees a welcome message and a progress summary on the dashboard.",
+    "category": "View Dashboard",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /auth/signup"
+      },
+      {
+        "type": "action",
+        "description": "Fill Test User into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique email into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill TestPass123! into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Fill TestPass123! into the confirm password field"
+      },
+      {
+        "type": "action",
+        "description": "Accept the terms checkbox"
+      },
+      {
+        "type": "action",
+        "description": "Submit registration"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a welcome message is displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a progress summary is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC010",
+    "title": "Start a quiz attempt from the quizzes list",
+    "description": "Verifies an authenticated student can open a quiz from the quizzes list to start an attempt and see the quiz attempt view load.",
+    "category": "Quizzes View",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /auth/signup"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique email into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid password into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Fill the same password into the confirm password field"
+      },
+      {
+        "type": "action",
+        "description": "Accept the terms and conditions"
+      },
+      {
+        "type": "action",
+        "description": "Submit the signup form"
+      },
+      {
+        "type": "action",
+        "description": "Click the sidebar link to Quizzes"
+      },
+      {
+        "type": "action",
+        "description": "Click a quiz from the list to start an attempt"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the quiz attempt experience is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC011",
+    "title": "Refresh keeps the student on the quizzes view while authenticated",
+    "description": "Verifies that after reaching the quizzes view as an authenticated student, a page refresh keeps the session active and the quizzes list remains available.",
+    "category": "Quizzes View",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /auth/signup"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique email into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid password into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Fill the same password into the confirm password field"
+      },
+      {
+        "type": "action",
+        "description": "Accept the terms and conditions"
+      },
+      {
+        "type": "action",
+        "description": "Submit the signup form"
+      },
+      {
+        "type": "action",
+        "description": "Click the sidebar link to Quizzes"
+      },
+      {
+        "type": "action",
+        "description": "Press F5"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the quizzes list is displayed with quiz titles and metadata"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC012",
+    "title": "Navigate from rewards to quizzes via sidebar",
+    "description": "Verifies an authenticated student can use sidebar navigation from rewards to quizzes and see the quizzes list load.",
+    "category": "Quizzes View",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /auth/signup"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique email into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid password into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Fill the same password into the confirm password field"
+      },
+      {
+        "type": "action",
+        "description": "Accept the terms and conditions"
+      },
+      {
+        "type": "action",
+        "description": "Submit the signup form"
+      },
+      {
+        "type": "action",
+        "description": "Click the sidebar link to Rewards"
+      },
+      {
+        "type": "action",
+        "description": "Click the sidebar link to Quizzes"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the quizzes list is displayed with quiz titles and metadata"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC013",
+    "title": "Rewards page loads after new user signup",
+    "description": "Verifies a new student can sign up, navigate to rewards, and see the rewards page load with either an empty state or rewards list.",
+    "category": "Rewards View",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /auth/signup"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique email into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid password into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Fill the same password into the confirm password field"
+      },
+      {
+        "type": "action",
+        "description": "Accept the terms and conditions"
+      },
+      {
+        "type": "action",
+        "description": "Submit the signup form"
+      },
+      {
+        "type": "action",
+        "description": "Click the sidebar link to Rewards"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the rewards page is displayed with either an empty state or a list of rewards"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC014",
+    "title": "Update lightning address on rewards page",
+    "description": "Verifies an authenticated student can enter a lightning address on the rewards page, save it, and see a success confirmation.",
+    "category": "Rewards View",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /auth/signup"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique email into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid password into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Fill the same password into the confirm password field"
+      },
+      {
+        "type": "action",
+        "description": "Accept the terms and conditions"
+      },
+      {
+        "type": "action",
+        "description": "Submit the signup form"
+      },
+      {
+        "type": "action",
+        "description": "Click the sidebar link to Rewards"
+      },
+      {
+        "type": "action",
+        "description": "Fill lightning@example.com into the lightning address field"
+      },
+      {
+        "type": "action",
+        "description": "Save the rewards settings"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a success confirmation is visible"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC015",
+    "title": "Signup requires accepting terms before account creation",
+    "description": "A new student cannot complete registration without accepting the terms and is shown a validation error.",
+    "category": "User Registration",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /auth/signup"
+      },
+      {
+        "type": "action",
+        "description": "Fill Test User into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique email into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill TestPass123! into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Fill TestPass123! into the confirm password field"
+      },
+      {
+        "type": "action",
+        "description": "Submit registration"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a terms acceptance validation error is visible"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC016",
+    "title": "Signup validates password and confirm password match",
+    "description": "A new student who enters mismatched password confirmation is prevented from registering and sees a validation error.",
+    "category": "User Registration",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /auth/signup"
+      },
+      {
+        "type": "action",
+        "description": "Fill Test User into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique email into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill TestPass123! into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Fill DifferentPass123! into the confirm password field"
+      },
+      {
+        "type": "action",
+        "description": "Accept the terms checkbox"
+      },
+      {
+        "type": "action",
+        "description": "Submit registration"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a password mismatch validation error is visible"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC017",
+    "title": "Signin blocks invalid credentials with an error message",
+    "description": "A returning student who enters an incorrect password sees an invalid-credentials error and remains unable to access the dashboard.",
+    "category": "User Login",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /auth/signup"
+      },
+      {
+        "type": "action",
+        "description": "Fill Test User into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique email into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill TestPass123! into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Fill TestPass123! into the confirm password field"
+      },
+      {
+        "type": "action",
+        "description": "Accept the terms checkbox"
+      },
+      {
+        "type": "action",
+        "description": "Submit registration"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to open user settings"
+      },
+      {
+        "type": "action",
+        "description": "Log out"
+      },
+      {
+        "type": "action",
+        "description": "Fill the same email used during signup into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a wrong password into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Submit signin"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an invalid credentials error is visible"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC018",
+    "title": "Reject invalid lightning address format",
+    "description": "Verifies the rewards page validates the lightning address field and shows a validation error for an invalid value.",
+    "category": "Rewards View",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /auth/signup"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique email into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid password into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Fill the same password into the confirm password field"
+      },
+      {
+        "type": "action",
+        "description": "Accept the terms and conditions"
+      },
+      {
+        "type": "action",
+        "description": "Submit the signup form"
+      },
+      {
+        "type": "action",
+        "description": "Click the sidebar link to Rewards"
+      },
+      {
+        "type": "action",
+        "description": "Fill invalid-lightning into the lightning address field"
+      },
+      {
+        "type": "action",
+        "description": "Save the rewards settings"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a lightning address validation error is visible"
+      }
+    ],
+    "priority": "Low"
+  }
+]

@@ -13,7 +13,7 @@ export const QuizAttemptProgressBar: React.FC<QuizAttemptProgressBarProps> = ({
   // If totalAttemptedQuestions is 0, we are on question 1.
   const currentQuestionNumber = (quizProgress.totalAttemptedQuestions || 0) + 1;
 
-  const [isQuizCompleted, setIsQuizCompleted] = useState(false);
+  const [isQuizCompleted] = useState(false);
 
   // Create an array of length totalQuestions to map over
   const bars = Array.from({ length: totalQuestions }, (_, i) => i);

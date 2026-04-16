@@ -25,4 +25,5 @@ dist-ssr
 
 # Cloudflare Pages (bite created using cf cli)
 wrangler.toml
+testsprite_tests/tmp
 
