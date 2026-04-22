@@ -75,6 +75,35 @@ func (q *Question) FindAllByQuiz(quizID string, limit float64, cursor string) ([
 	return questions, nil
 }
 
+func (q *Question) FindAllByQuizForAdmin(quizID string, limit float64, cursor string) ([]Question, error) {
+	var questions []Question
+
+	query := db.Model(&Question{}).
+		Preload("Attachments").
+		Preload("Answers.Attachments").
+		Preload("Answers", func(db *gorm.DB) *gorm.DB {
+			return db.Order("\"sequenceNumber\" ASC")
+		}).
+		Preload("AIPreviews", func(db *gorm.DB) *gorm.DB {
+			return db.Order("\"createdAt\" DESC")
+		}).
+		Order("\"sequenceNumber\" ASC").
+		Limit(int(limit))
+
+	if cursor != "" {
+		var lastQuestion Question
+		if err := db.Select("\"sequenceNumber\"").Where("id = ?",
+			cursor).First(&lastQuestion).Error; err != nil {
+			return questions, err
+		}
+		query = query.Where("\"sequenceNumber\" > ?", lastQuestion.SequenceNumber)
+	}
+
+	query.Where("\"quizID\" = ?", quizID).Find(&questions)
+
+	return questions, nil
+}
+
 func (q *Question) FindAllByQuizForAttempt(quizID string, limit float64, questionCursor string) ([]Question, error) {
 	var questions []Question
 

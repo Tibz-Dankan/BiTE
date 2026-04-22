@@ -151,6 +151,7 @@ type Question struct {
 	SequenceNumber            int64     `gorm:"column:sequenceNumber;not null;index" json:"sequenceNumber"`
 	HasMultipleCorrectAnswers bool      `gorm:"column:hasMultipleCorrectAnswers;default:false;index" json:"hasMultipleCorrectAnswers"`
 	RequiresNumericalAnswer   bool      `gorm:"column:requiresNumericalAnswer;default:false;index" json:"requiresNumericalAnswer"`
+	ShowAIPreview             bool      `gorm:"column:showAIPreview;default:false;index" json:"showAIPreview"`
 	CreatedAt                 time.Time `gorm:"column:createdAt;index" json:"createdAt"`
 	UpdatedAt                 time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
 
@@ -161,7 +162,7 @@ type Question struct {
 	Attachments     []*Attachment    `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attachments"`
 	Attempts        []*Attempt       `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attempts,omitempty"`
 	AttemptStatuses []*AttemptStatus `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"attemptStatuses,omitempty"`
-	AIPreview       *AIPreview       `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"aiPreview,omitempty"`
+	AIPreviews      []*AIPreview     `gorm:"foreignKey:QuestionID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"aiPreviews,omitempty"`
 }
 
 type Answer struct {
