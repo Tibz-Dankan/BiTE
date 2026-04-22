@@ -316,3 +316,17 @@ func (q *Question) GetNextSequenceNumber(quizID string) (int64, error) {
 
 	return maxSequenceNumber + 1, nil
 }
+
+func (q *Question) UpdateShowAIPreview(id string, showAIPreview bool) (Question, error) {
+	var question Question
+	if err := db.Model(&Question{}).Where("id = ?", id).Update("\"showAIPreview\"", showAIPreview).Error; err != nil {
+		return question, err
+	}
+
+	question, err := q.FindOne(id)
+	if err != nil {
+		return question, err
+	}
+
+	return question, nil
+}
