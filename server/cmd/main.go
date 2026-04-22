@@ -218,6 +218,7 @@ func main() {
 	aiPreviewGroup.Put("/:id", middlewares.Auth, middlewares.IsAdmin, aipreview.UpdateAIPreview)
 	aiPreviewGroup.Delete("/:id", middlewares.Auth, middlewares.IsAdmin, aipreview.DeleteAIPreview)
 	aiPreviewGroup.Patch("/:id/default", middlewares.Auth, middlewares.IsAdmin, aipreview.MakeDefaultAIPreview)
+	aiPreviewGroup.Post("/quiz/:quizID", middlewares.Auth, middlewares.IsAdmin, aipreview.PostAIPreviewsByQuiz)
 
 	// Metrics
 	app.Get("/metrics", monitor.GetMetrics)
