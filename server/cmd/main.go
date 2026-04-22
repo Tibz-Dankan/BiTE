@@ -124,6 +124,8 @@ func main() {
 	questionGroup.Patch("/:id/attachment/:attachmentID", middlewares.Auth, middlewares.IsAdmin, question.UpdateQuestionAttachment)
 	questionGroup.Patch("/:id/show-ai-preview", middlewares.Auth, middlewares.IsAdmin, question.ShowQuestionAIPreview)
 	questionGroup.Patch("/:id/hide-ai-preview", middlewares.Auth, middlewares.IsAdmin, question.HideQuestionAIPreview)
+	questionGroup.Patch("/quiz/:quizID/show-ai-preview", middlewares.Auth, middlewares.IsAdmin, question.ShowAllQuestionsAIPreviewByQuiz)
+	questionGroup.Patch("/quiz/:quizID/hide-ai-preview", middlewares.Auth, middlewares.IsAdmin, question.HideAllQuestionsAIPreviewByQuiz)
 
 	// Answer
 	answerGroup := app.Group("/api/v1/answer", func(c *fiber.Ctx) error {

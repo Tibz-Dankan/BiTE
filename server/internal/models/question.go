@@ -330,3 +330,17 @@ func (q *Question) UpdateShowAIPreview(id string, showAIPreview bool) (Question,
 
 	return question, nil
 }
+
+func (q *Question) UpdateShowAIPreviewByQuiz(quizID string, showAIPreview bool) ([]Question, error) {
+	if err := db.Model(&Question{}).Where("\"quizID\" = ?", quizID).Update("\"showAIPreview\"", showAIPreview).Error; err != nil {
+		return nil, err
+	}
+
+	questions, err := q.FindManyByQuiz(quizID)
+	if err != nil {
+		return nil, err
+	}
+
+	return questions, nil
+}
+
