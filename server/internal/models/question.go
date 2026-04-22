@@ -151,6 +151,7 @@ func (q *Question) FindAllByQuizForAttemptedData(quizID string, userID string, l
 		Preload("Answers", func(db *gorm.DB) *gorm.DB {
 			return db.Order("\"sequenceNumber\" ASC")
 		}).
+		Preload("AIPreviews", "\"isDefault\" = ?", true).
 		Preload("Attempts", "\"userID\" = ?", userID).
 		Preload("AttemptStatuses", "\"userID\" = ?", userID).
 		Order("\"sequenceNumber\" ASC").
