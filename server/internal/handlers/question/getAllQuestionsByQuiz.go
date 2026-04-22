@@ -1,6 +1,8 @@
 package question
 
 import (
+	"log"
+
 	"github.com/Tibz-Dankan/BiTE/internal/models"
 	"github.com/Tibz-Dankan/BiTE/internal/pkg"
 	"github.com/gofiber/fiber/v2"
@@ -20,7 +22,23 @@ var GetAllQuestionsByQuiz = func(c *fiber.Ctx) error {
 		cursorParam = ""
 	}
 
-	allQuestions, err := question.FindAllByQuiz(quizID, limit+1, cursorParam)
+	user, ok := c.Locals("user").(models.User)
+	if !ok {
+		log.Println("Invalid user type")
+		user = models.User{}
+	}
+
+	var userRole string
+	if user.ID != "" {
+		userRole = user.Role
+	}
+
+	allQuestions, err := func() ([]models.Question, error) {
+		if userRole == "ADMIN" {
+			return question.FindAllByQuizForAdmin(quizID, limit+1, cursorParam)
+		}
+		return question.FindAllByQuiz(quizID, limit+1, cursorParam)
+	}()
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
