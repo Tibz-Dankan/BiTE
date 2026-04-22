@@ -68,5 +68,5 @@ var PostAIPreview = func(c *fiber.Ctx) error {
 		"data":    createdAIPreview,
 	}
 
-	return c.Status(fiber.StatusOK).JSON(response)
+	return c.Status(fiber.StatusCreated).JSON(response)
 }
