@@ -21,6 +21,8 @@ import { useRouteStore } from "../../../stores/routes";
 import { QuillViewer } from "../shared/QuillViewer";
 import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
 import { isJSON } from "../../../utils/isJson";
+import { QuestionAIPreviewCard } from "../aipreview/QuestionAIPreviewCard";
+import { useFeatureFlagEnabled } from "@posthog/react";
 
 interface QuestionCardProps {
   question: TQuestion;
@@ -31,6 +33,8 @@ export const AdminQuestionCard: React.FC<QuestionCardProps> = (props) => {
   const [closePostAnswerModal, setClosePostAnswerModal] = useState(false);
   const navigate = useNavigate();
   const updateCurrentPage = useRouteStore((state) => state.updateCurrentPage);
+
+  const isAIPreviewflagEnabled = useFeatureFlagEnabled("ai-preview-admin");
 
   const attachments = question.attachments;
   const hasAttachment = isArrayWithElements(attachments);
@@ -99,7 +103,7 @@ export const AdminQuestionCard: React.FC<QuestionCardProps> = (props) => {
               <DropdownMenuItem
                 onClick={() =>
                   navigate(
-                    `/a/quizzes/${question.quizID}/questions/${question.id}/delete`
+                    `/a/quizzes/${question.quizID}/questions/${question.id}/delete`,
                   )
                 }
                 className="cursor-pointer"
@@ -187,6 +191,14 @@ export const AdminQuestionCard: React.FC<QuestionCardProps> = (props) => {
           </span>
         )}
       </div>
+
+      {isAIPreviewflagEnabled && (
+        <QuestionAIPreviewCard
+          aiPreviews={question.aiPreviews ?? []}
+          showAIPreview={question.showAIPreview}
+          questionID={question.id}
+        />
+      )}
     </div>
   );
 };

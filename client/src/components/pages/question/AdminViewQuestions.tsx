@@ -11,11 +11,15 @@ import { useRouteStore } from "../../../stores/routes";
 import { QuillViewer } from "../../ui/shared/QuillViewer";
 import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta";
 import { isJSON } from "../../../utils/isJson";
+import { QuizAIPreviewOpsCard } from "../../ui/aipreview/QuizAIPreviewOpsCard";
+import { useFeatureFlagEnabled } from "@posthog/react";
 
 export const AdminViewQuestions: React.FC = () => {
   const { quizID } = useParams();
   const navigate = useNavigate();
   const updateCurrentPage = useRouteStore((state) => state.updateCurrentPage);
+
+  const isAIPreviewflagEnabled = useFeatureFlagEnabled("ai-preview-admin");
 
   const { isPending, isError, data, error } = useQuery({
     queryKey: [`quiz-${quizID}`],
@@ -82,6 +86,7 @@ export const AdminViewQuestions: React.FC = () => {
           <span className="hover:text-inherit font-[450]">Question</span>
         </Button>
       </div>
+      {isAIPreviewflagEnabled && <QuizAIPreviewOpsCard quizID={quizID!} />}
       <div className="w-full">
         <QuillViewer deltaContent={introductionDelta} />
       </div>
