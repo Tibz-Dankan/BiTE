@@ -1,4 +1,5 @@
 import type { TAnswer } from "./answer";
+import type { TAIPreview } from "./aiPreview";
 import type { TAttachment } from "./attachment";
 import type { TPagination } from "./pagination";
 
@@ -16,10 +17,12 @@ export type TQuestion = {
   sequenceNumber: number;
   hasMultipleCorrectAnswers: boolean;
   requiresNumericalAnswer: boolean;
+  showAIPreview: boolean;
   createdAt: string;
   updatedAt: string;
   answers: Prettify<TAnswer[]>;
   attachments: Prettify<TAttachment[]>;
+  aiPreviews: Prettify<TAIPreview[]>;
 };
 
 export type TPostQuestion = {
