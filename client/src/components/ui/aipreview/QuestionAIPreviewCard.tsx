@@ -8,6 +8,7 @@ import {
   Eye,
   EyeOff,
   MoreVertical,
+  RefreshCw,
   Star,
 } from "lucide-react";
 import { SCNButton } from "../shared/button";
@@ -18,6 +19,7 @@ import { MakeDefaultAIPreviewForm } from "./MakeDefaultAIPreviewForm";
 import { ShowQuestionAIPreviewForm } from "./ShowQuestionAIPreviewForm";
 import { HideQuestionAIPreviewForm } from "./HideQuestionAIPreviewForm";
 import { UpdateAIPreviewForm } from "./UpdateAIPreviewForm";
+import { RegenerateAIPreviewForm } from "./RegenerateAIPreviewForm";
 
 interface QuestionAIPreviewCardProps {
   aiPreviews: TAIPreview[];
@@ -35,6 +37,7 @@ export const QuestionAIPreviewCard: React.FC<QuestionAIPreviewCardProps> = (
   const [closeShowModal, setCloseShowModal] = useState(false);
   const [closeHideModal, setCloseHideModal] = useState(false);
   const [closeUpdateModal, setCloseUpdateModal] = useState(false);
+  const [closeRegenerateModal, setCloseRegenerateModal] = useState(false);
 
   const hasAIPreviews = isArrayWithElements(aiPreviews);
 
@@ -91,6 +94,13 @@ export const QuestionAIPreviewCard: React.FC<QuestionAIPreviewCardProps> = (
     }, 2000);
   };
 
+  const onRegenerateSuccess = (succeeded: boolean) => {
+    setCloseRegenerateModal(() => succeeded);
+    setTimeout(() => {
+      setCloseRegenerateModal(() => false);
+    }, 2000);
+  };
+
   return (
     <div className="w-full space-y-3">
       {/* Header */}
@@ -103,6 +113,24 @@ export const QuestionAIPreviewCard: React.FC<QuestionAIPreviewCardProps> = (
                px-2 py-[1px] rounded-full font-medium"
             >
               Default
+            </span>
+          )}
+          {/* Visibility label */}
+          {showAIPreview ? (
+            <span
+              className="flex items-center gap-1 text-[10px] bg-green-100
+               text-green-700 px-2 py-[1px] rounded-full font-medium"
+            >
+              <Eye className="w-3 h-3" />
+              Visible To Users
+            </span>
+          ) : (
+            <span
+              className="flex items-center gap-1 text-[10px] bg-gray-200
+               text-gray-600 px-2 py-[1px] rounded-full font-medium"
+            >
+              <EyeOff className="w-3 h-3" />
+              Invisible To Users
             </span>
           )}
         </div>
@@ -140,35 +168,37 @@ export const QuestionAIPreviewCard: React.FC<QuestionAIPreviewCardProps> = (
               </SCNButton>
             }
           >
-            <div className="flex flex-col items-start gap-1 w-40">
-              {/* Make Default */}
-              <Modal
-                openModalElement={
-                  <div>
-                    <Button
-                      type="button"
-                      className="flex items-center justify-center gap-2 h-auto py-1
-                     px-3 bg-transparent w-full"
-                    >
-                      <Star className="w-4 h-4 text-gray-800" />
-                      <span className="text-[12px] text-gray-800">
-                        Make Default
-                      </span>
-                    </Button>
-                  </div>
-                }
-                closed={closeMakeDefaultModal}
-              >
-                <div
-                  className="w-[90vw] sm:w-[50vw] min-h-[30vh] h-auto max-h-[80vh]
-                  bg-gray-50 rounded-md p-4 flex items-start justify-center overflow-x-hidden"
+            <div className="flex flex-col items-start gap-1 w-44">
+              {/* Make Default — only when not already default */}
+              {!currentPreview.isDefault && (
+                <Modal
+                  openModalElement={
+                    <div>
+                      <Button
+                        type="button"
+                        className="flex items-center justify-center gap-2 h-auto py-1
+                       px-3 bg-transparent w-full"
+                      >
+                        <Star className="w-4 h-4 text-gray-800" />
+                        <span className="text-[12px] text-gray-800">
+                          Make Default
+                        </span>
+                      </Button>
+                    </div>
+                  }
+                  closed={closeMakeDefaultModal}
                 >
-                  <MakeDefaultAIPreviewForm
-                    aiPreviewID={currentPreview.id}
-                    onSuccess={onMakeDefaultSuccess}
-                  />
-                </div>
-              </Modal>
+                  <div
+                    className="w-[90vw] sm:w-[50vw] min-h-[30vh] h-auto max-h-[80vh]
+                    bg-gray-50 rounded-md p-4 flex items-start justify-center overflow-x-hidden"
+                  >
+                    <MakeDefaultAIPreviewForm
+                      aiPreviewID={currentPreview.id}
+                      onSuccess={onMakeDefaultSuccess}
+                    />
+                  </div>
+                </Modal>
+              )}
 
               {/* Show/Hide Preview */}
               {showAIPreview ? (
@@ -253,7 +283,37 @@ export const QuestionAIPreviewCard: React.FC<QuestionAIPreviewCardProps> = (
                 >
                   <UpdateAIPreviewForm
                     aiPreviewID={currentPreview.id}
+                    currentPrompt={currentPreview.prompt}
                     onSuccess={onUpdateSuccess}
+                  />
+                </div>
+              </Modal>
+
+              {/* Regenerate Preview */}
+              <Modal
+                openModalElement={
+                  <div>
+                    <Button
+                      type="button"
+                      className="flex items-center justify-center gap-2 h-auto py-1
+                     px-3 bg-transparent w-full"
+                    >
+                      <RefreshCw className="w-4 h-4 text-gray-800" />
+                      <span className="text-[12px] text-gray-800">
+                        Regenerate Preview
+                      </span>
+                    </Button>
+                  </div>
+                }
+                closed={closeRegenerateModal}
+              >
+                <div
+                  className="w-[90vw] sm:w-[50vw] min-h-[30vh] h-auto max-h-[80vh]
+                  bg-gray-50 rounded-md p-4 flex items-start justify-center overflow-x-hidden"
+                >
+                  <RegenerateAIPreviewForm
+                    questionID={questionID}
+                    onSuccess={onRegenerateSuccess}
                   />
                 </div>
               </Modal>

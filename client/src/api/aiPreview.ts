@@ -121,9 +121,26 @@ class AIPreviewAPI {
     return await response.json();
   };
 
-  update = async ({ id }: { id: string }) => {
+  update = async ({ id, prompt }: { id: string; prompt?: string }) => {
     const response = await fetch(`${SERVER_URL}/aipreview/${id}`, {
       method: "PUT",
+      body: JSON.stringify({ prompt }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  post = async ({ questionID }: { questionID: string }) => {
+    const response = await fetch(`${SERVER_URL}/aipreview`, {
+      method: "POST",
+      body: JSON.stringify({ questionID }),
       headers: {
         "Content-type": "application/json",
       },
