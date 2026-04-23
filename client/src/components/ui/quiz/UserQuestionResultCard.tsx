@@ -7,6 +7,7 @@ import { convertPlainTextToDelta } from "../../../utils/convertPlainTextToDelta"
 import { UserAnswerResultTable } from "./UserAnswerResultTable";
 import { isArrayWithElements } from "../../../utils/isArrayWithElements";
 import { truncateString } from "../../../utils/truncateString";
+import { QuestionPreviewSummaryCard } from "../aipreview/QuestionPreviewSummaryCard";
 
 interface UserQuestionResultCardProps {
   question: TQuestionWithAttempts;
@@ -27,6 +28,11 @@ export const UserQuestionResultCard: React.FC<UserQuestionResultCardProps> = ({
       ? question.titleDelta!
       : JSON.stringify(convertPlainTextToDelta(question.title))
     : JSON.stringify(convertPlainTextToDelta(question.title));
+
+  const defaultAIPreview = question.aiPreviews?.find(
+    (preview) => preview.isDefault,
+  );
+  const showPreviewSummary = question.showAIPreview && !!defaultAIPreview;
 
   return (
     <div className="p-6 rounded-2xl border border-slate-200 bg-white mb-4 shadow-sm hover:shadow-md transition-shadow">
@@ -80,6 +86,10 @@ export const UserQuestionResultCard: React.FC<UserQuestionResultCardProps> = ({
         attemptStatuses={question.attemptStatuses || []}
         requiresNumericalAnswer={question.requiresNumericalAnswer}
       />
+
+      {showPreviewSummary && (
+        <QuestionPreviewSummaryCard aiPreview={defaultAIPreview} />
+      )}
     </div>
   );
 };
