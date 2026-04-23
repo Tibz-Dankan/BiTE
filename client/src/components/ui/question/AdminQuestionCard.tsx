@@ -193,11 +193,13 @@ export const AdminQuestionCard: React.FC<QuestionCardProps> = (props) => {
       </div>
 
       {isAIPreviewflagEnabled && (
-        <QuestionAIPreviewCard
-          aiPreviews={question.aiPreviews ?? []}
-          showAIPreview={question.showAIPreview}
-          questionID={question.id}
-        />
+        <div className="w-full border-t-1 border-slate-300 pt-4">
+          <QuestionAIPreviewCard
+            aiPreviews={question.aiPreviews ?? []}
+            showAIPreview={question.showAIPreview}
+            questionID={question.id}
+          />
+        </div>
       )}
     </div>
   );
