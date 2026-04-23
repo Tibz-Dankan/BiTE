@@ -6,13 +6,12 @@ import { useNotificationStore } from "../../../stores/notification";
 import { useMutation } from "@tanstack/react-query";
 import { aiPreviewAPI } from "../../../api/aiPreview";
 
-interface UpdateAIPreviewFormProps {
-  aiPreviewID: string;
-  currentPrompt: string;
+interface RegenerateAIPreviewFormProps {
+  questionID: string;
   onSuccess: (succeeded: boolean) => void;
 }
 
-export const UpdateAIPreviewForm: React.FC<UpdateAIPreviewFormProps> = (
+export const RegenerateAIPreviewForm: React.FC<RegenerateAIPreviewFormProps> = (
   props,
 ) => {
   const showCardNotification = useNotificationStore(
@@ -23,7 +22,7 @@ export const UpdateAIPreviewForm: React.FC<UpdateAIPreviewFormProps> = (
   );
 
   const { isPending, mutate } = useMutation({
-    mutationFn: aiPreviewAPI.update,
+    mutationFn: aiPreviewAPI.post,
     onSuccess: async (response: any) => {
       props.onSuccess(true);
       showCardNotification({ type: "success", message: response.message });
@@ -40,12 +39,10 @@ export const UpdateAIPreviewForm: React.FC<UpdateAIPreviewFormProps> = (
   });
 
   const formik = useFormik({
-    initialValues: {
-      prompt: props.currentPrompt,
-    },
-    onSubmit: async (values: any, helpers: any) => {
+    initialValues: {},
+    onSubmit: async (_values: any, helpers: any) => {
       try {
-        mutate({ id: props.aiPreviewID, prompt: values.prompt });
+        mutate({ questionID: props.questionID });
       } catch (error: any) {
         helpers.setStatus({ success: false });
         helpers.setSubmitting(false);
@@ -60,35 +57,15 @@ export const UpdateAIPreviewForm: React.FC<UpdateAIPreviewFormProps> = (
        justify-start gap-4 mb-8"
     >
       <div className="w-full">
-        <h2 className="text-gray-800 font-semibold">Update AI Preview</h2>
+        <h2 className="text-gray-800 font-semibold">Regenerate AI Preview</h2>
       </div>
       <form onSubmit={formik.handleSubmit} className="w-full space-y-6">
         <div className="w-full p-4 bg-gray-100 rounded-lg border border-gray-300">
           <p className="text-sm text-gray-700">
-            Update the prompt and click the button below to{" "}
-            <strong>regenerate</strong> this AI preview with a fresh summary.
-            The current summary will be replaced.
+            Clicking the button below will generate a <strong>new</strong> AI
+            preview for this question using the default prompt. The existing
+            preview will not be replaced — a new one will be added.
           </p>
-        </div>
-
-        <div className="w-full space-y-2">
-          <label
-            htmlFor="update-prompt"
-            className="text-sm font-medium text-gray-700"
-          >
-            Prompt
-          </label>
-          <textarea
-            id="update-prompt"
-            name="prompt"
-            value={formik.values.prompt}
-            onChange={formik.handleChange}
-            rows={6}
-            className="w-full p-3 border border-gray-300 rounded-lg text-sm
-             text-gray-700 resize-y focus:outline-none focus:ring-1
-             focus:ring-(--clr-primary) focus:border-(--clr-primary)"
-            placeholder="Enter the prompt for AI preview generation..."
-          />
         </div>
 
         <div className="w-full flex items-center justify-center lg:justify-end">
@@ -100,10 +77,10 @@ export const UpdateAIPreviewForm: React.FC<UpdateAIPreviewFormProps> = (
             {isPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Updating...
+                Generating...
               </>
             ) : (
-              "Update Preview"
+              "Regenerate"
             )}
           </Button>
         </div>
