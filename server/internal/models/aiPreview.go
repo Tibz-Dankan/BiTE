@@ -70,3 +70,17 @@ func (ap *AIPreview) RemoveDefaultByQuestion(questionID string) error {
 		Where("\"questionID\" = ? AND \"isDefault\" = ?", questionID, true).
 		Update("isDefault", false).Error
 }
+
+// ExistsByQuiz checks if any AI previews exist for questions belonging to a given quiz
+func (ap *AIPreview) ExistsByQuiz(quizID string) (bool, error) {
+	var count int64
+
+	if err := db.Model(&AIPreview{}).
+		Where("\"questionID\" IN (?)",
+			db.Model(&Question{}).Select("id").Where("\"quizID\" = ?", quizID),
+		).Count(&count).Error; err != nil {
+		return false, err
+	}
+
+	return count > 0, nil
+}
