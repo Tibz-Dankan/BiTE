@@ -8,6 +8,7 @@ import { UserAnswerResultTable } from "./UserAnswerResultTable";
 import { isArrayWithElements } from "../../../utils/isArrayWithElements";
 import { truncateString } from "../../../utils/truncateString";
 import { QuestionPreviewSummaryCard } from "../aipreview/QuestionPreviewSummaryCard";
+import { useFeatureFlagEnabled } from "@posthog/react";
 
 interface UserQuestionResultCardProps {
   question: TQuestionWithAttempts;
@@ -22,6 +23,8 @@ export const UserQuestionResultCard: React.FC<UserQuestionResultCardProps> = ({
   const isCorrect = attemptStatus?.IsCorrect;
   const questionAttachments = question.attachments;
   const hasQuestionAttachments = isArrayWithElements(questionAttachments);
+
+  const isAIPreviewUserFlagEnabled = useFeatureFlagEnabled("ai-preview-user");
 
   const questionTitleDelta = question.isDeltaDefault
     ? isJSON(question.titleDelta!)
@@ -87,7 +90,7 @@ export const UserQuestionResultCard: React.FC<UserQuestionResultCardProps> = ({
         requiresNumericalAnswer={question.requiresNumericalAnswer}
       />
 
-      {showPreviewSummary && (
+      {isAIPreviewUserFlagEnabled && showPreviewSummary && (
         <QuestionPreviewSummaryCard aiPreview={defaultAIPreview} />
       )}
     </div>
