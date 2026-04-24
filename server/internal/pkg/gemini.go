@@ -41,9 +41,9 @@ Answers:
 Instructions:
 1. Identify the correct answer(s) from the list above (marked with [CORRECT ANSWER]).
 2. Explain WHY the correct answer is right with clear reasoning.
-3. Briefly explain why the other answers are incorrect.
-4. Provide any additional educational context that helps the learner understand the concept better.
-5. Keep the explanation concise but comprehensive enough for a student to fully understand.
+3. Do NOT mention or explain incorrect answers.
+4. Do NOT include any additional educational context beyond the correct answer explanation.
+5. Keep the explanation concise and focused solely on the correct answer.
 6. Format your response as a clear, readable summary without using markdown headers.
 
 Provide your analysis:`, questionTitle, func() string {
