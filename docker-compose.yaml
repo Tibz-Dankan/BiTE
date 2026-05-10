@@ -28,6 +28,11 @@ services:
       placement:
         constraints:
           - node.role == manager
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.backend.rule=Host(`api.bitcoinhighschool.com`)"
+        - "traefik.http.routers.backend.entrypoints=websecure"
+        - "traefik.http.services.backend.loadbalancer.server.port=5000"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
       interval: 10s
@@ -39,17 +44,17 @@ services:
       - app-network
     ports:
       - "5000:5000"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`api.bitcoinhighschool.com`)"
 
   traefik:
-    image: traefik:v3.4
+    image: traefik:v3.7
+    environment:
+      - DOCKER_API_VERSION=1.54
     command:
       - "--providers.swarm.endpoint=unix:///var/run/docker.sock"
       - "--providers.swarm.exposedByDefault=false"
       - "--providers.docker.exposedbydefault=false"
       - "--providers.swarm.watch=true" # Enable watching for changes
+      - "--providers.swarm.network=app-network" # Tell Traefik which network to use
       - "--api.insecure=true"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
@@ -131,15 +136,17 @@ services:
       placement:
         constraints:
           - node.role == manager
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.grafana.rule=Host(`grafana.bitcoinhighschool.com`)"
+        - "traefik.http.routers.grafana.entrypoints=websecure"
+        - "traefik.http.services.grafana.loadbalancer.server.port=3000" 
     networks:
       - app-network
     ports:
       - "3000:3000"
     volumes:
       - grafana-data:/var/lib/grafana
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.grafana.rule=Host(`grafana.bitcoinhighschool.com`)"
 
   prometheus:
     image: mmarvinken/bite-prometheus:latest
@@ -153,6 +160,11 @@ services:
       placement:
         constraints:
           - node.role == manager
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.prometheus.rule=Host(`prometheus.bitcoinhighschool.com`)"
+        - "traefik.http.routers.prometheus.entrypoints=websecure"
+        - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
     networks:
       - app-network
     ports:
@@ -160,9 +172,6 @@ services:
     volumes:
       - prometheus-data:/prometheus
       - prometheus-config:/etc/prometheus
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.prometheus.rule=Host(`prometheus.bitcoinhighschool.com`)"
 
 networks:
   app-network:
