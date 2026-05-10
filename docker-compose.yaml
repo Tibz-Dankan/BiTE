@@ -54,7 +54,7 @@ services:
       - "--providers.swarm.exposedByDefault=false"
       - "--providers.docker.exposedbydefault=false"
       - "--providers.swarm.watch=true" # Enable watching for changes
-      - "--providers.swarm.network=app-network" # Tell Traefik which network to use
+      - "--providers.swarm.network=app-stack_app-network" # Tell Traefik which network to use
       - "--api.insecure=true"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
