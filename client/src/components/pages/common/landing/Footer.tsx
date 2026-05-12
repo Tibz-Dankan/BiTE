@@ -19,7 +19,7 @@ export const Footer: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex gap-8 text-sm text-gray-600">
+          <div className="flex flex-wrap justify-center md:justify-end gap-x-6 gap-y-3 text-sm text-gray-600">
             <Link
               to="/privacy-policy"
               className="hover:text-primary transition-colors"
@@ -51,6 +51,14 @@ export const Footer: React.FC = () => {
               className="hover:text-primary transition-colors"
             >
               Support
+            </a>
+            <a
+              href="https://bhs-ocr.onrender.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary transition-colors"
+            >
+              AutoGrade
             </a>
           </div>
         </div>
