@@ -12,11 +12,16 @@ import {
 class ChessPuzzleAPI {
   getNext = async ({
     difficulty = "normal",
+    puzzleId,
   }: {
     difficulty?: TChessDifficulty;
+    puzzleId?: string;
   }): Promise<TChessPuzzleNextResponse> => {
+    const params = new URLSearchParams({ difficulty });
+    if (puzzleId) params.set("puzzleId", puzzleId);
+
     const response = await fetch(
-      `${SERVER_URL}/chesspuzzle/next?difficulty=${difficulty}`,
+      `${SERVER_URL}/chesspuzzle/next?${params.toString()}`,
       {
         method: "GET",
         headers: {

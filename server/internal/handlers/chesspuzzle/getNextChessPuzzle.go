@@ -43,9 +43,24 @@ var GetNextChessPuzzle = func(c *fiber.Ctx) error {
 	target := rating.Rating + offset
 
 	chessPuzzle := models.ChessPuzzle{}
-	puzzle, err := chessPuzzle.GetNextForUser(userID, target, puzzleRatingBand)
-	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	var puzzle models.ChessPuzzle
+
+	// A caller resuming a specific puzzle (e.g. after a page refresh) can ask
+	// for it by id. A direct lookup intentionally bypasses the already-won
+	// exclusion below — that filter only governs random selection. A
+	// stale/invalid id falls through to a normal next-puzzle fetch.
+	if puzzleID := c.Query("puzzleId", ""); puzzleID != "" {
+		puzzle, err = chessPuzzle.FindOne(puzzleID)
+		if err != nil {
+			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		}
+	}
+
+	if puzzle.ID == "" {
+		puzzle, err = chessPuzzle.GetNextForUser(userID, target, puzzleRatingBand)
+		if err != nil {
+			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		}
 	}
 	if puzzle.ID == "" {
 		return fiber.NewError(fiber.StatusNotFound, "No puzzles available. You may have solved them all!")
