@@ -17,6 +17,25 @@
   box-sizing: inherit;
 }
 
+/* Tailwind v4 preflight uses `cursor: default` for buttons; restore the
+   pointer cursor for all clickable elements on hover. */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled),
+  a,
+  label[for],
+  select:not(:disabled),
+  summary,
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled),
+  input[type="submit"]:not(:disabled),
+  input[type="button"]:not(:disabled),
+  input[type="reset"]:not(:disabled),
+  input[type="file"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
 :root {
   --clr-background: oklch(97.69% 0.003 106.48);
   --clr-primary: oklch(74.93% 0.154 70.67);

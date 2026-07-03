@@ -4,6 +4,7 @@ import {
   FileQuestion,
   Gift,
   LayoutDashboard,
+  Puzzle,
   Settings,
   XCircle,
 } from "lucide-react";
@@ -17,9 +18,14 @@ import { UserQuizView } from "../components/pages/quiz/UserQuizView";
 import { UserQuizAttempt } from "../components/pages/quiz/UserQuizAttempt";
 import { UserQuizResultPage } from "../components/pages/quiz/UserQuizResultPage";
 import { UserDashboard } from "../components/pages/quiz/UserDashboard";
+import { ChessPuzzlesPage } from "../components/pages/chess/ChessPuzzlesPage";
 import { UserCategoryCertificateQuizzes } from "../components/pages/categorycertificate/UserCategoryCertificateQuizzes";
 import { SettingsPage } from "../components/pages/user/SettingsPage";
+import { useFeatureFlagEnabled } from "@posthog/react";
+
 export const UserRoutes: React.FC = () => {
+  const isChessPuzzleEnabled = useFeatureFlagEnabled("chesspuzzle");
+
   const routes: TRoute = {
     title: "User",
     pages: [
@@ -36,6 +42,13 @@ export const UserRoutes: React.FC = () => {
         path: "/u/quizzes",
         showInSidebar: true,
         element: <UserQuizView />,
+      },
+      {
+        title: "Chess Puzzles",
+        icon: <Puzzle className="h-5 w-5" />,
+        path: "/u/chess-puzzles",
+        showInSidebar: isChessPuzzleEnabled ? true : false,
+        element: <ChessPuzzlesPage />,
       },
       {
         title: "Rewards",
