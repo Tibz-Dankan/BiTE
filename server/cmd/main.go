@@ -222,11 +222,14 @@ func main() {
 	aiPreviewGroup.Post("/quiz/:quizID", middlewares.Auth, middlewares.IsAdmin, aipreview.PostAIPreviewsByQuiz)
 	aiPreviewGroup.Get("/quiz/:quizID/exists", middlewares.Auth, aipreview.CheckAIPreviewsByQuiz)
 
-	// Chess Puzzle Attempt
-	chessPuzzleAttemptGroup := app.Group("/api/v1/chesspuzzle", func(c *fiber.Ctx) error {
+	// Chess Puzzle
+	chessPuzzleGroup := app.Group("/api/v1/chesspuzzle", func(c *fiber.Ctx) error {
 		return c.Next()
 	})
-	chessPuzzleAttemptGroup.Post("/attempt", middlewares.Auth, chesspuzzle.PostChessPuzzleAttempt)
+	chessPuzzleGroup.Get("/next", middlewares.Auth, chesspuzzle.GetNextChessPuzzle)
+	chessPuzzleGroup.Get("/rating", middlewares.Auth, chesspuzzle.GetChessUserPuzzleRating)
+	chessPuzzleGroup.Post("/move", middlewares.Auth, chesspuzzle.ValidateChessPuzzleMove)
+	chessPuzzleGroup.Post("/attempt", middlewares.Auth, chesspuzzle.PostChessPuzzleAttempt)
 
 	// Metrics
 	app.Get("/metrics", monitor.GetMetrics)

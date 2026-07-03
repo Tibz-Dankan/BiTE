@@ -27,3 +27,10 @@ type SatsRewardAddressEventData struct {
 	UserID  string
 	Address string
 }
+
+// ChessPuzzleSatsRewardEventData represents the data published with
+// MAKE_CHESS_PUZZLE_SATS_REWARD_PAYMENT event
+type ChessPuzzleSatsRewardEventData struct {
+	UserID        string
+	ChessPuzzleID string
+}

@@ -26,19 +26,21 @@ type User struct {
 	UpdatedAt                         time.Time `gorm:"column:updatedAt" json:"updatedAt"`
 
 	// Relationships
-	OTPs             []OTP                 `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"otps,omitempty"`
-	Sessions         []*Session            `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"sessions,omitempty"`
-	Locations        []*Location           `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"locations,omitempty"`
-	Quizzes          []*Quiz               `gorm:"foreignKey:PostedByUserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"quizzes,omitempty"`
-	Questions        []*Question           `gorm:"foreignKey:PostedByUserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"questions,omitempty"`
-	Answers          []*Answer             `gorm:"foreignKey:PostedByUserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"answers,omitempty"`
-	Attempts         []*Attempt            `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"attempts,omitempty"`
-	AttemptDurations []*AttemptDuration    `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"attemptDurations,omitempty"`
-	Rankings         *Ranking              `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"rankings,omitempty"`
-	QuizUserProgress []*QuizUserProgress   `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"quizUserProgress,omitempty"`
-	SiteVisits       []*SiteVisit          `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"siteVisits,omitempty"`
-	Attachments      []*Attachment         `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"attachments,omitempty"`
-	Certificates     []*CertificateAwarded `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"certificates,omitempty"`
+	OTPs                   []OTP                  `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"otps,omitempty"`
+	Sessions               []*Session             `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"sessions,omitempty"`
+	Locations              []*Location            `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"locations,omitempty"`
+	Quizzes                []*Quiz                `gorm:"foreignKey:PostedByUserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"quizzes,omitempty"`
+	Questions              []*Question            `gorm:"foreignKey:PostedByUserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"questions,omitempty"`
+	Answers                []*Answer              `gorm:"foreignKey:PostedByUserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"answers,omitempty"`
+	Attempts               []*Attempt             `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"attempts,omitempty"`
+	AttemptDurations       []*AttemptDuration     `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"attemptDurations,omitempty"`
+	Rankings               *Ranking               `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"rankings,omitempty"`
+	QuizUserProgress       []*QuizUserProgress    `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"quizUserProgress,omitempty"`
+	SiteVisits             []*SiteVisit           `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"siteVisits,omitempty"`
+	Attachments            []*Attachment          `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"attachments,omitempty"`
+	Certificates           []*CertificateAwarded  `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"certificates,omitempty"`
+	ChessPuzzleRounds      []*ChessPuzzleRound    `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"chessPuzzleRounds,omitempty"`
+	ChessUserPuzzleRatings *ChessUserPuzzleRating `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"chessUserPuzzleRatings,omitempty"`
 }
 
 type OTP struct {
@@ -319,6 +321,7 @@ type Attachment struct {
 	Certificate  *CertificateAwarded `gorm:"foreignKey:CertificateAwardedID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"certificate,omitempty"`
 }
 
+// TODO: To be renamed to SatsRewardQuiz
 type SatsReward struct {
 	ID                  string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
 	UserID              string    `gorm:"column:userID;not null;index" json:"userID"`
@@ -427,6 +430,9 @@ type ChessPuzzle struct {
 	Color           string         `gorm:"column:color;not null;default:'w'"`
 	CreatedAt       time.Time      `gorm:"column:createdAt;not null;autoCreateTime"`
 	UpdatedAt       time.Time      `gorm:"column:updatedAt;not null;autoUpdateTime"`
+
+	// Relationships
+	ChessPuzzleRounds []*ChessPuzzleRound `gorm:"foreignKey:ChessPuzzleID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"chessPuzzleRounds,omitempty"`
 }
 
 func (ChessPuzzle) TableName() string {
@@ -439,6 +445,8 @@ type ChessPuzzleRound struct {
 	UserID             string    `gorm:"column:userId;not null"`
 	Angle              string    `gorm:"column:angle;not null;default:'mix'"`
 	Win                bool      `gorm:"column:win;not null"`
+	Clean              bool      `gorm:"column:clean;not null;default:false"`
+	Outcome            string    `gorm:"column:outcome;not null;default:'ATTEMPTED'"` // ATTEMPTED, WATCHED_SOLUTION
 	TimeMs             int       `gorm:"column:timeMs"`
 	SatsEarned         int       `gorm:"column:satsEarned;not null;default:0"`
 	PuzzleRatingBefore int       `gorm:"column:puzzleRatingBefore;not null"`
@@ -447,6 +455,10 @@ type ChessPuzzleRound struct {
 	UserRatingAfter    int       `gorm:"column:userRatingAfter;not null"`
 	CreatedAt          time.Time `gorm:"column:createdAt;not null;autoCreateTime"`
 	UpdatedAt          time.Time `gorm:"column:updatedAt;not null;autoUpdateTime"`
+
+	// Relationships
+	User        *User        `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"user,omitempty"`
+	ChessPuzzle *ChessPuzzle `gorm:"foreignKey:ChessPuzzleID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"chessPuzzle,omitempty"`
 }
 
 func (ChessPuzzleRound) TableName() string {
@@ -463,8 +475,32 @@ type ChessUserPuzzleRating struct {
 	LastPlayedAt    *time.Time `gorm:"column:lastPlayedAt"`
 	CreatedAt       time.Time  `gorm:"column:createdAt;not null;autoCreateTime"`
 	UpdatedAt       time.Time  `gorm:"column:updatedAt;not null;autoUpdateTime"`
+
+	// Relationships
+	User *User `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"user,omitempty"`
 }
 
 func (ChessUserPuzzleRating) TableName() string {
 	return "chess_user_puzzle_ratings"
+}
+
+type SatsRewardChessPuzzle struct {
+	ID                  string    `gorm:"column:id;type:uuid;primaryKey" json:"id"`
+	UserID              string    `gorm:"column:userID;not null;index" json:"userID"`
+	ChessPuzzleID       string    `gorm:"column:chessPuzzleID;not null;index" json:"chessPuzzleID"`
+	SatsRewardAddressID string    `gorm:"column:satsRewardAddressID;not null;index" json:"satsRewardAddressID"`
+	Status              string    `gorm:"column:status;not null;index" json:"status"` // PENDING, COMPLETED, FAILED
+	Transaction         JSONB     `gorm:"column:transaction" json:"transaction,omitempty"`
+	Info                string    `gorm:"column:info" json:"info,omitempty"`
+	CreatedAt           time.Time `gorm:"column:createdAt;index" json:"createdAt"`
+	UpdatedAt           time.Time `gorm:"column:updatedAt;index" json:"updatedAt"`
+
+	// Relationships
+	User              *User              `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"user,omitempty"`
+	ChessPuzzle       *ChessPuzzle       `gorm:"foreignKey:ChessPuzzleID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"chessPuzzle,omitempty"`
+	SatsRewardAddress *SatsRewardAddress `gorm:"foreignKey:SatsRewardAddressID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL" json:"satsRewardAddress,omitempty"`
+}
+
+func (SatsRewardChessPuzzle) TableName() string {
+	return "sats_reward_chess_puzzles"
 }

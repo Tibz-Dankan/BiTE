@@ -60,7 +60,8 @@ func Db() *gorm.DB {
 			&Ranking{}, &SiteVisit{}, &QuizUserProgress{}, &Attachment{}, &SatsReward{},
 			&SatsRewardAddress{}, &SatsRewardTransaction{}, &SatsRewardOperation{},
 			&CategoryCertificate{}, &CategoryCertificateQuizzes{}, &CertificateAwarded{},
-			&ChessPuzzle{}, &ChessPuzzleRound{}, &ChessUserPuzzleRating{})
+			&ChessPuzzle{}, &ChessPuzzleRound{}, &ChessUserPuzzleRating{},
+			&SatsRewardChessPuzzle{})
 		if err != nil {
 			log.Fatal("Failed to make auto migration", err)
 		}
