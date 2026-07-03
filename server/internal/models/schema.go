@@ -441,12 +441,12 @@ func (ChessPuzzle) TableName() string {
 
 type ChessPuzzleRound struct {
 	ID                 string    `gorm:"column:id;primaryKey"`
-	ChessPuzzleID      string    `gorm:"column:chessPuzzleId;not null"`
-	UserID             string    `gorm:"column:userId;not null"`
+	ChessPuzzleID      string    `gorm:"column:chessPuzzleId;index;not null"`
+	UserID             string    `gorm:"column:userId;index;not null"`
 	Angle              string    `gorm:"column:angle;not null;default:'mix'"`
-	Win                bool      `gorm:"column:win;not null"`
-	Clean              bool      `gorm:"column:clean;not null;default:false"`
-	Outcome            string    `gorm:"column:outcome;not null;default:'ATTEMPTED'"` // ATTEMPTED, WATCHED_SOLUTION
+	Win                bool      `gorm:"column:win;index;not null"`
+	Clean              bool      `gorm:"column:clean;index;not null;default:false"`
+	Outcome            string    `gorm:"column:outcome;index;not null;default:'ATTEMPTED'"` // ATTEMPTED, WATCHED_SOLUTION
 	TimeMs             int       `gorm:"column:timeMs"`
 	SatsEarned         int       `gorm:"column:satsEarned;not null;default:0"`
 	PuzzleRatingBefore int       `gorm:"column:puzzleRatingBefore;not null"`
