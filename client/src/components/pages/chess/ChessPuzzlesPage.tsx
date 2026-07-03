@@ -118,7 +118,7 @@ export const ChessPuzzlesPage: React.FC = () => {
         <>
           <div className="grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)_300px] gap-6 lg:items-start">
             {/* Left rail */}
-            <aside className="order-2 lg:order-1">
+            <aside className="order-3 lg:order-1">
               <PuzzleInfoPanel
                 puzzle={puzzle}
                 result={result}
@@ -156,7 +156,7 @@ export const ChessPuzzlesPage: React.FC = () => {
             </main>
 
             {/* Right rail */}
-            <aside className="order-3 flex flex-col gap-4">
+            <aside className="order-2 lg:order-3 flex flex-col gap-4">
               <MoveList startFen={puzzle.fen} sanHistory={sanHistory} />
               <PuzzleFeedback
                 status={status}
