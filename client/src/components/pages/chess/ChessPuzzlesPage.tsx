@@ -89,9 +89,7 @@ export const ChessPuzzlesPage: React.FC = () => {
       className="w-full max-w-6xl mx-auto px-2 sm:px-4 py-4"
       onPointerDown={() => unlockAudio()}
     >
-      <h1 className="text-2xl font-bold text-(--foreground) mb-4">
-        Chess Puzzles
-      </h1>
+      <h1 className="text-2xl font-bold text-(--foreground) mb-4">Puzzles</h1>
 
       {isLoading && (
         <div className="flex items-center justify-center min-h-[60vh]">

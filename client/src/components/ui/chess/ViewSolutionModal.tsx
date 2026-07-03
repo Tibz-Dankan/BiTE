@@ -29,9 +29,9 @@ export const ViewSolutionModal: React.FC<ViewSolutionModalProps> = ({
         </div>
 
         <p className="text-sm text-(--muted-foreground) mb-6">
-          Once you view the solution for this puzzle (
-          <span className="font-medium text-(--foreground)">#{puzzleId}</span>),
-          you won't be rewarded for it.
+          Once you view the solution for this puzzle{" "}
+          <span className="font-medium text-(--foreground)">#{puzzleId}</span>,
+          you won't be rewarded for solving it.
         </p>
 
         <div className="flex justify-end gap-3">

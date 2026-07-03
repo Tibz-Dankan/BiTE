@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Chess } from "chess.js";
 import { chessPuzzleAPI } from "../api/chessPuzzle";
 import { useGetNextPuzzle } from "./useGetNextPuzzle";
@@ -57,8 +58,12 @@ const WRONG_RESET_MS = 500;
 
 export const usePuzzleSolver = () => {
   const difficulty = useChessPuzzleStore((s) => s.difficulty);
+  const [searchParams, setSearchParams] = useSearchParams();
+  // Read once at mount so this only resumes a puzzle on an actual page
+  // load/refresh, not on a later in-app edit of the URL.
+  const initialPuzzleIdRef = useRef(searchParams.get("cpi") ?? undefined);
   const { puzzle, isLoading, isFetching, isError, error, refetch } =
-    useGetNextPuzzle(difficulty);
+    useGetNextPuzzle(difficulty, initialPuzzleIdRef.current);
   const submit = useSubmitPuzzleAttempt();
 
   const [board, setBoard] = useState<TBoardState>({
@@ -376,6 +381,21 @@ export const usePuzzleSolver = () => {
   useEffect(() => {
     if (puzzle) engine.current.startPuzzle(puzzle);
   }, [puzzle]);
+
+  // Keep the URL's `cpi` param in sync with whichever puzzle is on screen,
+  // so a refresh resumes the same puzzle. Left untouched if it already
+  // matches (no redundant history entry).
+  useEffect(() => {
+    if (!puzzle) return;
+    if (searchParams.get("cpi") === puzzle.puzzleId) return;
+    setSearchParams(
+      (prev) => {
+        prev.set("cpi", puzzle.puzzleId);
+        return prev;
+      },
+      { replace: true },
+    );
+  }, [puzzle, searchParams, setSearchParams]);
 
   return {
     board,
