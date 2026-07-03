@@ -13,3 +13,16 @@
 .cg-wrap coords.files {
   left: 18px;
 }
+
+/* Small screens: reset the file-row offset and remove the rank column's
+   fixed -20px vertical shift so 1–8 is centered between the board's top and
+   bottom (chessground's default assumes a surrounding margin that doesn't
+   hold at small, edge-to-edge board sizes). */
+@media (max-width: 479px) {
+  .cg-wrap coords.files {
+    left: 0;
+  }
+  .cg-wrap coords.ranks {
+    top: 0;
+  }
+}
