@@ -1,6 +1,15 @@
 /* Overrides for chessground coordinate labels.
    Loaded AFTER the chessground CSS so these rules win the cascade. */
 
+/* Round + clip the board face (checkered background, squares, pieces) to
+   match the app's corner radius. Scoped to cg-board itself, not .cg-wrap,
+   so the coordinate labels below — which are positioned outside the
+   board's box by design — are never clipped, at any screen size. */
+.cg-wrap cg-board {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
 /* Bold + slightly larger for both file (a–h) and rank (1–8) labels. */
 .cg-wrap coords coord {
   font-weight: 700;
@@ -14,15 +23,35 @@
   left: 18px;
 }
 
-/* Small screens: reset the file-row offset and remove the rank column's
-   fixed -20px vertical shift so 1–8 is centered between the board's top and
-   bottom (chessground's default assumes a surrounding margin that doesn't
-   hold at small, edge-to-edge board sizes). */
+/* chessground's default also shifts the rank column by `top: -20px`
+   (assumes the same surrounding margin). Our board is edge-to-edge at
+   every size. Pin ranks to the board's own top edge. */
+.cg-wrap coords.ranks {
+  top: 0;
+}
+
+/* Small screens: move the labels fully outside the board for legibility.
+   Files keep their horizontal position (left: 0) and shift further down;
+   ranks keep their vertical position (top: 0 above) and shift further
+   left. Safe at every screen size since coords live outside cg-board's
+   clipped box (see the cg-board rule above). */
 @media (max-width: 479px) {
+  /* chessground's base CSS sets opacity:0.8 on the coords container itself
+     (tuned for labels sitting on top of light/dark squares). A descendant's
+     color can't cancel an ancestor's opacity, so without this the labels
+     render as translucent grey instead of solid black once moved outside
+     the board onto the page background. */
+  .cg-wrap coords {
+    opacity: 1;
+  }
+  .cg-wrap coords coord {
+    color: #000;
+  }
   .cg-wrap coords.files {
     left: 0;
+    transform: translateY(12px);
   }
   .cg-wrap coords.ranks {
-    top: 0;
+    transform: translateX(-12px);
   }
 }
