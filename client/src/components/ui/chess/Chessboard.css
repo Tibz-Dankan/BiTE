@@ -1,0 +1,15 @@
+/* Overrides for chessground coordinate labels.
+   Loaded AFTER the chessground CSS so these rules win the cascade. */
+
+/* Bold + slightly larger for both file (a–h) and rank (1–8) labels. */
+.cg-wrap coords coord {
+  font-weight: 700;
+  font-size: 10px;
+}
+
+/* chessground's base CSS offsets the file row by `left: 24px` (assumes a
+   surrounding margin); on our edge-to-edge board that shifts a–h off their
+   columns. Nudge back so a–h sit under their files. */
+.cg-wrap coords.files {
+  left: 18px;
+}
