@@ -11,6 +11,11 @@ type JSONB json.RawMessage
 
 // Scan scan value into Jsonb, implements sql.Scanner interface
 func (j *JSONB) Scan(value interface{}) error {
+	if value == nil {
+		*j = nil
+		return nil
+	}
+
 	bytes, ok := value.([]byte)
 	if !ok {
 		return errors.New(fmt.Sprint("Failed to unmarshal JSONB value:", value))
