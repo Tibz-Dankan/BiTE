@@ -4,6 +4,7 @@ import { Chess } from "chess.js";
 import { chessPuzzleAPI } from "../api/chessPuzzle";
 import { useGetNextPuzzle } from "./useGetNextPuzzle";
 import { useSubmitPuzzleAttempt } from "./useSubmitPuzzleAttempt";
+import { useChessUserRating } from "./useChessUserRating";
 import { useChessPuzzleStore } from "../stores/chessPuzzle";
 import { playMoveSound, playResultSound } from "../utils/chessSound";
 import type {
@@ -65,6 +66,10 @@ export const usePuzzleSolver = () => {
   const { puzzle, isLoading, isFetching, isError, error, refetch } =
     useGetNextPuzzle(difficulty, initialPuzzleIdRef.current);
   const submit = useSubmitPuzzleAttempt();
+  // Live rating, refetched automatically after every attempt (see
+  // useSubmitPuzzleAttempt's invalidation) and on window refocus — the
+  // source of truth for the on-screen number, not a point-in-time snapshot.
+  const { rating: userRating } = useChessUserRating();
 
   const [board, setBoard] = useState<TBoardState>({
     fen: "8/8/8/8/8/8/8/8 w - - 0 1",
@@ -404,6 +409,7 @@ export const usePuzzleSolver = () => {
     sanHistory,
     pendingPromotion,
     puzzle,
+    userRating,
     isLoading,
     isFetching,
     isError,

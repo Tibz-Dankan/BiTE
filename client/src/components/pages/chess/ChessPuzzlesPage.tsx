@@ -55,6 +55,7 @@ export const ChessPuzzlesPage: React.FC = () => {
     sanHistory,
     pendingPromotion,
     puzzle,
+    userRating,
     isLoading,
     isFetching,
     isError,
@@ -73,10 +74,10 @@ export const ChessPuzzlesPage: React.FC = () => {
   }, [status]);
 
   const displayRating =
-    result?.userRating.after ?? puzzle?.userRating.rating ?? 1500;
+    userRating?.rating ?? puzzle?.userRating.rating ?? 1500;
   const ratingDiff = result?.userRating.diff ?? null;
   const provisional =
-    result?.userRating.provisional ?? puzzle?.userRating.provisional ?? true;
+    userRating?.provisional ?? puzzle?.userRating.provisional ?? true;
 
   const flagEnabled = useFeatureFlagEnabled("chesspuzzle");
 
