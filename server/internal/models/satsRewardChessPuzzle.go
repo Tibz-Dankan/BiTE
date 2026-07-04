@@ -5,6 +5,31 @@ import (
 	"gorm.io/gorm"
 )
 
+func (s *SatsRewardChessPuzzle) FindAllByUser(userID string, limit float64, cursor string) ([]SatsRewardChessPuzzle, error) {
+	var satsRewards []SatsRewardChessPuzzle
+
+	query := db.Model(&SatsRewardChessPuzzle{}).
+		Preload("User", func(db *gorm.DB) *gorm.DB {
+			return db.Select("id", "name", "email", "\"profileBgColor\"", "\"createdAt\"", "\"updatedAt\"")
+		}).
+		Preload("SatsRewardAddress").
+		Order("\"createdAt\" DESC").Limit(int(limit))
+
+	if cursor != "" {
+		var lastSatsReward SatsRewardChessPuzzle
+		if err := db.Select("\"createdAt\"").Where("id = ?", cursor).First(&lastSatsReward).Error; err != nil {
+			return nil, err
+		}
+		query = query.Where("\"createdAt\" < ?", lastSatsReward.CreatedAt)
+	}
+
+	if err := query.Where("\"userID\" = ?", userID).Find(&satsRewards).Error; err != nil {
+		return nil, err
+	}
+
+	return satsRewards, nil
+}
+
 func (s *SatsRewardChessPuzzle) BeforeCreate(tx *gorm.DB) error {
 	uuid := uuid.New().String()
 	tx.Statement.SetColumn("ID", uuid)

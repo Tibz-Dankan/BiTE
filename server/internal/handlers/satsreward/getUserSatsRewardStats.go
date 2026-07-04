@@ -54,6 +54,23 @@ var GetUserSatsRewardStats = func(c *fiber.Ctx) error {
 		}
 	}
 
+	chessPuzzleSatsReward := models.SatsRewardChessPuzzle{}
+	chessPuzzleSatsRewards, err := chessPuzzleSatsReward.FindAllByUser(userID, 1500, "")
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	for _, chessPuzzleReward := range chessPuzzleSatsRewards {
+		if chessPuzzleReward.Status != "COMPLETED" {
+			continue
+		}
+		var dimensions types.TransactionDetail
+		if err := json.Unmarshal(chessPuzzleReward.Transaction, &dimensions); err != nil {
+			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		}
+		totalSatsEarned += int64(math.Abs(float64(dimensions.SettlementAmount)))
+	}
+
 	rewardStats := fiber.Map{
 		"totalSatsToBeClaimed": totalSatsToBeClaimed,
 		"totalSatsEarned":      totalSatsEarned,
