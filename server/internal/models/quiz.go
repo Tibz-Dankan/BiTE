@@ -1,6 +1,8 @@
 package models
 
 import (
+	"time"
+
 	"github.com/Tibz-Dankan/BiTE/internal/types"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -587,6 +589,24 @@ func (q *Quiz) UpdateShowQuiz(id string, showQuiz bool) (Quiz, error) {
 
 	// Fetch the updated quiz to return it
 	// We use FindOne to get the fresh state
+	quiz, err := q.FindOneAndIncludeAttachments(id)
+	if err != nil {
+		return quiz, err
+	}
+
+	return quiz, nil
+}
+
+func (q *Quiz) UpdateDates(id string, startsAt, endsAt time.Time) (Quiz, error) {
+	var quiz Quiz
+	if err := db.Model(&Quiz{}).Where("id = ?", id).Updates(map[string]interface{}{
+		"\"startsAt\"": startsAt,
+		"\"endsAt\"":   endsAt,
+	}).Error; err != nil {
+		return quiz, err
+	}
+
+	// Fetch the updated quiz to return it
 	quiz, err := q.FindOneAndIncludeAttachments(id)
 	if err != nil {
 		return quiz, err
