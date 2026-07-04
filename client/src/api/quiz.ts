@@ -7,6 +7,7 @@ import type {
   TGetQuizzesByUserAndProgress,
   TUpdateQuiz,
   TUpdateQuizAttachment,
+  TUpdateQuizDates,
 } from "../types/quiz";
 
 class QuizAPI {
@@ -58,6 +59,25 @@ class QuizAPI {
         instructions,
         instructionsDelta,
         instructionsHTML,
+      }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  updateDates = async ({ id, startsAt, endsAt }: TUpdateQuizDates) => {
+    const response = await fetch(`${SERVER_URL}/quiz/${id}/dates`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        startsAt,
+        endsAt,
       }),
       headers: {
         "Content-type": "application/json",

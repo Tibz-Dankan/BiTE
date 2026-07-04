@@ -6,6 +6,7 @@ import type { TQuiz } from "../../../types/quiz";
 import { Loader2 } from "lucide-react";
 import { AlertCard } from "../../ui/shared/AlertCard";
 import { UpdateQuiz } from "../../ui/quiz/UpdateQuiz";
+import { UpdateQuizDates } from "../../ui/quiz/UpdateQuizDates";
 import { UpdateQuizAttachment } from "../../ui/quiz/UpdateQuizAttachment";
 import { UpdateQuizFormHeading } from "../../ui/quiz/UpdateQuizFormHeading";
 
@@ -50,8 +51,14 @@ export const AdminQuizUpdate: React.FC = () => {
             quizTitle={quiz.title}
           />
         </div>
-        <div className="w-full">
+        <div className="w-full space-y-8">
           <UpdateQuiz quiz={quiz} />
+          <div className="w-full border-t border-gray-200 pt-8 space-y-2">
+            <h2 className="text-lg font-semibold text-gray-800">
+              Update Start &amp; End Dates
+            </h2>
+            <UpdateQuizDates quiz={quiz} />
+          </div>
         </div>
       </div>
     </div>
