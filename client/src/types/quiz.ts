@@ -90,6 +90,12 @@ export type TUpdateQuiz = {
   instructionsHTML?: string;
 };
 
+export type TUpdateQuizDates = {
+  id: string;
+  startsAt: string;
+  endsAt: string;
+};
+
 export type TGetAllQuizzes = {
   limit: number;
   cursor?: string;

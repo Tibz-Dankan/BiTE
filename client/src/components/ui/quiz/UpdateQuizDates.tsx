@@ -1,0 +1,148 @@
+import React, { useState } from "react";
+import type { TQuiz } from "../../../types/quiz";
+import { useNotificationStore } from "../../../stores/notification";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useFormik } from "formik";
+import { quizAPI } from "../../../api/quiz";
+import { Button } from "../shared/Btn";
+import { Loader2 } from "lucide-react";
+import { DatePicker } from "../shared/DatePicker";
+import { AppDate } from "../../../utils/appDate";
+
+interface UpdateQuizDatesProps {
+  quiz: TQuiz;
+}
+
+export const UpdateQuizDates: React.FC<UpdateQuizDatesProps> = (props) => {
+  const quiz = props.quiz;
+
+  const [startTime, setStartTime] = useState(
+    new AppDate(quiz.startsAt).time24hourFormat()
+  );
+  const [endTime, setEndTime] = useState(
+    new AppDate(quiz.endsAt).time24hourFormat()
+  );
+
+  const queryClient = useQueryClient();
+
+  const showCardNotification = useNotificationStore(
+    (state) => state.showCardNotification
+  );
+  const hideCardNotification = useNotificationStore(
+    (state) => state.hideCardNotification
+  );
+
+  const { isPending, mutate } = useMutation({
+    mutationFn: quizAPI.updateDates,
+    onSuccess: async (response: any) => {
+      showCardNotification({ type: "success", message: response.message });
+      queryClient.invalidateQueries({ queryKey: [`quiz-${quiz.id}`] });
+      setTimeout(() => {
+        hideCardNotification();
+      }, 5000);
+    },
+    onError: (error: any) => {
+      showCardNotification({ type: "error", message: error.message });
+      setTimeout(() => {
+        hideCardNotification();
+      }, 7000);
+    },
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      startsAt: quiz.startsAt,
+      endsAt: quiz.endsAt,
+    },
+
+    onSubmit: async (values: any, helpers: any) => {
+      try {
+        const startsAt = new AppDate(values.startsAt).addTimeToDate(startTime);
+        const endsAt = new AppDate(values.endsAt).addTimeToDate(endTime);
+
+        mutate({
+          id: quiz.id,
+          startsAt: startsAt,
+          endsAt: endsAt,
+        });
+      } catch (error: any) {
+        helpers.setStatus({ success: false });
+        helpers.setSubmitting(false);
+        console.error(error);
+      }
+    },
+  });
+
+  return (
+    <div className="w-full">
+      <form onSubmit={formik.handleSubmit} className="space-y-6">
+        <div
+          className="w-full flex flex-col sm:flex-row items-center justify-center
+          gap-4"
+        >
+          {/* Starts At */}
+          <div className="w-full">
+            <h3 className="text-gray-500 text-[12px]">Starts At</h3>
+            <div className="flex flex-col justify-center gap-2">
+              <div>
+                <label className="text-sm text-gray-800">Date</label>
+                <DatePicker name={"startsAt"} formik={formik} />
+              </div>
+              <div>
+                <label className="text-sm text-gray-800">Time</label>
+                <input
+                  type="time"
+                  value={startTime}
+                  onChange={(event) => setStartTime(() => event.target.value)}
+                  className="w-full rounded-md border-[1px] border-gray-400
+                  focus:border-(--primary) focus:ring-1 ring-(--primary)
+                  transition-all focus:outline-none p-2 text-sm text-gray-700
+                  self-start"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Ends At */}
+          <div className="w-full">
+            <h3 className="text-gray-500 text-[12px]">Ends At</h3>
+            <div className="flex flex-col justify-center gap-2">
+              <div>
+                <label className="text-sm text-gray-800">Date</label>
+                <DatePicker name={"endsAt"} formik={formik} />
+              </div>
+              <div>
+                <label className="text-sm text-gray-800">Time</label>
+                <input
+                  type="time"
+                  value={endTime}
+                  onChange={(event) => setEndTime(() => event.target.value)}
+                  className="w-full rounded-md border-[1px] border-gray-400
+                   focus:border-(--primary) focus:ring-1 ring-(--primary)
+                   transition-all  focus:outline-none p-2 text-sm text-gray-700
+                   self-start"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="w-full flex items-center justify-center md:justify-end">
+          <Button
+            type="submit"
+            className="w-full md:w-40 mt-4"
+            disabled={isPending}
+          >
+            {isPending ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Saving...
+              </>
+            ) : (
+              "Update Dates"
+            )}
+          </Button>
+        </div>
+      </form>
+    </div>
+  );
+};
