@@ -7,8 +7,9 @@ import { quizCategoryAPI } from "../../../api/quizCategory";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Loader2 } from "lucide-react";
 import { AlertCard } from "../shared/AlertCard";
+import { FilterChipsSkeleton } from "../shared/FilterChipsSkeleton";
+import { Skeleton } from "../shared/Skeleton";
 import { useFeatureFlagEnabled } from "posthog-js/react";
 
 export const AdminQuizCategoryFilter: React.FC = () => {
@@ -50,11 +51,9 @@ export const AdminQuizCategoryFilter: React.FC = () => {
 
   if (isPending) {
     return (
-      <div className="w-full min-h-[20vh] flex items-center justify-center">
-        <div className="flex items-center justify-center gap-2">
-          <Loader2 className="h-4 w-4 animate-spin text-gray-800" />
-          <span className="text-gray-800 text-sm">Loading...</span>
-        </div>
+      <div className="">
+        <Skeleton className="h-8 w-40 mb-6" />
+        <FilterChipsSkeleton count={5} />
       </div>
     );
   }

@@ -5,8 +5,9 @@ import { categoryCertificateAPI } from "../../../api/categoryCertificate";
 import { useAuthStore } from "../../../stores/auth";
 import { SecondaryUserCertificateClaimBanner } from "../../ui/categorycertificate/SecondaryUserCertificateClaimBanner";
 import { UserQuizCard } from "../../ui/quiz/UserQuizCard";
-import { Loader2 } from "lucide-react";
+import { UserQuizCardSkeleton } from "../../ui/quiz/UserQuizCardSkeleton";
 import { AlertCard } from "../../ui/shared/AlertCard";
+import { Skeleton } from "../../ui/shared/Skeleton";
 import type { TQuiz } from "../../../types/quiz";
 import { useFeatureFlagEnabled } from "posthog-js/react";
 import { PageNotFound } from "../common/PageNotFound";
@@ -32,10 +33,15 @@ export const UserCategoryCertificateQuizzes: React.FC = () => {
 
   if (isPending) {
     return (
-      <div className="w-full min-h-[40vh] flex items-center justify-center">
-        <div className="flex items-center justify-center gap-2">
-          <Loader2 className="h-4 w-4 animate-spin text-gray-800" />
-          <span className="text-gray-800 text-sm">Loading...</span>
+      <div className="w-full space-y-8">
+        <div>
+          <Skeleton className="h-7 w-56 mb-2" />
+          <Skeleton className="h-4 w-72" />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <UserQuizCardSkeleton key={i} />
+          ))}
         </div>
       </div>
     );

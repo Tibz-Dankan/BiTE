@@ -3,9 +3,11 @@ import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { quizAPI } from "../../../api/quiz";
 import type { TQuiz } from "../../../types/quiz";
-import { Loader2, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { AlertCard } from "../../ui/shared/AlertCard";
 import { AdminQuestionList } from "../../ui/question/AdminQuestionList";
+import { Skeleton } from "../../ui/shared/Skeleton";
+import { AdminQuestionCardSkeleton } from "../../ui/question/AdminQuestionCardSkeleton";
 import { Button } from "../../ui/shared/Btn";
 import { useRouteStore } from "../../../stores/routes";
 import { QuillViewer } from "../../ui/shared/QuillViewer";
@@ -53,10 +55,19 @@ export const AdminViewQuestions: React.FC = () => {
 
   if (isPending) {
     return (
-      <div className="w-full min-h-[80vh] flex items-center justify-center">
-        <div className="flex items-center justify-center gap-2">
-          <Loader2 className="h-4 w-4 animate-spin text-gray-800" />
-          <span className="text-gray-800 text-sm">Loading...</span>
+      <div className="w-full mt-4 space-y-8">
+        <div className="w-full flex items-center justify-between gap-4">
+          <Skeleton className="h-6 w-56" />
+          <Skeleton className="h-8 w-28 rounded-md" />
+        </div>
+        <div className="w-full flex flex-col gap-1">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-2/3" />
+        </div>
+        <div className="w-full flex flex-col gap-8">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <AdminQuestionCardSkeleton key={i} />
+          ))}
         </div>
       </div>
     );

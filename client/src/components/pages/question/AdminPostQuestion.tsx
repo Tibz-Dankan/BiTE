@@ -3,9 +3,10 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { quizAPI } from "../../../api/quiz";
 import type { TQuiz } from "../../../types/quiz";
-import { Loader2 } from "lucide-react";
 import { AlertCard } from "../../ui/shared/AlertCard";
 import { PostQuestion } from "../../ui/question/PostQuestion";
+import { Skeleton } from "../../ui/shared/Skeleton";
+import { FormFieldSkeleton } from "../../ui/shared/FormFieldSkeleton";
 
 export const AdminPostQuestion: React.FC = () => {
   const { quizID } = useParams();
@@ -19,10 +20,13 @@ export const AdminPostQuestion: React.FC = () => {
 
   if (isPending) {
     return (
-      <div className="w-full min-h-[80vh] flex items-center justify-center">
-        <div className="flex items-center justify-center gap-2">
-          <Loader2 className="h-4 w-4 animate-spin text-gray-800" />
-          <span className="text-gray-800 text-sm">Loading...</span>
+      <div className="w-full flex items-center justify-center mt-8">
+        <div className="w-full max-w-2xl space-y-4">
+          <Skeleton className="h-7 w-48" />
+          <FormFieldSkeleton inputHeight="h-24" />
+          <FormFieldSkeleton inputHeight="h-24" />
+          <FormFieldSkeleton />
+          <Skeleton className="h-10 w-32 rounded-md" />
         </div>
       </div>
     );

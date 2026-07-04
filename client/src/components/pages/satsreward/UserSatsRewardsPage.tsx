@@ -8,11 +8,14 @@ import { AddSatsRewardAddressModal } from "../../ui/satsReward/AddSatsRewardAddr
 import { AlertCard } from "../../ui/shared/AlertCard";
 import { Button } from "../../ui/shared/Btn";
 import { Pagination } from "../../ui/shared/Pagination";
-import { Loader2, Plus, Gift, MapPin, Trophy, Info } from "lucide-react";
+import { Plus, Gift, MapPin, Trophy, Info } from "lucide-react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { UserSatsRewardCount } from "../../ui/satsReward/UserSatsRewardCount";
 import { UserQuizSatsRewardTable } from "../../ui/satsReward/UserQuizSatsRewardTable";
 import { UserChessPuzzleSatsRewardTable } from "../../ui/satsReward/UserChessPuzzleSatsRewardTable";
+import { SatsRewardTableSkeleton } from "../../ui/satsReward/SatsRewardTableSkeleton";
+import { UserClaimCardSkeleton } from "../../ui/satsReward/UserClaimCardSkeleton";
+import { UserSatsRewardAddressCardSkeleton } from "../../ui/satsReward/UserSatsRewardAddressCardSkeleton";
 import { useUserSatsRewards } from "../../../hooks/useUserSatsRewards";
 import { useUserChessPuzzleSatsRewards } from "../../../hooks/useUserChessPuzzleSatsRewards";
 import { useFeatureFlagEnabled } from "@posthog/react";
@@ -194,11 +197,10 @@ export const UserSatsRewardsPage: React.FC = () => {
         {activeTab === "claims" ? (
           <>
             {isClaimsPending ? (
-              <div className="flex flex-col items-center justify-center py-20">
-                <Loader2 className="h-8 w-8 animate-spin text-(--primary) mb-3" />
-                <p className="text-slate-500 text-sm">
-                  Loading claimable quizzes...
-                </p>
+              <div className="flex flex-col gap-4">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <UserClaimCardSkeleton key={i} />
+                ))}
               </div>
             ) : isClaimsError ? (
               <AlertCard type="error" message={claimsError.message} />
@@ -272,12 +274,16 @@ export const UserSatsRewardsPage: React.FC = () => {
 
             {effectiveRewardType === "quiz" ? (
               isQuizRewardsPending ? (
-                <div className="flex flex-col items-center justify-center py-20">
-                  <Loader2 className="h-8 w-8 animate-spin text-(--primary) mb-3" />
-                  <p className="text-slate-500 text-sm">
-                    Loading your rewards...
-                  </p>
-                </div>
+                <SatsRewardTableSkeleton
+                  columnLabels={[
+                    "Quiz",
+                    "Date",
+                    "Status",
+                    "Sats Earned",
+                    "Payout Address",
+                  ]}
+                  rows={10}
+                />
               ) : isQuizRewardsError ? (
                 <AlertCard type="error" message={quizRewardsError.message} />
               ) : quizRewardsData?.data.length === 0 ? (
@@ -314,12 +320,16 @@ export const UserSatsRewardsPage: React.FC = () => {
                 </div>
               )
             ) : isPuzzleRewardsPending ? (
-              <div className="flex flex-col items-center justify-center py-20">
-                <Loader2 className="h-8 w-8 animate-spin text-(--primary) mb-3" />
-                <p className="text-slate-500 text-sm">
-                  Loading your rewards...
-                </p>
-              </div>
+              <SatsRewardTableSkeleton
+                columnLabels={[
+                  "Puzzle ID",
+                  "Date",
+                  "Status",
+                  "Sats Earned",
+                  "Payout Address",
+                ]}
+                rows={10}
+              />
             ) : isPuzzleRewardsError ? (
               <AlertCard type="error" message={puzzleRewardsError.message} />
             ) : puzzleRewardsData?.data.length === 0 ? (
@@ -359,9 +369,10 @@ export const UserSatsRewardsPage: React.FC = () => {
         ) : (
           <>
             {isAddressesPending ? (
-              <div className="flex flex-col items-center justify-center py-20">
-                <Loader2 className="h-8 w-8 animate-spin text-(--primary) mb-3" />
-                <p className="text-slate-500 text-sm">Loading addresses...</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <UserSatsRewardAddressCardSkeleton key={i} />
+                ))}
               </div>
             ) : isAddressesError ? (
               <AlertCard type="error" message={addressesError.message} />

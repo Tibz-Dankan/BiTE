@@ -6,6 +6,7 @@ import type { TQuizAttemptData } from "../../../types/attempt";
 import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import { quizAPI } from "../../../api/quiz";
 import { Button } from "../../ui/shared/Btn";
+import { Skeleton } from "../../ui/shared/Skeleton";
 
 export const UserQuizResultPage = () => {
   const { quizID } = useParams<{ quizID: string }>();
@@ -54,9 +55,43 @@ export const UserQuizResultPage = () => {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh]">
-        <Loader2 className="h-10 w-10 animate-spin text-indigo-600 mb-4" />
-        <p className="text-slate-600 font-medium">Loading your results...</p>
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto pb-12">
+          <Skeleton className="h-5 w-36 mb-6" />
+
+          <div className="bg-white rounded-3xl shadow-xl overflow-hidden mb-8">
+            <div className="bg-(--muted) p-8">
+              <Skeleton className="h-8 w-2/3 mb-3" />
+              <Skeleton className="h-4 w-40" />
+            </div>
+            <div className="p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="bg-gray-50 p-6 rounded-2xl flex flex-col items-center gap-3"
+                >
+                  <Skeleton className="w-12 h-12 rounded-full" />
+                  <Skeleton className="h-8 w-16" />
+                  <Skeleton className="h-3 w-20" />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            <Skeleton className="h-7 w-48 mx-2" />
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div
+                key={i}
+                className="bg-white rounded-2xl border border-gray-200 p-6 space-y-3"
+              >
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-2/3" />
+                <Skeleton className="h-10 w-full rounded-lg" />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     );
   }
