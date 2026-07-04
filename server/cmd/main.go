@@ -93,6 +93,7 @@ func main() {
 	quizGroup.Post("/", middlewares.Auth, middlewares.IsAdmin, quiz.PostQuiz)
 	quizGroup.Post("/:id/duplicate", middlewares.Auth, middlewares.IsAdmin, quiz.DuplicateQuiz)
 	quizGroup.Patch("/:id", middlewares.Auth, middlewares.IsAdmin, quiz.UpdateQuiz)
+	quizGroup.Patch("/:id/dates", middlewares.Auth, middlewares.IsAdmin, quiz.UpdateQuizDates)
 	quizGroup.Get("/search", middlewares.Auth, quiz.SearchQuiz)
 	quizGroup.Get("/:id", middlewares.Auth, quiz.GetQuiz)
 	quizGroup.Get("/", middlewares.Auth, quiz.GetAllQuizzes)
