@@ -1,3 +1,7 @@
+import type { TUser } from "./auth";
+import type { SatsRewardAddress } from "./satsReward";
+import type { TPagination } from "./pagination";
+
 export type TChessSolverColor = "white" | "black";
 
 export type TChessDifficulty =
@@ -93,4 +97,25 @@ export type TChessAttemptResultResponse = {
   status: string;
   message: string;
   data: TChessAttemptResult;
+};
+
+export type TChessPuzzleSatsReward = {
+  id: string;
+  userID: string;
+  chessPuzzleID: string;
+  satsRewardAddressID: string;
+  status: "PENDING" | "COMPLETED" | "FAILED";
+  transaction?: string | { settlementAmount: number } | null;
+  info?: string;
+  createdAt: string;
+  updatedAt: string;
+  user?: TUser;
+  satsRewardAddress?: SatsRewardAddress;
+};
+
+export type TChessPuzzleSatsRewardResponse = {
+  status: string;
+  message: string;
+  data: TChessPuzzleSatsReward[];
+  pagination: TPagination;
 };
