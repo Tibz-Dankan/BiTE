@@ -4,6 +4,7 @@ import { FeaturesSection } from "./landing/FeaturesSection";
 import { MissionSection } from "./landing/MissionSection";
 import { Footer } from "./landing/Footer";
 import { CurriculumPreviewSection } from "./landing/CurriculumPreviewSection";
+import { ChessPuzzlesSection } from "./landing/ChessPuzzlesSection";
 import { RewardsSection } from "./landing/RewardsSection";
 import { LandingNavbar } from "./landing/LandingNavbar";
 import { useLocation } from "react-router-dom";
@@ -12,6 +13,7 @@ import { useFeatureFlagEnabled } from "@posthog/react";
 export const LandingPage: React.FC = () => {
   const location = useLocation();
   const isSatsRewardEnabled = useFeatureFlagEnabled("sats-reward");
+  const isChessPuzzleEnabled = useFeatureFlagEnabled("chesspuzzle");
 
   React.useEffect(() => {
     if (location.hash) {
@@ -29,6 +31,7 @@ export const LandingPage: React.FC = () => {
       <LandingNavbar />
       <HeroSection />
       <CurriculumPreviewSection />
+      {isChessPuzzleEnabled && <ChessPuzzlesSection />}
       {isSatsRewardEnabled && <RewardsSection />}
       <FeaturesSection />
       <MissionSection />

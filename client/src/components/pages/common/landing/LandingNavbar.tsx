@@ -8,6 +8,7 @@ import { Gift } from "lucide-react";
 
 export const LandingNavbar: React.FC = () => {
   const isSatsRewardEnabled = useFeatureFlagEnabled("sats-reward");
+  const isChessPuzzleEnabled = useFeatureFlagEnabled("chesspuzzle");
   const auth = useAuthStore((state) => state.auth);
   const isLoggedIn = !!auth.accessToken;
 
@@ -63,6 +64,14 @@ export const LandingNavbar: React.FC = () => {
           >
             Curriculum
           </a>
+          {isChessPuzzleEnabled && (
+            <a
+              href="/#chess-puzzles"
+              className="hover:text-purple-600 transition-colors"
+            >
+              Chess Puzzles
+            </a>
+          )}
           {isSatsRewardEnabled && (
             <Link
               to={rewardsPath}
