@@ -4,7 +4,7 @@ import { DeleteQuiz } from "../../ui/quiz/DeleteQuiz";
 import { useRouteStore } from "../../../stores/routes";
 import { useQuery } from "@tanstack/react-query";
 import { quizAPI } from "../../../api/quiz";
-import { Loader2 } from "lucide-react";
+import { ConfirmCardSkeleton } from "../../ui/shared/ConfirmCardSkeleton";
 
 export const AdminDeleteQuiz: React.FC = () => {
   const { quizID } = useParams<{ quizID: string }>();
@@ -32,8 +32,8 @@ export const AdminDeleteQuiz: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="w-full h-full flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+      <div className="w-full h-full flex items-center justify-center p-4">
+        <ConfirmCardSkeleton />
       </div>
     );
   }

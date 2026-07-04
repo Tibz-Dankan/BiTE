@@ -2,9 +2,10 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { satsRewardAPI } from "../../../api/satsReward";
 import { AdminSatsRewardCard } from "../../ui/satsReward/AdminSatsRewardCard";
+import { AdminSatsRewardCardSkeleton } from "../../ui/satsReward/AdminSatsRewardCardSkeleton";
 import { AlertCard } from "../../ui/shared/AlertCard";
 import { Pagination } from "../../ui/shared/Pagination";
-import { Loader2, Bitcoin } from "lucide-react";
+import { Bitcoin } from "lucide-react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
 export const AdminSatsRewardsPage: React.FC = () => {
@@ -46,15 +47,11 @@ export const AdminSatsRewardsPage: React.FC = () => {
         </div>
       </div>
 
-      {isPending ? (
-        <div
-          className="w-full flex flex-col items-center justify-center py-32
-          bg-white rounded-3xl border border-slate-100 shadow-sm"
-        >
-          <Loader2 className="h-10 w-10 animate-spin text-(--primary) mb-4" />
-          <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">
-            Fetching rewards data...
-          </p>
+      {isPending && !cursor ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array.from({ length: 20 }).map((_, i) => (
+            <AdminSatsRewardCardSkeleton key={i} />
+          ))}
         </div>
       ) : isError ? (
         <AlertCard type="error" message={error.message} />

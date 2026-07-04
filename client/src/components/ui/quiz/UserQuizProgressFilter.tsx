@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "../shared/Btn";
 import { useQuery } from "@tanstack/react-query";
 import { AlertCard } from "../shared/AlertCard";
-import { Loader2 } from "lucide-react";
+import { Skeleton } from "../shared/Skeleton";
 import { useSearchParams } from "react-router-dom";
 import { quizAPI } from "../../../api/quiz";
 import { useAuthStore } from "../../../stores/auth";
@@ -49,10 +49,11 @@ export const UserQuizProgressFilter: React.FC = () => {
 
   if (isPending) {
     return (
-      <div className="w-full min-h-[20vh] flex items-center justify-center">
-        <div className="flex items-center justify-center gap-2">
-          <Loader2 className="h-4 w-4 animate-spin text-gray-800" />
-          <span className="text-gray-800 text-sm">Loading...</span>
+      <div className="w-full flex items-center justify-between gap-4 border-1 border-gray-300 rounded-2xl p-2">
+        <div className="flex flex-wrap gap-3">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <Skeleton key={i} className="h-14 w-36 rounded-2xl" />
+          ))}
         </div>
       </div>
     );

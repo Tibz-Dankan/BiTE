@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { Button } from "../shared/Btn";
 import { useQuery } from "@tanstack/react-query";
 import { AlertCard } from "../shared/AlertCard";
-import { Gift, Loader2, ChevronRight } from "lucide-react";
+import { Gift, ChevronRight } from "lucide-react";
+import { Skeleton } from "../shared/Skeleton";
 import { quizAPI } from "../../../api/quiz";
 import { useAuthStore } from "../../../stores/auth";
 import type { TQuizUserProgressCount } from "../../../types/quiz";
@@ -75,11 +76,15 @@ export const UserQuizProgressInfo: React.FC = () => {
 
   if (isPending) {
     return (
-      <div className="w-full min-h-[10vh] flex items-center justify-center">
-        <div className="flex items-center justify-center gap-2">
-          <Loader2 className="h-4 w-4 animate-spin text-gray-800" />
-          <span className="text-gray-800 text-sm">Loading...</span>
+      <div
+        className="w-full flex flex-col sm:flex-row gap-4
+       border border-gray-200 rounded-xl p-4 bg-gradient-to-r from-gray-50 to-white"
+      >
+        <div className="w-full flex items-center gap-2">
+          <Skeleton className="w-8 h-8 rounded-full flex-shrink-0" />
+          <Skeleton className="h-4 w-2/3" />
         </div>
+        <Skeleton className="flex-shrink-0 w-24 h-9 rounded-lg" />
       </div>
     );
   }

@@ -3,10 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import { categoryCertificateAPI } from "../../../api/categoryCertificate";
 import { Modal } from "../shared/Modal";
 import { Button } from "../shared/Btn";
-import { FileImage, FileText, Loader2 } from "lucide-react";
+import { FileImage, FileText } from "lucide-react";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import { CertificateLightTheme } from "./CertificateLightTheme";
+import { Skeleton } from "../shared/Skeleton";
 
 interface UserCategoryCertificateDownloadProps {
   certID: string;
@@ -141,14 +142,7 @@ export const UserCategoryCertificateDownload: React.FC<
         </div>
 
         {isPending ? (
-          <div className="w-full min-h-[300px] flex items-center justify-center">
-            <div className="flex items-center gap-2">
-              <Loader2 className="h-4 w-4 animate-spin text-gray-800" />
-              <span className="text-gray-800 text-sm">
-                Loading certificate...
-              </span>
-            </div>
-          </div>
+          <Skeleton className="w-full aspect-[16/10] min-h-[300px] rounded-md" />
         ) : (
           <div ref={certRef}>
             <CertificateLightTheme

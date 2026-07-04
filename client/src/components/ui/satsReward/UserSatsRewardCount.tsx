@@ -3,9 +3,10 @@ import React from "react";
 import { satsRewardAPI } from "../../../api/satsReward";
 import { useAuthStore } from "../../../stores/auth";
 import { addCommasToNumber } from "../../../utils/addCommasToNumber";
-import { Loader2, Coins, Gift } from "lucide-react";
+import { Coins, Gift } from "lucide-react";
 import { AlertCard } from "../shared/AlertCard";
 import { Card } from "../shared/Card";
+import { StatCardSkeleton } from "../shared/StatCardSkeleton";
 
 export const UserSatsRewardCount: React.FC = () => {
   const user = useAuthStore((state) => state.auth.user);
@@ -27,11 +28,9 @@ export const UserSatsRewardCount: React.FC = () => {
 
   if (isPending) {
     return (
-      <div className="w-full h-[20vh] flex items-center justify-center">
-        <div className="flex flex-col items-center justify-center gap-2">
-          <Loader2 className="h-8 w-8 animate-spin text-(--primary) mb-3" />
-          <p className="text-slate-500 text-sm">Loading stats...</p>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full mb-8">
+        <StatCardSkeleton />
+        <StatCardSkeleton />
       </div>
     );
   }

@@ -5,9 +5,9 @@ import { quizAPI } from "../../../api/quiz";
 import type { TQuiz } from "../../../types/quiz";
 import type { TPagination } from "../../../types/pagination";
 import { Pagination } from "../shared/Pagination";
-import { Loader2 } from "lucide-react";
 import { AlertCard } from "../shared/AlertCard";
 import { QuizCard } from "./QuizCard";
+import { QuizCardSkeleton } from "./QuizCardSkeleton";
 
 export const AdminQuizList: React.FC = () => {
   const navigate = useNavigate();
@@ -50,13 +50,12 @@ export const AdminQuizList: React.FC = () => {
     navigate(-1);
   };
 
-  if (isPending) {
+  if (isPending && !hasCursor) {
     return (
-      <div className="w-full min-h-[40vh] flex items-center justify-center">
-        <div className="flex items-center justify-center gap-2">
-          <Loader2 className="h-4 w-4 animate-spin text-gray-800" />
-          <span className="text-gray-800 text-sm">Loading...</span>
-        </div>
+      <div className="w-full flex flex-col gap-4">
+        {Array.from({ length: 20 }).map((_, i) => (
+          <QuizCardSkeleton key={i} />
+        ))}
       </div>
     );
   }
@@ -77,7 +76,7 @@ export const AdminQuizList: React.FC = () => {
           </div>
         ))}
         {/* Empty State */}
-        {quizzes.length === 0 && (
+        {quizzes.length === 0 && !isPending && (
           <div className="text-center py-16">
             <div className="text-6xl mb-4">🔍</div>
             <h3 className="text-2xl font-bold text-slate-800 mb-2">

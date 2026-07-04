@@ -1,18 +1,13 @@
 import React, { useEffect } from "react";
 import type { TQuiz } from "../../../types/quiz";
-import {
-  ArrowLeft,
-  ArrowRight,
-  FileQuestion,
-  Loader2,
-  Plus,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, FileQuestion, Loader2, Plus } from "lucide-react";
 import { AlertCard } from "../shared/AlertCard";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { questionAPI } from "../../../api/question";
 import type { TQuestion } from "../../../types/question";
 import { AdminQuestionCard } from "./AdminQuestionCard";
+import { AdminQuestionCardSkeleton } from "./AdminQuestionCardSkeleton";
 import { isArrayWithElements } from "../../../utils/isArrayWithElements";
 import { Button } from "../shared/Btn";
 import { truncateString } from "../../../utils/truncateString";
@@ -94,13 +89,12 @@ export const AdminQuestionList: React.FC<AdminQuestionListProps> = (props) => {
     });
   };
 
-  if (isPending) {
+  if (isPending && !hasCursor) {
     return (
-      <div className="w-full min-h-[80vh] flex items-center justify-center">
-        <div className="flex items-center justify-center gap-2">
-          <Loader2 className="h-4 w-4 animate-spin text-gray-800" />
-          <span className="text-gray-800 text-sm">Loading...</span>
-        </div>
+      <div className="w-full flex flex-col gap-8">
+        {Array.from({ length: 12 }).map((_, i) => (
+          <AdminQuestionCardSkeleton key={i} />
+        ))}
       </div>
     );
   }

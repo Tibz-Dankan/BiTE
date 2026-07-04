@@ -3,9 +3,9 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { quizAPI } from "../../../api/quiz";
 import type { TQuiz } from "../../../types/quiz";
-import { Loader2 } from "lucide-react";
 import { AlertCard } from "../../ui/shared/AlertCard";
 import { UpdateQuizAttemptForm } from "../../ui/quiz/UpdateQuizAttemptForm";
+import { HeadingFormSkeleton } from "../../ui/shared/HeadingFormSkeleton";
 
 export const AdminQuizAttemptUpdate: React.FC = () => {
   const { quizID } = useParams();
@@ -25,14 +25,7 @@ export const AdminQuizAttemptUpdate: React.FC = () => {
   };
 
   if (isPending) {
-    return (
-      <div className="w-full min-h-[80vh] flex items-center justify-center">
-        <div className="flex items-center justify-center gap-2">
-          <Loader2 className="h-4 w-4 animate-spin text-gray-800" />
-          <span className="text-gray-800 text-sm">Loading...</span>
-        </div>
-      </div>
-    );
+    return <HeadingFormSkeleton />;
   }
 
   if (isError) {

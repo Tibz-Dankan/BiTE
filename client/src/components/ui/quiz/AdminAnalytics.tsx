@@ -3,7 +3,6 @@ import React from "react";
 import { analyticsAPI } from "../../../api/analytics";
 import { addCommasToNumber } from "../../../utils/addCommasToNumber";
 import {
-  Loader2,
   FileText,
   HelpCircle,
   MessageSquare,
@@ -17,6 +16,7 @@ import {
 } from "lucide-react";
 import { AlertCard } from "../shared/AlertCard";
 import { Card } from "../shared/Card";
+import { StatCardSkeleton } from "../shared/StatCardSkeleton";
 
 export const AdminAnalytics: React.FC = () => {
   const { isPending, isError, data, error } = useQuery({
@@ -52,11 +52,10 @@ export const AdminAnalytics: React.FC = () => {
 
   if (isPending) {
     return (
-      <div className="w-full h-[20vh] flex items-center justify-center">
-        <div className="flex items-center justify-center gap-2">
-          <Loader2 className="h-4 w-4 animate-spin text-gray-800" />
-          <span className="text-gray-800 text-sm">Loading...</span>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+        {Array.from({ length: 11 }).map((_, i) => (
+          <StatCardSkeleton key={i} />
+        ))}
       </div>
     );
   }

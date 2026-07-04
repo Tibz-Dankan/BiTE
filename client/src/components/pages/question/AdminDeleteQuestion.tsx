@@ -4,8 +4,8 @@ import { DeleteQuestion } from "../../ui/question/DeleteQuestion";
 import { useRouteStore } from "../../../stores/routes";
 import { useQuery } from "@tanstack/react-query";
 import { questionAPI } from "../../../api/question";
-import { Loader2 } from "lucide-react";
 import { truncateString } from "../../../utils/truncateString";
+import { ConfirmCardSkeleton } from "../../ui/shared/ConfirmCardSkeleton";
 
 export const AdminDeleteQuestion: React.FC = () => {
   const { quizID, questionID } = useParams<{
@@ -35,8 +35,8 @@ export const AdminDeleteQuestion: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="w-full h-full flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+      <div className="w-full h-full flex items-center justify-center p-4">
+        <ConfirmCardSkeleton />
       </div>
     );
   }

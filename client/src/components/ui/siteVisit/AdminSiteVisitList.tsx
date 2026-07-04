@@ -7,6 +7,7 @@ import type { TPagination } from "../../../types/pagination";
 import { ArrowLeft, ArrowRight, Loader2, Eye } from "lucide-react";
 import { AlertCard } from "../shared/AlertCard";
 import { UserSiteVisitCard } from "../../siteVisit/UserSiteVisitCard";
+import { UserSiteVisitCardSkeleton } from "../../siteVisit/UserSiteVisitCardSkeleton";
 import { Button } from "../shared/Btn";
 
 export const AdminSiteVisitList: React.FC = () => {
@@ -50,12 +51,11 @@ export const AdminSiteVisitList: React.FC = () => {
 
   if (isPending && !hasCursor) {
     return (
-      <div className="w-full min-h-[40vh] flex items-center justify-center">
-        <div className="flex items-center justify-center gap-2">
-          <Loader2 className="h-6 w-6 animate-spin text-(--primary)" />
-          <span className="text-gray-800 text-sm font-medium">
-            Loading site visits...
-          </span>
+      <div className="w-full space-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array.from({ length: 20 }).map((_, i) => (
+            <UserSiteVisitCardSkeleton key={i} />
+          ))}
         </div>
       </div>
     );
