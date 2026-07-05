@@ -12,7 +12,7 @@ import (
 )
 
 // SATS_PER_CHESS_PUZZLE_WIN is the fixed reward for a first-encounter win.
-const SATS_PER_CHESS_PUZZLE_WIN = 40
+const SATS_PER_CHESS_PUZZLE_WIN = 5
 
 // WRITEBACK_PUZZLE_RATING controls whether the recomputed puzzle rating is
 // written back to chess_puzzles. Disabled in v1: the seeded Lichess ratings are
@@ -42,7 +42,7 @@ type PostChessPuzzleAttemptInput struct {
 //   - completed = the submitted line matches the full solution (money-safe,
 //     server-verified). Drives the sats reward.
 //   - clean = completed with zero wrong moves. Drives the Glicko win: a wrong
-//     move is a rating loss even though the 40 sats are still paid.
+//     move is a rating loss even though the 5 sats are still paid.
 var PostChessPuzzleAttempt = func(c *fiber.Ctx) error {
 	userID, ok := c.Locals("userID").(string)
 	if !ok || userID == "" {
