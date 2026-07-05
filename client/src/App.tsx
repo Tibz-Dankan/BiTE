@@ -7,6 +7,7 @@ import { AuthRoutes } from "./routes/authRoutes";
 import { UserRoutes } from "./routes/userRoutes";
 import { AdminRoutes } from "./routes/adminRoutes";
 import { useGlobalRequestInterceptor } from "./hooks/use-global-request-interceptor";
+import { useAndroidBackButton } from "./hooks/useAndroidBackButton";
 import { PageCapturer } from "./components/ui/shared/PageCapturer";
 import { LandingPage } from "./components/pages/common/LandingPage";
 import { InitSignInWithRefreshToken } from "./components/pages/auth/InitSignInWithRefreshToken";
@@ -22,6 +23,7 @@ export const App: React.FC = () => {
   const isLoggedInAdmin = isLoggedIn && auth.user.role === "ADMIN";
 
   useGlobalRequestInterceptor();
+  useAndroidBackButton();
 
   return (
     <div className="bg-(--clr-background)  min-h-screen overflow-x-hidden">
