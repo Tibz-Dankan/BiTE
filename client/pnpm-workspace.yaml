@@ -7,3 +7,4 @@ allowBuilds:
   esbuild: true # Vite's bundler native binary — required for `vite build`
   core-js: false # postinstall only prints a funding banner — not needed
   protobufjs: false # postinstall not needed for the web build
+  sharp: true # required by @capacitor/assets to generate Android launcher icons
