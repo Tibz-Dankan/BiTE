@@ -13,7 +13,8 @@ import (
 )
 
 // SATS_PER_CHESS_PUZZLE_WIN is the fixed reward paid for a first-encounter win.
-const SATS_PER_CHESS_PUZZLE_WIN = 40
+// const SATS_PER_CHESS_PUZZLE_WIN = 40
+const SATS_PER_CHESS_PUZZLE_WIN = 5
 
 // MakeChessPuzzleSatsRewardPayment subscribes to MAKE_CHESS_PUZZLE_SATS_REWARD_PAYMENT
 // and pays a fixed 40 sats to the user's verified Lightning address. It mirrors
