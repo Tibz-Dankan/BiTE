@@ -15,7 +15,7 @@ export const DashboardFooter: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex flex-wrap justify-center md:justify-end gap-x-6 gap-y-3 text-sm text-gray-600">
+          {/* <div className="flex flex-wrap justify-center md:justify-end gap-x-6 gap-y-3 text-sm text-gray-600">
             <a
               href="https://bhs-ocr.onrender.com/"
               target="_blank"
@@ -24,7 +24,7 @@ export const DashboardFooter: React.FC = () => {
             >
               AutoGrade
             </a>
-          </div>
+          </div> */}
         </div>
         <div className="mt-8 text-center text-xs text-gray-400">
           &copy; {new Date().getFullYear()} Bitcoin High School. All rights

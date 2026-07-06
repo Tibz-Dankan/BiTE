@@ -52,14 +52,14 @@ export const Footer: React.FC = () => {
             >
               Support
             </a>
-            <a
+            {/* <a
               href="https://bhs-ocr.onrender.com/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-primary transition-colors"
             >
               AutoGrade
-            </a>
+            </a> */}
           </div>
         </div>
         <div className="mt-8 text-center text-xs text-gray-400">
