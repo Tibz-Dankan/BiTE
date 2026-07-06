@@ -7,4 +7,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
   // SERVER_URL = "https://bite-a70i.onrender.com/api/v1";
 }
 
-export { SERVER_URL };
+const APK_DOWNLOAD_URL =
+  "https://bite-sbucket.s3.eu-central-1.amazonaws.com/bitcoinhighschool.apk";
+
+export { SERVER_URL, APK_DOWNLOAD_URL };
