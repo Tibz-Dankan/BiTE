@@ -5,6 +5,7 @@ import { useFeatureFlagEnabled } from "@posthog/react";
 import { useAuthStore } from "../../../../stores/auth";
 import { jwtDecode } from "jwt-decode";
 import { Gift } from "lucide-react";
+import { ApkDownloadDropdown } from "../../../ui/shared/ApkDownloadDropdown";
 
 export const LandingNavbar: React.FC = () => {
   const isSatsRewardEnabled = useFeatureFlagEnabled("sats-reward");
@@ -93,28 +94,31 @@ export const LandingNavbar: React.FC = () => {
           )}
         </div>
 
-        {/* Auth Buttons */}
-        {!hasValidRefreshToken && (
-          <div className="flex items-center gap-3">
-            <Link
-              to="/auth/signin"
-              className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors hidden sm:block"
-            >
-              Sign In
-            </Link>
-            <SCNButton
-              asChild
-              size="sm"
-              className="rounded-full shadow-md shadow-purple-100"
-            >
-              <Link to="/auth/signup">Get Started</Link>
-            </SCNButton>
-          </div>
-        )}
+        {/* Right-side actions (rendered in both auth states) */}
+        <div className="flex items-center gap-3">
+          <ApkDownloadDropdown />
 
-        {/* Dashboard Button */}
-        {hasValidRefreshToken && (
-          <div className="flex items-center gap-3">
+          {/* Auth Buttons */}
+          {!hasValidRefreshToken && (
+            <>
+              <Link
+                to="/auth/signin"
+                className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors hidden sm:block"
+              >
+                Sign In
+              </Link>
+              <SCNButton
+                asChild
+                size="sm"
+                className="rounded-full shadow-md shadow-purple-100"
+              >
+                <Link to="/auth/signup">Get Started</Link>
+              </SCNButton>
+            </>
+          )}
+
+          {/* Dashboard Button */}
+          {hasValidRefreshToken && (
             <SCNButton
               asChild
               size="sm"
@@ -123,8 +127,8 @@ export const LandingNavbar: React.FC = () => {
             >
               <Link to={dashboardPath}>Dashboard</Link>
             </SCNButton>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </nav>
   );

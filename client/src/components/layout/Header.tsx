@@ -9,6 +9,7 @@ import { useAuthStore } from "../../stores/auth";
 import { matchPath } from "react-router-dom";
 import { QuizTimer } from "../ui/quiz/QuizTimer";
 import { useFeatureFlagEnabled } from "@posthog/react";
+import { ApkDownloadDropdown } from "../ui/shared/ApkDownloadDropdown";
 
 interface DashboardSidebarProps {
   routes: TRoute;
@@ -97,6 +98,7 @@ export function DashboardHeader(props: DashboardSidebarProps) {
               <span className="text-gray-700 text-sm">Rewards</span>
             </Link>
           )}
+          <ApkDownloadDropdown />
           <div
             className="flex items-center gap-2 border-[1.5px] border-gray-700
             rounded-md p-1 cursor-pointer"
