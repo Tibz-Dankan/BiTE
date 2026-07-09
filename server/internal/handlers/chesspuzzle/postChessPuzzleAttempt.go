@@ -4,15 +4,13 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Tibz-Dankan/BiTE/internal/constants"
 	"github.com/Tibz-Dankan/BiTE/internal/events"
 	"github.com/Tibz-Dankan/BiTE/internal/models"
 	"github.com/Tibz-Dankan/BiTE/internal/pkg"
 	"github.com/Tibz-Dankan/BiTE/internal/types"
 	"github.com/gofiber/fiber/v2"
 )
-
-// SATS_PER_CHESS_PUZZLE_WIN is the fixed reward for a first-encounter win.
-const SATS_PER_CHESS_PUZZLE_WIN = 5
 
 // WRITEBACK_PUZZLE_RATING controls whether the recomputed puzzle rating is
 // written back to chess_puzzles. Disabled in v1: the seeded Lichess ratings are
@@ -192,7 +190,7 @@ var PostChessPuzzleAttempt = func(c *fiber.Ctx) error {
 
 	satsEarned := 0
 	if completed && isFirstEncounter {
-		satsEarned = SATS_PER_CHESS_PUZZLE_WIN
+		satsEarned = constants.SATS_PER_CHESS_PUZZLE_WIN
 	}
 
 	if _, err := chessRound.Create(models.ChessPuzzleRound{

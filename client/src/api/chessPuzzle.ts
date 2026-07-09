@@ -8,6 +8,7 @@ import {
   type TChessValidateMoveInput,
   type TChessSubmitAttemptInput,
   type TChessPuzzleSatsRewardResponse,
+  type TChessClaimPuzzleResponse,
 } from "../types/chessPuzzle";
 
 class ChessPuzzleAPI {
@@ -107,6 +108,52 @@ class ChessPuzzleAPI {
         },
       },
     );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  getClaimablePuzzles = async ({
+    userID,
+    limit = 10,
+    cursor = "",
+  }: {
+    userID: string;
+    limit?: number;
+    cursor?: string;
+  }): Promise<TChessClaimPuzzleResponse> => {
+    const response = await fetch(
+      `${SERVER_URL}/chesspuzzle/user/${userID}/claims?limit=${limit}&cursor=${cursor}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      },
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  claimPuzzleReward = async ({
+    puzzleID,
+  }: {
+    puzzleID: string;
+  }): Promise<{ status: string; message: string }> => {
+    const response = await fetch(`${SERVER_URL}/chesspuzzle/claim`, {
+      method: "POST",
+      body: JSON.stringify({ puzzleID }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
 
     if (!response.ok) {
       const error = await response.json();
