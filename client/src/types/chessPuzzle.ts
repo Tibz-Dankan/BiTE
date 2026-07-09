@@ -119,3 +119,25 @@ export type TChessPuzzleSatsRewardResponse = {
   data: TChessPuzzleSatsReward[];
   pagination: TPagination;
 };
+
+// A solved puzzle whose sats have not been paid out yet. `id` is the round id
+// (React key and pagination cursor); `chessPuzzleID` is what the claim sends.
+export type TChessClaimPuzzle = {
+  id: string;
+  userID: string;
+  chessPuzzleID: string;
+  satsEarned: number;
+  solvedAt: string;
+  win: boolean;
+  clean: boolean;
+  rating?: number;
+  themes?: string[];
+  gameUrl?: string;
+};
+
+export type TChessClaimPuzzleResponse = {
+  status: string;
+  message: string;
+  data: TChessClaimPuzzle[];
+  pagination: TPagination;
+};

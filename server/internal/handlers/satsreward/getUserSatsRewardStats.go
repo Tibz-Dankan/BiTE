@@ -32,6 +32,8 @@ var GetUserSatsRewardStats = func(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
+	chessPuzzleSatsReward := models.SatsRewardChessPuzzle{}
+
 	var totalSatsToBeClaimed int64
 	var totalSatsEarned int64
 
@@ -39,6 +41,12 @@ var GetUserSatsRewardStats = func(c *fiber.Ctx) error {
 	for _, usrQuizProgressForReward := range userQuizProgressForRewards {
 		totalSatsToBeClaimed += int64(usrQuizProgressForReward.CorrectQuestionCount)
 	}
+
+	claimableChessPuzzleSats, err := chessPuzzleSatsReward.SumClaimableSatsForUser(userID)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+	totalSatsToBeClaimed += claimableChessPuzzleSats
 
 	for _, satsReward := range satsRewards {
 		if satsReward.Status != "COMPLETED" {
@@ -54,7 +62,6 @@ var GetUserSatsRewardStats = func(c *fiber.Ctx) error {
 		}
 	}
 
-	chessPuzzleSatsReward := models.SatsRewardChessPuzzle{}
 	chessPuzzleSatsRewards, err := chessPuzzleSatsReward.FindAllByUser(userID, 1500, "")
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())

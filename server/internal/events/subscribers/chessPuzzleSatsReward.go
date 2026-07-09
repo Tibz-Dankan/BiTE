@@ -6,14 +6,12 @@ import (
 	"log"
 	"os"
 
+	"github.com/Tibz-Dankan/BiTE/internal/constants"
 	"github.com/Tibz-Dankan/BiTE/internal/events"
 	"github.com/Tibz-Dankan/BiTE/internal/models"
 	"github.com/Tibz-Dankan/BiTE/internal/pkg"
 	"github.com/Tibz-Dankan/BiTE/internal/types"
 )
-
-// SATS_PER_CHESS_PUZZLE_WIN is the fixed reward paid for a first-encounter win.
-const SATS_PER_CHESS_PUZZLE_WIN = 5
 
 // MakeChessPuzzleSatsRewardPayment subscribes to MAKE_CHESS_PUZZLE_SATS_REWARD_PAYMENT
 // and pays a fixed 5 sats to the user's verified Lightning address. It mirrors
@@ -81,7 +79,7 @@ func MakeChessPuzzleSatsRewardPayment() {
 			result, err := blinkClient.SendLnAddressPayment(types.LnAddressPaymentSendInput{
 				WalletId:  walletID,
 				LnAddress: savedSatsRewardAddress.Address,
-				Amount:    SATS_PER_CHESS_PUZZLE_WIN,
+				Amount:    constants.SATS_PER_CHESS_PUZZLE_WIN,
 			})
 			if err != nil {
 				log.Printf("Error sending chess puzzle sats reward: %+v", err)

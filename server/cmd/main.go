@@ -230,9 +230,11 @@ func main() {
 	chessPuzzleGroup.Get("/next", middlewares.Auth, chesspuzzle.GetNextChessPuzzle)
 	chessPuzzleGroup.Get("/rating", middlewares.Auth, chesspuzzle.GetChessUserPuzzleRating)
 	chessPuzzleGroup.Get("/user/:userID/rewards", middlewares.Auth, chesspuzzle.GetChessPuzzleSatsRewardsByUser)
+	chessPuzzleGroup.Get("/user/:userID/claims", middlewares.Auth, chesspuzzle.GetClaimableChessPuzzleRewardsByUser)
 	chessPuzzleGroup.Get("/:id", middlewares.Auth, middlewares.IsAdmin, chesspuzzle.GetChessPuzzleDetails)
 	chessPuzzleGroup.Post("/move", middlewares.Auth, chesspuzzle.ValidateChessPuzzleMove)
 	chessPuzzleGroup.Post("/attempt", middlewares.Auth, chesspuzzle.PostChessPuzzleAttempt)
+	chessPuzzleGroup.Post("/claim", middlewares.Auth, chesspuzzle.ClaimChessPuzzleSatsReward)
 
 	// Metrics
 	app.Get("/metrics", monitor.GetMetrics)

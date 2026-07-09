@@ -25,10 +25,16 @@ export const PuzzleFeedback: React.FC<PuzzleFeedbackProps> = ({
           Success!
         </div>
         {result && result.satsEarned > 0 ? (
-          <p className="mt-1 flex items-center gap-1 text-sm text-(--foreground)">
-            <Bitcoin className="w-4 h-4 text-(--primary)" />
-            You earned {result.satsEarned} sats
-          </p>
+          <>
+            <p className="mt-1 flex items-center gap-1 text-sm text-(--foreground)">
+              <Bitcoin className="w-4 h-4 text-(--primary)" />
+              You earned {result.satsEarned} sats
+            </p>
+            <p className="mt-1 text-xs text-(--muted-foreground)">
+              Paid automatically to your verified payout address. No address
+              yet? Claim them anytime from My Rewards.
+            </p>
+          </>
         ) : (
           <p className="mt-1 text-sm text-(--muted-foreground)">
             Puzzle solved. No reward (already played before).

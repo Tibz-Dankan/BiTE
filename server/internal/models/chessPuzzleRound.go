@@ -66,3 +66,18 @@ func (r *ChessPuzzleRound) HasAnyRound(userID string, puzzleID string) (bool, er
 	}
 	return count > 0, nil
 }
+
+// HasRewardableWin reports whether the user has a first-encounter winning round
+// for the puzzle. satsEarned is only ever set above zero on such a round, so it
+// alone establishes the entitlement. Guards the claim handler against a client
+// claiming a puzzle it never earned.
+func (r *ChessPuzzleRound) HasRewardableWin(userID string, puzzleID string) (bool, error) {
+	var count int64
+	if err := db.Model(&ChessPuzzleRound{}).
+		Where("\"userId\" = ? AND \"chessPuzzleId\" = ? AND win = ? AND \"satsEarned\" > ?",
+			userID, puzzleID, true, 0).
+		Count(&count).Error; err != nil {
+		return false, err
+	}
+	return count > 0, nil
+}

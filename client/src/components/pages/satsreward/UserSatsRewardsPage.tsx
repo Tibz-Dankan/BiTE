@@ -4,6 +4,7 @@ import { satsRewardAPI } from "../../../api/satsReward";
 import { useAuthStore } from "../../../stores/auth";
 import { UserSatsRewardAddressCard } from "../../ui/satsReward/UserSatsRewardAddressCard";
 import { UserClaimCard } from "../../ui/satsReward/UserClaimCard";
+import { UserChessPuzzleClaimCard } from "../../ui/satsReward/UserChessPuzzleClaimCard";
 import { AddSatsRewardAddressModal } from "../../ui/satsReward/AddSatsRewardAddressModal";
 import { AlertCard } from "../../ui/shared/AlertCard";
 import { Button } from "../../ui/shared/Btn";
@@ -18,6 +19,7 @@ import { UserClaimCardSkeleton } from "../../ui/satsReward/UserClaimCardSkeleton
 import { UserSatsRewardAddressCardSkeleton } from "../../ui/satsReward/UserSatsRewardAddressCardSkeleton";
 import { useUserSatsRewards } from "../../../hooks/useUserSatsRewards";
 import { useUserChessPuzzleSatsRewards } from "../../../hooks/useUserChessPuzzleSatsRewards";
+import { useUserClaimableChessPuzzles } from "../../../hooks/useUserClaimableChessPuzzles";
 import { useFeatureFlagEnabled } from "@posthog/react";
 
 export const UserSatsRewardsPage: React.FC = () => {
@@ -25,6 +27,7 @@ export const UserSatsRewardsPage: React.FC = () => {
     "claims" | "rewards" | "addresses"
   >("claims");
   const [rewardType, setRewardType] = useState<"quiz" | "puzzle">("quiz");
+  const [claimType, setClaimType] = useState<"quiz" | "puzzle">("quiz");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -37,6 +40,7 @@ export const UserSatsRewardsPage: React.FC = () => {
   // puzzle query never fires and the puzzle branch can never render even if
   // rewardType somehow held "puzzle".
   const effectiveRewardType = isChessPuzzleEnabled ? rewardType : "quiz";
+  const effectiveClaimType = isChessPuzzleEnabled ? claimType : "quiz";
 
   const {
     data: claimsData,
@@ -51,7 +55,18 @@ export const UserSatsRewardsPage: React.FC = () => {
         limit: 10,
         cursor,
       }),
-    enabled: activeTab === "claims",
+    enabled: activeTab === "claims" && effectiveClaimType === "quiz",
+  });
+
+  const {
+    data: puzzleClaimsData,
+    isPending: isPuzzleClaimsPending,
+    isError: isPuzzleClaimsError,
+    error: puzzleClaimsError,
+  } = useUserClaimableChessPuzzles({
+    userID: user.id,
+    cursor,
+    enabled: activeTab === "claims" && effectiveClaimType === "puzzle",
   });
 
   const {
@@ -89,8 +104,18 @@ export const UserSatsRewardsPage: React.FC = () => {
   });
 
   const loadNextPage = () => {
-    if (activeTab === "claims" && claimsData?.pagination.hasNextItems) {
-      setSearchParams({ cursor: claimsData.pagination.nextCursor });
+    if (activeTab === "claims") {
+      if (
+        effectiveClaimType === "quiz" &&
+        claimsData?.pagination.hasNextItems
+      ) {
+        setSearchParams({ cursor: claimsData.pagination.nextCursor });
+      } else if (
+        effectiveClaimType === "puzzle" &&
+        puzzleClaimsData?.pagination.hasNextItems
+      ) {
+        setSearchParams({ cursor: puzzleClaimsData.pagination.nextCursor });
+      }
     } else if (activeTab === "rewards") {
       if (
         effectiveRewardType === "quiz" &&
@@ -108,6 +133,11 @@ export const UserSatsRewardsPage: React.FC = () => {
 
   const selectRewardType = (type: "quiz" | "puzzle") => {
     setRewardType(type);
+    setSearchParams({});
+  };
+
+  const selectClaimType = (type: "quiz" | "puzzle") => {
+    setClaimType(type);
     setSearchParams({});
   };
 
@@ -196,15 +226,91 @@ export const UserSatsRewardsPage: React.FC = () => {
       <div className="w-full min-h-[400px]">
         {activeTab === "claims" ? (
           <>
-            {isClaimsPending ? (
+            {isChessPuzzleEnabled && (
+              <div
+                className="w-fit flex items-center gap-1 bg-slate-100 p-1
+                rounded-xl mb-6 border border-slate-200"
+              >
+                <button
+                  onClick={() => selectClaimType("quiz")}
+                  className={`flex items-center justify-center gap-2 px-5 py-2
+                    rounded-lg text-sm font-bold transition-all ${
+                      claimType === "quiz"
+                        ? "bg-white text-(--primary) shadow-sm"
+                        : "text-slate-500 hover:text-slate-700"
+                    }`}
+                >
+                  <span>Quizzes</span>
+                </button>
+                <button
+                  onClick={() => selectClaimType("puzzle")}
+                  className={`flex items-center justify-center gap-2 px-5 py-2
+                    rounded-lg text-sm font-bold transition-all ${
+                      claimType === "puzzle"
+                        ? "bg-white text-(--primary) shadow-sm"
+                        : "text-slate-500 hover:text-slate-700"
+                    }`}
+                >
+                  <span>Chess Puzzles</span>
+                </button>
+              </div>
+            )}
+
+            {effectiveClaimType === "quiz" ? (
+              isClaimsPending ? (
+                <div className="flex flex-col gap-4">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <UserClaimCardSkeleton key={i} />
+                  ))}
+                </div>
+              ) : isClaimsError ? (
+                <AlertCard type="error" message={claimsError.message} />
+              ) : claimsData?.data === null ||
+                claimsData?.data?.length === 0 ? (
+                <div
+                  className="text-center py-20 bg-slate-50 rounded-3xl border-2
+                  border-dashed border-slate-200"
+                >
+                  <div
+                    className="w-16 h-16 bg-slate-100 rounded-full flex
+                    items-center justify-center mx-auto mb-4"
+                  >
+                    <Trophy size={32} className="text-slate-300" />
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-800">
+                    No claimable rewards
+                  </h3>
+                  <p className="text-slate-500 mt-1">
+                    Complete more quizzes to earn sats rewards!
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="flex flex-col gap-4">
+                    {claimsData?.data.map((claim) => (
+                      <UserClaimCard key={claim.id} claim={claim} />
+                    ))}
+                  </div>
+
+                  <Pagination
+                    disablePrev={!cursor}
+                    disableNext={!claimsData?.pagination.hasNextItems}
+                    onPrev={loadPrevPage}
+                    onNext={loadNextPage}
+                    isLoadingNext={isClaimsPending && !!cursor}
+                  />
+                </div>
+              )
+            ) : isPuzzleClaimsPending ? (
               <div className="flex flex-col gap-4">
                 {Array.from({ length: 4 }).map((_, i) => (
                   <UserClaimCardSkeleton key={i} />
                 ))}
               </div>
-            ) : isClaimsError ? (
-              <AlertCard type="error" message={claimsError.message} />
-            ) : claimsData?.data === null || claimsData?.data?.length === 0 ? (
+            ) : isPuzzleClaimsError ? (
+              <AlertCard type="error" message={puzzleClaimsError.message} />
+            ) : puzzleClaimsData?.data === null ||
+              puzzleClaimsData?.data?.length === 0 ? (
               <div
                 className="text-center py-20 bg-slate-50 rounded-3xl border-2
                 border-dashed border-slate-200"
@@ -219,23 +325,24 @@ export const UserSatsRewardsPage: React.FC = () => {
                   No claimable rewards
                 </h3>
                 <p className="text-slate-500 mt-1">
-                  Complete more quizzes to earn sats rewards!
+                  Solved puzzles are paid out automatically to your verified
+                  address.
                 </p>
               </div>
             ) : (
               <div className="space-y-4">
                 <div className="flex flex-col gap-4">
-                  {claimsData?.data.map((claim) => (
-                    <UserClaimCard key={claim.id} claim={claim} />
+                  {puzzleClaimsData?.data.map((claim) => (
+                    <UserChessPuzzleClaimCard key={claim.id} claim={claim} />
                   ))}
                 </div>
 
                 <Pagination
                   disablePrev={!cursor}
-                  disableNext={!claimsData?.pagination.hasNextItems}
+                  disableNext={!puzzleClaimsData?.pagination.hasNextItems}
                   onPrev={loadPrevPage}
                   onNext={loadNextPage}
-                  isLoadingNext={isClaimsPending && !!cursor}
+                  isLoadingNext={isPuzzleClaimsPending && !!cursor}
                 />
               </div>
             )}
