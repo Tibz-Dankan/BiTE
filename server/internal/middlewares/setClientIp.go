@@ -13,6 +13,7 @@ func SetClientIp(c *fiber.Ctx) error {
 
 	if os.Getenv("GO_ENV") == "production" {
 		clientIP = c.Get("CF-Connecting-IP") // Cloudflare's real IP header
+		// log.Println("IP Cloudflare header: ", clientIP)
 		log.Println("IP Cloudflare header: ", clientIP)
 	}
 
