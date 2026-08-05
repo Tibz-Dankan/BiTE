@@ -41,8 +41,8 @@ else
 fi
 
 # Create Gradescript .env files if they don't exist
-mkdir -p ~/app/gradescript/prod/.env
-mkdir -p ~/app/gradescript/dev/.env
+mkdir -p ~/app/gradescript/prod
+mkdir -p ~/app/gradescript/dev
 
 BiTE_PROMETHEUS_SUBDOMAIN="prometheus.bitcoinhighschool.com"
 BiTE_GRAFANA_SUBDOMAIN="grafana.bitcoinhighschool.com"
