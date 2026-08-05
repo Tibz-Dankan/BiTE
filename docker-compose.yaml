@@ -47,6 +47,8 @@ services:
 
   gradescript:
     image: mmarvinken/gradescript:latest
+    environment:
+      - APP_ENV=production
     env_file:
       - ./gradescript/prod/.env
     deploy:
@@ -89,6 +91,8 @@ services:
 
   gradescript-dev:
     image: mmarvinken/gradescript-dev:latest
+    environment:
+      - APP_ENV=development
     env_file:
       - ./gradescript/dev/.env
     deploy:
