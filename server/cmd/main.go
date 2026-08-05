@@ -47,7 +47,7 @@ func main() {
 	app.Use(logger.New())
 
 	// app.Use(middlewares.RateLimit)
-	app.Use(middlewares.SetClientIp)
+	app.Use(middlewares.SetClientIP)
 
 	// Load dev .env file
 	env := os.Getenv("GO_ENV")
