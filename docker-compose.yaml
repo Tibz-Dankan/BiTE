@@ -281,7 +281,7 @@ services:
           memory: 128M
       placement:
         constraints:
-          - node.labels.valkey-data == "true"
+          - node.labels.valkey-data==true
       restart_policy:
         condition: on-failure
         max_attempts: 3    
@@ -310,7 +310,7 @@ services:
           memory: 128M
       placement:
         constraints:
-          - node.labels.valkey-data == "true"
+          - node.labels.valkey-data==true
       restart_policy:
         condition: on-failure
         max_attempts: 3    
