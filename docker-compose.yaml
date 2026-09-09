@@ -290,6 +290,8 @@ services:
       - app-network      
     volumes:
       - valkey-dev-data:/data
+    ports:
+      - "6380:6379"       
 
   valkey-prod:
     image: valkey/valkey:8.1.1
@@ -320,6 +322,8 @@ services:
       - app-network    
     volumes:
       - valkey-prod-data:/data
+    ports:
+      - "6379:6379"
 
 networks:
   app-network:
