@@ -265,7 +265,7 @@ services:
     image: valkey/valkey:8.1.1
     command: >
       valkey-server
-      --appendonly no
+      --appendonly yes
       --appendfsync everysec
       --save 900 1
       --save 300 10
@@ -281,7 +281,7 @@ services:
           memory: 128M
       placement:
         constraints:
-          - node.labels.valkey-data==true
+          # - node.labels.valkey-data==true
           - node.role == manager
       restart_policy:
         condition: on-failure
@@ -313,7 +313,7 @@ services:
           memory: 128M
       placement:
         constraints:
-          - node.labels.valkey-data==true
+          # - node.labels.valkey-data==true
           - node.role == manager
       restart_policy:
         condition: on-failure
