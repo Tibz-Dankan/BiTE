@@ -281,7 +281,6 @@ services:
           memory: 128M
       placement:
         constraints:
-          # - node.labels.valkey-data==true
           - node.role == manager
       restart_policy:
         condition: on-failure
@@ -313,7 +312,6 @@ services:
           memory: 128M
       placement:
         constraints:
-          # - node.labels.valkey-data==true
           - node.role == manager
       restart_policy:
         condition: on-failure
