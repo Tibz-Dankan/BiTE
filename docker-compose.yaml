@@ -74,7 +74,7 @@ services:
           - node.role == manager
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.gradescript.rule=Host(`gradescript.api.bitcoinhighschool.com`)"
+        - "traefik.http.routers.gradescript.rule=Host(`api.gradescriptug.com`)"
         - "traefik.http.routers.gradescript.entrypoints=websecure"
         - "traefik.http.services.gradescript.loadbalancer.server.port=8001"
     healthcheck:
@@ -118,7 +118,7 @@ services:
           - node.role == manager
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.gradescriptdev.rule=Host(`gradescript.api.dev.bitcoinhighschool.com`)"
+        - "traefik.http.routers.gradescriptdev.rule=Host(`api-dev.gradescriptug.com`)"
         - "traefik.http.routers.gradescriptdev.entrypoints=websecure"
         - "traefik.http.services.gradescriptdev.loadbalancer.server.port=8000"
     healthcheck:
