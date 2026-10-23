@@ -307,7 +307,7 @@ services:
       resources:
         limits:
           cpus: "0.5"
-          memory: 256M
+          memory: 512M
         reservations:
           memory: 128M
       placement:
