@@ -264,7 +264,7 @@ services:
   valkey-dev:
     image: valkey/valkey:8.1.1
     command: >
-      valkey-server
+      valkey-server /run/secrets/valkey_dev_conf
       --appendonly yes
       --appendfsync everysec
       --save 900 1
@@ -289,13 +289,13 @@ services:
       - app-network      
     volumes:
       - valkey-dev-data:/data
-    ports:
-      - "6380:6379"       
+    secrets:
+      - valkey_dev_conf
 
   valkey-prod:
     image: valkey/valkey:8.1.1
     command: >
-      valkey-server
+      valkey-server /run/secrets/valkey_prod_conf
       --appendonly yes
       --appendfsync everysec
       --save 900 1
@@ -320,12 +320,18 @@ services:
       - app-network    
     volumes:
       - valkey-prod-data:/data
-    ports:
-      - "6379:6379"
+    secrets:
+      - valkey_prod_conf
 
 networks:
   app-network:
     driver: overlay
+
+secrets:
+  valkey_prod_conf:
+    external: true
+  valkey_dev_conf:
+    external: true
 
 volumes:
   traefik-data: # Named volume for persistent certificate storage
