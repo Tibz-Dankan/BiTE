@@ -64,7 +64,6 @@ func main() {
 		return c.Next()
 	})
 	userGroup.Post("/auth/signup", middlewares.LockSignUp, auth.SignUp)
-	// userGroup.Post("/auth/signup", auth.SignUp)
 	userGroup.Post("/auth/signin", auth.SignIn)
 	userGroup.Post("/auth/rt-signin", auth.SignInWithRefreshToken)
 	userGroup.Post("/auth/forgot-password", auth.ForgotPassword)
